@@ -1,0 +1,46 @@
+<form class="form-horizontal" name="myForm" novalidate>
+    <div class="form-group">
+        <label class="col-sm-8 control-label" style="font-weight: bold;text-align: left; " ng-show="!bindMonitor.monitors||bindMonitor.monitors.length==0">当前项目未创建健康检查!</label>
+        <div class="col-sm-12" ng-show="bindMonitor.monitors.length!=0">
+            <div class="col-sm-12" style="max-height: 300px; overflow-y:auto;">
+                <table style="width: 100%; ">
+                    <tbody>
+                    <tr class="control-label" style="height: 30px" data-ng-repeat="monitor in bindMonitor.monitors">
+                        <td style="width: 15px;">
+                            <input type="checkbox" style="width: 16px;height: 16px;" data-ng-model="monitor.check" >
+                        </td>
+                        <td style="width: 15px;"></td>
+                        <td style="text-align: left" title="{{monitor.ldmName}}">
+                            {{monitor.ldmName.length>10?monitor.ldmName.substr(0,10)+'...':monitor.ldmName}}
+                        </td>
+                        <td style="width: 15px;"></td>
+                        <td style="width: 25px; text-align: left;">
+                            {{monitor.ldmType}}
+                        </td>
+                        <td style="width: 15px;"></td>
+                        <td style="width: 80px;text-align: left;">
+                            间隔：{{monitor.ldmDelay}}秒
+                        </td>
+                        <td style="width: 15px;"></td>
+                        <td style="width: 80px;text-align: left;">
+                            重试：{{monitor.maxRetries}}次
+                        </td>
+                        <td style="width: 15px;"></td>
+                        <td style="width: 80px;text-align: left;">
+                            超时：{{monitor.ldmTimeout}}秒
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- 按钮区域 -->
+    <div class="modal-footer" >
+        <button class="btn btn-primary btn-modal" ng-click="commit()" data-ng-disabled="!bindMonitor.monitors||bindMonitor.monitors.length==0||bindMonitor.checkBtn">确  定</button>
+        <button class="btn btn-default btn-modal" style="margin-left:13px;" ng-click="cancel()">取  消</button>
+    </div>
+
+</form>
+

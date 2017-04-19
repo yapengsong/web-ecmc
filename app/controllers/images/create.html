@@ -1,0 +1,206 @@
+
+<div id="loadingBar"
+     style="border:1px;width:100%; height:125%; background:rgba(0,0,0,0.5); position:absolute;z-index:999999;display:none;margin-top: -73px;margin-left: -20px;">
+    <div style="position:relative; height:100%;">
+        <img src="images/loadingbar.gif" style="position:absolute; top:35%; left:44%; z-index:1000;"/>
+    </div>
+</div>
+<form class="form-horizontal" name="createImage" novalidate>
+    <div class="form-group">
+        <label class="col-sm-2 control-label"><span  class="color-require">*</span >所属数据中心：</label>
+
+        <div class="col-sm-3">
+            <eayun-select disabled="{{}}" class="form-control" ng-model="create.imageItem.dcId" placeholder="请选择数据中心"  required>
+                <eayun-option value="dc.id" text="{{::dc.name}}" ng-repeat="dc in create.dcList"></eayun-option>
+            </eayun-select>
+        </div>
+
+
+        <label class="col-sm-2 control-label"><span  class="color-require">*</span >镜像名称：</label>
+        <div class="col-md-5"
+             data-ng-class="(createImage.imName.$dirty && createImage.imName.$invalid)?'has-error' : ''">
+            <input type="text" class="form-control"  maxlength="100"
+                   data-ng-model="create.imageItem.imageName" name="imName"  placeholder="请输入镜像名称" required>
+            <label class="control-label hide"
+                   data-ng-class="createImage.imName.$dirty && createImage.imName.$error.required ? 'show' : 'hide'"
+                   style="text-align: left;"> 请输入镜像名称，长度限定为100位</label>
+        </div>
+    </div>
+    <div class="form-group">
+
+        <label class="col-sm-2 control-label"><span  class="color-require">*</span >系统类型：</label>
+        <div class="col-sm-3">
+            <eayun-select class="form-control" ng-model="create.sysType"  placeholder="请选择系统类型" required ng-change="create.dcSysChange(create.sysType)">
+                <eayun-option value="dc" text="{{::dc.nodeName}}" ng-repeat="dc in create.sysList"></eayun-option>
+            </eayun-select>
+        </div>
+
+
+        <label class="col-sm-2 control-label"><span  class="color-require">*</span >系统详情：</label>
+        <div class="col-md-5"
+             data-ng-class="(createImage.sysDetail.$dirty && createImage.sysDetail.$invalid)?'has-error' : ''">
+            <input type="text" class="form-control"  maxlength="100"
+                   data-ng-model="create.imageItem.sysDetail" name="sysDetail" required    placeholder="请输入系统详情">
+            <label class="control-label hide"
+                   data-ng-class="createImage.sysDetail.$dirty && createImage.sysDetail.$error.required ? 'show' : 'hide'"
+                   style="text-align: left;"> 请输入系统详情，长度限定为100位</label>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-2 control-label"><span  class="color-require">*</span >镜像格式：</label>
+
+        <div class="col-sm-3">
+            <eayun-select class="form-control" ng-model="create.imageItem.diskFormat"  placeholder="请选择镜像格式" ng-change="create.dcChange()" required>
+                <eayun-option value="dc.nodeNameEn" text="{{::dc.nodeName.toLowerCase()}}" ng-repeat="dc in create.imList"></eayun-option>
+            </eayun-select>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-2 control-label"><span  class="color-require">*</span >上传方式：</label>
+        <div class="col-sm-7">
+            <label class="control-label radio-inline small-size" name="createType">
+                <input type="radio" ng-model="create.imageItem.createType" value="1"> 镜像文件
+            </label>
+            <label class="control-label radio-inline small-size" name="createType">
+                <input type="radio" ng-model="create.imageItem.createType" value="2"> 镜像地址
+            </label>
+        </div>
+    </div>
+
+    <div class="form-group" ng-if = "create.imageItem.createType == '1'">
+        <label class="col-sm-2 control-label"></label>
+        <input type="text" style = "display: none"ng-model="create.fileName" class="form-control" required>
+        <div class="col-sm-7">
+
+            <span class="upload-btn" ng-disabled="create.imageItem.file.length != 0" data-ng-class="create.imageItem.file.length == 0 ? '' : 'has-file'" ngf-select="create.uploadFiles($file)" ngf-pattern="'.'+create.fileTypes.join(',.')" accept="{{'.'+create.fileTypes.join(',.')}}">
+                <span class="glyphicon glyphicon-paperclip"></span>
+                <span style="border-left: 2px solid #dcdcdc;margin: 10px;vertical-align: middle;"></span>
+                <span data-ng-if="create.imageItem.file.length != 0" data-ng-repeat="file in create.imageItem.file">
+                    <span>{{file.name.length>20?file.name.substring(0,19)+"...":file.name}}</span>
+                    <!--<span data-ng-bind="file.name"></span>-->
+                </span>
+                <span data-ng-if="create.imageItem.file.length == 0">上传文件</span>
+            </span>
+
+            <span data-ng-repeat="file in create.imageItem.file">
+                <span style="cursor: pointer; color: #07c; margin: 10px;"    ngf-select="create.refushWorkFile($file,file)" ngf-pattern="'.'+create.fileTypes.join(',.')" accept="{{'.'+create.fileTypes.join(',.')}}">重新上传</span>
+                <span  style="cursor: pointer; color: #EA3200;" data-ng-click="create.deleteWorkFile(file)">删除</span>
+            </span>
+
+         </div>
+    </div>
+
+    <div class="form-group" ng-if = "create.imageItem.createType == '2'">
+        <label class="col-sm-2 control-label"></label>
+        <div class="col-md-7"
+             data-ng-class="(createImage.imageUrl.$dirty && createImage.imageUrl.$invalid)?'has-error' : ''">
+            <div class="has-feedback">
+                <input type="text" class="form-control" placeholder="请输入镜像地址"
+                       data-ng-model="create.imageItem.imageUrl" name="imageUrl" required
+                       data-ng-pattern='/(http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&:/~\+#]*[\w\-\@?^=%&/~\+#])?/'>
+                <label class="control-label hide"
+                       data-ng-class="createImage.imageUrl.$dirty && createImage.imageUrl.$error.pattern ? 'show' : 'hide'"
+                       style="text-align: left;">请输入正确的URL地址</label>
+                <label class="control-label hide"
+                       data-ng-class="createImage.imageUrl.$dirty && createImage.imageUrl.$error.required ? 'show' : 'hide'"
+                       style="text-align: left;">请输入URL地址</label>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label"><span  class="color-require">*</span >最小CPU：</label>
+        <div class="col-md-3"
+             data-ng-class="(createImage.imCpu.$dirty && (createImage.imCpu.$invalid||create.minCpuError))?'has-error' : ''">
+            <div class="has-feedback">
+                <input type="text" class="form-control" placeholder="请输入最小CPU"
+                       data-ng-model="create.imageItem.minCpu" name="imCpu" required
+                       data-ng-pattern='/^(1|\+?[1-9][0-9]*)$/' maxlength="2" data-ng-change="create.checkCPU('min')">
+                <span class="ey-suffix">核</span>
+                <label class="control-label hide"
+                       data-ng-class="createImage.imCpu.$dirty && (createImage.imCpu.$invalid || createImage.imCpu.$error.required) ? 'show' : 'hide'"
+                       style="text-align: left;">请输入大于等于1的整数</label>
+                <label class="control-label hide"
+                       data-ng-class="createImage.imCpu.$dirty && (!createImage.imCpu.$invalid && create.minCpuError) ? 'show' : 'hide'"
+                       style="text-align: left;">必须小于最大CPU</label>
+
+            </div>
+
+        </div>
+
+        <label class="col-sm-2 control-label"><span  class="color-require">*</span >最小内存：</label>
+        <div class="col-md-3"
+             data-ng-class="(createImage.imRam.$dirty && (createImage.imRam.$invalid||create.minRamError))?'has-error' : ''">
+            <div class="has-feedback">
+                <input type="text" class="form-control" placeholder="请输入最小内存"
+                       data-ng-model="create.imageItem.minRam" name="imRam" required
+                       data-ng-pattern='/^(1|\+?[1-9][0-9]*)$/' maxlength="3" data-ng-change="create.checkRAM('min')">
+                <span class="ey-suffix">GB</span>
+                <label class="control-label hide"
+                       data-ng-class="createImage.imRam.$dirty && (createImage.imRam.$invalid || createImage.imRam.$error.required) ? 'show' : 'hide'"
+                       style="text-align: left;">请输入大于等于1的整数</label>
+                <label class="control-label hide"
+                       data-ng-class="createImage.imRam.$dirty && (!createImage.imRam.$invalid && create.minRamError) ? 'show' : 'hide'"
+                       style="text-align: left;">必须小于最大内存</label>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-2 control-label"><span  class="color-require">*</span >最小硬盘：</label>
+        <div class="col-md-3"
+             data-ng-class="(createImage.imDisk.$dirty && (createImage.imDisk.$invalid || (create.imageItem.minDisk > create.minDiskValue)))?'has-error' : ''">
+            <div class="has-feedback">
+                <input type="text" class="form-control" placeholder="请输入最小硬盘"
+                       data-ng-model="create.imageItem.minDisk" name="imDisk" required
+                       data-ng-pattern='/^(1|\+?[1-9][0-9]*)$/'>
+                <span class="ey-suffix">GB</span>
+                <label class="control-label" style="text-align: left;" ng-show="createImage.imDisk.$dirty &&createImage.imDisk.$error.required">请输入镜像最低磁盘要求，必须≥镜像大小</label>
+                <label class="control-label" ng-show="createImage.imDisk.$dirty && createImage.imDisk.$error.pattern">请输入≤{{create.minDiskValue}}的正整数</label>
+                <label class="control-label" ng-show="(create.imageItem.minDisk > create.minDiskValue)">请输入≤{{create.minDiskValue}}的正整数</label>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">最大CPU：</label>
+        <div class="col-md-3"
+             data-ng-class="createImage.maxCpuName.$dirty && (createImage.maxCpuName.$invalid||create.maxCpuError)?'has-error' : ''">
+            <div class="has-feedback">
+                <input type="text" class="form-control" placeholder="请输入最大CPU"
+                       data-ng-model="create.imageItem.maxCpu" name="maxCpuName" data-ng-pattern='/^[1-9]\d{0,4}$/' maxlength="5" data-ng-change="create.checkCPU('max')">
+                <span class="ey-suffix">核</span>
+                <label class="control-label" ng-show="createImage.maxCpuName.$dirty && createImage.maxCpuName.$invalid">请输入不超过5位的正整数</label>
+                <label class="control-label hide"
+                       data-ng-class="createImage.maxCpuName.$dirty && (!createImage.maxCpuName.$invalid && create.maxCpuError) ? 'show' : 'hide'"
+                       style="text-align: left;">必须大于最小CPU</label>
+            </div>
+        </div>
+
+        <label class="col-sm-2 control-label">最大内存：</label>
+        <div class="col-md-3"
+             data-ng-class="createImage.maxRamName.$dirty && (createImage.maxRamName.$invalid||create.maxRamError)?'has-error' : ''">
+            <div class="has-feedback">
+                <input type="text" class="form-control" placeholder="请输入最大内存"
+                       data-ng-model="create.imageItem.maxRam" name="maxRamName" data-ng-pattern='/^[1-9]\d{0,5}$/' maxlength="6" data-ng-change="create.checkRAM('max')">
+                <span class="ey-suffix">GB</span>
+                <label class="control-label" ng-show="createImage.maxRamName.$dirty && createImage.maxRamName.$invalid">请输入不超过6位的正整数</label>
+                <label class="control-label hide"
+                       data-ng-class="createImage.maxRamName.$dirty && (!createImage.maxRamName.$invalid && create.maxRamError) ? 'show' : 'hide'"
+                       style="text-align: left;">必须大于最小内存</label>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-2 control-label">描述：</label>
+        <div class="col-md-10">
+                <textarea class="form-control" rows="3" name="desc" placeholder="请输入镜像描述" data-ng-model="create.imageItem.imageDescription" maxlength="200"></textarea>
+        </div>
+    </div>
+
+    <div class="modal-footer" >
+        <button type="button" class="btn btn-primary btn-modal" data-ng-click="commit()"  data-ng-disabled="!createImage.$valid ||(create.imageItem.minDisk > create.minDiskValue)||create.minRamError||create.maxRamError||create.minCpuError||create.maxCpuError">确  定</button>
+        <button type="button" class="btn btn-default btn-modal" data-ng-click="cancel()">取  消</button>
+    </div>
+</form>

@@ -1,0 +1,58 @@
+
+    <form class="form-horizontal" name="add" novalidate>
+        <div class="form-group has-feedback" >
+            <label class="col-sm-3 control-label"><span class="color-require">*</span>所属数据中心</label>
+
+            <div class="col-sm-8" data-ng-class="((add.dcName.$invalid&&add.dcName.$dirty)||model.emptyCapa<=0) ? 'has-error' : ''">
+                <eayun-select placeholder="--请选择数据中心--" class="form-control form-select"  ng-model="model.model.dcId" name="dcName" ng-change="model.change(model.model.dcId)" required>
+                    <eayun-option value="dc.id" text="{{dc.name}}"
+                                  ng-repeat="dc in model.dcList"></eayun-option>
+                </eayun-select>
+
+                <label class="control-label" ng-show="!add.dcName.$error.required&&model.emptyCapa<=0">该数据中心下面没有可用位置</label>
+            </div>
+        </div>
+        <div class="form-group has-feedback" >
+            <label class="col-sm-3 control-label"><span class="color-require">*</span>机柜名称</label>
+
+            <div class="col-sm-8" data-ng-class="((!add.cabinetName.$error.required&&!model.nameFlag)||(add.cabinetName.$dirty && !model.validName&&!add.cabinetName.$error.required)||(add.cabinetName.$dirty && add.cabinetName.$error.required)) ? 'has-error' : ''">
+                <input type="text" class="form-control" placeholder="请输入机柜名称" name="cabinetName" required data-ajax-valid="model.checkName(add.cabinetName.$viewValue)" maxlength="20" data-ng-model="model.model.cabinetName" />
+                <label class="control-label" ng-show="add.cabinetName.$dirty && add.cabinetName.$error.required">机柜名称不能为空</label>
+                <label class="control-label" ng-if="!add.cabinetName.$error.required &&(!model.validName&&model.nameFlag)">存在相同的机柜名称</label>
+                <label class="control-label" ng-if="!add.cabinetName.$error.required&&!model.nameFlag&&model.model.cabinetNamelenth!=''">请输入1-{{model.model.cabinetNamelenth==undefined?'20':model.model.cabinetNamelenth}}位字符,支持数字、中英文、下划线、空格</label>
+            </div>
+        </div>
+        <div class="form-group has-feedback" >
+            <label class="col-sm-3 control-label"><spanv class="color-require">*</spanv>机柜规格</label>
+
+            <div class="col-sm-7" data-ng-class="(add.totalCapacity.$dirty && add.totalCapacity.$invalid ) ? 'has-error' : ''">
+                <input type="text" class="form-control" placeholder="请输入50以内的正整数" name="totalCapacity" data-ng-model="model.model.totalCapacity" data-ajax-valid="model.checkCapacity(value)"maxlength="3" required/>
+                <label class="control-label" ng-show="add.totalCapacity.$dirty && add.totalCapacity.$error.required">请输入机柜的U数,例如:10</label>
+                <label class="control-label" ng-if="!add.totalCapacity.$error.required&&!model.capacityFlag">请输入50以内的正整数</label>
+            </div>
+            <label class="control-label">U</label>
+        </div>
+        <div class="form-group has-feedback" >
+            <label class="col-sm-3 control-label"><span class="color-require">*</span>机柜数量</label>
+
+            <div class="col-sm-8" data-ng-class="(add.cabinetNum.$dirty && (add.cabinetNum.$invalid||model.checkEmptyCapa) ) ? 'has-error' : ''">
+                <input type="text" class="form-control" placeholder="请填写正整数" name="cabinetNum" required
+                       data-ng-model="model.model.cabinetNum" maxlength="2" data-ajax-valid="model.checkNum(value, add.cabinetName.$viewValue)" data-ng-disabled="!add.dcName.$dirty||!model.nameFlag||(add.cabinetName.$dirty && add.cabinetName.$error.required)" />
+                <label class="control-label" ng-show="add.cabinetNum.$dirty && add.cabinetNum.$error.required">请输入机柜数量</label>
+                <label class="control-label" ng-if="!add.cabinetNum.$error.required&&!model.numFlag">请输入正整数</label>
+                <label class="control-label" ng-show="!add.cabinetNum.$error.required&&model.checkEmptyCapa&&model.emptyCapa>=0&&model.numFlag">该数据中心下还有{{model.emptyCapa}}个空位</label>
+                <label class="control-label" ng-show="!add.cabinetNum.$error.required&&model.numFlag&&model.checkEmptyCapa&&model.model.dcId==undefined"></label>
+            </div>
+        </div>
+        <div class="form-group has-feedback" >
+            <label class="col-sm-3 control-label"></label>
+            <div class="col-sm-8">
+                <p class="help-block">添加多个机柜会在机柜名称后自动加序号。</p>
+                <p class="help-block">例如：机柜名称A,机柜数量3,则会添加A_1、A_2、A_3。</p>
+            </div>
+        </div>
+    </form>
+    <div class="modal-footer">
+        <button class="btn btn-primary btn-modal" ng-click="ok(model.model)" ng-disabled="add.$invalid||model.emptyCapa<=0||model.checkEmptyCapa||!model.validName||!model.nameFlag" type = "button">确  定</button>
+        <button class="btn btn-default btn-modal" ng-click="cancel()" style = "margin-left:15px;" type = "button">取  消</button>
+    </div>

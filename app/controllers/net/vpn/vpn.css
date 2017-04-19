@@ -1,0 +1,11 @@
+.vpn {
+    border:1px solid #dbdbdb;
+    padding: 10px;
+    border-radius: 4px;
+    margin: 10px 0;
+}
+
+.vpn .form-group label {
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+}

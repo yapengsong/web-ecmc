@@ -1,0 +1,52 @@
+<form class="form-inline">
+    <label class="control-label click-link font-size-12" data-ui-sref="app.workorder.tab.star.operation">返回总表</label>
+    <label class="control-label">|<span
+            class="personal-p"> {{personal.personalDoneList[0].workHeadUserName}} 运维总览数据</span></label>
+
+    <div class="btn-group" data-toggle="buttons" style="float: right;">
+        <label class="btn btn-personal active" data-ng-click="personal.period('week')">
+            <input type="radio" name="options" id="option1" autocomplete="off">1周
+        </label>
+        <label class="btn btn-personal" data-ng-click="personal.period('month')">
+            <input type="radio" name="options" id="option2" autocomplete="off">1月
+        </label>
+        <label class="btn btn-personal" data-ng-click="personal.period('year')">
+            <input type="radio" name="options" id="option3" autocomplete="off">1年
+        </label>
+    </div>
+</form>
+<table class="table table-eayun-personal">
+    <thead>
+    <tr>
+        <th class="col-sm-2">事件类别</th>
+        <th class="col-sm-10 column" colspan="2">解决事件数量</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr style="vertical-align: middle;" data-ng-repeat="ope in personal.personalDoneList">
+        <td class="col-sm-2">{{ope.workTypeName}}</td>
+        <td class="col-sm-2">
+            <span class="done-num">按时完成：{{ope.doneNum}}件</span><br/>
+            <span class="not-done-num">未按时完成：{{ope.notDoneNum}}件</span>
+        </td>
+        <td class="col-sm-8">
+            <div class="progress" data-ng-style="{'width':(ope.doneNum*10)+'px'}">
+                <div class="progress-bar" data-role="progress-bar"
+                     data-aria-valuenow="{{ope.doneNum*10}}"
+                     data-aria-valuemin="1"
+                     data-aria-valuemax="{{ope.doneNum*12}}"
+                     style="width: 100%;">
+                </div>
+            </div>
+            <div class="progress" data-ng-style="{'width':(ope.notDoneNum*10)+'px'}">
+                <div class="progress-bar not-progress" data-role="progress-bar"
+                     data-aria-valuenow="{{ope.notDoneNum*10}}"
+                     data-aria-valuemin="1"
+                     data-aria-valuemax="{{ope.notDoneNum*12}}"
+                     style="width: 100%;">
+                </div>
+            </div>
+        </td>
+    </tr>
+    </tbody>
+</table>

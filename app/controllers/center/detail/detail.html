@@ -1,0 +1,104 @@
+
+    <form class="form-horizontal data-center" >
+        <div class="col-lg-6">
+            <div class="details-group">
+                <div class="details-name">数据中心名称：</div>
+                <div class="details-value"><span ng-bind="::detail.model.name"></span></div>
+            </div>
+            <div class="details-group">
+                <div class="details-name">数据中心ID：</div>
+                <div class="details-value"><span ng-bind="::detail.model.id"></span></div>
+            </div>
+            <div class="details-group">
+                <div class="details-name">数据中心描述：</div>
+                <div class="details-value"><span data-ng-bind-html="::detail.model.dcDesc |ellipsis:25"></span></div>
+            </div>
+            <div class="details-group">
+                <div class="details-name">EayunStack管理节点内网登陆用户名：</div>
+                <div class="details-value"><span ng-bind="::detail.model.vcenterUsername"></span></div>
+            </div>
+            <div class="details-group">
+                <div class="details-name">EayunStack管理节点外网IP：</div>
+                <div class="details-value"><span ng-bind="::detail.model.ecManagenodeOutnetip"></span></div>
+            </div>
+            <div class="details-group">
+                <div class="details-name">EayunStack管理项目ID：</div>
+                <div class="details-value"><span ng-bind="::detail.model.osAdminProjectId"></span></div>
+            </div>
+            <div class="details-group">
+                <div class="details-name">EayunStack的commonRegion：</div>
+                <div class="details-value"><span ng-bind="::detail.model.osCommonRegion"></span></div>
+            </div>
+            <div class="details-group">
+                <div class="details-name">EayunStack的Memory超配比：</div>
+                <div class="details-value"><span ng-bind="::detail.model.ramAllocationRatio"></span></div>
+            </div>
+            <div class="details-group">
+                <div class="details-name">EayunStack的Network配额：</div>
+                <div class="details-value"><span ng-bind="::detail.model.quotaNatwork"></span></div>
+            </div>
+            <div class="details-group">
+                <div class="details-name">Nagios用户名：</div>
+                <div class="details-value"><span ng-bind="::detail.model.nagiosUser"></span></div>
+            </div>
+            <div class="details-group">
+                <div class="details-name">创建人：</div>
+                <div class="details-value"><span ng-bind="::detail.model.creUser"></span></div>
+            </div>
+            <div class="details-group">
+                <div class="details-name">Region标识：</div>
+                <div class="details-value"><span ng-bind="::detail.model.apiDcCode"></span></div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="details-group">
+                <div class="details-name">可容机柜数量：</div>
+                <div class="details-value"><span ng-bind="::detail.model.cabinetCapacity"></span></div>
+            </div>
+            <div class="details-group">
+                <div class="details-name">EayunStack管理节点内网IP：</div>
+                <div class="details-value"><span ng-bind="::detail.model.dcAddress"></span></div>
+            </div>
+            <div class="details-group">
+                <div class="details-name">EayunStack管理节点内网登陆密码：</div>
+                <div class="details-value">******</div>
+            </div>
+            <div class="details-group">
+                <div class="details-name">EayunStack管理节点外网鉴权：</div>
+                <div class="details-value"><span ng-bind="::detail.model.ecManagenodeAuth"></span></div>
+            </div>
+            <div class="details-group">
+                <div class="details-name">EayunStack的keystoneRegion：</div>
+                <div class="details-value"><span ng-bind="::detail.model.osKeystoneRegion"></span></div>
+            </div>
+            <div class="details-group">
+                <div class="details-name">EayunStack的Cpu超配比：</div>
+                <div class="details-value"><span ng-bind="::detail.model.cpuAllocationRatio"></span></div>
+            </div>
+            <div class="details-group">
+                <div class="details-name">EayunStack的Disk超配比：</div>
+                <div class="details-value"><span ng-bind="::detail.model.diskAllocationRatio"></span></div>
+            </div>
+            <div class="details-group">
+                <div class="details-name">DNS配置：</div>
+                <div class="details-value"><span ng-bind="::detail.model.dcDns"></span></div>
+            </div>
+            <div class="details-group">
+                <div class="details-name">NagiosIp:</div>
+                <div class="details-value"><span ng-bind="::detail.model.nagiosIp"></span></div>
+            </div>
+            <div class="details-group">
+                <div class="details-name">Nagios密码：</div>
+                <div class="details-value">******</div>
+            </div>
+            <div class="details-group">
+                <div class="details-name">创建时间：</div>
+                <div class="details-value"><span ng-bind="::detail.model.creDate|date:'yyyy-MM-dd HH:mm:ss'"></span></div>
+            </div>
+        </div>
+    </form>
+    <div class="modal-footer gd_footer">
+        <div class="col-md-12 text-center">
+            <button class="btn button-orange" type="button" ng-click="cancel()">关闭</button>
+        </div>
+    </div>

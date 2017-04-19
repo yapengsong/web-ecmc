@@ -1,0 +1,80 @@
+<!-- Form表单 -->
+<form class="form-inline">
+    <div class="form-group hide" >
+        <a  class="btn btn-primary" data-ng-click="float.getIpForPrj()">分配公网IP给项目</a>
+        <!--<button class="btn btn-primary" data-ng-click="float.getIpForPrj()">
+            分配公网IP给项目
+        </button>-->
+    </div>
+    <div class="form-group">
+        <eayun-search ng-model="float.search" options="float.options"></eayun-search>
+    </div>
+</form>
+
+<eayun-table data-api="float.floatTable.api" data-ajax-source="float.floatTable.source" data-param="float.floatTable.getParams"
+             data-result="float.floatTable.result">
+    <table class="table table-eayun">
+        <thead>
+        <tr>
+            <th style = "width:10%">
+                <eayun-select class="eayun-select" data-ng-model="float.datacenterId" type="btn" data-ng-change="float.query()">
+                    <eayun-option text="数据中心（全部）" value = "''"selected></eayun-option>
+                    <eayun-option value="dc.id" text="{{dc.name}}"
+                                  ng-repeat="dc in float.dcList"></eayun-option>
+                </eayun-select>
+            </th>
+            <th>客户</th>
+            <th>所属项目</th>
+            <th>IP地址</th>
+            <th>状态</th>
+            <th>对象类型</th>
+            <th>绑定对象</th>
+            <th class="net-table-cloumn-charge">计费状态</th>
+            <th class="net-table-cloumn-date">创建时间</th>
+            <th style = "width:250px;">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="item in float.floatTable.result">
+            <td ng-bind="::(null == item.dcName)||('null' == item.dcName)||('' == item.dcName)?'':item.dcName"></td>
+            <td ng-bind="::(null == item.cusName)||('null' == item.cusName)||('' == item.cusName)?'':item.cusName"></td>
+            <td ng-bind="::(null == item.prjName)||('null' == item.prjName)||('' == item.prjName)?'':item.prjName"></td>
+            <td ng-bind="::item.floIp"></td>
+            <td>
+                <span class="state-block"
+                      data-ng-class="float.floatStatusClass[$index] != '' ? float.floatStatusClass[$index] : ''"
+                      ng-init="float.floatStatusClass[$index] = float.checkFloatStatus(item,$index)"></span>
+                <span data-ng-bind="::item.chargeStateName"></span>
+            </td>
+            <td ng-bind="::(null == item.resourceType)||('null' == item.resourceType)||('' == item.resourceType)?'':(item.resourceType == 'vm'?'云主机':'负载均衡')"></td>
+            <td style="text-align: left;" data-ng-if="null != item.resourceId && item.resourceId != 'null' && item.resourceId != ''">
+                <span>{{item.resourceName}}</span><br>
+                <span>内网IP : {{item.vmIp}}</span>
+            </td>
+            <td data-ng-if="null == item.resourceId || item.resourceId == 'null' || item.resourceId == ''">
+            </td>
+            <td class="net-table-charge">
+                <span data-ng-bind="item.payType=='1'?'包年包月':'按需付费'"></span><br>
+                <span data-ng-if="item.payType=='1'" data-ng-bind="::('到期时间：'+(item.endTime|date:'yyyy-MM-dd HH:mm:ss'))"></span>
+            </td>
+            <td>
+                {{item.createTime|date:'yyyy-MM-dd HH:mm:ss'}}
+            </td>
+            <td>
+                <button class="btn btn-tablemng"
+                        data-ng-if = "null != item.resourceId && item.resourceId != 'null' && item.resourceId != ''"
+                        data-ng-click="float.unBind(item)">解绑</button>
+                <button class="btn btn-tablemng"
+                        data-ng-if = "null == item.resourceId || item.resourceId == 'null' || '' == item.resourceId"
+                        data-ng-disabled="item.chargeState != '0'"
+                        data-ng-click="float.bind(item.floId,item.prjId)">绑定</button>
+                <button class="btn btn-tablemng"
+                        data-ng-disabled = "null != item.resourceId && item.resourceId != 'null' && item.resourceId != ''"
+                        data-ng-click="float.release(item.dcId,item.prjId,item.floId,item.resourceId,item.floIp)"
+                        data-ng-if="hasPermission('vir_floatip_release')">释放</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <eayun-table-page></eayun-table-page>
+</eayun-table>

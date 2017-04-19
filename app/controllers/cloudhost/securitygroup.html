@@ -1,0 +1,42 @@
+<form class="form-horizontal" name="myForm">
+    <div>
+        <div class="pull-left">
+            <label>未选择的安全组</label>
+
+            <div class="list-group-eayun">
+                <div class="list-group-item" data-ng-repeat="item in editSG.securityListUnselected"
+                     title={{item.sgName}}>{{item.sgName.length>10?item.sgName.substring(0,10)+'...':item.sgName}}
+                    <span class="glyphicon glyphicon-plus color-blue pointer"
+                          data-ng-click="editSG.addItemToSecurityList(item, $index)"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="pull-right">
+            <label>已选择的安全组</label>
+
+            <div class="list-group-eayun">
+                <div class="list-group-item" data-ng-repeat="item in editSG.securityListSelected" title={{item.sgName}}>
+                    {{item.sgName.length>10?item.sgName.substring(0,10)+'...':item.sgName}}
+                    <span class="glyphicon glyphicon-remove color-error pointer"
+                          data-ng-click="editSG.deleteFromSecurityList(item, $index)"></span>
+                </div>
+            </div>
+        </div>
+        <div class="select-list-md">
+            <span class="glyphicon glyphicon-menu-right" style="font-size: 2em"></span>
+        </div>
+
+        <div class="col-sm-12" style="margin:15px 5px 20px;"></div>
+    </div>
+
+    <!-- 按钮区域 -->
+    <div class="modal-footer">
+        <button type="button" class="btn btn-primary btn-modal" data-ng-click="editSG.commit()"
+                data-ng-disabled="!myForm.$valid">确 定
+        </button>
+        <button type="button" class="btn btn-default btn-modal" data-ng-click="cancel()" style="margin-left: 15px;">
+            取 消
+        </button>
+    </div>
+</form>

@@ -1,0 +1,81 @@
+<div class="title-inline">
+    <div class="form-group">
+        <label class="control-label">当前位置：
+            <span>API概览</span>
+        </label>
+    </div>
+</div>
+<div class="panel panel-default clearfix">
+    <div class="panel-body">
+        <h4>API概览</h4>
+        <form class="form-inline">
+            <div class="form-group" style="margin-left:15px">
+                <eayun-select class="form-control form-select" ng-model="apioverview.cusId" ng-change="apioverview.changeCusId()">
+                    <eayun-option value="cus.cusId" text="{{cus.cusOrg}}"
+                                  ng-repeat="cus in apioverview.cusList"></eayun-option>
+                </eayun-select>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="panel panel-default clearfix">
+    <div class="panel-body">
+        <h4>API概览折线图</h4>
+        <form class="form-inline">
+            <div style="float: right;margin-right:40px;margin-left:20px;" data-ng-show="apioverview.isShow">
+                <date-time-picker class="form-group" style="" data-format="yyyy-MM-dd" show-time="false"
+                                  data-ng-change="apioverview.changeTime(-1)" ng-model="apioverview.startTime" max-date="apioverview.endTime"></date-time-picker>
+                <span style="">—</span>
+                <date-time-picker class="form-group" style="margin-left:10px;" data-format="yyyy-MM-dd" show-time="false"
+                                  data-ng-change="apioverview.changeTime(-1)" ng-model="apioverview.endTime" min-date="apioverview.startTime" max-date="apioverview.now"></date-time-picker>
+            </div>
+            <div class="btn-group" data-toggle="buttons" style="float: right;margin-top:1px;" data-ng-class="!apioverview.isShow?'api-overview-ding':''">
+                <label class="btn btn-personal api-overview-date active"  data-ng-click="apioverview.changeTime(7)">
+                    <input type="radio" name="options" id="option1" autocomplete="off">7天
+                </label>
+                <label class="btn btn-personal api-overview-date" data-ng-click="apioverview.changeTime(15)">
+                    <input type="radio" name="options" id="option2" autocomplete="off">15天
+                </label>
+                <label class="btn btn-personal api-overview-date" data-ng-click="apioverview.changeTime(30)">
+                    <input type="radio" name="options" id="option3" autocomplete="off">30天
+                </label>
+                <label class="btn btn-personal api-overview-date" data-ng-click="apioverview.changeTime(0)">
+                    <input type="radio" name="options" id="option4" autocomplete="off">自定义
+                </label>
+            </div>
+        </form>
+        <div class="col-lg-12" style="height: 400px;width: 100%;margin-top:10px;" echarts="apioverview.myChart"></div>
+    </div>
+</div>
+<div class="panel panel-default clearfix">
+    <div class="panel-body">
+        <h4>API概览详情</h4>
+        <div class="panel panel-default" style="margin-bottom:5px;margin-top:10px;">
+            <div class="panel-body" style = "padding:5px;">
+                <eayun-table data-api="apioverview.apiDetailsTable.api" data-ajax-source="apioverview.apiDetailsTable.source" data-param="apioverview.apiDetailsTable.getParams"
+                             data-result="apioverview.apiDetailsTable.result">
+                    <table class="table table-eayun-info" style = "margin-bottom:0px;">
+                        <thead>
+                        <tr>
+                            <th class = "col-sm-2" style="text-align:left;">日期</th>
+                            <th class = "col-sm-2" style="text-align:left;">请求次数</th>
+                            <th class = "col-sm-2" style="text-align:left;">成功次数</th>
+                            <th class = "col-sm-2" style="text-align:left;">失败次数</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr data-ng-repeat="model in apioverview.apiDetailsTable.result">
+                            <td style="text-align:left;"><span ng-bind-html="::model.timestamp|date:'yyyy-MM-dd'"></span></td>
+                            <td style="text-align:left;"><span ng-bind="::model.totalCount"></span></td>
+                            <td style="text-align:left;"><span ng-bind-html="::model.successCount" style="color:#06CE06;border-bottom:1px solid #06CE06" class="click-link" data-ng-click="apioverview.goToApiPage(model.timestamp,'1')"></span></td>
+                            <td style="text-align:left;"><span ng-bind="::model.failCount" style="color:#EA3200;border-bottom:1px solid #EA3200" class="click-link" data-ng-click="apioverview.goToApiPage(model.timestamp,'0')"></span></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <eayun-table-page></eayun-table-page>
+                </eayun-table>
+            </div>
+        </div>
+    </div>
+</div>

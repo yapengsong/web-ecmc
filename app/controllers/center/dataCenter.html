@@ -1,0 +1,47 @@
+<h4>数据中心</h4>
+<form class="form-inline" ng-submit="dataCenter.doSearch()">
+    <button type="button" class="btn btn-primary" data-ng-click="dataCenter.add()" style="margin-right:15px"data-ng-disabled="!hasPermission('phy_datacenter_create')">
+        <span class="glyphicon glyphicon-plus"></span> 添加数据中心
+    </button>
+
+    <div class="input-group has-feedback search-group">
+        <input type="text" class="form-control" placeholder="请输入数据中心名称搜索" data-ng-model="dataCenter.dcName" data-ng-disabled="!hasPermission('phy_datacenter_query')">
+        <span class="form-control-feedback pointer search"  ng-click="dataCenter.doSearch()"></span>
+    </div>
+</form>
+<form class="form-inline form-count">
+
+    <eayun-table data-api="dataCenter.myTable.api" data-ajax-source="dataCenter.myTable.source" data-param="dataCenter.myTable.getParams"
+                 data-result="dataCenter.myTable.result" >
+        <table class="table table-eayun" >
+            <thead>
+            <tr>
+                <th>名称</th>
+                <th>机柜放置数量</th>
+                <th>服务器数量</th>
+                <th>交换机数量</th>
+                <th>存储服务器数量</th>
+                <th>防火墙数量</th>
+                <th width="20%">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="dc in dataCenter.myTable.result" data-ng-if="hasPermission('phy_datacenter_query')">
+            <!--<tr>-->
+                <td class="click-link" ng-click="dataCenter.detail(dc.id)" ng-bind="::dc.name" ></td>
+                <td class="click-link" data-ui-sref="app.cabinet.physicalcabinet({dcId:dc.id})" ng-bind="dc.cabinetNum" ></td>
+                <td class="click-link" data-ui-sref="app.server.physicalserver({dcId:dc.id})" ng-bind="dc.serverNum" ></td>
+                <td class="click-link" data-ui-sref="app.switch.physicalswitch({dcId:dc.id})" ng-bind="dc.switchNum" ></td>
+                <td class="click-link" data-ui-sref="app.storage.physicalstorage({dcId:dc.id})" ng-bind="dc.storageNum" ></td>
+                <td class="click-link" data-ui-sref="app.firewall.physicalfirewall({dcId:dc.id})" ng-bind="dc.firewallNum" ></td>
+                <td>
+                    <button class="btn btn-tablemng" data-ng-click="dataCenter.flushDC(dc.id)"data-ng-if="hasPermission('phy_datacenter_sync')">同步数据</button>
+                    <button class="btn btn-tablemng"  data-ng-click="dataCenter.editDC(dc.id)" data-ng-if="hasPermission('phy_datacenter_modify')">编辑</button>
+                    <button class="btn btn-tabledel" data-ng-click="dataCenter.deleteDC(dc.id)" data-ng-if="hasPermission('phy_datacenter_delete')">删除</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <eayun-table-page></eayun-table-page>
+    </eayun-table>
+</form>

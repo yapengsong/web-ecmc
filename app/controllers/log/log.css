@@ -1,0 +1,13 @@
+.widthten {
+    width: 10%;
+}
+/*字体成功、失败颜色*/
+.red-font-color {
+    color: #ff7272;
+}
+.light-font-color {
+    color: #999999;
+}
+.details-width-100 .details-name {
+    width: 100px;
+}

@@ -1,0 +1,86 @@
+<style>
+    .details-name {
+        width: 80px;
+    }
+</style>
+<div class="details" style="font-size: 12px;height:720px;line-height: 3;">
+    <form class="row">
+        <div class="col-lg-12">
+            <div class="details-group">
+                <div class="details-name">生效时间：</div>
+                <div class="details-value">
+                    <span ng-bind="::message.sendDate | date : 'yyyy-MM-dd HH:mm:ss'"></span>
+                </div>
+            </div>
+
+            <div class="details-group">
+                <div class="details-name">截止时间：</div>
+                <div class="details-value">
+                    <span ng-bind="::message.endDate | date : 'yyyy-MM-dd HH:mm:ss'"></span>
+                </div>
+            </div>
+
+            <div class="details-group">
+                <div class="details-name">收件公司：</div>
+                <div class="details-value">
+                    <span data-ng-bind-html="::message.cusCpname == 'null' ? '全部公司' : message.cusCpname | ellipsis : 25"></span>
+                </div>
+            </div>
+
+            <div class="details-group">
+                <div class="details-name">账号类型：</div>
+                <div class="details-value">
+                    <div ng-switch="message.recType">
+                        <div ng-switch-when="1">
+                            所有人
+                        </div>
+                        <div ng-switch-when="2">
+                            超级管理员
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="details-group">
+                <div class="details-name">发件方：</div>
+                <div class="details-value">
+                    <span data-ng-bind="::message.sendPerson"></span>
+                </div>
+            </div>
+
+            <div class="details-group">
+                <div class="details-name">读取量：</div>
+                <div class="details-value">
+                    <span data-ng-if="message.sended != 0" data-ng-bind="message.readed + '/' + message.sended"></span>
+                    <span data-ng-if="message.sended == 0" data-ng-bind="'尚未生效'"></span>
+                </div>
+            </div>
+
+            <div class="details-group">
+                <div class="details-name">收藏量：</div>
+                <div class="details-value">
+                    <span data-ng-if="message.sended != 0" data-ng-bind="message.collected + '/' + message.sended"></span>
+                    <span data-ng-if="message.sended == 0" data-ng-bind="'尚未生效'"></span>
+                </div>
+            </div>
+
+            <div class="details-group">
+                <div class="details-name">消息标题：</div>
+                <div class="details-value">
+                    <span data-ng-bind-html="message.newsTitle | ellipsis:35"></span>
+                </div>
+            </div>
+
+            <div class="details-group" style="border-bottom: unset;">
+                <div class="details-name">消息内容：</div>
+                <div class="details-value"
+                     style="width: 670px;height: 325px;line-height: 3;word-break: break-all;work-wrap: break-all;overflow-y: auto;">
+                    <span data-ng-bind-html="::message.memo"></span>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-default btn-modal" ng-click="cancel()">关闭</button>
+</div>

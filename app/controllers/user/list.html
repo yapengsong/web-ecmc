@@ -1,0 +1,44 @@
+<h4>用户管理</h4>
+<form class="form-inline">
+    <button class="btn btn-primary" data-ng-click="list.add()" ng-if="hasPermission('sys_user_create')">
+        <span class="glyphicon glyphicon-plus"></span> 创建用户
+    </button>
+</form>
+<eayun-table data-api="list.table.api" data-ajax-source="list.table.source"
+             data-param="list.table.getParams"
+             data-result="list.table.result">
+    <table class="table table-eayun">
+        <thead>
+        <tr>
+            <th>名称</th>
+            <th>账号</th>
+            <th>联系电话</th>
+            <th>邮箱</th>
+            <th>组织机构</th>
+            <th>所属角色</th>
+            <th>是否启用</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-if="list.table.result && list.table.result.length == 0">
+            <td colspan="8" class="color-error">该机构下还没有用户</td>
+        </tr>
+        <tr ng-repeat="user in list.table.result">
+            <td ng-bind-html="::user.name | ellipsis:10"></td>
+            <td ng-bind="::user.account"></td>
+            <td ng-bind="::user.tel"></td>
+            <td ng-bind-html="::user.mail | ellipsis:20"></td>
+            <td ng-bind="::user.departName"></td>
+            <td ng-bind-html="list.roleNames(user.roles) | ellipsis:30">
+            </td>
+            <td ng-bind="::user.enableFlag?'已启用':'未启用'"></td>
+            <td>
+                <button class="btn btn-tablemng btn-first" ng-click="list.edit(user)" ng-if="hasPermission('sys_user_modify') && user.account != 'root'">编辑</button>
+                <button class="btn btn-tabledel" ng-click="list.delete(user.id)" ng-if="hasPermission('sys_user_delete') && user.account != 'root'">删除</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <eayun-table-page></eayun-table-page>
+</eayun-table>

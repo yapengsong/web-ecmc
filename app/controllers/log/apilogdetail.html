@@ -1,0 +1,63 @@
+<div>
+    <div  class="panel-heading">
+        <div class="row">
+            <div  class="col-lg-9" style="padding-left: 0px;">
+                <span class="h3">Request</span>
+            </div>
+
+            <div  class="col-lg-3 text-right">
+                <expander data-target="#showOrHideWindow" data-expander-show={{true}}><label
+                        class="pointer color-blue" ng-click="apiDetailCtrl.windowDetailIsShow = !apiDetailCtrl.windowDetailIsShow"
+                        ng-init="(apiDetailCtrl.windowDetailIsShow = false)" ng-bind="apiDetailCtrl.windowDetailIsShow?'展开详情':'收起详情'"></label>
+                </expander>
+            </div>
+        </div>
+    </div>
+    <div class="collapse" resize id="showOrHideWindow" >
+        <p/><p/>
+        POST /api.eayun.com/<span ng-bind="apiDetailCtrl.version"></span> HTTP/1.1<br/>
+        Content-Type:text/json;charset=utf-8
+        <p/>
+        <div style="overflow: auto"   ng-style="style()">
+            <div ng-if="apiDetailCtrl.reqIsHtml == true">
+                <pre ng-bind-html="apiDetailCtrl.reqHTML">&ndash;&gt;
+                </pre>
+            </div>
+            <div ng-if="apiDetailCtrl.reqIsHtml == false">
+                <pre ng-bind="apiDetailCtrl.reqHTML">&ndash;&gt;
+                </pre>
+            </div>
+        </div>
+    </div>
+
+
+    <div  class="panel-heading">
+        <div class="row">
+            <div  class="col-lg-9"  style="padding-left: 0px;">
+                <span class="h3">Response</span>
+            </div>
+            <div  class="col-lg-3 text-right">
+                <expander data-target="#showOrHideWindowResponse" data-expander-show={{true}}><label
+                        class="pointer color-blue" ng-click="apiDetailCtrl.windowDetailIsShowResponse = !apiDetailCtrl.windowDetailIsShowResponse"
+                        ng-init="(apiDetailCtrl.windowDetailIsShowResponse=false)" ng-bind="apiDetailCtrl.windowDetailIsShowResponse?'展开详情':'收起详情'"></label>
+                </expander>
+            </div>
+        </div>
+    </div>
+    <div class="collapse" resize id="showOrHideWindowResponse" >
+        <p/><p/>
+        POST HTTP/1.1 200 OK<br/>
+        Content-Type:text/json;charset=utf-8
+        <p/>
+        <div style="overflow: auto"  ng-style="style()">
+            <div ng-if="apiDetailCtrl.resIsHtml == true">
+                <pre ng-bind-html="apiDetailCtrl.resHTML">&ndash;&gt;
+                </pre>
+            </div>
+            <div ng-if="apiDetailCtrl.resIsHtml == false">
+                <pre ng-bind="apiDetailCtrl.resHTML">&ndash;&gt;
+                </pre>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,118 @@
+
+/* 下拉选择 */
+.eayun-select {
+    border-width: 0;
+    position: relative;
+    padding: 0 !important;
+}
+
+.eayun-select .dropdown-menu{
+    font-size: 12px;
+}
+
+.eayun-select>button span:first-child{
+    float: left;
+}
+
+.eayun-select .btn{
+    text-align: right;
+}
+
+.eayun-select-input {
+    position: absolute;
+    left: 0;
+    right: 0;
+    padding-right: 35px;
+}
+
+.eayun-select-input[readonly] {
+    background-color: #ffffff;
+    border-color: #dcdcdc
+}
+
+.eayun-select-input[disabled] {
+    background-color: #f8f8f8;
+    border-color: #ececec;
+}
+
+.eayun-select-btn {
+    position: absolute;
+    right: 0;
+    top: 5px;
+    bottom: 5px;
+    width: 35px;
+    text-align: center;
+    border-left: 1px solid #dcdcdc;
+    cursor: pointer;
+}
+
+.eayun-select-btn span {
+    margin: auto;
+}
+
+.eayun-select-menu {
+    /* width: 100%; */
+    display: block;
+}
+
+.eayun-select-menu a {
+    cursor: pointer;
+}
+
+.form-select.eayun-select {
+    min-width: 220px !important;
+    width:auto;
+}
+.form-select.eayun-select input{
+    min-width: 160px !important;
+    width:100%;
+    padding-right:35px;
+    font-size: 12px;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
+}
+.form-select.eayun-select .eayun-select-btn{
+    line-height: 24px;
+}
+
+.eayun-select .dropdown-menu{
+    max-height:126px;
+    min-height:30px;
+    overflow-y: auto;
+    max-width: 390px;
+    overflow-x: auto;
+}
+
+.dropdown-menu {
+    min-width: 100%;
+}
+.dropdown-menu > li > #nochoice {
+    color:#999999;
+}
+.dropdown-menu > li > #nochoice:hover {
+    background-color:#ffffff;
+    color:#999999;
+    cursor:unset;
+}
+
+/* 当前位置 */
+.location.eayun-select {
+    width: 220px !important;
+    height: 30px;
+}
+.location.eayun-select input{
+    width: 220px !important;
+    height: 30px;
+    font-size: 12px;
+    line-height: 1px;
+    background-color: #58B9F0 !important;
+    color: #FFFFFF;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
+}
+.location.eayun-select .eayun-select-btn{
+    color: #FFFFFF;
+    line-height: 1;
+}

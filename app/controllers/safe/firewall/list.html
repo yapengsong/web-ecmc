@@ -1,0 +1,58 @@
+<!-- Form表单 -->
+<form class="form-inline" ng-show="hasPermission('firewall_query')">
+    <div class="form-group">
+        <button class="btn btn-primary" data-ng-click="list.add()" ng-show="hasPermission('firewall_create')" style="margin-right: 15px;">
+            <span class="glyphicon glyphicon-plus"></span> 创建防火墙
+        </button>
+    </div>
+    <div class="form-group">
+        <eayun-search ng-model="list.search" options="list.options"></eayun-search>
+    </div>
+</form>
+<eayun-auto-refresh interval="5000" refresh="list.refresh"></eayun-auto-refresh>
+<eayun-table data-api="list.table.api" data-ajax-source="list.table.source" data-param="list.table.getParams"
+             data-result="list.table.result">
+    <table class="table table-eayun">
+        <thead>
+        <tr>
+            <th class="col-sm-3">防火墙名称</th>
+            <th class="col-sm-1">防火墙状态</th>
+            <!-- <th class="col-sm-2">策略</th> -->
+            <th class="col-sm-2">项目</th>
+            <th class="col-sm-1">客户</th>
+            <th class="col-sm-2">创建时间</th>
+            <th class="col-sm-1">
+                <eayun-select type="btn" class="btn-group btn-group-xs" data-ng-model="list.datacenterId"
+                              data-ng-change="list.queryTable()">
+                    <eayun-option value="''" text="数据中心（全部）" selected></eayun-option>
+                    <eayun-option value="dcResource.id" text="{{dcResource.name}}"
+                                  ng-repeat="dcResource in list.dcResourceList"></eayun-option>
+                </eayun-select>
+            </th>
+            <th class="col-sm-2">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr data-ng-repeat="firewall in list.table.result">
+            <td class="click-link" data-ui-sref="app.safe.rule({fwModel:firewall.fwpId})" ng-bind="::firewall.fwName"></td>
+            <td>
+                <span class="state-block"
+                      data-ng-class="list.fwStatusClass[$index] != '' ? list.fwStatusClass[$index] : ''"
+                      ng-init="list.fwStatusClass[$index] = list.checkFwStatus(firewall,$index)">
+                </span>
+                <span data-ng-bind="firewall.statusForDis"></span>
+            </td>
+            <!-- <td ng-bind="::firewall.fwpName"></td> -->
+            <td ng-bind="::firewall.prjName"></td>
+            <td ng-bind="::firewall.cusOrg=='null'?'':firewall.cusOrg"></td>
+            <td ng-bind="::firewall.createTime|date : 'yyyy-MM-dd HH:mm:ss'"></td>
+            <td ng-bind="::firewall.dcName"></td>
+            <td>
+                <button class="btn btn-tablemng btn-first" data-ui-sref="app.safe.rule({fwModel:firewall.fwpId})" ng-show="hasPermission('firewall_modify')">管理</button>
+                <button class="btn btn-tabledel"  data-ng-disabled="'ACTIVE'!=firewall.fwStatus && 'ERROR'!=firewall.fwStatus" data-ng-click="list.delete(firewall)" ng-show="hasPermission('firewall_delete')">删除</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <eayun-table-page></eayun-table-page>
+</eayun-table>

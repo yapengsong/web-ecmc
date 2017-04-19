@@ -1,0 +1,34 @@
+
+    <form class="form-horizontal" name="setThreshold" novalidate>
+        <div class="form-group has-feedback" >
+            <label class="col-sm-3 control-label"><a style="color:red ;">*</a>存储量(GB)</label>
+
+            <div class="col-sm-8" data-ng-class="(setThreshold.storage.$dirty && setThreshold.storage.$invalid ) ? 'has-error' : ''">
+                <input type="text" class="form-control"  placeholder="请输入存储量"  name="storage" data-ng-pattern="/^\d+(\.\d+)?$/" data-ng-model="threshold.threshold.usedStorage" required/>
+                <label class="control-label" ng-show="setThreshold.storage.$dirty && setThreshold.storage.$error.required">存储量不能为空</label>
+                <label class="control-label" ng-if="setThreshold.storage.$dirty&&setThreshold.storage.$error.pattern">请输入正整数</label>
+            </div>
+        </div>
+        <div class="form-group has-feedback" >
+            <label class="col-sm-3 control-label"><a style="color:red ;">*</a>下载流量(GB)</label>
+
+            <div class="col-sm-8" data-ng-class="(setThreshold.flow.$dirty && setThreshold.flow.$invalid ) ? 'has-error' : ''">
+                <input type="text" class="form-control" placeholder="请输入下载流量" name="flow" data-ng-pattern="/^\d+(\.\d+)?$/"  data-ng-model="threshold.threshold.loadDown" required/>
+                <label class="control-label" ng-show="setThreshold.flow.$dirty && setThreshold.flow.$error.required">下载流量不能为空</label>
+                <label class="control-label" ng-if="setThreshold.flow.$dirty&&setThreshold.flow.$error.pattern">请输入正整数</label>
+            </div>
+        </div>
+        <div class="form-group has-feedback" >
+            <label class="col-sm-3 control-label"><a style="color:red ;">*</a>请求次数(万次)</label>
+
+            <div class="col-sm-8" data-ng-class="(setThreshold.request.$dirty && setThreshold.request.$invalid ) ? 'has-error' : ''">
+                <input type="text" class="form-control" placeholder="请输入请求次数" name="request" data-ng-pattern="/^\d+(\.\d+)?$/"   data-ng-model="threshold.threshold.requestCount" required/>
+                <label class="control-label" ng-show="setThreshold.request.$dirty && setThreshold.request.$error.required">请求次数不能为空</label>
+                <label class="control-label" ng-if="setThreshold.request.$dirty&&setThreshold.request.$error.pattern">请输入正整数</label>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary btn-modal" ng-click="ok(threshold.threshold)" ng-disabled="setThreshold.$invalid" type = "button">确  定</button>
+            <button class="btn btn-default btn-modal" ng-click="cancel()" style = "margin-left:15px;" type = "button">取  消</button>
+        </div>
+    </form>

@@ -1,0 +1,34 @@
+<form class="form-inline form-count">
+
+    <eayun-table data-api="model.myTable.api" data-ajax-source="model.myTable.source" data-param="model.myTable.getParams"
+                 data-result="model.myTable.result">
+        <table class="table table-eayun">
+            <thead>
+            <tr>
+                <th>物理设备名称</th>
+                <th>物理设备ID</th>
+                <th>物理设备类别</th>
+                <th>规格(U)</th>
+                <th>所在起始位置(U)</th>
+                <th>所在终止位置(U)</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="pc in model.myTable.result">
+                <td data-ng-bind-html="pc.equName| ellipsis:9"></td>
+                <td data-ng-bind-html="pc.equId| ellipsis:9"></td>
+                <td>{{pc.equType}}</td>
+                <td>{{pc.equSpec}}</td>
+                <td>{{pc.equStartState}}</td>
+                <td>{{pc.equEndState}}</td>
+            </tr>
+            </tbody>
+        </table>
+        <eayun-table-page></eayun-table-page>
+    </eayun-table>
+</form>
+<div class="modal-footer gd_footer">
+    <div class="col-md-12 text-center">
+        <button class="btn button-orange" type="button" ng-click="cancel()">关闭</button>
+    </div>
+</div>

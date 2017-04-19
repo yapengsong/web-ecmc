@@ -1,0 +1,35 @@
+<form class="form-horizontal" name="myForm" novalidate>
+    <div class="form-group has-feedback">
+        <label class="col-sm-3 control-label">调整规则：</label>
+
+        <div class="col-sm-8 " style="padding-top: 5px;">
+            <span ng-bind="::rule.fwRule.fwrName"></span>
+        </div>
+    </div>
+
+	<div class="form-group has-feedback">
+        <label class="col-sm-3 control-label">插入：</label>
+
+        <div class="col-sm-8 " style="padding-top: 8px;font-size: 12px;">
+            <input type="radio" data-ng-model="rule.local" data-ng-checked="true" value="pre" style="vertical-align: text-top;margin-top: 2px;"/>前于 
+            <input type="radio" data-ng-model="rule.local" value="rear" style="vertical-align: text-top;margin-top: 2px;"/>后于
+        </div>
+    </div>
+
+    <div class="form-group has-feedback">
+        <label class="col-sm-3 control-label">规则名称：</label>
+
+        <div class="col-sm-8 " style="padding-top: 2px;">
+            <eayun-select class="form-control" data-ng-model="rule.reference" 
+                          placeholder="请选择规则" required>
+                <eayun-option data-ng-if="rule.fwRule.fwrName!=rulemodel.fwrName" value="rulemodel.fwrId" text="{{rulemodel.fwrName}}"
+                              data-ng-repeat="rulemodel in rule.pRuleList"></eayun-option>
+            </eayun-select>
+        </div>
+    </div>
+<!-- 按钮区域 -->
+     <div class="modal-footer" >
+      <button type="button" class="btn btn-primary btn-modal" ng-click="commit()"  ng-disabled="!myForm.$valid">确  定</button>
+      <button type="button" class="btn btn-default btn-modal" ng-click="cancel()">取  消</button>
+    </div>
+</form>

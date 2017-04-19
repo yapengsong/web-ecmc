@@ -1,0 +1,168 @@
+<div class="title-inline">
+    <div class="form-group">
+        <label class="control-label">当前位置：<a style="cursor: pointer;" data-ui-sref="app.net.tabs.balance">负载均衡器</a><span> > 负载均衡器详情</span></label>
+    </div>
+</div>
+
+<div class="panel panel-default clearfix">
+    <div class="panel-body">
+        <h4>负载均衡器详情</h4>
+       <!-- <form class="form-inline">
+            <button  class="btn btn-default btn-sm" data-ng-click="lbDetail.editPool(lbDetail.pool)"
+                     ng-if="hasPermission('vir_loadbalance_lb_u')">
+                <span class="glyphicon glyphicon-pencil"></span> 修  改
+            </button>
+        </form>-->
+        <div class="details">
+            <form class="row">
+                <div class="col-sm-6 ">
+                    <div class="details-group">
+                        <div class="details-name"
+                             hint="controllers/net/balance/loadbalancer/editpoolname.html"
+                             hint-show="lbDetail.hintNameShow"
+                             tooltip-class="tooltip-edit"
+                             tooltip-placement="right">名称：</div>
+                        <div class="details-value"><span ng-bind="lbDetail.pool.poolName" data-ng-class="lbDetail.poolNameEditable ? 'hide' : 'show'" ></span></div>
+                        <div class="details-value pull-right hand-style" data-ng-click="lbDetail.editName()" data-ng-class="lbDetail.poolNameEditable || lbDetail.pool.chargeState != '0' ? 'hide' : 'show'">
+                            <a>
+                                <span class="glyphicon glyphicon-pencil"></span>
+                            </a>
+                        </div>
+                        <!--<div class="details-value">{{lbDetail.pool.poolName}}</div>-->
+                    </div>
+                    <div class="details-group">
+                        <div class="details-name">状态：</div>
+                        <div class="details-value">
+                            <span class="state-block"
+                                  ng-class="lbDetail.poolStatusClass != '' ? lbDetail.poolStatusClass : ''"></span>{{lbDetail.pool.statusForPool}}</td>
+                            <!--<span class="state-block"
+                                  ng-class="lbDetail.pool.poolStatus | statusClass"></span>{{lbDetail.pool.poolStatus | statusWatch:lbDetail.watchStatus | statusCn }}-->
+                        </div>
+                    </div>
+                    <div class="details-group">
+                        <div class="details-name">协议：</div>
+                        <div class="details-value">{{lbDetail.pool.poolProtocol}}</div>
+                    </div>
+                    <div class="details-group">
+                        <div class="details-name">网络：</div>
+                        <div class="details-value">{{lbDetail.pool.netName}}</div>
+                    </div>
+                    <div class="details-group">
+                        <div class="details-name">子网：</div>
+                        <div class="details-value">{{lbDetail.pool.subnetName}}({{lbDetail.pool.subnetCidr}})</div>
+                    </div>
+                    <div class="details-group">
+                        <div class="details-name">均衡方式：</div>
+                        <div class="details-value">{{lbDetail.pool.lbMethodCn}}</div>
+                    </div>
+                    <div class="details-group">
+                        <div class="details-name">所属数据中心：</div>
+                        <div class="details-value">{{lbDetail.pool.dcName}}</div>
+                    </div>
+                    <div class="details-group">
+                        <div class="details-name">健康管理：</div>
+                        <div class="details-value">{{lbDetail.pool.monitorStatus}}</div>
+                        <div class="details-value" style="float:right;color: #07C;cursor: pointer;"
+                             data-ng-click="lbDetail.bindMonitor(lbDetail.pool)"
+                             data-ng-if="hasPermission('vir_loadbalance_lb_hm') && lbDetail.pool.chargeState == '0' ">
+                            <span>管理</span>
+                        </div>
+                    </div>
+                    <div class="details-group">
+                        <div class="details-name">计费状态：</div>
+                        <div class="details-value">{{lbDetail.pool.payTypeStr}}</div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="details-group">
+                        <div class="details-name">ID：</div>
+                        <div class="details-value">{{lbDetail.pool.poolId}}</div>
+                    </div>
+                    <div class="details-group">
+                        <div class="details-name">所属客户：</div>
+                        <div class="details-value">
+                            <span>{{lbDetail.pool.cusOrg}}</span>
+                        </div>
+                    </div>
+                    <div class="details-group">
+                        <div class="details-name">端口：</div>
+                        <div class="details-value">{{lbDetail.pool.vipPort!=0?lbDetail.pool.vipPort:''}}</div>
+                    </div>
+                    <div class="details-group">
+                        <div class="details-name">内网IP：</div>
+                        <div class="details-value">{{lbDetail.pool.subnetIp}}</div>
+                    </div>
+                    <div class="details-group">
+                        <div class="details-name">公网IP：</div>
+                        <div class="details-value">{{lbDetail.pool.floatIp}}</div>
+                    </div>
+                    <div class="details-group">
+                        <div class="details-name">连接限制数：</div>
+                        <div class="details-value">{{lbDetail.pool.connectionLimit!=0?lbDetail.pool.connectionLimit:''}}</div>
+                    </div>
+                    <div class="details-group">
+                        <div class="details-name">所属项目：</div>
+                        <div class="details-value">{{lbDetail.pool.prjName}}</div>
+                    </div>
+                    <div class="details-group">
+                        <div class="details-name">创建时间：</div>
+                        <div class="details-value">{{lbDetail.pool.createTime |date:'yyyy-MM-dd HH:mm:ss'}}</div>
+                    </div>
+                    <div class="details-group">
+                        <div class="details-name">到期时间：</div>
+                        <div class="details-value" data-ng-if="lbDetail.pool.payType == '1'">{{lbDetail.pool.endTime |date:'yyyy-MM-dd HH:mm:ss'}}</div>
+                        <div class="details-value" data-ng-if="lbDetail.pool.payType == '2'">--</div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="panel panel-default clearfix">
+    <div class="panel-body">
+        <h4>成员列表</h4>
+        <form class="form-inline">
+            <button class="btn btn-primary btn-sm"
+                    data-ng-click="lbDetail.addMember(lbDetail.pool)"
+                    data-ng-disabled="lbDetail.pool.chargeState != '0'"
+                    ng-if="hasPermission('vir_loadbalance_lb_addmember')">
+                <span class="glyphicon glyphicon-plus"></span> 添加成员
+            </button>
+        </form>
+        <!-- 表格 -->
+        <div>
+            <table class="table table-eayun">
+                <thead>
+                <tr>
+                    <th>名称</th>
+                    <th>状态</th>
+                    <th>内网IP地址</th>
+                    <th>端口</th>
+                    <th>权重</th>
+                    <th class="col-sm-3">操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr data-ng-repeat="member in lbDetail.members">
+                    <td>{{member.vmName}}</td>
+                    <td>{{member.statusForMember}}</td>
+                    <td>{{member.memberAddress}}</td>
+                    <td>{{member.protocolPort}}</td>
+                    <td>{{member.memberWeight}}</td>
+                    <td class="col-sm-3">
+                        <button class="btn btn-tablemng"
+                                data-ng-click="lbDetail.updateMember(member)"
+                                data-ng-disabled="lbDetail.pool.chargeState != '0'"
+                                ng-if="hasPermission('vir_loadbalance_lb_editmember')">编辑</button>
+                        <button class="btn btn-tabledel btn-left"
+                                data-ng-click="lbDetail.deleteMember(member)"
+                                data-ng-disabled="lbDetail.pool.chargeState != '0'"
+                                ng-if="hasPermission('vir_loadbalance_lb_deletemember')">删除</button>
+                        <!--<span data-ng-show="!hasPermission('vir_loadbalance_lb_deletemember') && !hasPermission('vir_loadbalance_lb_editmember')">&#45;&#45;&#45;&#45;</span>-->
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

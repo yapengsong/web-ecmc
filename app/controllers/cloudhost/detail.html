@@ -1,0 +1,397 @@
+<!-- 当前位置下拉列表 -->
+<div class="title-inline">
+    <div class="form-group">
+        <label class="control-label">当前位置：
+            <a style="cursor: pointer;" data-ui-sref="app.cloudhost.tab.host">云主机</a>
+            <span> > 云主机详情</span>
+        </label>
+    </div>
+</div>
+
+<!-- 子页面展示区 -->
+
+<div class="panel panel-default clearfix">
+    <div class="panel-body">
+        <h4>云主机详情</h4>
+        <!-- Form表单 -->
+        <form class="form-inline">
+            <button class="btn btn-default btn-sm" data-ng-click="vmDetail.startVm()"
+                    data-ng-disabled="vmDetail.vmModel.chargeState != '0'"
+                    data-ng-if="vmDetail.vmModel.vmStatus == 'SHUTOFF'
+                                && hasPermission('vir_vm_startvm')">
+                <div class="btn-icon start"></div>
+                启动云主机
+            </button>
+            <button class="btn btn-default btn-sm" data-ng-click="vmDetail.shutdownVm()"
+                    data-ng-disabled="vmDetail.vmModel.vmStatus == 'ERROR' || vmDetail.vmModel.chargeState != '0'"
+                    data-ng-if="(vmDetail.vmModel.vmStatus == 'ACTIVE'
+                                || vmDetail.vmModel.vmStatus == 'ERROR')
+                                && hasPermission('vir_vm_shutdownvm')">
+                <div class="btn-icon poweroff"></div>
+                关闭云主机
+            </button>
+            <button class="btn btn-default detail-btn-left btn-sm" data-ng-click="vmDetail.restartVm()"
+                    data-ng-disabled="vmDetail.vmModel.vmStatus != 'ACTIVE' || vmDetail.vmModel.chargeState != '0'"
+                    data-ng-if="hasPermission('vir_vm_restartvm')">
+                <div class="btn-icon soft-reset"></div>
+                重启云主机
+            </button>
+            <!--<button class="btn btn-default detail-btn-left btn-sm" data-ng-click="vmDetail.suspendVm()"
+                    data-ng-disabled="vmDetail.vmModel.vmStatus != 'ACTIVE'"
+                    data-ng-if="hasPermission('vir_vm_suspendvm')">
+                <div class="btn-icon hang-up"></div>
+                挂起云主机
+            </button>
+            <button class="btn btn-default detail-btn-left btn-sm" data-ng-click="vmDetail.resumeVm()"
+                    data-ng-if="hasPermission('vir_vm_resumevm')">
+                <div class="btn-icon recovery"></div>
+                恢复云主机
+            </button>-->
+            <button class="btn btn-default detail-btn-left btn-sm" data-ng-click="vmDetail.mountDisk()"
+                    data-ng-disabled="(vmDetail.vmModel.vmStatus != 'ACTIVE' && vmDetail.vmModel.vmStatus != 'SHUTOFF')
+                    || vmDetail.vmModel.chargeState != '0'"
+                    data-ng-if="hasPermission('vir_vm_mountdisk')">
+                <div class="btn-icon binding-volume"></div>
+                挂载云硬盘
+            </button>
+            <button class="btn btn-default detail-btn-left btn-sm"
+                    data-ui-sref="app.cloudhost.guide.monitor({vmId: vmDetail.vmModel.vmId})"
+                    data-ng-if="hasPermission('vir_vm_monitor')"
+                    data-ng-disabled="vmDetail.vmModel.vmStatus == 'DELETING' || vmDetail.vmModel.chargeState != '0'">
+                <div class="btn-icon vmmonitor"></div>
+                查看监控
+            </button>
+            <button class="btn btn-default detail-btn-left btn-sm" data-ng-click="vmDetail.bindFloatIp()"
+                    data-ng-disabled="vmDetail.vmModel.chargeState != '0'"
+                    data-ng-if="((vmDetail.vmModel.vmStatus == 'ACTIVE'
+                                || vmDetail.vmModel.vmStatus == 'SHUTOFF'
+                                || vmDetail.vmModel.vmStatus == 'SUSPENDED')
+                                && (vmDetail.vmModel.floatIp == ''
+                                || vmDetail.vmModel.floatIp == 'null'))
+                                && hasPermission('vir_vm_bindfloatip')">
+                <div class="btn-icon binding-ip"></div>
+                绑定公网IP
+            </button>
+            <button class="btn btn-default detail-btn-left btn-sm" data-ng-click="vmDetail.unbindFloatIp()"
+                    data-ng-disabled="vmDetail.vmModel.chargeState != '0'"
+                    data-ng-if="((vmDetail.vmModel.vmStatus == 'ACTIVE'
+                                || vmDetail.vmModel.vmStatus == 'SHUTOFF'
+                                || vmDetail.vmModel.vmStatus == 'SUSPENDED')
+                                && !(vmDetail.vmModel.floatIp == ''
+                                || vmDetail.vmModel.floatIp == 'null'))
+                                && hasPermission('vir_vm_unbindfloatip')">
+                <div class="btn-icon unbinding-ip"></div>
+                解绑公网IP
+            </button>
+
+            <div class="btn-group" role="group" data-ng-class="">
+                <button class="btn btn-default detail-btn-left btn-sm" data-toggle="dropdown"
+                        data-ng-if="(hasPermission('vir_vm_createsnapshot')
+                                    || hasPermission('vir_vm_upgradevm')
+                                    || hasPermission('vir_vm_editvmsecuritygroup')
+                                    || hasPermission('vir_vm_suspendvm')
+                                    || hasPermission('vir_vm_resumevm')
+                                    || hasPermission('vir_vm_log')
+                                    || hasPermission('vir_vm_delete'))
+                                    && (vmDetail.vmModel.vmStatus == 'ACTIVE'
+                                    || vmDetail.vmModel.vmStatus == 'SHUTOFF'
+                                    || vmDetail.vmModel.vmStatus == 'SUSPENDED'
+                                    || vmDetail.vmModel.vmStatus == 'ERROR')">
+                    更多操作
+                </button>
+                <button type="button" class="btn btn-default dropdown-toggle"
+                        data-toggle="dropdown"
+                        data-ng-if="(hasPermission('vir_vm_createsnapshot')
+                                    || hasPermission('vir_vm_editvmsecuritygroup')
+                                    || hasPermission('vir_vm_suspendvm')
+                                    || hasPermission('vir_vm_resumevm')
+                                    || hasPermission('vir_vm_log')
+                                    || hasPermission('vir_vm_delete'))
+                                    && (vmDetail.vmModel.vmStatus == 'ACTIVE'
+                                    || vmDetail.vmModel.vmStatus == 'SHUTOFF'
+                                    || vmDetail.vmModel.vmStatus == 'SUSPENDED'
+                                    || vmDetail.vmModel.vmStatus == 'ERROR')">
+                    <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
+                </button>
+                <ul class="dropdown-menu vm-dropmeau">
+                    <li data-ng-if="(vmDetail.vmModel.vmStatus == 'ACTIVE'
+                                    || vmDetail.vmModel.vmStatus == 'SHUTOFF')
+                                    && hasPermission('vir_vm_createsnapshot')&& vmDetail.vmModel.chargeState == '0'">
+                        <a class="btn-sm snapshot" href="" data-ng-click="vmDetail.createSnapshot()">
+                            <span class="btn-icon"></span>创建镜像
+                        </a>
+                    </li>
+                    <li data-ng-if="(vmDetail.vmModel.vmStatus == 'ACTIVE'
+                                    || vmDetail.vmModel.vmStatus == 'SHUTOFF'
+                                    || vmDetail.vmModel.vmStatus == 'SUSPENDED')
+                                    && hasPermission('vir_vm_editvmsecuritygroup')&& vmDetail.vmModel.chargeState == '0'">
+                        <a class="btn-sm safe" href="" data-ng-click="vmDetail.editSecurityGroup()">
+                            <span class="btn-icon"></span>编辑安全组
+                        </a>
+                    </li>
+                    <li data-ng-if="(vmDetail.vmModel.vmStatus == 'ACTIVE')
+                                    && hasPermission('vir_vm_suspendvm')">
+                        <a class="btn-sm hang-up" href="" data-ng-click="vmDetail.suspendVm()">
+                            <span class="btn-icon"></span>暂停服务
+                        </a>
+                    </li>
+                    <li data-ng-if="(vmDetail.vmModel.vmStatus == 'SUSPENDED') && hasPermission('vir_vm_resumevm')">
+                        <a class="btn-sm recovery" href="" data-ng-click="vmDetail.resumeVm()">
+                            <span class="btn-icon"></span>恢复服务
+                        </a>
+                    </li>
+                    <li data-ng-if="hasPermission('vm_refresh_status')&& vmDetail.vmModel.chargeState != '0' && vmDetail.vmModel.payType == '2'">
+                        <a class="btn-sm recovery" href="" data-ng-click="vmDetail.refreshVmStatus()">
+                            <span class="btn-icon"></span>状态恢复
+                        </a>
+                    </li>
+                    <li data-ng-if="hasPermission('vir_vm_log') && vmDetail.vmModel.chargeState == '0'">
+                        <a class="btn-sm vm-logs" href="" data-ng-click="vmDetail.getVmLog()">
+                            <span class="btn-icon"></span>查看日志
+                        </a>
+                    </li>
+                    <li data-ng-if="(vmDetail.vmModel.vmStatus == 'ACTIVE'
+                                    || vmDetail.vmModel.vmStatus=='SHUTOFF'
+                                    || vmDetail.vmModel.vmStatus == 'SUSPENDED'
+	                                || vmDetail.vmModel.vmStatus == 'ERROR')
+	                                && hasPermission('vir_vm_delete')">
+                        <a class="btn-sm vm-delete" href="" data-ng-click="vmDetail.deleteVm()">
+                            <span class="btn-icon"></span>删除云主机
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div style="float: right;">
+                <button class="btn btn-default btn-sm" data-ng-click="vmDetail.consoleVm()"
+                        data-ng-disabled="vmDetail.vmModel.vmStatus != 'ACTIVE' || vmDetail.vmModel.chargeState != '0'"
+                        data-ng-if="hasPermission('vir_vm_console')">
+                    <div class="btn-icon console"></div>
+                    云主机控制台
+                </button>
+            </div>
+        </form>
+
+        <!-- 详情 -->
+        <eayun-auto-refresh interval="5000" refresh="vmDetail.flushVmInfo"></eayun-auto-refresh>
+        <div class="details">
+            <form class="row" name="editForm">
+                <div class="col-lg-6">
+                    <div class="details-group">
+                        <div class="details-name"
+                             hint="controllers/cloudhost/edithostname.html"
+                             hint-show="vmDetail.hintNameShow"
+                             tooltip-class="tooltip-edit"
+                             tooltip-placement="right">云主机名称：
+                        </div>
+                        <div class="details-value">
+                            <span data-ng-class="vmDetail.vmNameEditable ? 'hide' : 'show'"
+                                  data-ng-bind="vmDetail.vmModel.vmName"></span>
+                        </div>
+	                    <span class="badge"
+                              data-ng-if="(vmDetail.vmModel.vmStatus == 'ACTIVE'
+                                        || vmDetail.vmModel.vmStatus == 'SHUTOFF'
+                                        || vmDetail.vmModel.vmStatus == 'SUSPENDED')
+                                        && hasPermission('vir_vm_edit') && vmDetail.vmModel.chargeState == '0'"
+                              data-ng-class="vmDetail.vmNameEditable ? 'hide' : 'show'"
+                              data-ng-click="vmDetail.editNameOrDesc('vmName')">
+		                    <span class="glyphicon glyphicon-pencil"></span>
+	                    </span>
+                    </div>
+
+                    <div class="details-group">
+                        <div class="details-name">云主机ID：</div>
+                        <div class="details-value" data-ng-bind="::vmDetail.vmModel.vmId"></div>
+                    </div>
+
+                    <div class="details-group">
+                        <div class="details-name">状态：</div>
+                        <div class="details-value">
+                            <span class="state-block"
+                                  data-ng-class="vmDetail.vmStatusClass != '' ? vmDetail.vmStatusClass : ''"></span>
+                            <span data-ng-bind="vmDetail.vmModel.vmStatusStr"></span>
+                        </div>
+                    </div>
+
+                    <div class="details-group">
+                        <div class="details-name">系统盘：</div>
+                        <div class="details-value" data-ng-bind="vmDetail.vmModel.disks + 'GB'"></div>
+                    </div>
+
+                    <div class="details-group">
+                        <div class="details-name">数据盘：</div>
+                        <div class="details-value" data-ng-bind="vmDetail.vmModel.dataCapacity + 'GB'"></div>
+                    </div>
+
+                    <div class="details-group">
+                        <div class="details-name">所在私有网络：</div>
+                        <div class="details-value" data-ng-bind="vmDetail.vmModel.netName"></div>
+                    </div>
+                    <div class="details-group">
+                        <div class="details-name">所属数据中心：</div>
+                        <div class="details-value" data-ng-bind="vmDetail.vmModel.dcName"></div>
+                    </div>
+
+                    <div class="details-group">
+                        <div class="details-name">所属客户：</div>
+                        <div class="details-value" data-ng-bind="vmDetail.vmModel.cusOrg"></div>
+                    </div>
+                    <div class="details-group">
+                        <div class="details-name">所属项目：</div>
+                        <div class="details-value" data-ng-bind="vmDetail.vmModel.prjName"></div>
+                    </div>
+
+                    <div class="details-group">
+                        <div class="details-name">所在安全组：</div>
+                        <div class="details-value"
+                             data-ng-bind-html="vmDetail.vmModel.securityGroups | ellipsis:25">
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="details-group">
+                        <div class="details-name"
+                             hint="controllers/cloudhost/edithostdescription.html"
+                             hint-show="vmDetail.hintDescShow"
+                             tooltip-class="tooltip-edit"
+                             tooltip-placement="right">描述：
+                        </div>
+                        <div class="details-value">
+                            <span data-ng-class="vmDetail.vmDescEditable ? 'hide' : 'show'"
+                                  data-ng-bind-html="vmDetail.vmModel.vmDescripstion | ellipsis:30">
+                            </span>
+                        </div>
+                        <span class="badge" data-ng-if="(vmDetail.vmModel.vmStatus == 'ACTIVE'
+                                        || vmDetail.vmModel.vmStatus == 'SHUTOFF'
+                                        || vmDetail.vmModel.vmStatus == 'SUSPENDED')
+                                        && hasPermission('vir_vm_edit')&& vmDetail.vmModel.chargeState == '0'"
+                              data-ng-class="vmDetail.vmDescEditable ? 'hide' : 'show'"
+                              data-ng-click="vmDetail.editNameOrDesc('vmDesc')">
+                            <span class="glyphicon glyphicon-pencil"></span>
+                        </span>
+                    </div>
+
+                    <div class="details-group">
+                        <div class="details-name">系统：</div>
+                        <div class="details-value" data-ng-bind="vmDetail.vmModel.sysType"></div>
+                    </div>
+                    <div class="details-group">
+                        <div class="details-name">镜像名称：</div>
+                        <div class="details-value" data-ng-bind="vmDetail.vmModel.imageName.length>50?(vmDetail.vmModel.imageName.substr(0,50)+'...'):vmDetail.vmModel.imageName"></div>
+                    </div>
+
+                    <div class="details-group">
+                        <div class="details-name">CPU：</div>
+                        <div class="details-value" data-ng-bind="vmDetail.vmModel.cpus + '核'"></div>
+                    </div>
+
+                    <div class="details-group">
+                        <div class="details-name">内存：</div>
+                        <div class="details-value" data-ng-bind="vmDetail.vmModel.rams * 1 / 1024 + 'GB'"></div>
+                    </div>
+
+                    <div class="details-group">
+                        <div class="details-name">所在子网：</div>
+                        <div class="details-value">
+                            <span title="{{vmDetail.vmModel.subnetName}}"
+                                    data-ng-bind="'受管子网：'+(vmDetail.vmModel.subnetName?(vmDetail.vmModel.subnetName.length>5?vmDetail.vmModel.subnetName.substr(0,5)+'...':vmDetail.vmModel.subnetName):'未加入')">
+                            </span>
+                            <span title="{{vmDetail.vmModel.selfSubnetName}}"
+                                    data-ng-bind="'，    自管子网：'+(vmDetail.vmModel.selfSubnetName ?(vmDetail.vmModel.selfSubnetName.length>5?vmDetail.vmModel.selfSubnetName.substr(0,5)+'...':vmDetail.vmModel.selfSubnetName):'未加入')">
+                            </span>
+                        </div>
+                        <span class="color-info pointer table-search-right detail-vm-modifysubnet" ng-click="vmDetail.modifySubnet()"
+                        data-ng-if="hasPermission('vir_vm_modify_subnet') && ((vmDetail.vmModel.vmStatus=='ACTIVE'||vmDetail.vmModel.vmStatus=='SHUTOFF'||vmDetail.vmModel.vmStatus=='SUSPENDED')
+                         && vmDetail.vmModel.chargeState == '0')">修改子网</span>
+                    </div>
+
+                    <div class="details-group">
+                        <div class="details-name">内网IP：</div>
+                        <div class="details-value" data-ng-bind="'受管子网：'+(vmDetail.vmModel.vmIp != 'null'?vmDetail.vmModel
+                        .vmIp:'未加入')+'，    自管子网：'+(vmDetail.vmModel.selfIp != 'null'?vmDetail.vmModel.selfIp:'未加入')"></div>
+                    </div>
+
+                    <div class="details-group">
+                        <div class="details-name">公网IP：</div>
+                        <div class="details-value"
+                             data-ng-bind="vmDetail.vmModel.floatIp != 'null' ? vmDetail.vmModel.floatIp : '未分配'"></div>
+                    </div>
+
+                    <div class="details-group">
+                        <div class="details-name">计费状态：</div>
+                        <div class="details-value" data-ng-bind="vmDetail.vmModel.payType== '1'?'包年包月计费':(vmDetail.vmModel.payType == '2'?'按需计费':'')"></div>
+                    </div>
+
+                    <div class="details-group">
+                        <div class="details-name">创建时间：</div>
+                        <div class="details-value" data-ng-bind="vmDetail.vmModel.createTime|date:'yyyy-MM-dd HH:mm:ss'"></div>
+                    </div>
+
+                    <div class="details-group">
+                        <div class="details-name">到期时间：</div>
+                        <div class="details-value"  data-ng-bind="vmDetail.vmModel.payType=='1'?(vmDetail.vmModel.endTime|date:'yyyy-MM-dd HH:mm:ss'):'--'"></div>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="panel panel-default clearfix">
+    <div class="panel-body">
+        <h4>已挂载的云硬盘列表</h4>
+        <!-- 表格 -->
+        <eayun-auto-refresh interval="5000" refresh="vmDetail.flushVolume"></eayun-auto-refresh>
+        <table class="table table-eayun">
+            <thead>
+            <tr>
+                <th>云硬盘名称</th>
+                <th>容量</th>
+                <th>挂载点</th>
+                <th>硬盘属性</th>
+                <!--<th>硬盘状态</th>-->
+                <th>创建方式</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr data-ng-repeat="volume in vmDetail.volumeList">
+                <td class="click-link" data-ng-bind="volume.volName.length > 20 ? volume.volName.substring(0,19) + '...' : volume.volName"
+                    title="{{volume.volName}}"
+                    data-ui-sref="app.cloudhost.volumedetail({volId: volume.volId})"></td>
+                <td data-ng-bind="volume.volSize + 'GB'"></td>
+                <td data-ng-if="vmDetail.vmModel.osType != 'Windows'"
+                    data-ng-bind="'null' == volume.bindPoint ? '' : volume.bindPoint">
+                </td>
+                <td data-ng-if="vmDetail.vmModel.osType == 'Windows'"></td>
+                <td data-ng-bind="volume.volBootable == '1' ? '系统盘' : '数据盘'"></td>
+                <!--<td>
+                    <span class="state-block"
+                          data-ng-class="vmDetail.volStatusClass[$index] != '' ? vmDetail.volStatusClass[$index] : ''"
+                          ng-init="vmDetail.volStatusClass[$index] = vmDetail.getVolumeStatus(volume,$index)"></span>
+                    {{volume.statusForDis}}
+                </td>-->
+                <td>
+                    {{"privateImage"==volume.diskFrom?"镜像":""}}
+                    {{"publicImage"==volume.diskFrom?"镜像":""}}
+                    {{"marketImage"==volume.diskFrom?"镜像":""}}
+                    {{"blank"==volume.diskFrom?"空白盘":""}}
+                    {{"snapshot"==volume.diskFrom?"云硬盘快照":""}}
+                </td>
+                <!--<td data-ng-show="vmDetailPermissions.isVmUnbindVolume && volume.volBootable!='1'">-->
+                <td data-ng-if="volume.volBootable != '1'">
+                    <button class="btn btn-tablemng" data-ng-click="vmDetail.unbindVolume(volume)"
+                            data-ng-disabled="!(vmDetail.vmModel.vmStatus == 'ACTIVE'
+                                            || vmDetail.vmModel.vmStatus == 'SHUTOFF'
+                                            || vmDetail.vmModel.vmStatus == 'SUSPENDED')
+                                            || volume.volStatus != 'IN-USE'">
+                        解绑
+                    </button>
+                </td>
+                <td data-ng-if="volume.volBootable == '1'">----</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

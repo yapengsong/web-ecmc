@@ -1,0 +1,58 @@
+
+<form class="form-horizontal data-center">
+    <div class="col-lg-6">
+        <div class="details-group">
+            <div class="details-name">所属数据中心：</div>
+            <div class="details-value"><span ng-bind="::detail.model.dcName"></span></div>
+        </div>
+        <div class="details-group">
+            <div class="details-name">所属项目：</div>
+            <div class="details-value"><span ng-bind="::detail.model.projectName"></span></div>
+        </div>
+        <div class="details-group">
+            <div class="details-name">客户：</div>
+            <div class="details-value"><span ng-bind="::detail.model.cusName"></span></div>
+        </div>
+        <div class="details-group">
+            <div class="details-name">名称：</div>
+            <div class="details-value"><span ng-bind="::detail.model.poolName"></span></div>
+        </div>
+        <div class="details-group">
+            <div class="details-name">提供者：</div>
+            <div class="details-value"><span ng-bind="::detail.model.poolProvider"></span></div>
+        </div>
+
+
+    </div>
+
+    <div class="col-lg-6">
+
+        <div class="details-group">
+            <div class="details-name">子网：</div>
+            <div class="details-value"><span ng-bind="::detail.model.subnetName"></span></div>
+        </div>
+        <div class="details-group">
+            <div class="details-name">协议：</div>
+            <div class="details-value"><span ng-bind="::detail.model.poolProtocol"></span></div>
+        </div>
+        <div class="details-group">
+            <div class="details-name">负载均衡方式：</div>
+            <div class="details-value"><span ng-bind="::detail.model.lbMethodName"></span></div>
+        </div>
+        <div class="details-group">
+            <div class="details-name">VIP：</div>
+            <div class="details-value"><span ng-bind="::detail.model.vipName"></span></div>
+        </div>
+        <div class="details-group">
+            <div class="details-name">创建时间：</div>
+            <div class="details-value"><span ng-bind="::detail.model.createTime |date: 'yyyy-MM-dd hh:mm:ss'"></span></div>
+        </div>
+
+    </div>
+
+</form>
+<div class="modal-footer gd_footer">
+    <div class="col-md-12 text-center">
+        <button class="btn button-orange" type="button" ng-click="cancel()">关闭</button>
+    </div>
+</div>

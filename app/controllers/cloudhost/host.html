@@ -1,0 +1,85 @@
+<div class="form-inline">
+    <eayun-search data-ng-model="host.search" options="host.options"></eayun-search>
+</div>
+<eayun-auto-refresh interval="5000" refresh="host.refresh"></eayun-auto-refresh>
+<eayun-table data-api="host.table.api" data-ajax-source="host.table.source" data-param="host.table.getParams"
+             data-result="host.table.result">
+    <table class="table table-eayun">
+        <thead>
+        <tr>
+            <th style="width: 100px;">名称</th>
+            <th>
+                <eayun-select type="btn" class="btn-group btn-group-xs" data-ng-model="host.vmStatus"
+                              data-ng-change="host.queryTable()">
+                    <eayun-option value="" text="状态（全部）" selected></eayun-option>
+                    <eayun-option value="'ACTIVE'" text="运行中"></eayun-option>
+                    <eayun-option value="'SHUTOFF'" text="已关机"></eayun-option>
+                    <eayun-option value="'ERROR'" text="故障"></eayun-option>
+                    <eayun-option value="'SUSPENDED'" text="暂停服务"></eayun-option>
+                    <eayun-option value="'1'" text="余额不足"></eayun-option>
+                    <eayun-option value="'2'" text="已到期"></eayun-option>
+                </eayun-select>
+            </th>
+            <th>配置</th>
+            <th style="width: 200px;">IP地址</th>
+            <th>
+                <eayun-select type="btn" class="btn-group btn-group-xs" data-ng-model="host.dcId"
+                              data-ng-change="host.queryTable()">
+                    <eayun-option value="" text="数据中心（全部）" selected></eayun-option>
+                    <eayun-option value="dc.id" text="{{dc.name}}" data-ng-repeat="dc in host.dcList"></eayun-option>
+                </eayun-select>
+            </th>
+            <th>客户</th>
+            <th>项目</th>
+            <th>计算节点</th>
+            <th class="vm-table-cloumn-charge">计费状态</th>
+            <th class="vm-table-cloumn-date">创建时间</th>
+            <th style="min-width: 100px;">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr data-ng-repeat="vmModel in host.table.result">
+            <td class="click-link" title="{{vmModel.vmName}}"
+                data-ng-bind="vmModel.vmName.length > 10 ? vmModel.vmName.substr(0,8) + '...' : vmModel.vmName"
+                data-ui-sref="app.cloudhost.vmdetail({vmId: vmModel.vmId})"></td>
+            <td>
+                <span class="state-block"
+                      data-ng-class="host.vmStatusClass[$index] != '' ? host.vmStatusClass[$index] : ''"
+                      ng-init="host.vmStatusClass[$index] = host.checkVmStatus(vmModel,$index)">
+                </span>
+                <span data-ng-bind="vmModel.vmStatusStr"></span>
+            </td>
+            <!--<td>
+                {{vmModel.vmStatus | statusWatch:host.refreshTable}}
+            </td>-->
+            <td style="word-break: break-all;">
+                <span data-ng-bind="vmModel.cpus + '核/' + vmModel.rams/1024 + 'GB/' + vmModel.disks + 'GB/' + vmModel.dataCapacity + 'GB'"></span><br>
+                <span data-ng-bind="::vmModel.sysType"></span>
+            </td>
+            <td style="text-align: left;">
+                <span data-ng-bind="'受管子网：' + (vmModel.vmIp == 'null' ? '未加入' : vmModel.vmIp)"></span><br>
+                <span data-ng-bind="'公网：' + (vmModel.floatIp == 'null' ? '未分配' : vmModel.floatIp)"></span><br>
+                <span data-ng-bind="'自管子网：' + (vmModel.selfIp == 'null' ? '未加入' : vmModel.selfIp)"></span>
+            </td>
+            <td data-ng-bind="vmModel.dcName"></td>
+            <td data-ng-bind="vmModel.cusOrg.length > 6 ? vmModel.cusOrg.substr(0,5) + '...': vmModel.cusOrg"
+                title="{{vmModel.cusOrg}}"></td>
+            <td data-ng-bind="vmModel.prjName.length > 6 ? vmModel.prjName.substr(0,5) + '...' : vmModel.prjName"
+                title="{{vmModel.prjName}}"></td>
+            <td data-ng-bind="vmModel.hostName!='null'?(vmModel.hostName.length>10?vmModel.hostName.substr(0,10)+'...':vmModel.hostName):''"
+                title="{{vmModel.hostName}}"></td>
+            <td class="vm-table-charge">
+                <span data-ng-bind="vmModel.payType== '1'?'包年包月':(vmModel.payType == '2'?'按需计费':'')"></span><br>
+                <span data-ng-bind="'到期时间：'+(vmModel.endTime|date:'yyyy-MM-dd HH:mm:ss')" data-ng-if="vmModel.payType == '1'"></span>
+            </td>
+            <td data-ng-bind="vmModel.createTime|date:'yyyy-MM-dd HH:mm:ss'"></td>
+            <td>
+                <button class="btn btn-tablemng btn-first" data-ui-sref="app.cloudhost.vmdetail({vmId: vmModel.vmId})"
+                        data-ng-if="hasPermission('vir_vm_detail')">管理
+                </button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <eayun-table-page></eayun-table-page>
+</eayun-table>

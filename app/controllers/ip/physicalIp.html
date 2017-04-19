@@ -1,0 +1,66 @@
+<h4>IP地址管理</h4>
+    <form class="form-inline" >
+        <eayun-search ng-model="physicalIp.search" options="physicalIp.options"></eayun-search>
+    </form>
+<form class="form-inline form-count" ng-submit="physicalIp.queryTable()">
+
+
+    <eayun-table data-api="physicalIp.myTable.api" data-ajax-source="physicalIp.myTable.source" data-param="physicalIp.myTable.getParams"
+                 data-result="physicalIp.myTable.result">
+        <table class="table table-eayun">
+            <thead>
+            <tr>
+                <th>IP地址</th>
+                <th>
+                    <eayun-select type="btn" class="btn-group btn-group-xs" data-ng-model="physicalIp.distribution"  data-ng-change="physicalIp.queryTable()">
+                        <eayun-option value="" text="分配状态(全部)" selected></eayun-option>
+                        <eayun-option value="1" text="已分配"></eayun-option>
+                        <eayun-option value="2" text="未分配"></eayun-option>
+                    </eayun-select>
+                </th>
+                <th>
+                    <eayun-select type="btn" class="btn-group btn-group-xs" data-ng-model="physicalIp.state"  data-ng-change="physicalIp.queryTable()">
+                        <eayun-option value="" text="使用状态(全部)" selected></eayun-option>
+                        <eayun-option value="1" text="已使用"></eayun-option>
+                        <eayun-option value="2" text="未使用"></eayun-option>
+                         <eayun-option value="3" text="路由占用"></eayun-option>
+                          <eayun-option value="4" text="DHCP占用"></eayun-option>
+                    </eayun-select>
+                </th>
+                <th>
+                    <eayun-select type="btn" class="btn-group btn-group-xs" data-ng-model="physicalIp.dcId"
+                                  data-ng-change="physicalIp.queryTable()">
+                        <eayun-option value="''" text="数据中心（全部）" selected></eayun-option>
+                        <eayun-option value="dcResource.id" text="{{dcResource.name}}"
+                                      ng-repeat="dcResource in physicalIp.dcResourceList"></eayun-option>
+                    </eayun-select>
+                </th>
+                <th>所属客户</th>
+                <th>所属项目</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="pi in physicalIp.myTable.result">
+            <!--<tr>-->
+                <td class="click-link" ng-click="physicalIp.detail(pi.ipId)" ng-bind="::pi.ipAddress"></td>
+                <td>
+                	<div ng-if="pi.prjId=='' && pi.usedType=='' &&pi.routeId==''">未分配</div>
+                	 <div ng-if="pi.prjId!=''||pi.routeId!=''||pi.usedType=='network:dhcp'">已分配</div>
+
+
+                </td>
+                <td>
+                	 <div ng-if="pi.resourceId=='' && pi.usedType=='' &&pi.routeId==''">未使用</div>
+                	 <div ng-if="pi.resourceId!=''">已使用</div>
+                	 <div ng-if="pi.usedType=='network:dhcp'">DHCP占用</div>
+                    <div ng-if="pi.routeId!=''">路由占用</div>
+                </td>
+                <td ng-bind="::pi.dcName"></td>
+                <td ng-bind="::pi.useName"></td>
+                <td ng-bind="::pi.prjName"></td>
+            </tr>
+            </tbody>
+        </table>
+        <eayun-table-page></eayun-table-page>
+    </eayun-table>
+</form>

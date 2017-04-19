@@ -1,0 +1,76 @@
+<div class="form-inline">
+    <eayun-search data-ng-model="snapshot.search" options="snapshot.options"></eayun-search>
+</div>
+
+<eayun-auto-refresh interval="5000" refresh="snapshot.refresh"></eayun-auto-refresh>
+<eayun-table data-api="snapshot.table.api" data-ajax-source="snapshot.table.source" data-param="snapshot.table.getParams"
+             data-result="snapshot.table.result">
+    <table class="table table-eayun">
+        <thead>
+        <tr>
+            <th>快照名称</th>
+            <th>状态</th>
+            <th>快照大小</th>
+            <th>源云硬盘名称</th>
+            <th>
+                <eayun-select type="btn" class="btn-group btn-group-xs" data-ng-model="snapshot.dcId" data-ng-change="snapshot.query()">
+                    <eayun-option value="" text="数据中心（全部）" selected></eayun-option>
+                    <eayun-option value="dc.id" text="{{dc.name}}" data-ng-repeat="dc in snapshot.dcList"></eayun-option>
+                </eayun-select>
+            </th>
+            <th>项目</th>
+            <th>客户</th>
+            <th>计费状态</th>
+            <th>创建时间</th>
+            <th style="width: 300px">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr data-ng-repeat="snap in snapshot.table.result">
+            <td class="click-link" data-ng-bind="::snap.snapName" data-ng-click="snapshot.detail(snap)"></td>
+            <td>
+                <span class="state-block"
+                      data-ng-class="snapshot.snapStatusClass[$index] != '' ? snapshot.snapStatusClass[$index] : ''"
+                      ng-init="snapshot.snapStatusClass[$index] = snapshot.getSnapshotStatus(snap,$index)"></span>{{snap.statusForDis}}
+            </td>
+            <td>{{snap.snapSize}}GB</td>
+            <td data-ng-if="snap.volName == 'null' || snap.vloName == '' || snap.volName == null"></td>
+            <td  class="click-link" data-ng-if="snap.volName != 'null' && snap.vloName != '' && snap.volName != null" data-ng-click="snapshot.goToVolume(snap.volId)" title="{{snap.volName}}">{{snap.volName.length>20?snap.volName.substring(0,19)+'...':snap.volName}}</td>
+            <td data-ng-bind="snap.dcName"></td>
+            <td data-ng-bind="snap.prjName"></td>
+            <td>{{'null'!=snap.cusOrg?snap.cusOrg:''}}</td>
+            <td data-ng-bind="snap.payType=='1'?'包年包月':'按需付费'"></td>
+            <td data-ng-bind="snap.createTimeForDis"></td>
+            <td>
+                <button class="btn btn-tablemng btn-first"
+                        data-ng-if="hasPermission('vir_volume_rollback')"
+                        data-ng-disabled="snap.snapStatus != 'AVAILABLE' || snap.chargeState != '0'"
+                        data-ng-click="snapshot.rollBack(snap)">回滚云硬盘
+                </button>
+                <div class="btn-group btn-left" >
+                    <button  class="btn btn-tablemng dropdown-toggle" data-toggle="dropdown">更多操作
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu"style = "min-width : 80px;width : 85px;">
+                        <li data-ng-disabled="snap.snapStatus != 'AVAILABLE'">
+                            <a role="button"
+                               data-ng-click="snapshot.updateSnapshot(snap)"
+                               class="btn"
+                               data-ng-disabled="snap.snapStatus != 'AVAILABLE' || snap.chargeState != '0'"
+                               ng-if="hasPermission('snapshot_modify')">编辑</a></li>
+                        <li data-ng-disabled="snap.snapStatus == 'DELETING' || snap.volNum>0">
+                            <a role="button"
+                               class="btn"
+                               data-ng-click="snapshot.deleteSnapshot(snap)"
+                               style = "font-size:12px;color : #EA3200;"
+                               ng-if="hasPermission('snapshot_delete')">删除</a></li>
+                    </ul>
+                </div>
+                <!--<button class="btn btn-tablemng" data-ng-click="snapshot.updateSnapshot(snap)" data-ng-disabled="snap.snapStatus=='CREATING'||snap.snapStatus=='DELETING'" data-ng-if="hasPermission('snapshot_modify')">编辑</button>
+                <button class="btn btn-tabledel" data-ng-click="snapshot.deleteSnapshot(snap)" data-ng-disabled="(snap.snapStatus!='ERROR'&&snap.snapStatus!='AVAILABLE')||snap.volNum>0" data-ng-if="hasPermission('snapshot_delete')">删除</button>-->
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <eayun-table-page></eayun-table-page>
+</eayun-table>

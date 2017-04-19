@@ -1,0 +1,71 @@
+/* 模态窗口样式 */
+.modal-backdrop.in {
+    opacity: 0.6;
+}
+
+.modal-dialog {
+    width: auto;
+    height: 100%;
+    margin: 0 auto;
+}
+
+.btn-modal {
+    min-width: 100px;
+    min-height: 30px;
+    font-size: 14px;
+    border-radius: 4px;
+}
+
+.modal-header {
+    border-width: 0;
+    padding: 20px;
+}
+
+.modal-header img {
+    float: right;
+    cursor: pointer;
+}
+
+.modal-header .modal-title {
+    font-size: 16px;
+    color: #555555;
+    font-weight: bold;
+}
+
+.modal-body {
+    position: relative;
+    padding: 10px 20px;
+}
+
+.modal-body .modal-footer {
+    margin: 0 -20px -10px;
+}
+
+.modal-footer {
+    padding: 20px;
+    text-align: center;
+    border-width: 0;
+}
+/* 对话框样式 start */
+.eayun-modal-dialog {
+    font-size: 16px;
+    color: #555555;
+    min-width: 480px;
+    min-height: 103px;
+}
+/* 对话框样式 end */
+/* 提示弹出样式 */
+.modal-confirm {
+    text-align: center;
+    vertical-align: middle;
+    line-height: 30px;
+    margin: 20px 40px;
+    font-size: 16px;
+    color: #555555;
+    font-weight: bold;
+    min-width: 300px;
+    min-height: 30px;
+    max-width: 600px;
+    max-height: 90px;
+    overflow: hidden;
+}

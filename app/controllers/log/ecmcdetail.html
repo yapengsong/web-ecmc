@@ -1,0 +1,91 @@
+<div class="details" style="font-size: 12px;height:510px;line-height: 3;">
+    <form class="row">
+        <div class="col-lg-12 details-width-100">
+            <div class="col-lg-7 details-group">
+                <div class="details-name">操作项：</div>
+                <div class="details-value">
+                    <span ng-bind="::detail.ecmclog.busiName"></span>
+                </div>
+            </div>
+            <div class="col-lg-4 details-group">
+                <div class="details-name">操作时间：</div>
+                <div class="details-value">
+                    <span ng-bind="::detail.ecmclog.operDate | date : 'yyyy-MM-dd HH:mm:ss'"></span>
+                </div>
+            </div>
+            
+            <div class="col-lg-7 details-group">
+                <div class="details-name">被操作对象ID：</div>
+                <div class="details-value">
+                    <span ng-bind="::detail.ecmclog.resourceID"></span>
+                </div>
+            </div>
+            <div class="col-lg-4 details-group">
+                <div class="details-name">操作者：</div>
+                <div class="details-value">
+                    <span ng-bind="::detail.ecmclog.operId"></span>
+                </div>
+            </div>
+            <div class="col-lg-7 details-group">
+                <div class="details-name">项目ID：</div>
+                <div class="details-value">
+                    <span ng-bind="::detail.ecmclog.prjId"></span>
+                </div>
+            </div>
+            <div class="col-lg-4 details-group">
+                <div class="details-name">资源名称：</div>
+                <div class="details-value">
+                    <span title="{{detail.ecmclog.resourceName}}" ng-bind="::detail.ecmclog.resourceName.length>10?detail.ecmclog.resourceName.substring(0,10)+'...':detail.ecmclog.resourceName"></span>
+                </div>
+            </div>
+            <div class="col-lg-7 details-group">
+                <div class="details-name">访问地址：</div>
+                <div class="details-value">
+                    <span ng-bind="::detail.ecmclog.temp5"></span>
+                </div>
+            </div>
+            <div class="col-lg-4 details-group">
+                <div class="details-name">资源类型：</div>
+                <div class="details-value">
+                    <span ng-bind="::detail.ecmclog.resourceType"></span>
+                </div>
+            </div>
+            <div class="col-lg-7 details-group">
+                <div class="details-name">任务状态：</div>
+                <div class="details-value">
+                    <span data-ng-class="detail.ecmclog.returnFlag == '1' ? 'light-font-color' : 'red-font-color'"
+                          >{{(detail.ecmclog.returnFlag == '1' ? '已完成' : '失败')}}</span>
+                </div>
+            </div>
+
+            <div class="col-lg-4 details-group">
+                <div class="details-name">IP地址：</div>
+                <div class="details-value">
+                    <span ng-bind="::detail.ecmclog.ipAddr"></span>
+                </div>
+            </div>
+            <div class="col-lg-7 details-group">
+                <div class="details-name">请求地址：</div>
+                <div class="details-value">
+                    <span title="{{detail.ecmclog.fileName}}" ng-bind="::detail.ecmclog.fileName.length>50?detail.ecmclog.fileName.substring(0,50)+'...':detail.ecmclog.fileName"></span>
+                </div>
+            </div>
+            <div class="col-lg-4 details-group">
+                <div class="details-name">项目名称：</div>
+                <div class="details-value">
+                    <span ng-bind="::detail.ecmclog.prjName"></span>
+                </div>
+            </div>
+            
+            <div class="col-lg-12 details-group" style="height: 155px;border: 0px;">
+                <div class="details-name col-sm-3">异常信息：</div>
+                <div class="details-value col-sm-9" style="height: 150px; word-break: break-all;work-wrap: break-all;overflow-y: auto;">
+                    <span ng-bind-html="::detail.ecmclog.temp6"></span>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-default btn-modal" ng-click="cancel()">关闭</button>
+</div>

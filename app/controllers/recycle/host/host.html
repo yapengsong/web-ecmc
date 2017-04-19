@@ -1,0 +1,66 @@
+<div class="form-inline">
+    <eayun-search data-ng-model="recycleHost.search" options="recycleHost.options"></eayun-search>
+</div>
+<eayun-auto-refresh interval="5000" refresh="recycleHost.refresh"></eayun-auto-refresh>
+<eayun-table data-api="recycleHost.table.api" data-ajax-source="recycleHost.table.source" data-param="recycleHost.table.getParams"
+             data-result="recycleHost.table.result">
+    <table class="table table-eayun">
+        <thead>
+        <tr>
+            <th style="width: 100px;">名称</th>
+            <th>状态</th>
+            <th>配置</th>
+            <th style="width: 200px;">IP地址</th>
+            <th>
+                <eayun-select type="btn" class="btn-group btn-group-xs" data-ng-model="recycleHost.dcId"
+                              data-ng-change="recycleHost.queryTable()">
+                    <eayun-option value="" text="数据中心（全部）" selected></eayun-option>
+                    <eayun-option value="dc.id" text="{{dc.name}}" data-ng-repeat="dc in recycleHost.dcList"></eayun-option>
+                </eayun-select>
+            </th>
+            <th>客户</th>
+            <th>项目</th>
+            <th class="recycle-vm-table-date">时间</th>
+            <th style="min-width: 100px;">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr data-ng-repeat="vmModel in recycleHost.table.result">
+            <td class="click-link" title="{{vmModel.vmName}}"
+                data-ng-bind="vmModel.vmName.length > 10 ? vmModel.vmName.substr(0,8) + '...' : vmModel.vmName"
+                data-ng-click="recycleHost.detail(vmModel)"></td>
+            <td>
+                <span class="state-block"
+                      data-ng-class="recycleHost.vmStatusClass[$index] != '' ? recycleHost.vmStatusClass[$index] : ''"
+                      ng-init="recycleHost.vmStatusClass[$index] = recycleHost.checkVmStatus(vmModel,$index)">
+                </span>
+                <span data-ng-bind="vmModel.vmStatusStr"></span>
+            </td>
+            <td style="word-break: break-all;">
+                <span data-ng-bind="vmModel.cpus + '核/' + vmModel.rams/1024 + 'GB/' + vmModel.disks + 'GB'"></span><br>
+                <span data-ng-bind="::vmModel.sysType"></span>
+            </td>
+            <td style="text-align: left;">
+                <span data-ng-bind="'受管子网：' + (vmModel.vmIp == 'null' ? '未加入' : vmModel.vmIp)"></span><br>
+                <span data-ng-bind="'自管子网：' + (vmModel.selfIp == 'null' ? '未加入' : vmModel.selfIp)"></span>
+            </td>
+            <td data-ng-bind="vmModel.dcName"></td>
+            <td data-ng-bind="vmModel.cusOrg.length > 5 ? vmModel.cusOrg.substr(0,5) + '...': vmModel.cusOrg"
+                title="{{vmModel.cusOrg}}"></td>
+            <td data-ng-bind="vmModel.prjName.length > 5 ? vmModel.prjName.substr(0,5) + '...' : vmModel.prjName"
+                title="{{vmModel.prjName}}"></td>
+            <td>
+                <span data-ng-bind="'创建时间：'+(vmModel.createTime|date:'yyyy-MM-dd HH:mm:ss')"></span><br>
+                <span data-ng-bind="'删除时间：'+(vmModel.deleteTime|date:'yyyy-MM-dd HH:mm:ss')"></span>
+            </td>
+            <td>
+                <button class="btn btn-tabledel btn-first" data-ng-click="recycleHost.deleteVm(vmModel)"
+                        data-ng-if="hasPermission('recycle_host_delete')">删除
+                </button>
+                <span data-ng-if="!hasPermission('recycle_host_delete')">----</span>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <eayun-table-page></eayun-table-page>
+</eayun-table>

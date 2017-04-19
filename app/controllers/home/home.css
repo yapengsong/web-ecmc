@@ -1,0 +1,286 @@
+/* 上方导航条样式 */
+.header .navbar {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.176);
+    font-size: 12px;
+    color: #555555;
+}
+
+.header .logo {
+    margin-left: 0.5em;
+}
+
+.header .date {
+    padding-right: 15px;
+}
+
+.header .navbar-brand {
+    padding: 10px 5px;
+}
+.navbar-header {
+    width:176px;
+}
+
+.header .navbar-brand .dividing {
+    border: 1px solid #CCCCCC;
+    width: 0;
+    height: 100%;
+}
+
+.logo-font{
+    font-size: 16px;
+    font-weight: bold;
+    color:#555;
+    line-height: 26px;
+    padding: 10px 0;
+    display: inline-block;
+}
+
+.logo-divider{
+    font-size:18px;
+    color:#555;
+    line-height: 26px;
+    padding: 10px 0;
+    display: inline-block;
+}
+.header .dropdown-toggle{
+    width: 130px;
+}
+.header .navbar-right li > a {
+    padding: 15px 20px;
+}
+
+.header .navbar-right img {
+    margin-right: 6px;
+}
+
+.header .navbar-right .dropdown.open {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.176);
+}
+
+.header .navbar-right .dropdown-toggle,
+.header .navbar-right .dropdown-menu {
+    width: 130px;
+    min-width: 130px;
+    background-color: #e3e3e3;
+}
+
+.header .navbar-right .dropdown-menu {
+    box-shadow: 0 12px 12px rgba(0, 0, 0, 0.176);
+    border-width: 0;
+    padding: 0 5px;
+}
+
+.header .navbar-right .dropdown-menu li a {
+    padding: 7.5px 20px;
+}
+
+.header .navbar-right .dropdown a {
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+.header .navbar-right .dropdown-menu,
+.header .navbar-right .dropdown-toggle:hover,
+.header .navbar-right .open .dropdown-toggle,
+.header .navbar-right .open .dropdown-toggle:hover {
+    background-color: #FFFFFF
+}
+
+.header .navbar-right .dividing {
+    border-left: 1px solid #dcdcdc;
+    margin: 10px 0;
+    vertical-align: middle;
+    width: 0;
+}
+
+.header h4 {
+    padding: 5px 0;
+    margin: 0;
+    font-weight: bold;
+}
+
+.header .badge {
+    background-color: #EA3200;
+}
+
+/* 左侧导航栏 */
+.eayun-left-menu {
+    width: 200px;
+    position: fixed;
+    top: 50px;
+    bottom: 0;
+    background-color: #444;
+    overflow: auto;
+    color: #FFF;
+    cursor: pointer;
+    font-size: 12px;
+    vertical-align: middle;
+    line-height: 40px;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
+    z-index: 1000;
+    text-indent: 16px;
+}
+
+.eayun-left-menu-title {
+    background-color: #333;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.eayun-left-menu .expander {
+    background-color: #444;
+    padding-left: 20px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.eayun-left-menu-inner {
+    background-color: #4b4b4b;
+}
+
+.eayun-left-menu .eayunfont {
+    font-size: 1.4em;
+    padding: 0 20px 0 0;
+    display: inline-block;
+    line-height: 40px;
+    vertical-align: middle;
+}
+
+.eayun-left-menu-inner div {
+    background-color: #4b4b4b;
+    font-size: 12px;
+    padding-left: 16px;
+}
+
+.eayun-left-menu .active {
+    background-color: #0077CC;
+    color: #FFF;
+}
+
+.eayun-left-menu .icon {
+    background-image: url("/images/leftmenu.png");
+    background-size: 112px 32px;
+    width: 16px;
+    height: 16px;
+    margin-top: 12px;
+    margin-right: 0;
+    float: left;
+    padding: 0;
+}
+
+.eayun-left-menu .icon-log {
+    background-position: -16px 0;
+}
+
+.eayun-left-menu .icon-account {
+    background-position: -32px 0;
+}
+
+.eayun-left-menu .icon-work {
+    background-position: -48px 0;
+}
+
+.eayun-left-menu .icon-monitor {
+    background-position: -64px 0;
+}
+
+.eayun-left-menu .icon-net {
+    background-position: -80px 0;
+}
+
+.eayun-left-menu .expander .icon {
+    background-position: -96px -0px;
+}
+
+.eayun-left-menu .icon-count {
+    background-position: 0 16px;
+}
+
+.eayun-left-menu .icon-msg {
+    background-position: -16px 16px;
+}
+
+.eayun-left-menu .icon-business {
+    background-position: -32px 16px;
+}
+
+.eayun-left-menu .icon-role {
+    background-position: -48px 16px;
+}
+
+.eayun-left-menu .icon-res {
+    background-position: -64px 16px;
+}
+
+.eayun-left-menu .icon-cloud {
+    background-position: -80px 16px;
+}
+
+.eayun-left-menu .open .icon {
+    background-position: -96px -16px;
+}
+
+/** 右侧页面展示区样式 */
+.app-view {
+    padding: 15px 15px 15px 215px;
+    display: inline-block;
+    min-width: 100%;
+}
+
+/* 导览页签工单和报警小红点 start */
+.nav.navbar-nav.navbar-right > li > a > .alarmdot {
+    background-color: #ff0000;
+    color: #ffffff;
+    min-width: 12px;
+    height: 12px;
+    line-height: 12px;
+    border-radius: 6px;
+    position: absolute;
+    top: 13px;
+    left: 25px;
+    font-size: 12px;
+    font-weight: bold;
+    text-align: center;
+    vertical-align: middle;
+    padding: 0px 2px;
+    -webkit-transform: scale(0.666666666);
+}
+
+/* 导览页签工单和报警小红点 end */
+
+.top {
+    background-color: #333333;
+}
+
+.top .container {
+    color: #dbdbdb;
+    height: 30px;
+    line-height: 30px;
+    vertical-align: middle;
+}
+.top .eayunfont{
+    display: inline-block;
+    position: relative;
+    top:3px;
+    line-height: 1;
+    font-size: 16px;
+    padding-right: 5px;
+}
+.footer p a:link{
+    text-decoration: none;
+}
+.footer p a{
+    color:#555;
+}
+.footer .btn{
+    box-shadow: none;
+}
+
+.footer p a:hover{
+    color:#999;
+}
+
+.footer p img{margin:0 8px 0 -8px;}

@@ -1,0 +1,22 @@
+<!-- 当前位置下拉列表 -->
+<div class="title-inline">
+    <div class="form-group">
+        <label class="control-label">当前位置：
+            <span> 日志管理</span>
+        </label>
+    </div>
+</div>
+<!-- 子页面展示区 -->
+<div class="panel panel-default clearfix">
+    <div class="panel-body">
+        <h4>日志管理</h4>
+        <!-- 导航页签 -->
+        <tabs class="nav-tabs-online">
+            <tab ui-sref-active="active" data-ui-sref="app.log.ecmc">ECMC日志</tab>
+            <tab ui-sref-active="active" data-ui-sref="app.log.ecsc">ECSC日志</tab>
+            <tab ui-sref-active="active" data-ui-sref="app.log.api">API日志</tab>
+        </tabs>
+
+        <div ui-view=""></div>
+    </div>
+</div>

@@ -1,0 +1,144 @@
+<div class="panel panel-default clearfix">
+    <div class="panel-body">
+        <h4>24小时新增</h4>
+        <div>
+            <div class="col-lg-4">
+                <div class="obs-overview-group">
+                    <h5>存储容量</h5>
+                    <div class="customer-overview-name"><a ng-bind="::obsOverview.getNowCompareYesDay.usedStorage"></a></div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="obs-overview-group">
+                    <h5>总下载流量</h5>
+                    <div class="customer-overview-name"><a ng-bind="::obsOverview.getNowCompareYesDay.loadDown"></a></div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="obs-overview-group-right">
+                    <h5>请求次数</h5>
+                    <div class="customer-overview-name"><a ng-bind="::obsOverview.getNowCompareYesDay.requestCount"></a></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="panel panel-default clearfix">
+    <div class="panel-body">
+        <h4>存储概览</h4>
+        <div>
+            <div class="col-lg-3">
+                <div class="obs-overview-all">
+                    <div class="obs-overview-state">已用</div>
+                    <div class="obs-overview-value"><a ng-bind="::obsOverview.overview.usedStorage"></a></div>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="obs-overview-all">
+                    <div class="obs-overview-state">未用</div>
+                    <div class="obs-overview-value"><a ng-bind="::obsOverview.overview.unUsedStorage"></a></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="panel-body">
+        <div class="details">
+            <form class="row">
+                <div class="col-lg-10">
+                    <div class="col-lg-6">
+                        <div class="details-group">
+                            <div class="obs-name">已创建Bucket总数(个):</div>
+                            <div class="details-value"><span ng-bind="::obsOverview.overview.bucketCountStr"></span> </div>
+                        </div>
+                        <div class="details-group">
+                            <div class="obs-name">Object总数(百个):</div>
+                            <div class="details-value"><span ng-bind="::obsOverview.overview.objectCountStr"></span> </div>
+                        </div>
+                        <div class="details-group">
+                            <div class="obs-name">内网上传总流量(MB):</div>
+                            <div class="details-value"><span ng-bind="::obsOverview.overview.receivedStr"></span> </div>
+                        </div>
+                        <div class="details-group">
+                            <div class="obs-name">内网下载总流量(MB):</div>
+                            <div class="details-value"><span ng-bind="::obsOverview.overview.sentStr"></span> </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="details-group">
+                            <div class="obs-name">put请求次数(百次):</div>
+                            <div class="details-value"><span ng-bind="::obsOverview.overview.putRequestCountStr"></span> </div>
+                        </div>
+                        <div class="details-group">
+                            <div class="obs-name">get请求次数(百次):</div>
+                            <div class="details-value"><span ng-bind="::obsOverview.overview.getRequestCountStr"></span> </div>
+                        </div>
+                        <div class="details-group">
+                            <div class="obs-name">delete请求次数(百次):</div>
+                            <div class="details-value"><span ng-bind="::obsOverview.overview.deleteRequestCountStr"></span> </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="panel panel-default clearfix">
+    <div class="panel-body">
+        <h4>存储详情</h4>
+        <form class="form-inline">
+            <div class="form-group" style="margin-left:15px">
+                <eayun-select class="form-control form-select" ng-model="obsOverview.selectModel" ng-change="obsOverview.change()">
+                    <eayun-option value="'storage'" text="存储量" ></eayun-option>
+                    <eayun-option value="'loadFlow'" text="下载流量"></eayun-option>
+                    <eayun-option value="'request'" text="请求次数"></eayun-option>
+                </eayun-select>
+            </div>
+            <div class="form-group" style="margin-left:10px">
+                <span style="font-size:14px;margin-left:10px">时间范围：</span>
+                <date-time-picker class="form-group" style="margin-left:10px;" data-format="yyyy-MM-dd" show-time="false" ng-model="obsOverview.startTime"  data-format="yyyy-MM-dd" max-date="obsOverview.endTime"></date-time-picker>
+                <span style="margin-left:10px;">—</span>
+                <date-time-picker class="form-group" style="margin-left:10px;" data-format="yyyy-MM-dd" show-time="false" ng-model="obsOverview.endTime" data-format="yyyy-MM-dd" min-date="obsOverview.startTime" max-date="obsOverview.now"></date-time-picker>
+            </div>
+
+            <button class="btn btn-default" style="margin-left: 15px;" ng-click="obsOverview.query()"><strong>查询</strong></button>
+                <button class="btn btn-primary" ng-click="obsOverview.set()"style="margin-left:20px" ng-if="hasPermission('obs_threshold')">
+                    <span></span><strong>阈值设置</strong>
+                </button>
+                <div class="col-md-12" style="height: 600px;width: 100%;" echarts="obsOverview.myChart"></div>
+        </form>
+    </div>
+</div>
+<div class="panel panel-default clearfix">
+    <div class="panel-body">
+        <h4>资源排行</h4>
+        <!-- 导航页签 -->
+        <tabs class="nav-tabs-online">
+            <tab data-ng-class = "obsOverview.showTab == 'storage'?'active':''" data-ng-click = "obsOverview.setShowTab('storage')">存储量排行Top10Bucket</tab>
+            <tab data-ng-class = "obsOverview.showTab == 'loadFlow'?'active':''" data-ng-click = "obsOverview.setShowTab('loadFlow')">流量排行Top10Bucket</tab>
+            <tab data-ng-class = "obsOverview.showTab == 'request'?'active':''" data-ng-click = "obsOverview.setShowTab('request')">请求次数排行Top10Bucket</tab>
+        </tabs>
+        <div>
+            <table class="table table-eayun">
+                <thead>
+                <tr>
+                    <th>排名</th>
+                    <th>Bucket名称</th>
+                    <th><span ng-bind="obsOverview.title"></span></th>
+                    <th>所属客户</th>
+                    <th>上期排名</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="dc in obsOverview.data">
+                    <td><span ng-bind="dc.rank"></span></td>
+                    <td class="click-link" data-ui-sref="app.obs.obscusoverview({cusId:dc.belongUserId,bucketName:dc.bucketName,type:obsOverview.showTab})"><span ng-bind="dc.bucketName"></span></td>
+                    <td><span ng-bind="dc.sizeStr"></span></td>
+                    <td class="click-link" data-ui-sref="app.obs.obscusoverview({cusId:dc.belongUserId,bucketName:dc.bucketName,type:obsOverview.showTab})"><span ng-bind="dc.belongUser"></span></td>
+                    <td><span ng-bind="dc.lastTop>10||dc.lastTop==0?'-':dc.lastTop"></span></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,179 @@
+<style type="text/css">
+.subnet-cidr .ipadress {
+	border-color: #a94442;
+	color: #a94442;
+}
+</style>
+<form class="form-horizontal" name="myForm" novalidate>
+    <!-- <div class="form-group has-feedback">
+        <label class="col-sm-3 control-label">所属数据中心：{{rule.outModel.fwId}}</label>
+
+        <div class="col-sm-8 ">
+            <eayun-select class="form-control" data-ng-model="ruleAdd.ruleModel.dcId"
+                          placeholder="请选择数据中心" data-ng-change="ruleAdd.getAllProjectListByDcId(ruleAdd.ruleModel.dcId)" required>
+                <eayun-option value="dcResource.id" text="{{dcResource.name}}"
+                              data-ng-repeat="dcResource in ruleAdd.allDcResourceList"></eayun-option>
+            </eayun-select>
+        </div>
+    </div>
+
+    <div class="form-group has-feedback">
+        <label class="col-sm-3 control-label">所属项目：</label>
+
+        <div class="col-sm-8 ">
+            <eayun-select class="form-control" data-ng-model="ruleAdd.ruleModel.prjId"  placeholder="请选择项目" data-ng-change="ruleAdd.changePrj()" required>
+                <eayun-option value="project.projectId" text="{{project.prjName}}" data-ng-repeat="project in ruleAdd.allProjectList"></eayun-option>
+            </eayun-select>
+        </div>
+    </div> -->
+
+    <div class="form-group has-feedback">
+        <label class="col-sm-3 control-label">规则名称：</label>
+
+        <div class="col-sm-8" data-ng-class="(myForm.name.$dirty && (myForm.name.$invalid || ruleAdd.fwRuleNameIsExist)) ? 'has-error' : ''">
+            <input type="text" class="form-control" name="name" data-ng-model="ruleAdd.ruleModel.fwrName"
+                   data-ng-pattern="/^[\u4e00-\u9fa5a-zA-Z0-9]([\u4e00-\u9fa5_a-zA-Z0-9\s]{0,18}[\u4e00-\u9fa5a-zA-Z0-9]){0,1}$/"
+                   placeholder="请输入规则名称" data-ng-change="ruleAdd.checkFwRuleName()"
+                   maxlength="20" required>
+            <label class="control-label hide"
+                   data-ng-class="(myForm.name.$dirty && myForm.name.$error.required) ? 'show' : 'hide'"
+                   style="text-align: left;">规则名称不能为空</label>
+            <label class="control-label hide"
+                   data-ng-class="(myForm.name.$dirty && ruleAdd.fwRuleNameIsExist) ? 'show' : 'hide'"
+                   style="text-align: left;">规则名称已存在</label>
+            <label class="control-label hide"
+                   data-ng-class="(myForm.name.$dirty && myForm.name.$error.pattern) ? 'show' : 'hide'"
+                   style="text-align: left;">请输入1-20位字符,支持数字、中英文、下划线、空格</label>
+        </div>
+    </div>
+
+    <div class="form-group has-feedback">
+        <label class="col-sm-3 control-label">协议：</label>
+
+        <div class="col-sm-8 " data-ng-class="(myForm.protocol.$dirty && myForm.protocol.$invalid) ? 'has-error' : ''">
+            <eayun-select name="protocol" class="form-control" data-ng-model="ruleAdd.ruleModel.protocol" data-ng-change="ruleAdd.selectICMP()" 
+                          required>
+                <eayun-option value="'tcp'" text="TCP" selected></eayun-option>
+                <eayun-option value="'udp'" text="UDP"></eayun-option>
+                <eayun-option value="'icmp'" text="ICMP"></eayun-option>
+                <eayun-option value="'any'" text="所有"></eayun-option>
+            </eayun-select>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-3 control-label">源IP地址：</label>
+
+        <div class="col-sm-8 subnet-cidr" style="border: 0px;">
+            <input data-ng-class="ruleAdd.a1Error ? 'ipadress' : ''" type="text" class="form-control-ip" name="sourceIpaddress1" data-ng-model="ruleAdd.ruleModel.sourceIpaddress1" maxlength="3" data-ng-change="ruleAdd.checkTypeCidr('a1','focus')" data-ng-focus="ruleAdd.checkTypeCidr('a1','focus')" data-ng-blur ="ruleAdd.checkTypeCidr('a1','blur')"><!-- ajax-valid="ruleAdd.checkIp(value,'sourceIpaddress')" required-->
+            <label class="control-label">.</label>
+            <input data-ng-class="ruleAdd.a2Error ? 'ipadress' : ''" type="text" class="form-control-ip" name="sourceIpaddress2" data-ng-model="ruleAdd.ruleModel.sourceIpaddress2" maxlength="3" data-ng-change="ruleAdd.checkTypeCidr('a2','focus')" data-ng-focus="ruleAdd.checkTypeCidr('a2','focus')" data-ng-blur ="ruleAdd.checkTypeCidr('a2','blur')">
+			<label class="control-label">.</label>
+			<input data-ng-class="ruleAdd.a3Error ? 'ipadress' : ''" type="text" class="form-control-ip" name="sourceIpaddress3" data-ng-model="ruleAdd.ruleModel.sourceIpaddress3" maxlength="3" data-ng-change="ruleAdd.checkTypeCidr('a3','focus')" data-ng-focus="ruleAdd.checkTypeCidr('a3','focus')" data-ng-blur ="ruleAdd.checkTypeCidr('a3','blur')">
+			<label class="control-label">.</label>
+			<input data-ng-class="ruleAdd.a4Error ? 'ipadress' : ''" type="text" class="form-control-ip" name="sourceIpaddress4" data-ng-model="ruleAdd.ruleModel.sourceIpaddress4" maxlength="3" data-ng-change="ruleAdd.checkTypeCidr('a4','focus')" data-ng-focus="ruleAdd.checkTypeCidr('a4','focus')" data-ng-blur ="ruleAdd.checkTypeCidr('a4','blur')">
+            <label class="control-label" ng-repeat-end>/</label>
+            <input data-ng-class="ruleAdd.a5Error ? 'ipadress' : ''" type="text" class="form-control-p" name="sourceIpaddress5" data-ng-model="ruleAdd.ruleModel.sourceIpaddress5" maxlength="2" data-ng-change="ruleAdd.checkTypeCidr('a5','focus')" data-ng-focus="ruleAdd.checkTypeCidr('a5','focus')" data-ng-blur ="ruleAdd.checkTypeCidr('a5','blur')">
+            
+            <label class="control-label" data-ng-class="!ruleAdd.cidraError ? 'ipadress' : ''" style="text-align: left;" ng-bind="ruleAdd.sourrange"></label>
+        </div>
+    </div>
+
+    <div class="form-group has-feedback"
+         ng-if="ruleAdd.ruleModel.protocol != 'any' && ruleAdd.ruleModel.protocol != 'icmp'">
+        <label class="col-sm-3 control-label">源端口：</label>
+
+        <div class="col-sm-8"
+             data-ng-class="(myForm.sourcePort.$dirty && myForm.sourcePort.$invalid) ? 'has-error' : ''">
+            <input type="text" class="form-control" name="sourcePort" data-ng-model="ruleAdd.ruleModel.sourcePort"
+                   ajax-valid="ruleAdd.checkPort(value,'sourcePort')"
+                   placeholder="请输入源端口或端口范围 例如:80或80:100" ><!--required-->
+            <label class="control-label hide"
+                   data-ng-class="(myForm.source_port.$dirty && myForm.source_port.$error.required&&!ruleAdd.sourcePort) ? 'show' : 'hide'"
+                   style="text-align: left;">源端口不能为空</label>
+            <label class="control-label hide" data-ng-class="ruleAdd.sourcePort ? 'show' : 'hide'"
+                   style="text-align: left;">端口格式为A或A:B,其中A和B范围为1-65535,且B大于A</label>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-3 control-label">目的IP地址：</label>
+
+        <div class="col-sm-8 subnet-cidr" style="border: 0px;">
+            <input data-ng-class="ruleAdd.b1Error ? 'ipadress' : ''" type="text" class="form-control-ip" name="destinationIpaddress1" data-ng-model="ruleAdd.ruleModel.destinationIpaddress1" maxlength="3" data-ng-change="ruleAdd.checkTypeCidr('b1','focus')" data-ng-focus="ruleAdd.checkTypeCidr('b1','focus')" data-ng-blur ="ruleAdd.checkTypeCidr('b1','blur')"><!--required ajax-valid="ruleAdd.checkIp(value,'destinationIpaddress')"-->
+            <label class="control-label">.</label>
+            <input data-ng-class="ruleAdd.b2Error ? 'ipadress' : ''" type="text" class="form-control-ip" name="destinationIpaddress2" data-ng-model="ruleAdd.ruleModel.destinationIpaddress2" maxlength="3" data-ng-change="ruleAdd.checkTypeCidr('b2','focus')" data-ng-focus="ruleAdd.checkTypeCidr('b2','focus')" data-ng-blur ="ruleAdd.checkTypeCidr('b2','blur')">
+        	<label class="control-label">.</label>
+        	<input data-ng-class="ruleAdd.b3Error ? 'ipadress' : ''" type="text" class="form-control-ip" name="destinationIpaddress3" data-ng-model="ruleAdd.ruleModel.destinationIpaddress3" maxlength="3" data-ng-change="ruleAdd.checkTypeCidr('b3','focus')" data-ng-focus="ruleAdd.checkTypeCidr('b3','focus')" data-ng-blur ="ruleAdd.checkTypeCidr('b3','blur')">
+        	<label class="control-label">.</label>
+        	<input data-ng-class="ruleAdd.b4Error ? 'ipadress' : ''" type="text" class="form-control-ip" name="destinationIpaddress4" data-ng-model="ruleAdd.ruleModel.destinationIpaddress4" maxlength="3" data-ng-change="ruleAdd.checkTypeCidr('b4','focus')" data-ng-focus="ruleAdd.checkTypeCidr('b4','focus')" data-ng-blur ="ruleAdd.checkTypeCidr('b4','blur')">
+        	<label class="control-label" ng-repeat-end>/</label>
+        	<input data-ng-class="ruleAdd.b5Error ? 'ipadress' : ''" type="text" class="form-control-p" name="destinationIpaddress5" data-ng-model="ruleAdd.ruleModel.destinationIpaddress5" maxlength="2" data-ng-change="ruleAdd.checkTypeCidr('b5','focus')" data-ng-focus="ruleAdd.checkTypeCidr('b5','focus')" data-ng-blur ="ruleAdd.checkTypeCidr('b5','blur')">
+        	<label class="control-label" data-ng-class="!ruleAdd.cidrbError ? 'ipadress' : ''" style="text-align: left;" ng-bind="ruleAdd.destrange"></label>
+        </div>
+    </div>
+
+
+    <div class="form-group has-feedback" ng-if="ruleAdd.ruleModel.protocol!='any'&& ruleAdd.ruleModel.protocol!='icmp'">
+        <label class="col-sm-3 control-label">
+            <nobr>目的端口：</nobr>
+        </label>
+
+        <div class="col-sm-8"
+             data-ng-class="(myForm.destinationPort.$dirty && myForm.destinationPort.$invalid) ? 'has-error' : ''">
+            <input type="text" class="form-control" name="destinationPort"
+                   data-ng-model="ruleAdd.ruleModel.destinationPort"
+                   ajax-valid="ruleAdd.checkPort(value,'destinationPort')"
+                   placeholder="请输入目的端口或端口范围 例如:80或80:100" ><!--required-->
+            <label class="control-label hide"
+                   data-ng-class="(myForm.destination_port.$dirty && myForm.destination_port.$error.required&&!ruleAdd.destinationPort) ? 'show' : 'hide'"
+                   style="text-align: left;">目的端口不能为空</label>
+            <label class="control-label hide" data-ng-class="ruleAdd.destinationPort ? 'show' : 'hide'"
+                   style="text-align: left;">端口格式为A或A:B,其中A和B范围为1-65535,且B大于A</label>
+        </div>
+    </div>
+
+
+    <div class="form-group has-feedback">
+        <label class="col-sm-3 control-label">动作：</label>
+
+        <div class="col-sm-8 " data-ng-class="(myForm.action.$dirty && myForm.action.$invalid) ? 'has-error' : ''">
+            <eayun-select name="action" class="form-control" data-ng-model="ruleAdd.ruleModel.fwrAction"
+                          placeholder="--选择一个动作--"
+                          required>
+                <eayun-option value="'allow'" text="允许" selected></eayun-option>
+                <eayun-option value="'deny'" text="拒绝"></eayun-option>
+            </eayun-select>
+        </div>
+    </div>
+
+    <!--<div class="form-group has-feedback">
+        <label class="col-sm-3 control-label">激活：</label>
+
+        <div class="col-sm-8 "
+             data-ng-class="(myForm.enabled.$dirty && myForm.enabled.$error.required) ? 'has-error' : ''">
+            <div class="col-sm-2">
+                <label class="radio-inline"><input type="radio" name="enabled" value="1" data-ng-model="ruleAdd.ruleModel.fwrEnabled">是</label>
+            </div>
+            <div class="col-sm-2">
+                <label class="radio-inline"><input type="radio" name="enabled" value="0" data-ng-model="ruleAdd.ruleModel.fwrEnabled">否</label>
+            </div>
+        </div>
+    </div>-->
+
+   <!-- <div class="form-group has-feedback">
+        <label class="col-sm-3 control-label">描述：</label>
+
+        <div class="col-sm-8"
+             data-ng-class="(myForm.destination_ip_address.$dirty && myForm.destination_ip_address.$invalid) ? 'has-error' : ''">
+            <textarea type="text" class="form-control" name="description"
+                      data-ng-model="ruleAdd.ruleModel.description"></textarea>
+        </div>
+    </div>-->
+
+    <!-- 按钮区域 -->
+     <div class="modal-footer" >
+      <button type="button" class="btn btn-primary btn-modal" ng-click="commit()"  ng-disabled="!myForm.$valid || ruleAdd.fwRuleNameIsExist || !ruleAdd.cidraError || !ruleAdd.cidrbError">确  定</button>
+      <button type="button" class="btn btn-default btn-modal" ng-click="cancel()">取  消</button>
+    </div>
+</form>

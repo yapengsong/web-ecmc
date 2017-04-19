@@ -1,0 +1,79 @@
+<form class="form-inline">
+    <button class="btn btn-primary" data-ng-click="message.eraseWarningMsg()" ng-if="hasPermission('mon_alarm_remove')">
+        <span class="glyphicon glyphicon-remove"></span> 消除报警
+    </button>
+
+    <button class="btn btn-primary" style="margin: 0px 15px;" data-ng-click="message.exportMsgExcel()">
+        <span class="glyphicon glyphicon-paste"></span> 导出Excel
+    </button>
+
+    <div style="display: none;">
+        <iframe id="file-export-iframe" frameborder="0"></iframe>
+    </div>
+
+    <eayun-search ng-model="message.search" options="message.options"></eayun-search>
+</form>
+<eayun-table data-api="message.messageTable.api" data-ajax-source="message.messageTable.source"
+             data-param="message.messageTable.getParams"
+             data-result="message.messageTable.result">
+    <table class="table table-eayun">
+        <thead>
+        <tr>
+            <th>
+                <input type="checkbox" data-ng-model="message.isAllChecked" data-ng-click="message.checkAll()"/>
+            </th>
+            <th>
+                <eayun-select type="btn" class="btn-group btn-group-xs" data-ng-model="message.query.item"
+                              ng-change="message.queryTable()">
+                    <eayun-option value="''" text="分类（全部）" selected></eayun-option>
+                    <eayun-option value="item.name" text="{{item.name}}"
+                                  ng-repeat="item in message.itemList"></eayun-option>
+                </eayun-select>
+            </th>
+            <th>对象名称</th>
+            <th>客户</th>
+            <th>IP</th>
+            <th>
+                <eayun-select type="btn" class="btn-group btn-group-xs" data-ng-model="message.query.dcName"
+                              ng-change="message.queryTable()">
+                    <eayun-option value="''" text="所有数据中心" selected></eayun-option>
+                    <eayun-option value="dcResource.name" text="{{dcResource.apiDcCode}}"
+                                  ng-repeat="dcResource in message.dcResourceList"></eayun-option>
+                </eayun-select>
+            </th>
+            <th>项目</th>
+            <th>报警时间</th>
+            <th>报警信息</th>
+            <th>
+                <eayun-select type="btn" class="btn-group btn-group-xs" data-ng-model="message.query.isProcessed"
+                              ng-change="message.queryTable()">
+                    <eayun-option value="''" text="报警标识（全部）" selected></eayun-option>
+                    <eayun-option value="'0'" text="未处理"></eayun-option>
+                    <eayun-option value="'1'" text="已处理"></eayun-option>
+                </eayun-select>
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr data-ng-repeat="warningMessage in message.messageTable.result">
+            <td>
+                <input type="checkbox" ng-checked="::warningMessage.isChecked"
+                       data-ng-click="message.updateSelection($event,warningMessage.id)"
+                       data-ng-model="warningMessage.isChecked"
+                       data-ng-disabled="::warningMessage.isProcessed == '1'"/>
+            </td>
+            <td ng-bind="::warningMessage.monitorType"></td>
+            <td ng-bind="::warningMessage.objName|printContent"></td>
+            <td ng-bind="::warningMessage.cusName|printContent"></td>
+            <td ng-bind="::(warningMessage.monitorType!='API'?'----':warningMessage.ip)"></td>
+            <td ng-bind="::warningMessage.dcName|printContent"></td>
+            <td ng-bind="::warningMessage.projectName|printContent"></td>
+            <td ng-bind="::warningMessage.time| date: 'yyyy-MM-dd HH:mm:ss'"></td>
+            <td ng-bind="::warningMessage.detail"></td>
+            <td data-ng-if="warningMessage.isProcessed == '0'" class="color-error">未处理</td>
+            <td data-ng-if="warningMessage.isProcessed == '1'">已处理</td>
+        </tr>
+        </tbody>
+    </table>
+    <eayun-table-page></eayun-table-page>
+</eayun-table>

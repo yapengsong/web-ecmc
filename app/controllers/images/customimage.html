@@ -1,0 +1,56 @@
+<div class="form-inline">
+    <eayun-search data-ng-model="custom.search" options="custom.options"></eayun-search>
+</div>
+
+<eayun-auto-refresh interval="5000" refresh="custom.refresh"></eayun-auto-refresh>
+<eayun-table data-api="custom.imageTable.api" data-ajax-source="custom.imageTable.source" data-param="custom.imageTable.getParams"
+             data-result="custom.imageTable.result" >
+    <table class="table table-eayun">
+        <thead>
+        <tr>
+            <th>镜像名称</th>
+            <th>状态</th>
+            <th>
+                <eayun-select type="btn" class="btn-group btn-group-xs" data-ng-model="custom.sourceType" data-ng-change="custom.query()">
+                    <eayun-option value="''" text="来源镜像类型（全部）" selected></eayun-option>
+                    <eayun-option value="'1'" text="公共镜像"></eayun-option>
+                    <eayun-option value="'3'" text="市场镜像"></eayun-option>
+                </eayun-select>
+            </th>
+            <th>系统类型</th>
+            <th>创建时间</th>
+            <th>
+                <eayun-select type="btn" class="btn-group btn-group-xs" data-ng-model="custom.datacenterId" data-ng-change="custom.query()">
+                    <eayun-option value="''" text="数据中心（全部）" selected></eayun-option>
+                    <eayun-option value="dc.id" text="{{dc.name}}" data-ng-repeat="dc in custom.dcList"></eayun-option>
+                </eayun-select>
+            </th>
+            <th>项目</th>
+            <th>客户</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr data-ng-repeat="image in custom.imageTable.result">
+            <td class="click-link" data-ng-bind="::image.imageName" data-ng-click="custom.detail(image.imageId)"></td>
+
+            <td><span class="state-block" data-ng-class="custom.imageStatusClass[$index] != '' ? custom.imageStatusClass[$index] : ''"
+                      ng-init="custom.imageStatusClass[$index] = custom.checkImageStatus(image,$index)"></span>{{image.statusForDis}}
+            </td>
+            <td>{{image.sourceType=='1'?'公共镜像':'市场镜像'}}</td>
+
+            <td data-ng-bind="(null==image.sysTypeName||'null'==image.sysTypeName||'其他'==image.sysTypeName)?'':image.sysTypeName"></td>
+            <td data-ng-bind="::image.createdTime|date:'yyyy-MM-dd HH:mm:ss'"></td>
+            <td data-ng-bind="::image.dcName"></td>
+            <td data-ng-bind="::(null == image.prjName)||('null' == image.prjName)?'':image.prjName"></td>
+            <td data-ng-bind="::(null == image.cusOrg)||('null' == image.cusOrg)?'':image.cusOrg"></td>
+            <td>
+                <button class="btn btn-tablemng btn-first" data-ng-click="custom.edit(image)" data-ng-disabled="image.imageStatus!='ACTIVE'" ng-if="hasPermission('customimage_edit')">编辑</button>
+                <button class="btn btn-tabledel" data-ng-click="custom.delete(image)"  data-ng-disabled="image.imageStatus=='SAVING'||image.imageStatus=='QUEUED'"  ng-if="hasPermission('customimage_delete')">删除</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <eayun-table-page></eayun-table-page>
+</eayun-table>
+

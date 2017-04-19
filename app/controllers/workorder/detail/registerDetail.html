@@ -1,0 +1,139 @@
+<!-- 当前位置下拉列表 -->
+<div class="title-inline">
+    <div class="form-group">
+        <label class="control-label">当前位置：
+            <a style="cursor: pointer;" data-ui-sref="app.workorder">工单管理</a>&nbsp;>
+            <span> 工单详情</span>
+        </label>
+    </div>
+</div>
+<div class="panel panel-default clearfix">
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-sm-1">
+                <h4>工单详情</h4>
+            </div>
+        </div>
+        <div class="details workorder">
+            <div class="row">
+                <button type="button" class="btn btn-primary"
+                        ng-if="registerDetail.workorder.workFalg=='0'&& hasPermission('workorder_accept')"
+                        data-ng-click="registerDetail.accept(registerDetail.workorder)">受理工单
+                </button>
+            </div>
+            <h4 style="margin: 0px 0px 0px 15px;" data-ng-show="registerDetail.workorder.workHeadUser!=null">
+                指派商务人员：<span>{{registerDetail.workorder.workHeadUserName}}</span></h4>
+
+            <form class="row">
+                <div class="col-lg-4">
+                    <div class="details-group">
+                        <div class="details-name">工单编号：</div>
+                        <div class="details-value" ng-bind="::registerDetail.workorder.workNum"></div>
+                    </div>
+                    <div class="details-group">
+                        <div class="details-name">联系人姓名：</div>
+                        <div class="details-value" ng-bind="::registerDetail.applyCustomer.cusName"></div>
+                    </div>
+                    <div class="details-group">
+                        <div class="details-name">所属职位：</div>
+                        <div class="details-value" ng-bind="::registerDetail.applyCustomer.cusPesition"></div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="details-group">
+                        <div class="details-name">工单类别：</div>
+                        <div class="details-value" ng-bind="::registerDetail.workorder.workTypeName"></div>
+                    </div>
+                    <div class="details-group">
+                        <div class="details-name">手机号码：</div>
+                        <div class="details-value" ng-bind="::registerDetail.applyCustomer.cusPhone"></div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="details-group">
+                        <div class="details-name">创建时间：</div>
+                        <div class="details-value"
+                             ng-bind="::registerDetail.workorder.workCreTime|date:'yyyy-MM-dd HH:mm:ss'"></div>
+                    </div>
+                    <div class="details-group">
+                        <div class="details-name">所属部门：</div>
+                        <div class="details-value" ng-bind="::registerDetail.applyCustomer.cusDept"></div>
+                    </div>
+                </div>
+
+                <!--<div class="col-lg-8">-->
+
+                <!--</div>-->
+            </form>
+            <form class="row">
+                <div class="col-lg-8">
+                    <div class="details-group">
+                        <div class="details-name">公司中文名称：</div>
+                        <div class="details-value" ng-bind="::registerDetail.applyCustomer.cusCpname" style="word-break: break-all;width: 85%;"></div>
+                    </div>
+                    <div class="details-group">
+                        <div class="details-name">公司英文名称：</div>
+                        <div class="details-value" ng-bind="::registerDetail.applyCustomer.cusCpename" style="word-break: break-all;width: 85%;"></div>
+                    </div>
+                    <div class="details-group" style="height: 112px;">
+                        <div class="details-name">公司简介：</div>
+                        <div class="details-value" style="height: 100px;overflow-y: auto;width: 85%;word-break: break-all;">
+                            {{registerDetail.applyCustomer.cusSynopsis}}
+                        </div>
+                    </div>
+                    <div class="details-group" style="height: 112px;">
+                        <div class="details-name">注册原因：</div>
+                        <div class="details-value" style="max-height: 100px;overflow-y: auto;width: 85%;word-break: break-all;">
+                            {{registerDetail.applyCustomer.cusDesc}}
+                        </div>
+                    </div>
+                </div>
+
+            </form>
+
+        </div>
+        <div class="form-group workorder-register">
+            <div class="register-left">
+                <label class="control-label">审核通过/审核不通过原因：</label>
+                <textarea class="form-control" data-ng-model="registerDetail.applyCustomer.cusReason"
+                          maxlength="2000"
+                          data-ng-disabled="registerDetail.workorder.workState!='0' && registerDetail.workorder.workState!=null"></textarea>
+            </div>
+            <div class="register-right" ng-if="registerDetail.workorder.workFalg!='3'&& registerDetail.workorder.workFalg!='4'">
+                <button class="btn btn-primary btn-lg"
+                        data-ng-click="registerDetail.auditPassWork(registerDetail.workorder)"
+                        ng-if="'1'==registerDetail.workorder.workFalg && ('0'==registerDetail.workorder.workState||null==registerDetail.workorder.workState)">
+                    审核通过
+                </button>
+                <button class="btn btn-default btn-lg"
+                        data-ng-click="registerDetail.auditNotPassWork(registerDetail.workorder)"
+                        ng-if="'1'==registerDetail.workorder.workFalg&&('0'==registerDetail.workorder.workState||null==registerDetail.workorder.workState)">
+                    审核不通过
+                </button>
+                <button class="btn btn-primary btn-lg"
+                        data-ng-click="registerDetail.createPrject(registerDetail.applyCustomer)"
+                        ng-if="'1'==registerDetail.workorder.workState">创建客户及项目
+                </button>
+            </div>
+        </div>
+        <div class="form-group workorder-register"ng-if="registerDetail.workorder.workFalg=='1' && registerDetail.workorder.workState!='0'">
+            <div class="register-left">
+                <form class="form-inline" novalidate>
+                    <label class="control-label">更新工单状态：</label>
+                    <eayun-select class="form-control form-select" show-length="5"
+                                  data-ng-model="registerDetail.workFalg">
+                        <eayun-option value="workorderType.nodeId" text="{{workorderType.nodeName}}"
+                                      ng-if="workorderType.nodeId =='3'|| workorderType.nodeId==registerDetail.workorder.workFalg"
+                                      ng-repeat="workorderType in registerDetail.workFalgList"></eayun-option>
+                    </eayun-select>
+                </form>
+            </div>
+            <div class="register-right">
+                <button class="btn btn-primary btn-lg" rows="4"
+                        data-ng-click="registerDetail.replyWorkorder(registerDetail.workorder)">
+                    确&nbsp;&nbsp;定
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

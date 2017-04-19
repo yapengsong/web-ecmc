@@ -1,0 +1,13 @@
+<div class="eayun-select ng-cloak form-control form-select ey-select-input" ng-cloak ng-class="disabled?'disabled':''">
+    <input type="text" class="eayun-select-input form-control" ng-model="text" ng-disabled="disabled"
+           placeholder="{{placeholder}}" ng-click="open($event)" ng-change="clear()" ng-readonly="true">
+
+    <div class="eayun-select-btn" ng-click="open($event)">
+        <span class="glyphicon glyphicon-menu-down"></span>
+    </div>
+    <ul class="eayun-select-menu dropdown-menu hide" ng-class="showMenu?'show':'hide'">
+        <tree-view tree-data="optionsData" text-field="{{textField}}" item-clicked="select($item)"></tree-view>
+    </ul>
+</div>
+
+

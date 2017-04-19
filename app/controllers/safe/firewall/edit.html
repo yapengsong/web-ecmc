@@ -1,0 +1,60 @@
+<form class="form-horizontal" name="myForm" novalidate>
+    <div class="form-group has-feedback">
+        <label class="col-sm-3 control-label">所属数据中心：</label>
+
+        <div class="col-sm-8">
+            <eayun-select name="prjName" class="form-control" data-ng-model="fwEdit.fwModel.dcId"
+                          data-ng-change="fwEdit.getProjectListByDcId(fwEdit.fwModel.dcId)"
+                          placeholder="请选择数据中心" ng-disabled="true">
+                <eayun-option value="dcResource.id" text="{{dcResource.name}}"
+                              data-ng-repeat="dcResource in fwEdit.allDcResourceList"></eayun-option>
+            </eayun-select>
+        </div>
+    </div>
+
+    <div class="form-group has-feedback">
+        <label class="col-sm-3 control-label">所属项目：</label>
+
+        <div class="col-sm-8">
+            <eayun-select name="prjName" class="form-control" data-ng-model="fwEdit.fwModel.prjId"
+                          placeholder="请选择项目" data-ng-change="fwEdit.changeDorPId(fwEdit.fwModel.prjId)" ng-disabled="true">
+                <eayun-option value="project.projectId" text="{{project.prjName}}"
+                              data-ng-repeat="project in fwEdit.allProjectList"></eayun-option>
+            </eayun-select>
+        </div>
+    </div>
+
+    <div class="form-group has-feedback">
+        <label class="col-sm-3 control-label">防火墙名称：</label>
+
+        <div class="col-sm-8" data-ng-class="(myForm.name.$dirty && (myForm.name.$invalid || fwEdit.fwNameIsExist)) ? 'has-error' : ''">
+            <input type="text" class="form-control" name="name" data-ng-model="fwEdit.fwModel.fwName"
+                   data-ng-pattern="/^[\u4e00-\u9fa5a-zA-Z0-9]([\u4e00-\u9fa5_a-zA-Z0-9\s]{0,18}[\u4e00-\u9fa5a-zA-Z0-9]){0,1}$/"
+                   placeholder="请输入防火墙名称"
+                   maxlength="20" required data-ng-change="fwEdit.checkFwName()">
+            <label class="control-label hide"
+                   data-ng-class="(myForm.name.$dirty && myForm.name.$error.required) ? 'show' : 'hide'"
+                   style="text-align: left;">防火墙名称不能为空</label>
+            <label class="control-label hide"
+                   data-ng-class="(myForm.name.$dirty && fwEdit.fwNameIsExist) ? 'show' : 'hide'"
+                   style="text-align: left;">防火墙名称已存在</label>
+            <label class="control-label hide" data-ng-class="(myForm.name.$dirty && myForm.name.$error.pattern) ? 'show' : 'hide'"
+                   style="text-align: left;">请输入1-20位字符,支持数字、中英文、下划线、空格</label>
+        </div>
+    </div>
+
+    <div class="form-group has-feedback">
+        <label class="col-sm-3 control-label">防火墙策略：</label>
+        <div class="col-sm-8" ><!--data-ng-class="(myForm.fwpName.$dirty && myForm.fwpName.$invalid) ? 'has-error' : ''"-->
+            <eayun-select name="fwpName" class="form-control" data-ng-model="fwEdit.fwModel.fwpId" placeholder="请选择一个策略">
+                <eayun-option value="fwPolicy.fwpId" text="{{fwPolicy.fwpName}}" data-ng-repeat="fwPolicy in fwEdit.fwPolicyList" ></eayun-option>
+            </eayun-select>
+        </div>
+    </div>
+
+    <!-- 按钮区域 -->
+     <div class="modal-footer" >
+      <button type="button" class="btn btn-primary btn-modal" ng-click="commit()"  ng-disabled="!myForm.$valid || fwEdit.fwNameIsExist">确  定</button>
+      <button type="button" class="btn btn-default btn-modal" ng-click="cancel()">取  消</button>
+    </div>
+</form>

@@ -1,0 +1,35 @@
+<form class="form-horizontal" name="edit" novalidate>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">系统：</label>
+
+        <div class="col-sm-7">
+            <label class="control-label">{{(null!=customedit.item.sysTypeName && 'null'!=customedit.item.sysTypeName)?customedit.item.sysTypeName:''}}</label>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">镜像名称：</label>
+
+        <div class="col-sm-7" data-ng-class="((edit.name.$invalid || !customedit.isCheckName)) ? 'has-error' : ''">
+            <input type="text" class="form-control" data-ng-model="customedit.item.imageName" maxlength="20"
+                   ng-pattern='/^[\u4e00-\u9fa5a-zA-Z0-9]([\u4e00-\u9fa5_a-zA-Z0-9\s]{0,18}[\u4e00-\u9fa5a-zA-Z0-9]){0,1}$/'
+                   name="name" data-ng-change="customedit.checkName(value)" required/>
+            <label class="control-label hide"
+                   data-ng-class="edit.name.$dirty && edit.name.$error.required ? 'show' : 'hide'"
+                   style="text-align: left;">请输入1-20位字符，支持数字、中英文、下划线、空格</label>
+            <label class="control-label" ng-show="!customedit.isCheckName">镜像名称已存在</label>
+            <label class="control-label" ng-show="edit.name.$error.pattern">请输入1-20位字符，支持数字、中英文、下划线、空格</label>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-3 control-label">描述：</label>
+        <div class="col-sm-7">
+            <textarea class="form-control" placeholder="请输入描述" data-ng-model="customedit.item.imageDescription" maxlength="200"></textarea>
+        </div>
+    </div>
+
+    <div class="modal-footer" >
+        <button type="button" class="btn btn-primary btn-modal" data-ng-click="commit()"  data-ng-disabled="!edit.$valid || !customedit.isCheckName">确  定</button>
+        <button type="button" class="btn btn-default btn-modal" data-ng-click="cancel()">取  消</button>
+    </div>
+</form>

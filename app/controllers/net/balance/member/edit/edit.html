@@ -1,0 +1,40 @@
+<form class="form-horizontal" name="editMember">
+    <!-- 主机名 -->
+    <div class="form-group has-feedback">
+        <label class="col-sm-3 control-label">主机名：</label>
+
+        <div class="col-sm-8">
+            <label class="col-sm-12 control-label" style="text-align: left;">{{edit.lbMember.vmName}}</label>
+        </div>
+    </div>
+
+    <!-- 协议端口 -->
+    <div class="form-group has-feedback">
+        <label class="col-sm-3 control-label">监听端口：</label>
+
+        <div class="col-sm-8" ><!--data-ng-class="(editMember.protocol_port.$dirty && (editMember.protocol_port.$invalid)) ? 'has-error' : ''"-->
+            <input type="text" class="form-control"
+                   name="protocol_port" data-ng-model="edit.lbMember.protocolPort" placeholder="请输入监听端口"  disabled>
+            <!--<label class="control-label" ng-show="editMember.protocol_port.$dirty && editMember.protocol_port.$invalid">请输入1至65535的整数</label>
+            <label class="control-label" ng-show="editMember.protocol_port.$dirty && editMember.protocol_port.$valid && !checkExist">协议端口名称已存在</label>-->
+        </div>
+    </div>
+
+    <!-- 权重 -->
+    <div class="form-group has-feedback">
+        <label class="col-sm-3 control-label">权重：</label>
+
+        <div class="col-sm-8" data-ng-class="(editMember.weight.$dirty && editMember.weight.$invalid) ? 'has-error' : ''">
+            <input type="text" class="form-control" name="weight" ng-pattern="/(^[1-9][0-9]$)|(^[1-9]$)|100$/" data-ng-model="edit.lbMember.memberWeight" placeholder="请输入权重" required>
+            <label class="control-label" ng-show="editMember.weight.$dirty && editMember.weight.$invalid">请输入1到100的整数</label>
+        </div>
+    </div>
+
+</form>
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-primary btn-modal" data-ng-click="commit()" style="margin-left: 15px;"
+            data-ng-disabled="!editMember.$valid">提 交
+    </button><!--||!edit.checkExist||edit.checkBtn-->
+    <button type="button" class="btn btn-default btn-modal" data-ng-click="cancel()" style="margin-left: 15px;">取 消</button>
+</div>

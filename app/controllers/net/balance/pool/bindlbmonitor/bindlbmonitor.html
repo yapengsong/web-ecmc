@@ -1,0 +1,16 @@
+<form class="form-horizontal" name="myForm">
+
+    <!--浮动ip-->
+    <div class="form-group" >
+        <label class="col-sm-3 control-label">健康检查：</label>
+        <div class="col-sm-8" data-ng-class="(myForm.monitor.$dirty && myForm.monitor.$invalid) ? 'has-error' : ''">
+            <eayun-select name="monitor" class="form-control"  data-ng-model="bindLbMonitor.lbMonitor.ldmId"  placeholder="--请选择健康检查--" required>
+                <eayun-option value="lbMonitor.ldmId" text="{{lbMonitor.text}}" data-ng-repeat="lbMonitor in bindLbMonitor.UnBindLbMonitorList"></eayun-option>
+            </eayun-select>
+
+
+        </div>
+    </div>
+
+</form>
+

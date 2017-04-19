@@ -1,0 +1,88 @@
+<h4>云主机</h4>
+<form class="form-inline">
+    <eayun-search ng-model="cloudhost.search" options="cloudhost.options" style="margin-left: 0px;"></eayun-search>
+<div style="float:right">
+    <eayun-select class="form-control form-select" data-ng-model="cloudhost.dataType"
+                  ng-change="cloudhost.queryTable()" show-length="5" style="float:right;">
+        <eayun-option value="'real-time'" text="实时数据" selected></eayun-option>
+        <eayun-option value="queryInterval.nameEN" text="{{queryInterval.name}}"
+                      ng-repeat="queryInterval in cloudhost.queryInterval"></eayun-option>
+    </eayun-select>
+
+    <date-time-picker class="form-group" ng-model="cloudhost.endDate" style="margin-right:15px;float:right;"
+                      data-format="yyyy-MM-dd HH:mm:ss" show-time="true" max-date="cloudhost.maxDate"
+                      data-ng-change="cloudhost.queryTableFromDate('no')"
+                      ng-if="cloudhost.dataType != 'real-time' && cloudhost.dataType <= 1440"></date-time-picker>
+    <date-time-picker class="form-group" ng-model="cloudhost.endDate" style="margin-right:15px;float:right;"
+                      data-format="yyyy-MM-dd" show-time="false" max-date="cloudhost.maxDate"
+                      data-ng-change="cloudhost.queryTableFromDate('yes')"
+                      ng-if="cloudhost.dataType != 'real-time' && cloudhost.dataType > 1440"></date-time-picker>
+    <label class="control-label" style="margin-top:7px" ng-if="cloudhost.dataType != 'real-time'">历史数据截止时间：</label>
+</div>
+
+
+
+</form>
+<eayun-table data-api="cloudhost.cloudHostTable.api" data-ajax-source="cloudhost.cloudHostTable.source"
+             data-param="cloudhost.cloudHostTable.getParams"
+             data-result="cloudhost.cloudHostTable.result">
+    <table class="table table-eayun">
+        <thead>
+        <tr>
+            <th>主机名称</th>
+            <th>
+                <eayun-select type="btn" class="btn-group btn-group-xs" data-ng-model="cloudhost.query.dcName"
+                              data-ng-change="cloudhost.queryTable()">
+                    <eayun-option value="''" text="数据中心（全部）" selected></eayun-option>
+                    <eayun-option value="dcResource.name" text="{{dcResource.name}}"
+                                  ng-repeat="dcResource in cloudhost.dcResourceList"></eayun-option>
+                </eayun-select>
+            </th>
+            <th>客户</th>
+            <th>项目</th>
+            <!--<th ng-if="cloudhost.dataType == 'real-time'">CPU利用率</th>-->
+            <th style="cursor: pointer;" data-ng-click="cloudhost.changeResSort('cpu')">CPU利用率
+                <span class="{{cloudhost.sortCpuClass}}"></span></th>
+            <!--<th ng-if="cloudhost.dataType == 'real-time'">内存占有率</th>-->
+           <th style="cursor: pointer;" data-ng-click="cloudhost.changeResSort('ram')">内存占有率
+               <span class="{{cloudhost.sortRamClass}}"></span></th>
+            <!-- <th ng-if="cloudhost.dataType == 'real-time'">网卡下行速率(Mb/s)</th>-->
+            <th style="cursor: pointer;"data-ng-click="cloudhost.changeResSort('outgoing')">网卡下行速率(Mb/s)
+                <span class="{{cloudhost.sortOutClass}}"></span></th>
+            <!--<th ng-if="cloudhost.dataType == 'real-time'">网卡上行速率(Mb/s)</th>-->
+           <th  style="cursor: pointer;"data-ng-click="cloudhost.changeResSort('incomming')">网卡上行速率(Mb/s)
+               <span class="{{cloudhost.sortInClass}}"></span></th>
+            <!-- <th ng-if="cloudhost.dataType == 'real-time'">磁盘写吞吐(MB/s)</th>-->
+            <th style="cursor: pointer;"data-ng-click="cloudhost.changeResSort('write')">磁盘写吞吐(MB/s)
+                <span class="{{cloudhost.sortWriteClass}}"></span></th>
+            <!--<th ng-if="cloudhost.dataType == 'real-time'">磁盘读吞吐(MB/s)</th>-->
+           <th style="cursor: pointer;"data-ng-click="cloudhost.changeResSort('read')">磁盘读吞吐(MB/s)
+               <span class="{{cloudhost.sortReadClass}}"></span></th>
+       </tr>
+       </thead>
+       <tbody>
+       <tr ng-repeat="vmHost in cloudhost.cloudHostTable.result">
+           <td ng-bind="(null == vmHost.vmName)||('null' == vmHost.vmName)?'----':vmHost.vmName" class="click-link" data-ng-click="cloudhost.detail(vmHost.vmId)"></td>
+           <td ng-bind="(null == vmHost.dcName)||('null' == vmHost.dcName)?'----':vmHost.dcName"></td>
+           <td ng-bind="(null == vmHost.cusName)||('null' == vmHost.cusName)?'----':vmHost.cusName"></td>
+           <td ng-bind="(null == vmHost.prjName)||('null' == vmHost.prjName)?'----':vmHost.prjName"></td>
+
+           <td ng-if="cloudhost.dataType == 'real-time'" data-ng-class="vmHost.cpuDiff | discolor" ng-bind="(vmHost.cpu | number:1 )+ '%&nbsp;&nbsp;' + (vmHost.cpuDiff | arrow)"></td>
+           <td ng-if="cloudhost.dataType != 'real-time'" data-ng-class="vmHost.cpuDiff | discolor" ng-bind="!vmHost.mongodb || cloudhost.noData?'----':(vmHost.cpu | number:1 )+ '%&nbsp;&nbsp;'"></td>
+           <td ng-if="cloudhost.dataType == 'real-time'" data-ng-class="vmHost.ramDiff | discolor" ng-bind="(vmHost.ram | number:1 )+ '%&nbsp;&nbsp;' + (vmHost.ramDiff | arrow)"></td>
+           <td ng-if="cloudhost.dataType != 'real-time'" data-ng-class="vmHost.ramDiff | discolor" ng-bind="!vmHost.mongodb || vmHost.noData?'----':(vmHost.ram | number:1 )+ '%&nbsp;&nbsp;'"></td>
+
+           <td ng-if="cloudhost.dataType == 'real-time'" data-ng-class="vmHost.netoutDiff | discolor" ng-bind="(vmHost.netOut | number:4) + '&nbsp;&nbsp;' + (vmHost.netoutDiff | arrow)"></td>
+           <td ng-if="cloudhost.dataType != 'real-time'" data-ng-class="vmHost.netoutDiff | discolor" ng-bind="!vmHost.mongodb || cloudhost.noData?'----':(vmHost.netOut | number:4)"></td>
+           <td ng-if="cloudhost.dataType == 'real-time'" data-ng-class="vmHost.netinDiff | discolor" ng-bind="(vmHost.netIn | number:4) + '&nbsp;&nbsp;' + (vmHost.netinDiff | arrow)"></td>
+           <td ng-if="cloudhost.dataType != 'real-time'" data-ng-class="vmHost.netinDiff | discolor" ng-bind="!vmHost.mongodb || cloudhost.noData?'----':(vmHost.netIn | number:4)"></td>
+           <td ng-if="cloudhost.dataType == 'real-time'" data-ng-class="vmHost.writeDiff | discolor" ng-bind="(vmHost.diskWrite | number:4) + '&nbsp;&nbsp;' + (vmHost.writeDiff | arrow)"></td>
+           <td ng-if="cloudhost.dataType != 'real-time'" data-ng-class="vmHost.writeDiff | discolor" ng-bind="!vmHost.mongodb || cloudhost.noData?'----':(vmHost.diskWrite | number:4)"></td>
+           <td ng-if="cloudhost.dataType == 'real-time'" data-ng-class="vmHost.readDiff | discolor" ng-bind="(vmHost.diskRead | number:4) + '&nbsp;&nbsp;' + (vmHost.readDiff | arrow)"></td>
+           <td ng-if="cloudhost.dataType != 'real-time'" data-ng-class="vmHost.readDiff | discolor" ng-bind="!vmHost.mongodb || cloudhost.noData?'----':(vmHost.diskRead | number:4)"></td>
+
+       </tr>
+       </tbody>
+   </table>
+   <eayun-table-page></eayun-table-page>
+</eayun-table>

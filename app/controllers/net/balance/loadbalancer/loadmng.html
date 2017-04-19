@@ -1,0 +1,116 @@
+<!-- Form表单 -->
+<form class="form-inline">
+    <!--<button type="button" class="btn btn-primary"
+            data-ng-click="lb.createPool()"
+            ng-if="hasPermission('vir_loadbalance_lb_c')"
+            style="margin-right: 15px;">
+        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 创建负载均衡器
+    </button>-->
+
+    <div class="form-group">
+        <eayun-search ng-model="lb.search" options="lb.options"></eayun-search>
+    </div>
+
+</form>
+
+<!-- 表格 -->
+<eayun-table data-api="lb.table.api" data-ajax-source="lb.table.source" data-param="lb.table.getParams" data-result="lb.table.result"
+             ng-if="hasPermission('vir_loadbalance_lb_r')">
+    <table class="table table-eayun">
+        <thead>
+        <tr>
+            <th>名称</th>
+            <th style="width: 100px;">状态</th>
+            <th style="width: 200px;">IP地址</th>
+            <th style="width: 200px;">配置</th>
+            <th>成员数量</th>
+           <!-- <th>健康检查</th>-->
+            <th>客户</th>
+            <th>所属项目</th>
+            <th>
+                <eayun-select type="btn" class="btn-group btn-group-xs" data-ng-model="lb.dcId"
+                              data-ng-change="lb.refreshTable()">
+                    <eayun-option value="''" text="数据中心（全部）" selected></eayun-option>
+                    <eayun-option value="dc.id" text="{{dc.name}}"
+                                  ng-repeat="dc in lb.dcList"></eayun-option>
+                </eayun-select>
+            </th>
+            <th class="net-table-cloumn-charge">计费状态</th>
+            <th class="net-table-cloumn-date">创建时间</th>
+            <th style="width:270px">操作</th>
+        </tr>
+        </thead>
+        <tbody><tr data-ng-repeat="p in lb.table.result">
+            <td ng-bind="p.poolName.length > 15 ? p.poolName.substring(0,14) + '...':p.poolName"
+                ng-click="lb.detail(p)"
+                title="{{p.poolName}}"
+                class="color-info pointer"></td>
+            <td><span class="state-block"
+                      ng-class="lb.poolStatusClass[$index] != '' ? lb.poolStatusClass[$index] : ''"
+                      ng-init="lb.poolStatusClass[$index] = lb.getPoolStatus(p,$index)"></span>{{p.statusForPool}}</td>
+            <td><div style="text-align: left;" ng-show="::p.subnetIp"><span>内网：</span><span>{{p.subnetIp}}</span></div>
+                <div style="text-align: left;" ng-show="::p.floatIp"><span>公网：</span><span>{{p.floatIp}}</span></div></td>
+            <td>
+                <span ng-show="p.poolProtocol && p.vipPort!=0">{{p.poolProtocol}} ： {{p.vipPort}}</span><br>
+                <span>健康检查：{{p.monitorStatus}}</span>
+            </td>
+            <!--<td><span ng-show="p.poolProtocol&&p.vipPort!=0">{{p.poolProtocol}} : {{p.vipPort}}</span></td>-->
+            <td >{{p.count}}</td>
+            <!--<td >{{p.monitorStatus}}</td>-->
+            <td >{{p.cusOrg}}</td>
+            <td >{{p.prjName}}</td>
+            <td >{{p.dcName}}</td>
+            <td class="net-table-charge">
+                <span>{{p.payTypeStr}}</span><br>
+      	        <span data-ng-if="p.payType == 1">
+			        到期时间：{{p.endTime|date:'yyyy-MM-dd HH:mm:ss'}}
+		        </span>
+            </td>
+            <td>
+                {{p.createTime|date:'yyyy-MM-dd HH:mm:ss'}}
+            </td>
+            <td>
+                <button class="btn btn-tablemng btn-left" type="button" data-ng-click="lb.bindMonitor(p)" data-ng-disabled="p.chargeState != '0'"
+                        ng-if="hasPermission('vir_loadbalance_lb_hm')">健康检查</button>
+                <!--<button class="btn btn-tablemng btn-left" type="button" data-ng-click="lb.bindFloatIp(p)"
+                        data-ng-show="p.vipId&&!p.floatIp "
+                        ng-if="hasPermission('vir_loadbalance_lb_bindfloip')">绑定公网IP</button>
+                <button class="btn btn-tablemng btn-left" type="button" data-ng-click="lb.unbundingFloatIp(p)"
+                        data-ng-show="p.vipId&&p.floatIp"
+                        ng-if="hasPermission('vir_loadbalance_lb_unbindfloip')">解绑公网IP</button>
+                <button class="btn btn-tablemng btn-left" type="button" data-ng-click="lb.addMember(p)"
+                        ng-if="hasPermission('vir_loadbalance_lb_addmember')">添加成员</button>-->
+                <div class="btn-group btn-left" >
+                    <button  class="btn btn-tablemng dropdown-toggle" data-toggle="dropdown">更多操作
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu"style = "min-width : 80px;width : 100px;">
+                       <!-- <li><a role="button" data-ng-click="lb.editPool(p)"
+                               ng-if="hasPermission('vir_loadbalance_lb_u')">编辑</a></li>-->
+                        <li><a role="button" data-ng-click="lb.deletePool(p)" class="btn"
+                               style = "color : #EA3200;"
+                               ng-if="hasPermission('vir_loadbalance_lb_d')">删除</a></li>
+                        <li><a role="button"
+                               class="btn"
+                               data-ng-click="lb.bindFloatIp(p)"
+                               data-ng-disabled="p.chargeState != '0'"
+                               data-ng-show="p.vipId && !p.floatIp"
+                               ng-if="hasPermission('vir_loadbalance_lb_bindfloip')">绑定公网IP</a></li>
+                        <li><a role="button"
+                               class="btn"
+                               data-ng-click="lb.unbundingFloatIp(p)"
+                               data-ng-disabled="p.chargeState != '0'"
+                               data-ng-show="p.vipId && p.floatIp"
+                               ng-if="hasPermission('vir_loadbalance_lb_unbindfloip')">解绑公网IP</a></li>
+                        <li><a role="button"
+                               class="btn"
+                               data-ng-disabled="p.chargeState != '0'"
+                               data-ng-click="lb.addMember(p)"
+                               ng-if="hasPermission('vir_loadbalance_lb_addmember')">添加成员</a></li>
+                    </ul>
+                </div>
+            </td>
+        </tr></tbody>
+    </table>
+    <eayun-table-page></eayun-table-page>
+</eayun-table>

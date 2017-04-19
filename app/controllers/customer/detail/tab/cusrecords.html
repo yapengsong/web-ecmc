@@ -1,0 +1,102 @@
+<!-- 当前位置下拉列表 -->
+<div class="title-inline">
+    <div class="form-group">
+        <label class="control-label">当前位置：
+            <a style="cursor: pointer;" data-ui-sref="app.customer">客户管理</a>&nbsp;>
+            <span> 交易记录</span>
+        </label>
+    </div>
+</div>
+
+<div class="panel panel-default clearfix">
+    <div class="panel-body">
+        <h4>客户详情</h4>
+        <!-- 导航页签 -->
+        <tabs class="nav-tabs-online">
+            <tab ui-sref-active="active" data-ui-sref="app.customer.detail.cusandprojects">客户及项目信息</tab>
+            <tab ui-sref-active="active" data-ui-sref="app.customer.detail.cusreport({cusId:detailMng.cusId})">费用报表
+            </tab>
+            <tab ui-sref-active="active" data-ui-sref="app.customer.detail.cusrecords">交易记录</tab>
+        </tabs>
+        <div class="form-inline">
+            <label>交易时间：</label>
+            <date-time-picker name="beginTime"
+                              data-ng-model="cusRecords.time.beginTime"
+                              style="margin-left:10px;margin-right:10px;" max-date="cusRecords.time.endTime"
+                              class="form-group" data-format="yyyy-MM-dd" show-time="false"></date-time-picker>
+            <label>—</label>
+            <date-time-picker class="form-group"
+                              data-value="cusRecords.time.endTime"
+                              data-ng-model="cusRecords.time.endTime"
+                              style="margin-left:10px;" min-date="cusRecords.time.beginTime"
+                              data-format="yyyy-MM-dd"></date-time-picker>
+            <button class="btn btn-default" style="margin-left:15px;"
+                    ng-click="cusRecords.query()">查&nbsp;&nbsp;询
+            </button>
+            <button class="btn btn-primary" style="float:right;margin-left: 15px;"
+                    ng-click="cusRecords.createExcel()" style="margin-top:7px;">
+                <span class="eayunfont ef-center"></span> <span>导出</span>
+            </button>
+            <div style="display: none;">
+                <iframe id="record-export-iframe" frameborder="0"></iframe>
+            </div>
+
+        </div>
+        <div class="ey-divider"></div>
+        <eayun-table data-api="cusRecords.myTable.api" data-ajax-source="cusRecords.myTable.source"
+                     data-param="cusRecords.myTable.getParams" data-result="cusRecords.myTable.result">
+            <table class="table table-eayun">
+                <thead>
+                <tr>
+                    <th>流水号</th>
+                    <th>交易时间</th>
+                    <th>
+                        <eayun-select type="btn" class="btn-group btn-group-xs" ng-change="cusRecords.changeStatus()"
+                                      data-ng-model="cusRecords.incomeType">
+                            <eayun-option value="status.value" text="{{status.text}}"
+                                          ng-repeat="status in cusRecords.status"></eayun-option>
+                        </eayun-select>
+                    </th>
+                    <th>交易备注</th>
+                    <th>交易金额</th>
+                    <th>账户余额</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr data-ng-repeat="model in cusRecords.myTable.result" data-ng-show="true"
+                    style="height:45px;">
+                    <td><span ng-bind="model.serialNumber"></span></td>
+                    <td><span ng-bind="model.monTime|date:'yyyy-MM-dd HH:mm:ss'"></span></td>
+                    <td><span ng-bind="model.incomeType=='1'?'收入':'支出'"></span></td>
+                    <td ng-if="model.operType=='1'||model.operType=='3'"><span
+                            ng-bind-html="model.monEcmcRemark"></span></td>
+                    <td ng-if="model.operType=='2'"><span
+                            ng-bind-html="model.monEcmcRemark"></span><br>订单号：<span
+                            ng-bind="model.orderNo"></span></td>
+                    <td ng-if="model.operType=='4'||model.operType=='5'"><span
+                            ng-bind-html="model.monEcmcRemark"></span><span ng-if="model.monContract">
+                        <br>关联合同：<span ng-bind="model.monContract"></span></span></td>
+                    <td ng-if="model.incomeType=='1'&&model.payType!='1'"><span
+                            class="color-blue">￥ +<span class="color-blue"
+                                                       ng-bind="model.money|number:3"></span></span></td>
+                    <td ng-if="model.incomeType=='1'&&model.payType=='1'"><span
+                            class="color-blue">￥ +<span class="color-blue"
+                                                       ng-bind="model.money|number:3"></span></span></td>
+                    <td ng-if="model.incomeType=='2'&&model.payType!='1'"><span
+                            class="red-font-color">￥ -<span class="red-font-color"
+                                                          data-ng-bind="model.money|number:3"></span></span></td>
+                    <td ng-if="model.incomeType=='2'&&model.payType=='1'"><span
+                            class="red-font-color">￥ -<span class="red-font-color"
+                                                          data-ng-bind="model.money|number:3"></span></span></td>
+                    <td ng-if="model.accountBalance>=0"><span class="color-blue">￥ <span
+                            class="color-blue" data-ng-bind="model.accountBalance|number:3"></span></span></td>
+                    <td ng-if="model.accountBalance<0"><span class="red-font-color">￥ -<span
+                            class="red-font-color" data-ng-bind="model.balancePositive|number:3"></span></span></td>
+                </tr>
+                </tbody>
+            </table>
+            <eayun-table-page></eayun-table-page>
+        </eayun-table>
+
+    </div>
+</div>

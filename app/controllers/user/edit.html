@@ -1,0 +1,161 @@
+<form class="form-horizontal" name="addEdit">
+    <div class="form-group" ng-if="edit.user.id">
+        <label class="col-sm-3 control-label">ID：</label>
+
+        <div class="col-sm-8">
+            <label class="control-label" ng-bind="::edit.user.id"></label>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label"><span class="color-require">*</span>账号：</label>
+        <!--编辑用户，不允许修改账号-->
+        <div class="col-sm-8" ng-if="edit.user.id">
+            <label class="control-label" ng-bind="::edit.user.account"></label>
+        </div>
+        <!--新增用户是，可输入账号-->
+        <div class="col-sm-8" ng-if="!edit.user.id"
+             data-ng-class="(addEdit.account.$dirty &&addEdit.account.$invalid) ? 'has-error' : ''">
+            <input type="text" class="form-control" data-ng-model="edit.user.account"
+                   name="account" required
+                   data-ajax-valid="edit.checkName(value)"
+                   data-ng-pattern="/^[a-zA-Z0-9_]{1,20}$/"/>
+            <label class="control-label hide"
+                   data-ng-class="addEdit.account.$dirty && addEdit.account.$error.pattern ? 'show' : 'hide'"
+                   style="text-align: left;">请输入1-20位字符,支持数字、英文、下划线</label>
+            <label class="control-label hide"
+                   data-ng-class="(addEdit.account.$dirty && addEdit.account.$error.ajaxValid) ? 'show' : 'hide'"
+                   style="text-align: left;">账号已存在</label>
+            <label class="control-label hide"
+                   data-ng-class="addEdit.account.$dirty && addEdit.account.$error.required ? 'show' : 'hide'"
+                   style="text-align: left;">账号不能为空</label>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label"><span class="color-require">*</span>名称：</label>
+
+        <div class="col-sm-8"
+             data-ng-class="(addEdit.name.$dirty && addEdit.name.$invalid) ? 'has-error' : ''">
+            <input type="text"  autocomplete="off" class="form-control" data-ng-model="edit.user.name" name="name" required data-ng-pattern="/^[\u4e00-\u9fa5a-zA-Z0-9_]{1,20}$/"/>
+            <label class="control-label hide"
+                   data-ng-class="addEdit.name.$dirty && addEdit.name.$error.required ? 'show' : 'hide'"
+                   style="text-align: left;">名称不能为空</label>
+            <label class="control-label hide"
+                   data-ng-class="addEdit.name.$dirty && addEdit.name.$error.pattern ? 'show' : 'hide'"
+                   style="text-align: left;">请输入1-20位字符,支持数字、中英文、下划线</label>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label"><span ng-if="!edit.user.id" class="color-require">*</span>密码：</label>
+
+        <div class="col-sm-8" ng-if="edit.user.id"
+             data-ng-class="(addEdit.password.$dirty && addEdit.password.$invalid) ? 'has-error' : ''">
+            <input type="password" autocomplete="off" readonly onfocus="this.removeAttribute('readonly');"
+                   class="form-control" data-ng-model="edit.user.password"
+                   name="password" data-ng-pattern="/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,20}$/"/>
+            <label class="control-label hide"
+                   data-ng-class="addEdit.password.$dirty &&  addEdit.password.$error.pattern ? 'show' : 'hide'"
+                   style="text-align: left;">6-20位数字和字母组合</label>
+        </div>
+        <div class="col-sm-8" ng-if="!edit.user.id"
+             data-ng-class="(addEdit.password.$dirty && addEdit.password.$invalid) ? 'has-error' : ''">
+            <input type="password" autocomplete="off" readonly onfocus="this.removeAttribute('readonly');"
+                   class="form-control" data-ng-model="edit.user.password" name="password"
+                   required data-ng-pattern="/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,20}$/"/>
+            <label class="control-label hide"
+                   data-ng-class="addEdit.password.$dirty && addEdit.password.$error.required ? 'show' : 'hide'"
+                   style="text-align: left;">密码不能为空</label>
+            <label class="control-label hide"
+                   data-ng-class="addEdit.password.$dirty &&  addEdit.password.$error.pattern ? 'show' : 'hide'"
+                   style="text-align: left;">6-20位数字和字母组合</label>
+            <label class="control-label hide"
+                   data-ng-class="addEdit.password.$error.ajaxValid ? 'show' : 'hide'"
+                   style="text-align: left;">密码前后不匹配</label>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label"><span ng-if="!edit.user.id" class="color-require">*</span>确认密码：</label>
+        <div class="col-sm-8"
+             data-ng-class="(addEdit.confirmPassword.$dirty && addEdit.confirmPassword.$invalid)
+                || (!addEdit.confirmPassword.$viewValue && addEdit.password.$valid  && addEdit.password.$viewValue)
+                || addEdit.confirmPassword.$error.ajaxValid
+                 ? 'has-error' : ''">
+            <input type="password" autocomplete="off" readonly onfocus="this.removeAttribute('readonly');"
+                   class="form-control" data-ng-model="edit.user.confirmPassword"
+                   name="confirmPassword"  valid-password="edit.user.password"/>
+            <label class="control-label hide"
+                   data-ng-class="!addEdit.confirmPassword.$viewValue && addEdit.password.$valid && addEdit.password.$viewValue ? 'show' : 'hide'"
+                   style="text-align: left;">请确认密码</label>
+            <!--<label class="control-label hide"-->
+                   <!--data-ng-class="addEdit.password.$viewValue && addEdit.confirmPassword.$viewValue && addEdit.confirmPassword.$error.ajaxValid ? 'show' : 'hide'"-->
+                   <!--style="text-align: left;">密码前后不匹配</label>-->
+            <label class="control-label hide"
+                   data-ng-class="addEdit.password.$valid && addEdit.confirmPassword.$viewValue && addEdit.confirmPassword.$error.noMatch ? 'show' : 'hide'"
+                   style="text-align: left;">密码前后不匹配</label>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label"><span class="color-require">*</span>邮箱：</label>
+
+        <div class="col-sm-8"
+             data-ng-class="(addEdit.mail.$invalid&&addEdit.mail.$dirty) ? 'has-error' : ''">
+            <input type="text" class="form-control" data-ng-model="edit.user.mail" name="mail"
+                   data-ng-pattern="/^[a-zA-Z0-9_-]+[\.a-zA-Z0-9_-]+[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/"
+                   ng-maxlength="30" required/>
+            <label class="control-label hide"
+                   data-ng-class="addEdit.mail.$dirty && addEdit.mail.$error.pattern ? 'show' : 'hide'"
+                   style="text-align: left;">邮箱格式不正确</label>
+            <label class="control-label"
+                   ng-show="addEdit.mail.$dirty && addEdit.mail.$error.required"
+                   style="text-align: left;">邮箱不能为空</label>
+            <label class="control-label"
+                   ng-show="addEdit.mail.$dirty && addEdit.mail.$error.maxlength"
+                   style="text-align: left;">不超过30位字符</label>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label"><span class="color-require">*</span>电话：</label>
+
+        <div class="col-sm-8"
+             data-ng-class="(addEdit.tel.$dirty && addEdit.tel.$invalid) ? 'has-error' : ''">
+            <input type="text" class="form-control" data-ng-model="edit.user.tel" name="tel" required
+                   data-ng-pattern="/^[0-9\-]{5,15}$/"/>
+            <label class="control-label hide"
+                   data-ng-class="addEdit.tel.$dirty && addEdit.tel.$error.pattern ? 'show' : 'hide'"
+                   style="text-align: left;">请输入5-15位数字，支持连接符'-'</label>
+            <label class="control-label"
+                   ng-show="addEdit.tel.$dirty && addEdit.tel.$error.required"
+                   style="text-align: left;">电话不能为空</label>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label"><span class="color-require">*</span>组织机构：</label>
+
+        <div class="col-sm-8"
+             data-ng-class="(addEdit.departId.$dirty && addEdit.departId.$error.required) ? 'has-error' : ''">
+            <eayun-select-tree options-data="edit.tree" value-field="id" text-field="name" class="form-control form-select" ng-model="edit.user.departId"
+                          name="departId" required/>
+            <label class="control-label hide"
+                   data-ng-class="addEdit.departId.$dirty && addEdit.departId.$error.required ? 'show' : 'hide'"
+                   style="text-align: left;">部门不能为空</label>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">是否启用：</label>
+
+        <div class="col-sm-2">
+            <input type="checkbox" style="margin-top: 10px;" data-ng-model="edit.user.enableFlag" name="enableFlag"/>
+            <span> 启用</span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">角色：</label>
+
+        <div class="col-sm-8" style="margin-left:-15px">
+            <div class="col-sm-4" ng-repeat="role in edit.roleList">
+                <input type="checkbox" ng-model="role.$$isChecked">
+                <span> {{role.name}} </span>
+            </div>
+
+        </div>
+    </div>
+</form>

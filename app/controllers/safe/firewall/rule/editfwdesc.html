@@ -1,0 +1,22 @@
+<div>
+    <ng-form name="editDescTable" novalidate>
+        <div class="col-md-10"
+             data-ng-class="rule.vmNameEditable && (editDescTable.fwDesc.$dirty && editDescTable.fwDesc.$invalid ) ? 'has-error' : ''"
+             style="padding-left: 0px;">
+            <input class="form-control" name="fwDesc" type="text" maxlength="200" placeholder="请输入防火墙描述"
+                   data-ng-model="rule.vmEditModel.description">
+            <label class="control-label hide" style="padding-top:17px;"
+                   data-ng-class="rule.vmNameEditable && editDescTable.fwDesc.$dirty && editDescTable.fwDesc.$invalid ? 'show' : 'hide'">
+                <span>请输入防火墙描述</span>
+            </label>
+        </div>
+        <span class="badge hide" style="margin-left:10px;background-color:green;color:#ffffff;"
+              data-ng-class="rule.vmDescEditable ? 'show' : 'hide'"
+              data-ng-click="rule.saveEdit('fwDesc')">
+            <span class="glyphicon glyphicon-ok"></span>
+        </span>
+        <span class="badge" data-ng-click="rule.cancelEdit('fwDesc')">
+            <span class="glyphicon glyphicon-remove"></span>
+        </span>
+    </ng-form>
+</div>

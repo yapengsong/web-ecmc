@@ -1,0 +1,29 @@
+<form class="form-horizontal" name = "editphone" novalidate>
+    <div class="form-group">
+        <label class="col-sm-1 control-label"></label>
+        <div class="col-sm-11">
+            请输入要绑定的手机号码
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">手机号码：</label>
+        <div class="col-sm-4" data-ng-class="(editphone.phone.$dirty && editphone.phone.$invalid) ? 'has-error' : ''">
+            <input type = "text" name = "phone" data-ng-model = "edit.editParams.newPhone" class="form-control" required  data-ng-pattern = "/^1\d{10}$/" maxlength="11">
+            <label class="control-label" ng-show="editphone.phone.$dirty && editphone.phone.$error.required">请输入正确的手机号码</label>
+            <label class="control-label" ng-show="editphone.phone.$dirty && editphone.phone.$error.pattern">请输入正确的手机号码</label>
+        </div>
+        <div class="col-sm-5">
+            <button class = "btn btn-primary" data-ng-click="edit.sendCode()"  data-ng-disabled="!editphone.phone.$valid" data-ng-hide="edit.thismodel.isSend">
+                <span>发送验证码</span>
+            </button>
+            <button class="btn btn-primary.disabled" data-ng-disabled = "true" data-ng-show = "edit.thismodel.isSend">{{edit.thismodel.second}}s后可重新发送</button>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">验证码：</label>
+        <div class="col-sm-3" data-ng-class="(editphone.verCode.$dirty && editphone.verCode.$invalid) ? 'has-error' : ''">
+            <input type="text" name = "verCode" class="form-control" data-ng-model = "edit.editParams.code" required>
+            <label class="control-label" ng-show="editphone.verCode.$dirty && editphone.verCode.$error.required">请输入验证码</label>
+        </div>
+    </div>
+</form>

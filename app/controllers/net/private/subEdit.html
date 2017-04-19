@@ -1,0 +1,55 @@
+<form class="form-horizontal" name="editNet" novalidate>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">子网名称：</label>
+
+        <div class="col-sm-8"
+             data-ng-class="(editNet.name.$dirty && editNet.name.$invalid) ? 'has-error' : ''">
+            <input type="text" class="form-control" ng-model="subnet.name" name="name"
+                   ajax-valid="subnet.checkName(value)" maxlength="20"
+                   ng-pattern='/^[\u4e00-\u9fa5a-zA-Z0-9]([\u4e00-\u9fa5_a-zA-Z0-9\s]{0,18}[\u4e00-\u9fa5a-zA-Z0-9]){0,1}$/'
+                   required/>
+            <label class="control-label hide"
+                   data-ng-class="editNet.name.$dirty && editNet.name.$error.required ? 'show' : 'hide'"
+                   style="text-align: left;">子网名称不能为空</label>
+            <label class="control-label hide"
+                   data-ng-class="editNet.name.$dirty && editNet.name.$error.pattern ? 'show' : 'hide'"
+                   style="text-align: left;">请输入1-20位字符,支持数字、中英文、下划线、空格</label>
+            <label class="control-label hide"
+                   data-ng-class="editNet.name.$dirty && editNet.name.$error.ajaxValid ? 'show' : 'hide'"
+                   style="text-align: left;">名称已存在</label>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">DNS配置：</label>
+
+        <div class="col-sm-8 subnet" ng-class="subnet.dns.hasError?'net-error':''">
+            <div class="subnet-cidr">
+                <div class="row" ng-repeat="dns in subnet.dns" ng-init="rowNo = $index">
+                    <div class="col-lg-1">
+                        <div class="radio">
+                            <input type="checkbox" name="radio" ng-model="dns.select" ng-click="subnet.dnsClick(dns)">
+                        </div>
+                    </div>
+                    <div class="col-lg-10" ng-class="dns.repeat ? 'has-error':''">
+                        <div ng-repeat-start="item in dns" ng-class="(item.dirty()&&!item.valid) ? 'has-error':''"
+                             style="display: inline-block">
+                            <input type="text" class="form-control" ng-model="item.value"
+                                   ng-init="colNo = $index" ng-focus="subnet.focus(item)" ng-blur="subnet.blur()"
+                                   ng-change="subnet.check(item)" ng-disabled="!dns.select" maxlength="3">
+                        </div>
+                        <label class="control-label" ng-if="colNo < 3" ng-repeat-end>.</label>
+                    </div>
+                </div>
+            </div>
+            <p class="help-block" ng-show="subnet.curItem&&!subnet.dns.repeat" style="color: #737373;">可填写<span ng-bind="subnet.curItem.min"></span>到<span
+                    ng-bind="subnet.curItem.max"></span>之间的整数</p>
+            <p class="help-block" ng-show="subnet.dns.repeat">DNS配置不能重复</p>
+        </div>
+    </div>
+</form>
+<div class="modal-footer">
+    <button type="button" class="btn btn-primary btn-modal" data-ng-click="commit()"
+            data-ng-disabled="editNet.$invalid || subnet.dns.hasError || checkBtn">确 定
+    </button>
+    <button type="button" class="btn btn-default btn-modal" data-ng-click="cancel()">取 消</button>
+</div>

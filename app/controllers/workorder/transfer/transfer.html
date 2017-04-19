@@ -1,0 +1,13 @@
+<form class="form-horizontal row" name="transferForm">
+    <div class="form-group">
+        <label class="control-label col-sm-3" style="margin-left: 20px;padding-bottom: 10px;;">选择或搜索工程师：</label>
+        <div class="form-group col-sm-10" style="margin-left: 40px;"  data-ng-class="(transferForm.name.$dirty && transferForm.name.$invalid) ? 'has-error' : ''">
+            <eayun-select-input options-data="transfer.otherPeoples" text-field="name" value-field="id" cant-input="true"
+                                data-ng-model="transfer.workHeadUser" name="name" placeholder="请输入申请人账号" required>
+            </eayun-select-input>
+            <label class="control-label"
+                   data-ng-show="transferForm.name.$dirty && transferForm.name.$error.required">请选择求助工程师</label>
+        </div>
+    </div>
+</form>
+

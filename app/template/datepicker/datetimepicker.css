@@ -1,0 +1,75 @@
+/* 日期选择 */
+.date-time-picker {
+    /*color:#0040D0;*/
+    width: 205px;
+    height: 250px;
+    padding: 5px 10px;
+}
+
+.date-time-picker.on-time {
+    height: 220px;
+}
+
+.date-time-picker table {
+    width: 185px;
+    height: 240px;
+}
+
+.date-time-picker thead tr {
+    height: 30px;
+    border-bottom: 1px solid #dcdcdc;
+}
+
+.date-time-picker thead .btn {
+    font-weight: bold;
+}
+
+.date-time-picker tfoot {
+    border-top: 1px solid #dcdcdc;
+    padding: 5px 0;
+    color: #58b8f0;
+}
+
+.date-time-picker tfoot tr {
+    height: 30px;
+}
+
+.date-time-picker tfoot form .form-group {
+    margin-bottom: 0;
+    font-size: 14px;
+}
+
+.date-time-picker tfoot .form-control {
+    width: 30px !important;
+    height: 18px !important;
+    padding: 0 5px !important;
+    margin: 6px 0 !important;
+    text-align: right !important;
+}
+
+.date-time-picker tfoot .control-label {
+    width: 30px !important;
+    height: 18px !important;
+    padding: 0 !important;
+    margin: 6px 0 !important;
+    line-height: 18px !important;
+    vertical-align: middle !important;
+}
+
+.btn-picker {
+    background-color: #FFFFFF;
+    padding: 0;
+}
+
+.date-time-picker .btn-info {
+    background-color: #0077CC;
+    padding: 0
+}
+
+.date-time-picker .btn-info .text-info {
+    color: #FFFFFF;
+}
+
+.date-time-picker tfoot {
+    color: #0077cc;
+}

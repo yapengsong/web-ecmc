@@ -1,0 +1,84 @@
+<form class="form-horizontal data-center" >
+    <div class="col-lg-11">
+        <div class="details-group">
+            <div class="details-name">IP地址：</div>
+            <div class="details-value"><span ng-bind="::detail.model.ipAddress"></span></div>
+        </div>
+
+
+
+        <div class="details-group">
+            <div class="details-name">绑定对象：</div>
+            <div class="details-value"><span ng-bind-html="::detail.model.resoutceName|ellipsis:8"></span></div>
+        </div>
+
+        <div class="details-group">
+            <div class="details-name">对象类型：</div>
+            <div class="details-value">
+
+                <span  data-ng-if="detail.model.routeId!=''" data-ng-bind-html="detail.model.routeId==''?'':'路由网关   '"></span>
+                <span ng-if="detail.model.routeId==''" ng-bind-html="detail.model.resourceType==''?'':detail.model.resourceType=='vm'?'云主机':'均衡负载'">
+
+            </span></div>
+        </div>
+        <div class="details-group">
+            <div class="details-name">内网IP：</div>
+            <div class="details-value"><span ng-bind-html="::detail.model.vmIp"></span></div>
+        </div>
+
+    </div>
+
+</form>
+
+   <!-- <form class="form-horizontal " >
+        <div class="form-group">
+            <table class="table table-striped striped-text-middle">
+                <thead>
+                <tbody>
+                <tr>
+                    <td>
+                    <label class="col-sm-8 control-label">IP地址：&nbsp&nbsp&nbsp
+                           </label>
+
+                    </td>
+                    <td>
+                        <span data-ng-bind="::detail.model.ipAddress"> </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label class="col-sm-8 control-label">绑定对象：</label>
+                    </td>
+
+                    <td>
+                        <span data-ng-bind-html="::detail.model.resoutceName|ellipsis:8"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label class="col-sm-8 control-label">内网IP：&nbsp&nbsp&nbsp</label>
+                    </td>
+
+                    <td>
+                        <span data-ng-bind="::detail.model.vmIp"></span>
+                    </td>
+
+
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                </tr>
+                </thead>
+                </tbody>
+                </table>
+
+        </div>
+
+    </form>
+    <-->
+    <div class="modal-footer gd_footer">
+        <div class="col-md-12 text-center">
+            <button class="btn button-orange" type="button" ng-click="cancel()">关闭</button>
+        </div>
+    </div>

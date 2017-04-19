@@ -1,0 +1,38 @@
+<form class="form-horizontal" name="myForm" novalidate>
+
+    <div class="form-group has-feedback">
+        <label class="col-sm-3 control-label">数据中心：</label>
+
+        <div class="col-sm-8"
+             data-ng-class="(myForm.subnetName.$dirty && myForm.subnetName.$invalid) ? 'has-error' : ''">
+            <input type="text" class="form-control" name="subnetName" data-ng-model="netEdit.netModel.dcName"
+                   data-ng-disabled="true" required>
+        </div>
+    </div>
+
+    <div class="form-group has-feedback">
+        <label class="col-sm-3 control-label">网络名称：</label>
+
+        <div class="col-sm-8"
+             data-ng-class="(myForm.netName.$dirty && (myForm.netName.$invalid || netEdit.checkName)) ? 'has-error' : ''">
+            <input type="text" class="form-control" name="netName" data-ng-model="netEdit.netModel.netName" data-ng-change="netEdit.checkNetName()"
+                   data-ng-pattern="/^[\u4e00-\u9fa5a-zA-Z0-9]([\u4e00-\u9fa5_a-zA-Z0-9\s]{0,18}[\u4e00-\u9fa5a-zA-Z0-9]){0,1}$/" maxlength="20"
+                   placeholder="请输入网络名称"  required>
+            <label class="control-label hide"
+                   data-ng-class="(myForm.netName.$dirty && myForm.netName.$error.required) ? 'show' : 'hide'"
+                   style="text-align: left;">网络名称不能为空</label>
+            <label class="control-label hide"
+                   data-ng-class="(myForm.netName.$dirty && myForm.netName.$error.pattern) ? 'show' : 'hide'"
+                   style="text-align: left;">请输入1-20位字符,支持数字、中英文、下划线、空格</label>
+            <label class="control-label hide"
+                   data-ng-class="(myForm.netName.$dirty && netEdit.netModel.netName!=null && netEdit.checkName) ? 'show' : 'hide'"
+                   style="text-align: left;">外网名称已存在</label>
+        </div>
+    </div>
+
+    <!-- 按钮区域 -->
+     <div class="modal-footer" >
+      <button type="button" class="btn btn-primary btn-modal" ng-click="commit()"  ng-disabled="!myForm.$valid || netEdit.checkName">确  定</button>
+      <button type="button" class="btn btn-default btn-modal" ng-click="cancel()">取  消</button>
+    </div>
+</form>

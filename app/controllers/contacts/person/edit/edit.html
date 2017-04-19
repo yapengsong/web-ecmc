@@ -1,0 +1,60 @@
+<form class="form-horizontal" name="editContact" novalidate>
+    <div class="form-group has-feedback">
+        <label class="col-sm-3 control-label">姓名：</label>
+
+        <div class="col-sm-8"
+             data-ng-class="(editContact.name.$dirty && editContact.name.$invalid) ? 'has-error' : ''">
+            <input type="text" class="form-control" placeholder="请输入姓名" name="name"
+                   data-ng-model="person.name" data-ng-pattern="/^[\u4e00-\u9fa5a-zA-Z0-9]([\u4e00-\u9fa5_a-zA-Z0-9\s]{0,18}[\u4e00-\u9fa5a-zA-Z0-9]){0,1}$/"
+                   data-ajax-valid="checkContactName(value)" maxlength=20 required/>
+            <label class="control-label hide"
+                   data-ng-class="editContact.name.$dirty && editContact.name.$error.ajaxValid  ? 'show' : 'hide'"
+                   style="text-align: left;">姓名已存在</label>
+            <label class="control-label hide"
+                   data-ng-class="editContact.name.$dirty &&editContact.name.$error.required   ? 'show' : 'hide'"
+                   style="text-align: left;">姓名不能为空</label>
+            <label class="control-label hide"
+                   data-ng-class="editContact.name.$dirty && editContact.name.$error.pattern ? 'show' : 'hide'"
+                   style="text-align: left;">请输入正确的姓名</label>
+        </div>
+    </div>
+    <div class="form-group has-feedback">
+        <label class="col-sm-3 control-label">手机号：</label>
+
+        <div class="col-sm-8"
+             data-ng-class="(editContact.phone.$dirty && (editContact.phone.$invalid || person.phone == '')) ? 'has-error' : ''">
+            <input type="text" class="form-control" placeholder="请输入手机号" name="phone"
+                   data-ng-model="person.phone" data-ng-pattern="/^1\d{10}$/" maxlength=11/>
+            <label class="control-label hide"
+                   data-ng-class="editContact.phone.$dirty && person.phone == '' ? 'show' : 'hide'"
+                   style="text-align: left;">手机号不能为空</label>
+            <label class="control-label hide"
+                   data-ng-class="editContact.phone.$dirty && editContact.phone.$error.pattern ? 'show' : 'hide'"
+                   style="text-align: left;">请输入正确的手机号</label>
+        </div>
+    </div>
+    <div class="form-group has-feedback">
+        <label class="col-sm-3 control-label">电子邮箱：</label>
+
+        <div class="col-sm-8"
+             data-ng-class="(editContact.email.$dirty && (editContact.email.$invalid || person.email=='')) ? 'has-error' : ''">
+            <input type="text" class="form-control" placeholder="请输入电子邮箱" name="email"
+                   data-ng-model="person.email"
+                   data-ng-pattern="/^[a-zA-Z0-9_-]+[\.a-zA-Z0-9_-]+[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/"
+                   maxlength=100/>
+            <label class="control-label hide"
+                   data-ng-class="editContact.email.$dirty && person.email=='' ? 'show' : 'hide'"
+                   style="text-align: left;">邮箱不能为空</label>
+            <label class="control-label hide"
+                   data-ng-class="editContact.email.$dirty && editContact.email.$error.pattern ? 'show' : 'hide'"
+                   style="text-align: left;">请输入正确的邮箱地址</label>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary btn-modal" ng-click="commit()"
+                data-ng-disabled="(editContact.$dirty && editContact.$invalid) || person.phone=='' || person.email==''">
+            确 定
+        </button>
+        <a class="btn btn-default btn-modal" ng-click="cancel()">取 消</a>
+    </div>
+</form>

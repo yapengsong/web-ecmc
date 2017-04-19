@@ -1,0 +1,108 @@
+<form class="form-horizontal" name = "priceConfig">
+    <div class="form-group">
+        <div class="col-sm-4" style = "padding-left:30px;padding-right:0px;">
+            <label class="control-label">数据中心：</label>
+            <label class="control-label">{{null==imageconfig.item.dcName||'null'==imageconfig.item.dcName?'':imageconfig.item.dcName}}</label>
+        </div>
+        <div class="col-sm-4" style = "padding-left:30px;padding-right:0px;">
+            <label class=" control-label">计费单位：</label>
+            <label class="control-label">个数（个）</label>
+        </div>
+        <div class="col-sm-4" style = "padding-left:0px;padding-right:0px;">
+            <label class=" control-label">计费类型：</label>
+            <label class="control-label">单价计费</label>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-10" style = "padding-left:30px;padding-right:0px;">
+            <label class="control-label" style = "text-align:left;word-break:break-all;">计费因子：{{imageconfig.item.imageName}}</label>
+        </div>
+    </div>
+    <hr>
+    <div class="form-group">
+        <label class="click-link control-label" data-ng-click="imageconfig.add()" style = "padding-left:30px;">
+            <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>&nbsp;添加计费区间
+        </label>
+    </div>
+    <div class="form-group" style = "padding-left:30px;padding-right:30px;">
+        <div style="background-color:#f1f1f1;height:35px;">
+            <div class="row">
+                <label class = "col-sm-4 control-label" style="text-align:left;padding-left:50px;">区间</label>
+                <label class = "col-sm-4 control-label" style="text-align:left;padding-left:20px;">价格</label>
+            </div>
+        </div>
+        <div style = "overflow:auto;overflow-y:auto;overflow-x:hidden;height:250px;">
+            <div class="panel panel-default" style="margin-bottom:5px;margin-top:10px;border-radius:0px;" data-ng-if="imageconfig.isAdd">
+                <div style="background-color:#f1f1f1;">
+                    <div class="row">
+                        <div class="form-group" style="margin-top:10px;margin-bottom:10px;">
+                            <label class="col-sm-2 control-label"><span style="color:red;">*</span>&nbsp;计费区间：{{imageconfig.start.$dirty}}</label>
+                            <div class="col-sm-7" data-ng-class="(priceConfig.addStart.$dirty && imageconfig.noAddRange) || (priceConfig.addEnd.$dirty && imageconfig.noAddEndRange)?'input-error' : ''">
+                                <input data-ng-change="imageconfig.inputCheckNum()" type="text" class="form-control" style="width: 80px;display:inline;" data-ng-model="imageconfig.start" name = "addStart"/>&nbsp;—&nbsp;
+                                <input data-ng-change="imageconfig.inputCheckEndNum()" type="text" class="form-control" style="width: 80px;display:inline;" data-ng-model="imageconfig.end" name = "addEnd" data-ng-disabled="imageconfig.isCheck"/>
+                                <input type="checkbox" style="margin-left: 20px;" data-ng-model="imageconfig.isCheck" data-ng-click="imageconfig.doAddCheck()" class="checkbox-style">&nbsp;&nbsp;无上限
+                                <label class="control-label hide" data-ng-class="(priceConfig.addStart.$dirty && imageconfig.noAddRange) || (priceConfig.addEnd.$dirty && imageconfig.noAddEndRange) ? 'show' : 'hide'" style="text-align: left;">请输入合法的计费区间</label>
+                            </div>
+                        </div>
+                        <div class="form-group"style="margin-bottom:10px;">
+                            <label class="col-sm-2 control-label"><span style="color:red;">*</span>&nbsp;计费价格：</label>
+                            <div class="col-sm-7" data-ng-class="priceConfig.addPrice.$dirty && imageconfig.noAddPrice?'input-error' : ''">
+                                <div class="input-group" >
+                                    <span class="input-group-addon">￥</span>
+                                    <input input-check="imageconfig.inputCheckPrice(value,newValue)" type="text" style="width: 120px;display:inline;" class="form-control" data-ng-model="imageconfig.price"  name = "addPrice" maxlength="16"/>
+                                    <label class="control-label" data-ng-show="priceConfig.addPrice.$dirty && imageconfig.noAddPrice" style="text-align: left;display:inline;margin-left:10px;">请输入合法的计费价格</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group"style="float:right;padding-right:50px;margin-bottom:10px;">
+                            <button type="button" class="btn btn-primary btn-xs" data-ng-click="imageconfig.addPrice()" data-ng-disabled="imageconfig.noAddRange || imageconfig.noAddEndRange || imageconfig.noAddPrice">保  存</button>
+                            <button type="button" class="btn btn-default btn-xs" data-ng-click="imageconfig.cancelAdd()" style="margin-left:15px;">取  消</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default" data-ng-repeat = "price in imageconfig.priceList" style="margin-bottom:5px;margin-top:10px;border-radius:0px;">
+                <div class="row" style="height:40px;">
+                    <label class = "col-sm-4 control-label" style="text-align:left;padding-left:30px;">{{price.startNum}}~{{'-1'==price.endNum?'无上限': price.endNum}}</label>
+                    <label class = "col-sm-4 control-label" style="text-align:left;">￥{{price.price|number:3}}</label>
+                    <div class="col-sm-4" style="text-align:right;padding-top:7px;padding-right:35px;">
+                        <button type="button" class="btn btn-primary btn-xs" data-ng-click="imageconfig.edit(price)" data-ng-disabled="imageconfig.isEdit">编辑</button>
+                        <button type="button" class="btn btn-default btn-xs" data-ng-click="imageconfig.deletePrice(price.id)" data-ng-disabled="imageconfig.isEdit" style="margin-left:15px;color:#EA3200;border-color:#EA3200;">删除</button>
+                    </div>
+                </div>
+                <div class="panel panel-default" style="margin-bottom:5px;margin-top:10px;border-radius:0px;" data-ng-if="price.haveShow">
+                    <div style="background-color:#f1f1f1;">
+                        <div class="row">
+                            <div class="form-group" style="margin-top:10px;margin-bottom:10px;">
+                                <label class="col-sm-2 control-label"><span style="color:red;">*</span>&nbsp;计费区间：</label>
+                                <div class="col-sm-7" data-ng-class="(priceConfig.editStart.$dirty && imageconfig.noEditRange) || (priceConfig.editEnd.$dirty && imageconfig.noEditEndRange)?'input-error' : ''">
+                                    <input data-ng-change="imageconfig.inputCheckEditNum()" type="text" class="form-control" style="width: 80px;display:inline;" data-ng-model="imageconfig.editParam.start" name = "editStart"/>&nbsp;—&nbsp;
+                                    <input data-ng-change="imageconfig.inputCheckEndEditNum()" type="text" class="form-control" style="width: 80px;display:inline;" data-ng-model="imageconfig.editParam.end" name = "editEnd" data-ng-disabled="imageconfig.editParam.isCheck"/>
+                                    <input type="checkbox" style="margin-left: 20px;" data-ng-model="imageconfig.editParam.isCheck" data-ng-click="imageconfig.doEditCheck()" class="checkbox-style">&nbsp;&nbsp;无上限
+                                    <label class="control-label hide" data-ng-class="(priceConfig.editStart.$dirty && imageconfig.noEditRange) || (priceConfig.editEnd.$dirty && imageconfig.noEditEndRange) ? 'show' : 'hide'" style="text-align: left;">请输入合法的计费区间</label>
+                                </div>
+                            </div>
+                            <div class="form-group"style="margin-bottom:10px;">
+                                <label class="col-sm-2 control-label"><span style="color:red;">*</span>&nbsp;计费价格：</label>
+                                <div class="col-sm-7" data-ng-class="priceConfig.editPrice.$dirty && imageconfig.noEditPrice?'input-error' : ''">
+                                    <div class="input-group" >
+                                        <span class="input-group-addon">￥</span>
+                                        <input input-check="imageconfig.inputCheckEditPrice(value,newValue)" type="text" style="width: 120px;display:inline;" class="form-control" data-ng-model="imageconfig.editParam.price" name = "editPrice" maxlength="16"/>
+                                        <label class="control-label" data-ng-show="priceConfig.editPrice.$dirty && imageconfig.noEditPrice" style="text-align: left;display:inline;margin-left:10px;">请输入合法的计费价格</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group"style="float:right;padding-right:50px;margin-bottom:10px;">
+                                <button type="button" class="btn btn-primary btn-xs" data-ng-click="imageconfig.editPrice(price)" data-ng-disabled="imageconfig.noEditRange || imageconfig.noEditEndRange || imageconfig.noEditPrice">保  存</button>
+                                <button type="button" class="btn btn-default btn-xs" data-ng-click="imageconfig.cancelEdit(price)" style="margin-left:15px;">取  消</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer" style = "background-color:#f5f5f5;">
+        <button class="btn btn-primary btn-modal" style="float:right;" data-ng-click="commit()" data-ng-disabled="imageconfig.isAdd || imageconfig.isEdit">关 闭</button>
+    </div>
+</form>

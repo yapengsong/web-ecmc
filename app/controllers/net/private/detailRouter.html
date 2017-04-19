@@ -1,0 +1,191 @@
+<!-- 当前位置下拉列表 -->
+<div class="title-inline">
+    <div class="form-group">
+        <label class="control-label">当前位置：
+            <a class="pointer" ui-sref="app.net.tabs.private.router">路由</a>
+            <span> > 路由详情</span>
+        </label>
+    </div>
+</div>
+
+<div class="panel panel-default clearfix">
+    <div class="panel-body">
+        <h4>路由详情</h4>
+
+        <div class="details">
+            <form class="row">
+                <div class="col-lg-4">
+                    <div class="details-group">
+                        <div class="details-name"
+                             hint="controllers/net/private/editroutename.html"
+                             hint-show="detail.hintNameShow"
+                             tooltip-class="tooltip-edit"
+                             tooltip-placement="right">名称：</div>
+                        <div class="details-value"><span ng-bind="detail.router.routeName" data-ng-class="detail.routeNameEditable ? 'hide' : 'show'" ></span></div>
+                        <div class="details-value pull-right hand-style"
+                             data-ng-click="detail.editName()"
+                             data-ng-class="detail.routeNameEditable ? 'hide' : 'show'"
+                             data-ng-if="detail.router.chargeState == '0'">
+                            <a>
+                                <span class="glyphicon glyphicon-pencil"></span>
+                            </a>
+                        </div>
+                        <!--<div class="details-value"><span ng-bind-html="::detail.router.routeName|ellipsis:25"></span></div>-->
+                    </div>
+                    <div class="details-group">
+                        <div class="details-name">所属数据中心：</div>
+                        <div class="details-value"><span ng-bind="::detail.router.dcName"></span></div>
+                    </div>
+                    <div class="details-group">
+                        <div class="details-name">带宽：</div>
+                        <div class="details-value"><span ng-bind="detail.router.rate+'Mbps'"></span></div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="details-group">
+                        <div class="details-name">ID：</div>
+                        <div class="details-value"><span ng-bind="::detail.router.routeId"></span></div>
+                    </div>
+                    <div class="details-group">
+                        <div class="details-name">所属项目：</div>
+                        <div class="details-value"><span ng-bind="::detail.router.prjName"></span></div>
+                    </div>
+                    <div class="details-group">
+                        <div class="details-name">所属私有网络：</div>
+                        <div class="details-value"><span ng-bind="::detail.router.netName"></span></div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="details-group">
+                        <div class="details-name">状态：</div>
+                        <div class="details-value">
+                            <span class="state-block" data-ng-class="detail.routeStatusClass != '' ? detail.routeStatusClass:''"></span>
+                            <span ng-bind="::detail.router.statusForRoute"></span>
+                            <!--<span class="state-block" ng-class="detail.router.routeStatus | statusClass"></span>
+                            <span ng-bind="::detail.router.routeStatus | statusCn"></span>-->
+                        </div>
+                    </div>
+                    <div class="details-group">
+                        <div class="details-name">外网网关：</div>
+                        <div class="details-value"><span ng-bind="::detail.router.gatewayIp"></span></div>
+                    </div>
+                    <div class="details-group">
+                        <div class="details-name">绑定子网数量：</div>
+                        <div class="details-value"><span ng-bind="detail.router.connectsubnetnum"></span></div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="panel panel-default clearfix">
+    <div class="panel-body">
+        <h4>路由子网列表</h4>
+
+        <!-- Form表单 -->
+        <!--<div class="form-inline">
+            <div class="form-group" ng-if="hasPermission('vir_route_attachSubnet')">
+                <button class="btn btn-primary" ng-click="detail.connectNet()">
+                    <span class="glyphicon glyphicon-plus"></span> 连接子网
+                </button>
+            </div>
+        </div>-->
+        <eayun-table data-api="detail.subtable.api" data-ajax-source="detail.subtable.source" data-param="detail.subtable.getParams"
+                     data-result="detail.subtable.result">
+            <table class="table table-eayun">
+                <thead>
+                    <tr>
+                        <th>名称</th>
+                        <th>网络地址</th>
+                        <th>IP版本</th>
+                        <th>网关IP</th>
+                        <th>状态</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="subnet in detail.subtable.result">
+                        <td ng-bind="::subnet.subnetName"></td>
+                        <td ng-bind="::subnet.cidr"></td>
+                        <td ng-bind="::'IPv'+subnet.ipVersion"></td>
+                        <td ng-bind="::subnet.gatewayIp"></td>
+                        <td ng-bind="(subnet.routeId == null || subnet.routeId == '' || subnet.routeId == 'null') ? '未连接':'已连接'"></td>
+                        <td>
+                            <button class="btn btn-tablemng btn-first"
+                                    data-ng-click="detail.detachSubnet(subnet)"
+                                    data-ng-if="hasPermission('vir_route_detachSubnet') && (subnet.routeId != null && subnet.routeId !='' && subnet.routeId != 'null')">断开路由
+                            </button>
+                            <button class="btn btn-tablemng btn-first"
+                                    data-ng-click="detail.attachSubnet(subnet)"
+                                    data-ng-disabled="detail.router.chargeState != '0'"
+                                    data-ng-if="hasPermission('vir_route_attachSubnet') && (subnet.routeId == null || subnet.routeId == '' || subnet.routeId == 'null')">连接路由
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <eayun-table-page page-size="5"></eayun-table-page>
+        </eayun-table>
+    </div>
+</div>
+
+
+<div class="panel panel-default clearfix">
+    <div class="panel-body">
+        <h4>端口映射</h4>
+
+        <!-- Form表单 -->
+        <div class="form-inline">
+            <div class="form-group"
+                 data-ng-if="hasPermission('vir_route_addPM')">
+                <button class="btn btn-primary"
+                        data-ng-click="detail.addPM()"
+                        data-ng-disabled="detail.router.chargeState != '0'">
+                    <span class="glyphicon glyphicon-plus"></span> 创建端口映射
+                </button>
+            </div>
+        </div>
+        <eayun-table data-api="detail.pmtable.api" data-ajax-source="detail.pmtable.source" data-param="detail.pmtable.getParams"
+                     data-result="detail.pmtable.result">
+            <table class="table table-eayun">
+                <thead>
+                <tr>
+                    <th>协议</th>
+                    <th>源IP</th>
+                    <th>源端口</th>
+                    <th>目的IP</th>
+                    <th>目的端口</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="portMapping in detail.pmtable.result">
+                    <td data-ng-if="portMapping.protocol == 'tcp'">
+                        <span>TCP</span>
+                    </td>
+                    <td data-ng-if="portMapping.protocol == 'udp'">
+                        <span>UDP</span>
+                    </td>
+                    <td ng-bind="::detail.gatewayIp"></td>
+                    <td ng-bind="::portMapping.resourcePort"></td>
+                    <td ng-bind="::portMapping.destinyIp"></td>
+                    <td ng-bind="::portMapping.destinyPort"></td>
+                    <td>
+                        <button class="btn btn-tablemng btn-first"
+                                data-ng-click="detail.editPM(portMapping)"
+                                data-ng-disabled="detail.router.chargeState != '0'"
+                                data-ng-if="hasPermission('vir_route_editPM')">编辑
+                        </button>
+                        <button class="btn btn-tabledel"
+                                data-ng-if="hasPermission('vir_route_deletePM')"
+                                data-ng-click="detail.deletePM(portMapping)">删除</button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <eayun-table-page page-size="5"></eayun-table-page>
+        </eayun-table>
+    </div>
+</div>
+

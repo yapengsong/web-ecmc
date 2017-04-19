@@ -1,0 +1,110 @@
+<!-- Form表单 -->
+<div class="form-inline">
+    <!--<div class="form-group" ng-if="hasPermission('vir_network_create')">
+        <button class="btn btn-primary" ng-click="net.add()">
+            <span class="glyphicon glyphicon-plus"></span> 创建私有网络
+        </button>
+    </div>-->
+    <div class="form-group" ng-if="hasPermission('vir_network_query')">
+        <eayun-search ng-model="net.search" options="net.options"></eayun-search>
+    </div>
+</div>
+
+<eayun-table data-api="net.table.api" data-ajax-source="net.table.source" data-param="net.table.getParams"
+             data-result="net.table.result" ng-if="hasPermission('vir_network_query')">
+    <table class="table table-eayun">
+        <thead>
+        <tr>
+            <th>网络名称</th>
+            <th>
+                <eayun-select type="btn" ng-model="net.dcId" ng-change="net.table.api.draw()">
+                    <eayun-option value="" text="数据中心（全部）" selected></eayun-option>
+                    <eayun-option value="dc.id" text="{{::dc.name}}" ng-repeat="dc in net.dcList"></eayun-option>
+                </eayun-select>
+            </th>
+            <th>项目名称</th>
+            <th>客户名称</th>
+            <th style="width:100px;">状态</th>
+            <th>子网连接数量</th>
+            <th>带宽</th>
+            <th>外部网络</th>
+            <th class="net-table-cloumn-charge">计费状态</th>
+            <th class="net-table-cloumn-date">创建时间</th>
+            <th style="width: 350px;">操作</th>
+        </tr>
+        </thead>
+        <tbody><tr ng-repeat="item in net.table.result">
+            <td ui-sref="app.net.privateDetail({netId:item.netId})" class="color-info pointer"
+                ng-bind="item.netName.length > 15 ? item.netName.substring(0,14) + '...':item.netName"
+                title="{{item.netName}}"></td>
+            <td ng-bind="::item.dcName"></td>
+            <td ng-bind="::item.prjName"></td>
+            <td ng-bind="::item.cusOrg"></td>
+            <td>
+                <span class="state-block"
+                      data-ng-class="net.netStatusClass[$index] != '' ? net.netStatusClass[$index] : ''"
+                      ng-init="net.netStatusClass[$index] = net.getNetStatus(item,$index)">
+                </span>
+                <span ng-bind="::item.netStatusName"></span>
+            </td>
+            <td ng-bind="::item.subNetCount"></td>
+            <td ng-bind="::item.rate+'Mbps'"></td>
+            <td ng-bind="::item.extNetName"></td>
+            <td class="net-table-charge">
+                <span data-ng-bind="item.payTypeStr"></span><br>
+                <span data-ng-if="item.payType == 1">
+					到期时间：{{item.endTime|date:'yyyy-MM-dd HH:mm:ss'}}
+				</span>
+            </td>
+            <td>
+                {{item.createTime|date:'yyyy-MM-dd HH:mm:ss'}}
+            </td>
+            <td>
+                <!--<button class="btn btn-tablemng btn-first" ng-click="net.edit(item)"
+                        ng-if="hasPermission('vir_network_modify')">编辑
+                </button>-->
+                <button class="btn btn-tablemng"
+                        ng-click="net.addSubnet(item)"
+                        data-ng-disabled="item.chargeState != '0'"
+                        ng-if="hasPermission('vir_network_createSubnet')">增加子网
+                </button>
+                <div class="btn-group btn-left" >
+                    <button  class="btn btn-tablemng dropdown-toggle" data-toggle="dropdown">更多操作
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu"style = "min-width : 80px;width : 100px;">
+                        <li><a role="button"
+                               class="btn"
+                               data-ng-click="net.setGateway(item)"
+                               data-ng-disabled="item.routeId == null || item.chargeState != '0'"
+                               data-ng-hide="item.extNetId && item.extNetId !== 'null'"
+                               ng-if="hasPermission('vir_network_setGateway')">设置网关</a></li>
+                        <li><a role="button"
+                               class="btn"
+                               data-ng-click="net.clearGateway(item)"
+                               data-ng-disabled="item.routeId == null || item.chargeState != '0'"
+                               data-ng-show="item.extNetId && item.extNetId !== 'null'"
+                               ng-if="hasPermission('vir_network_setGateway')">清除网关</a></li>
+                        <li><a role="button"
+                               data-ng-click="net.delete(item)"
+                               class="btn"
+                               style = "color : #EA3200;"
+                               ng-if="hasPermission('vir_network_delete')">删除</a></li>
+                    </ul>
+                </div>
+                <!--<button class="btn btn-tablemng" ng-disabled="!item.routeId"
+                        ng-hide="item.extNetId && item.extNetId !== 'null'" ng-click="net.setGateway(item)"
+                        ng-if="hasPermission('vir_network_setGateway')">设置网关
+                </button>
+                <button class="btn btn-tablemng" ng-disabled="!item.routeId"
+                        ng-show="item.extNetId && item.extNetId !== 'null'" ng-click="net.clearGateway(item)"
+                        ng-if="hasPermission('vir_network_setGateway')">清除网关
+                </button>
+                <button class="btn btn-tabledel" ng-click="net.delete(item)" data-ng-disabled="item.chargeState == '0' && item.payType == '1'"
+                        ng-if="hasPermission('vir_network_delete')">删除
+                </button>-->
+            </td>
+        </tr></tbody>
+    </table>
+    <eayun-table-page></eayun-table-page>
+</eayun-table>

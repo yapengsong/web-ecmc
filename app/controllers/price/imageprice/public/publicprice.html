@@ -1,0 +1,43 @@
+<div class="form-inline">
+    <eayun-search ng-model="publicprice.search" options="publicprice.options"></eayun-search>
+</div>
+
+<eayun-table data-api="publicprice.publicPriceTable.api" data-ajax-source="publicprice.publicPriceTable.source" data-param="publicprice.publicPriceTable.getParams"
+             data-result="publicprice.publicPriceTable.result" >
+    <table class="table table-eayun">
+        <thead>
+        <tr>
+            <th class="col-sm-3">计费因子</th>
+            <th class="col-sm-1">计费单位</th>
+            <th class="col-sm-2">
+                <eayun-select type="btn" class="btn-group btn-group-xs" data-ng-model="publicprice.sysType" data-ng-change="publicprice.query()">
+                    <eayun-option value="''" text="系统类型（全部）" selected></eayun-option>
+                    <eayun-option value="os.nodeId" text="{{os.nodeName}}" data-ng-repeat="os in publicprice.sysTypeList"></eayun-option>
+                </eayun-select>
+            </th>
+            <th class="col-sm-2">
+                <eayun-select type="btn" class="btn-group btn-group-xs" data-ng-model="publicprice.dcId" data-ng-change="publicprice.query()">
+                    <eayun-option value="''" text="数据中心（全部）" selected></eayun-option>
+                    <eayun-option value="dc.id" text="{{dc.name}}" data-ng-repeat="dc in publicprice.dcList"></eayun-option>
+                </eayun-select>
+            </th>
+            <th class="col-sm-3">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr data-ng-repeat="image in publicprice.publicPriceTable.result">
+            <td data-ng-bind="image.imageName.length>40?image.imageName.substring(0,39)+'...':image.imageName"  title="{{image.imageName}}"></td>
+            <td>个数（个）</td>
+            <td data-ng-bind="(null==image.sysTypeName||'null'==image.sysTypeName||'其他'==image.sysTypeName)?'':image.sysTypeName"></td>
+            <td data-ng-bind="(null==image.dcName||'null'==image.dcName)?'':image.dcName"></td>
+            <td>
+                <button type="button" class="btn btn-tablemng btn-first" data-ng-click="publicprice.configPrice(image,'1')" ng-if="hasPermission('price_pay_before')">配置预付费价格
+                </button>
+                <button type="button" class="btn btn-tablemng" data-ng-click="publicprice.configPrice(image,'2')" ng-if="hasPermission('price_pay_after')">配置后付费价格
+                </button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <eayun-table-page></eayun-table-page>
+</eayun-table>

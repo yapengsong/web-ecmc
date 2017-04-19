@@ -1,0 +1,302 @@
+<!-- 当前位置下拉列表 -->
+<div class="title-inline">
+    <div class="form-group">
+        <label class="control-label">当前位置：
+            <a style="cursor: pointer;" data-ui-sref="app.customer">客户管理</a>&nbsp;>
+            <span> 客户及项目信息</span>
+        </label>
+    </div>
+</div>
+
+<div class="panel panel-default clearfix">
+    <div class="panel-body">
+        <h4>客户详情</h4>
+        <!-- 导航页签 -->
+        <tabs class="nav-tabs-online">
+            <tab ui-sref-active="active" data-ui-sref="app.customer.detail.cusandprojects">客户及项目信息</tab>
+            <tab ui-sref-active="active" data-ui-sref="app.customer.detail.cusreport({cusId:detailMng.cusId})"
+                 data-ng-if="hasPermission('customer_report')">
+                费用报表
+            </tab>
+            <tab ui-sref-active="active" data-ui-sref="app.customer.detail.cusrecords"
+                 data-ng-if="hasPermission('customer_record')">
+                交易记录
+            </tab>
+        </tabs>
+
+        <div class="col-lg-12">
+
+
+            <form class="form-inline" novalidate>
+                <button class="btn btn-default"
+                        data-ng-click="detail.editCustomer()"
+                        data-ng-if="hasPermission('customer_modify')">
+                     编辑客户信息
+                </button>
+
+                <button class="btn btn-default" style="margin-left:15px;"
+                        data-ng-if="hasPermission('customer_credit_lines')"
+                        data-ng-click="detail.modifyCreditLines(detail.customerDetail.cusId)">
+                     设置信用额度
+                </button>
+
+                <button class="btn btn-default" style="margin-left:15px;"
+                        data-ng-if="hasPermission('customer_reset_pwd')"
+                        data-ng-click="detail.resetCusAdminPass()">
+                     {{detail.resetCusPass}}
+                </button>
+
+                <button class="btn btn-default" style="margin-left:15px;"
+                        data-ng-show="hasPermission('customer_adjustmoney')"
+                        data-ng-click="detail.adjustAccountMoney(detail.customerDetail.cusId)">
+                    调整账户资金
+                </button>
+
+                <button class="btn btn-default" style="margin-left:15px;"
+                        data-ng-click="detail.blockCustomer(detail.customerDetail.cusId,detail.customerDetail.cusOrg)"
+                        data-ng-show="(hasPermission('customer_block') && detail.customerDetail.isBlocked==false && (detail.customerDetail.blockopStatus==null||detail.customerDetail.blockopStatus==false))||(detail.customerDetail.isBlocked==true && detail.customerDetail.blockopStatus==false &&hasPermission('customer_block'))">
+                     冻结账号
+                </button>
+                <button class="btn btn-default" style="margin-left:15px;"
+                        data-ng-show="hasPermission('customer_unblock') && detail.customerDetail.isBlocked == true && detail.customerDetail.blockopStatus == true"
+                        data-ng-click="detail.unblockCustomer(detail.customerDetail.cusId,detail.customerDetail.cusOrg)">
+                     恢复解冻
+                </button>
+                <button class="btn btn-default" style="margin-left:15px;" data-ng-if="hasPermission('api_restrict_customer')"
+                        data-ng-click="detail.apiRestrict(detail.customerDetail.cusId,detail.customerDetail.cusOrg)">
+                    API访问限制
+                </button>
+
+            </form>
+            <div class="details">
+                <form class="row" novalidate>
+                    <div class="col-lg-12">
+                        <div class="col-lg-6">
+                            <div class="details-group">
+                                <div class="details-name">客户名称：</div>
+                                <div class="details-value" ng-bind="detail.customerDetail.cusOrg"></div>
+                            </div>
+                            <div class="details-group">
+                                <div class="details-name">客户注册时间：</div>
+                                <div class="details-value"
+                                     ng-bind="detail.customerDetail.creatTime|date:'yyyy-MM-dd HH:mm:ss'"></div>
+                            </div>
+                            <div class="details-group">
+                                <div class="details-name">手机号：</div>
+                                <div class="details-value" ng-bind="detail.customerDetail.cusPhone"></div>
+                            </div>
+                            <div class="details-group">
+                                <div class="details-name">公司中文名称：</div>
+                                <div class="details-value" ng-bind-html="detail.customerDetail.cusCpname | ellipsis:32"
+                                     style="width: auto;"></div>
+                            </div>
+                            <div class="details-group">
+                                <div class="details-name">所属部门：</div>
+                                <div class="details-value" ng-bind-html="detail.customerDetail.cusDept | ellipsis:32"
+                                     style="width: auto;"></div>
+                            </div>
+                            <div class="details-group">
+                                <div class="details-name">账号状态：</div>
+                                <div class="details-value"
+                                     ng-bind-html="detail.customerDetail.isBlocked==true ? '冻结' : '活跃'"
+                                     style="width: auto;"></div>
+                            </div>
+                            <div class="details-group">
+                                <div class="details-name">工单数量：</div>
+                                <div class="details-value" style="width: auto;">
+                                    <span>总数：<span ng-bind-html="detail.customerDetail.workorderNum"></span></span>　
+                            <span>待处理：<a class="click-link"
+                                         data-ng-click="detail.toWorkorderList(detail.customerDetail.cusOrg)"
+                                         ng-bind-html="detail.customerDetail.undealWorkorderNum"></a>
+                            </span>
+                                </div>
+                            </div>
+                            <div class="details-group">
+                                <div class="details-name">账户余额：</div>
+                                <div class="details-value" style="width: auto;">
+                                    {{detail.customerDetail.balance | currency : '￥'}}
+                                </div>
+                            </div>
+
+                                <div class="details-group">
+                                    <div class="details-name">公司简介：</div>
+                                    <div class="details-value" style="width: auto;"  ng-bind-html="detail.customerDetail.cusSynopsis | ellipsis:25">
+                                    </div>
+                                </div>
+
+
+
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="details-group">
+                                <div class="details-name">客户ID：</div>
+                                <div class="details-value" ng-bind="detail.customerDetail.cusId"></div>
+                            </div>
+                            <div class="details-group">
+                                <div class="details-name">客户管理员账号：</div>
+                                <div class="details-value" ng-bind="detail.customerDetail.adminAccount"></div>
+                            </div>
+                            <div class="details-group">
+                                <div class="details-name">联系人姓名：</div>
+                                <div class="details-value" ng-bind="detail.customerDetail.cusName"></div>
+                            </div>
+                            <div class="details-group">
+                                <div class="details-name">电子邮箱：</div>
+                                <div class="details-value" ng-bind-html="detail.customerDetail.cusEmail"></div>
+                            </div>
+                            <div class="details-group">
+                                <div class="details-name">公司英文名称：</div>
+                                <div class="details-value" ng-bind-html="detail.customerDetail.cusCpename | ellipsis:32"
+                                     style="width: auto;"></div>
+                            </div>
+                            <div class="details-group">
+                                <div class="details-name">所属职位：</div>
+                                <div class="details-value"
+                                     ng-bind-html="detail.customerDetail.cusPesition | ellipsis:32"
+                                     style="width: auto;"></div>
+                            </div>
+                            <div class="details-group">
+                                <div class="details-name">信用额度：</div>
+                                <div class="details-value" style="width: auto;">
+                                    ￥ {{detail.customerDetail.creditLines|number:2}}
+                                </div>
+                            </div>
+                            <div class="details-group">
+                                <div class="details-name">即将到期的资源：</div>
+                                <div class="details-value" ng-bind-html="detail.customerDetail.expireResourceNum"
+                                     style="width: auto;"></div>
+                            </div>
+
+                                <div class="details-group">
+                                    <div class="details-name">客户类型：</div>
+                                    <div class="details-value" style="width: auto;"  ng-bind-html="detail.customerDetail.cus_type">
+                                    </div>
+                                </div>
+
+
+
+
+                        </div>
+                        <!--<div class="col-lg-12">-->
+                            <!--<div class="details-group">-->
+                                <!--<div class="details-name">公司简介：</div>-->
+                                <!--<div class="details-value" style="width: auto;"  ng-bind-html="detail.customerDetail.cusSynopsis | ellipsis:90">-->
+                                <!--</div>-->
+                            <!--</div>-->
+
+
+                        <!--</div>-->
+
+
+                        <div class="col-lg-12">
+                            <div class="details-group">
+                                <div class="details-name">注册原因：</div>
+                                <div class="details-value" style="width: auto" ng-bind-html="detail.customerDetail.cusDesc | ellipsis:90">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="divider"></div>
+            <form class="form-inline" novalidate>
+                <h4>项目列表</h4>
+
+                <button class="btn btn-primary" data-ng-click="detail.createProject()"
+                        data-ng-if="hasPermission('project_create')">
+                    <span class="glyphicon glyphicon-plus"></span> 创建项目
+                </button>
+            </form>
+            <eayun-table data-api="detail.detailTable.api" data-ajax-source="detail.detailTable.source"
+                         data-param="detail.detailTable.getParams"
+                         data-result="detail.detailTable.result">
+                <table class="table table-eayun">
+                    <thead>
+                    <tr>
+                        <th>项目名称</th>
+                        <th>云主机数量</th>
+                        <th>子网数量</th>
+                        <th>报警数量</th>
+                        <th>所属数据中心</th>
+                        <th>创建时间</th>
+                        <th>项目描述</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr data-ng-repeat="project in detail.detailTable.result.data">
+                        <td class="click-link"
+                            data-ng-click="detail.datailProject(project.projectId)"
+                            ng-bind="::project.prjName"></td>
+                        <td class="{{hasPermission('project_resource_info')?'click-link':''}}"
+                            data-ng-click="hasPermission('project_resource_info')?detail.goToVmList():''"
+                            ng-bind="::project.hostCount"></td>
+                        <td class="{{hasPermission('project_resource_info')?'click-link':''}}"
+                            data-ng-click="hasPermission('project_resource_info')?detail.goToNetList():''"
+                            ng-bind="::project.subnetCount"></td>
+                        <td class="{{hasPermission('project_resource_info')?'click-link':''}}"
+                            data-ng-click="hasPermission('project_resource_info')?detail.goToAlarmList():''"
+                            ng-bind="::project.alarmCount"></td>
+                        <td ng-bind="::project.dcName"></td>
+                        <td ng-bind="::project.createDate|date:'yyyy-MM-dd HH:mm:ss'"></td>
+                        <td ng-bind-html="::project.projectDesc | ellipsis:7"></td>
+                        <td>
+                            <button class="btn btn-tablemng btn-first"
+                                    data-ng-click="detail.editProject(project.projectId)"
+                                    data-ng-if="hasPermission('project_modify')">
+                                编辑
+                            </button>
+                            <button class="btn btn-tablemng" data-ng-click="detail.pool(project.projectId)"
+                                    data-ng-if="hasPermission('project_resource_pool')">
+                                查看资源池
+                            </button>
+                            <button class="btn btn-tablemng"
+                                    data-ng-click="detail.statistic(project.projectId,project.dcId)"
+                                    data-ng-if="hasPermission('project_statistic')">
+                                查看统计数据
+                            </button>
+                            <button class="btn btn-tabledel"
+                                    data-ng-click="detail.deleteProject(project.prjName, project.projectId)"
+                                    data-ng-if="hasPermission('project_delete')">
+                                删除
+                            </button>
+                        </td>
+                    </tr>
+
+                    </tbody>
+                </table>
+            </eayun-table>
+
+            <div class="divider"></div>
+
+            <h4>即将到期资源</h4>
+            <eayun-table data-api="detail.expireResourceTable.api" data-ajax-source="detail.expireResourceTable.source"
+                         data-param="detail.expireResourceTable.getParams"
+                         data-result="detail.expireResourceTable.result">
+                <table class="table table-eayun">
+                    <thead>
+                    <tr>
+                        <th>资源名称</th>
+                        <th>资源类型</th>
+                        <th>创建时间</th>
+                        <th>到期时间</th>
+                        <th>所属项目</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr data-ng-repeat="resource in detail.expireResourceTable.result">
+                        <td ng-bind-html="::resource.resourcesName | ellipsis:15"></td>
+                        <td ng-bind="::resource.resourcesType"></td>
+                        <td ng-bind="::resource.createTime|date:'yyyy-MM-dd HH:mm:ss'"></td>
+                        <td ng-bind="::resource.endTime|date:'yyyy-MM-dd HH:mm:ss'"></td>
+                        <td ng-bind="::resource.prjName"></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <eayun-table-page></eayun-table-page>
+            </eayun-table>
+        </div>
+    </div>
+</div>
+
+

@@ -1,0 +1,101 @@
+<!-- Form表单 -->
+<div class="form-inline">
+    <!--<div class="form-group" ng-if="hasPermission('vir_route_create')">
+        <button class="btn btn-primary" ng-click="router.add()">
+            <span class="glyphicon glyphicon-plus"></span> 创建路由
+        </button>
+    </div>-->
+    <div class="form-group" ng-if="hasPermission('vir_route_query')">
+        <eayun-search ng-model="router.search" options="router.options"></eayun-search>
+    </div>
+</div>
+
+<eayun-table data-api="router.table.api" data-ajax-source="router.table.source" data-param="router.table.getParams"
+             data-result="router.table.result"  ng-if="hasPermission('vir_route_query')">
+    <table class="table table-eayun">
+        <thead>
+        <tr>
+            <th>名称</th>
+            <th>已连接子网数</th>
+            <th>状态</th>
+            <th>外网网关</th>
+            <th>
+                <eayun-select type="btn" ng-model="router.dcId" data-ng-change="router.table.api.draw()">
+                    <eayun-option value="" text="数据中心（全部）" selected></eayun-option>
+                    <eayun-option value="dc.id" text="{{::dc.name}}" ng-repeat="dc in router.dcList"></eayun-option>
+                </eayun-select>
+            </th>
+            <th>所属项目</th>
+            <th>所属客户</th>
+            <th>所属私有网络</th>
+            <th>带宽</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="route in router.table.result">
+            <td ui-sref="app.net.routerDetail({routerId:route.routeId,dcId:route.dcId,prjId:route.prjId,gatewayIp:route.gatewayIp})" class="color-info pointer"
+                ng-bind="::route.routeName"></td>
+            <td ng-bind="::route.connectsubnetnum">1</td>
+            <td width="100px">
+                <span class="state-block"
+                      data-ng-class="router.routeStatusClass[$index] != '' ? router.routeStatusClass[$index] : ''"
+                      ng-init="router.routeStatusClass[$index] = router.getRouteStatus(route,$index)">
+                </span>
+                <span ng-bind="::route.statusForRoute"></span>
+                <!--<span class="state-block" ng-class="route.routeStatus | statusClass"></span>
+                <span ng-bind="::route.routeStatus | statusCn"></span>-->
+            </td>
+            <td ng-bind="::route.gatewayIp"></td>
+            <td ng-bind="::route.dcName"></td>
+            <td ng-bind="::route.prjName"></td>
+            <td ng-bind="::route.cusOrg"></td>
+            <td ng-bind="::route.networkName"></td>
+            <td ng-bind="::route.rate+'Mbps'"></td>
+            <td>
+                <!--<button class="btn btn-tablemng btn-first" ng-click="router.edit(route)"
+                        ng-if="hasPermission('vir_route_modify')">编辑路由
+                </button>-->
+                <button class="btn btn-tablemng"
+                        data-ng-hide="route.netId && route.netId !== 'null'"
+                        data-ng-if="hasPermission('vir_route_setGateway')"
+                        data-ng-disabled="route.chargeState != '0'"
+                        data-ng-click="router.setGateway(route)">设置网关
+                </button>
+                <button class="btn btn-tablemng"
+                        data-ng-show="route.netId && route.netId !== 'null'"
+                        data-ng-if="hasPermission('vir_route_setGateway')"
+                        data-ng-disabled="route.chargeState != '0'"
+                        data-ng-click="router.clearGateway(route)">清除网关
+                </button>
+                <button class="btn btn-tablemng"
+                        data-ng-click="router.connectNet(route)"
+                        data-ng-disabled="route.chargeState != '0'"
+                        data-ng-if="hasPermission('vir_route_attachSubnet')">连接子网
+                </button>
+               <!-- <button class="btn btn-tabledel" ng-click="router.delete(route)"
+                        ng-if="hasPermission('vir_route_delete')">删除路由
+                </button>-->
+                <!--<div class="btn-group btn-left" >
+                    <button  class="btn btn-tablemng dropdown-toggle" data-toggle="dropdown">更多操作
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu"style = "min-width : 80px;width : 100px;">
+                        <li><a role="button"
+                               class="btn"
+                               data-ng-click="router.connectNet(route)"
+                               data-ng-disabled="route.chargeState != '0'"
+                               ng-if="hasPermission('vir_route_attachSubnet')">连接子网</a></li>
+                        <li><a role="button"
+                               data-ng-click="router.delete(route)"
+                               class="btn"
+                               style = "color : #EA3200;"
+                               ng-if="hasPermission('vir_route_delete')">删除路由</a></li>
+                    </ul>
+                </div>-->
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <eayun-table-page></eayun-table-page>
+</eayun-table>

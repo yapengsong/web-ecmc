@@ -1,0 +1,75 @@
+<div>
+    <div class="pull-left">
+        <label>待选收件公司</label>
+
+        <div class="list-group-eayun" style="width: 450px">
+
+            <table class="table table-eayun">
+                <thead>
+                <tr>
+                    <th width="10%">收件公司名称</th>
+
+                    <th width="5%">操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr data-ng-repeat="rule in addcus.ruleListToSelect" data-ng-if="addcus.ruleListToSelect!=null">
+                    <td data-ng-bind="rule.cusCpname .length>8?rule.cusCpname.substring(0,8)+'...':rule.cusCpname"title="{{rule.cusCpname}}"></td>
+
+                    <td>
+                        <div data-ng-show="!addcus.discheck">
+                        <span class="glyphicon glyphicon-plus color-blue pointer" data-ng-click="addcus.addRuleToList(rule)" ></span>
+                            </div>
+                    </td>
+
+                </tr>
+                </tbody>
+
+
+
+            </table>
+        </div>
+    </div>
+
+    <div class="pull-right">
+        <label>已选收件公司</label>
+        <div class="list-group-eayun" style="width: 450px">
+            <table class="table table-eayun">
+                <thead>
+                <tr>
+                    <th  width="10%">收件公司名称</th>
+
+                    <th width="5%">操作</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr data-ng-repeat="rule in addcus.ruleListIsSelected">
+                    <td data-ng-bind="rule.cusCpname .length>8?rule.cusCpname.substring(0,8)+'...':rule.cusCpname"title="{{rule.cusCpname}}"></td>
+
+                    <td>
+
+                        <span class="glyphicon glyphicon-remove color-require pointer" data-ng-click="addcus.removeRuleFromList(rule)"></span>
+                    </td>
+
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+    <div class="select-list-md">
+        <span class="glyphicon glyphicon-menu-right" style="font-size: 2em"></span>
+    </div>
+
+    <div class="col-sm-12" style="margin:15px;5px;20px;">
+
+    </div>
+
+    <!-- 按钮区域 -->
+    <div class="modal-footer" >
+        <button type="button" class="btn btn-primary btn-modal" data-ng-disabled="addcus.checkFag" data-ng-click="commit()">确  定</button>
+        <button type="button" class="btn btn-default btn-modal btn-left" data-ng-click="cancel()">取  消</button>
+    </div>
+</div>
+

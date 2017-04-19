@@ -1,0 +1,64 @@
+
+<form class="form-horizontal data-center">
+    <div class="col-lg-6" >
+        <div class="details-group">
+            <div class="details-name">健康检查名称：</div>
+            <div class="details-value"><span ng-bind="::detail.healthMonitor.ldmName"></span></div>
+        </div>
+        <div class="details-group">
+            <div class="details-name">所属数据中心：</div>
+            <div class="details-value"><span ng-bind="::detail.healthMonitor.dcName"></span></div>
+        </div>
+        <div class="details-group">
+            <div class="details-name">所属项目：</div>
+            <div class="details-value"><span ng-bind="::detail.healthMonitor.prjName"></span></div>
+        </div>
+        <div class="details-group">
+            <div class="details-name">客户：</div>
+            <div class="details-value"><span ng-bind="::detail.healthMonitor.cusOrg"></span></div>
+        </div>
+        <div class="details-group">
+            <div class="details-name">ID：</div>
+            <div class="details-value"><span ng-bind-html="::detail.healthMonitor.ldmId "></span></div>
+        </div>
+        <div class="details-group">
+            <div class="details-name">协议：</div>
+            <div class="details-value"><span ng-bind="::detail.healthMonitor.ldmType"></span></div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="details-group">
+            <div class="details-name">监控负载均衡器数量：</div>
+            <div class="details-value"><span ng-bind="::detail.healthMonitor.poolNum"></span></div>
+        </div>
+        <div class="details-group">
+            <div class="details-name">间隔(s)：</div>
+            <div class="details-value"><span ng-bind="::detail.healthMonitor.ldmDelay"></span></div>
+        </div>
+        <div class="details-group">
+            <div class="details-name">超时重复次数：</div>
+            <div class="details-value"><span ng-bind="::detail.healthMonitor.maxRetries"></span></div>
+        </div>
+        <div class="details-group">
+            <div class="details-name">超时(s)：</div>
+            <div class="details-value"><span ng-bind="::detail.healthMonitor.ldmTimeout"></span></div>
+        </div>
+        <div class="details-group">
+            <div class="details-name">URL：</div>
+            <div class="details-value"><span ng-bind="::detail.healthMonitor.urlPath" style="word-break: break-all;display:inline-block;width:270px;"></span></div>
+        </div>
+        <!--<div class="details-group">-->
+            <!--<div class="details-name">管理员状态：</div>-->
+            <!--<div class="details-value"><span ng-bind="::detail.healthMonitor.adminStateup=='1'? '是': '否'"></span></div>-->
+        <!--</div>-->
+        <div class="details-group">
+            <div class="details-name">创建时间：</div>
+            <div class="details-value"><span ng-bind-html="::detail.healthMonitor.createTime | date: 'yyyy-MM-dd hh:mm:ss'"></span></div>
+        </div>
+    </div>
+</form>
+<div class="modal-footer gd_footer">
+    <div class="col-md-12 text-center" style="padding-top: 40px;">
+        <button class="btn button-orange" type="button" ng-click="cancel()">关闭</button>
+    </div>
+</div>

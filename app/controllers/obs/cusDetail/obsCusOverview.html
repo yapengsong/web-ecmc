@@ -1,0 +1,156 @@
+<div class="panel panel-default clearfix">
+    <div class="panel-body">
+        <form class="form-inline">
+            <div class="form-group" style="margin-left:15px">
+                <eayun-select class="form-control form-select" placeholder="客户--" ng-model="obsCusOverview.obsUser" ng-change="obsCusOverview.changeCus(obsCusOverview.obsUser)">
+                    <eayun-option value="oc.cusId" text="{{oc.cusOrg}}"
+                                  ng-repeat="oc in obsCusOverview.cus"></eayun-option>
+                </eayun-select>
+
+            </div>
+            <button class="btn btn-primary" style="margin-left:21px" ng-click="obsCusOverview.set(obsCusOverview.obsUser)" ng-if="hasPermission('obs_quota')">
+                <span></span><strong>配额设置</strong>
+            </button>
+        </form>
+    </div>
+</div>
+
+<div class="panel panel-default clearfix">
+    <div class="panel-body">
+        <h4>本月使用量</h4>
+        <div>
+            <div class="col-lg-2">
+                <div class="obs-overview-all obs-overview-one">
+                    <label class="control-label">存储容量:</label>
+                    <label class="control-label obs-control-label"><span ng-bind="obsCusOverview.usedInMonth.usedStorage"></span></label>
+                </div>
+            </div>
+            <div class="col-lg-2">
+                <div class="obs-overview-all obs-overview-one">
+                    <label class="control-label">总下载流量:</label>
+                    <label class="control-label obs-control-label"><span ng-bind="obsCusOverview.usedInMonth.loadDown"></span></label>
+                </div>
+            </div>
+            <div class="col-lg-2">
+                <div class="obs-overview-all obs-overview-one">
+                    <label class="control-label">请求次数:</label>
+                    <label class="control-label obs-control-label"><span ng-bind="obsCusOverview.usedInMonth.requestCount"></span></label>
+                </div>
+            </div>
+            <div class="col-lg-2">
+                <div class="obs-overview-all obs-overview-one">
+                    <label class="control-label">费用:</label>
+                    <label class="control-label obs-control-label"><span ng-bind="obsCusOverview.usedInMonth.cost"></span></label>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="panel panel-default clearfix">
+    <div class="panel-body">
+        <h4>资源详情</h4>
+        <form class="form-inline">
+            <div class="form-group" style="margin-left:15px">
+                <eayun-select class="form-control form-select"placeholder="bucket--" ng-model="obsCusOverview.bucketName" ng-change="obsCusOverview.change()">
+                    <eayun-option value="oc.bucketName" text="{{oc.bucketName}}"
+                                  ng-repeat="oc in obsCusOverview.buckets"></eayun-option>
+                </eayun-select>
+
+            </div>
+            <div class="form-group" style="margin-left:30px">
+                <eayun-select class="form-control form-select" ng-model="obsCusOverview.selectModel" ng-change="obsCusOverview.changeType()">
+                    <eayun-option value="'storage'" text="存储量" selected></eayun-option>
+                    <eayun-option value="'loadFlow'" text="下载流量"></eayun-option>
+                    <eayun-option value="'request'" text="请求次数"></eayun-option>
+                </eayun-select>
+
+            </div>
+            <div class="form-group" style="margin-left:15px">
+
+                <span style="font-size:14px;">时间范围：</span>
+                <date-time-picker class="form-group" style="margin-left:10px;" data-format="yyyy-MM-dd" show-time="false" ng-model="obsCusOverview.startDate" max-date="obsCusOverview.endDate"></date-time-picker>
+                <span style="margin-left:10px;">—</span>
+                <date-time-picker class="form-group" style="margin-left:10px;" data-format="yyyy-MM-dd" show-time="false" ng-model="obsCusOverview.endDate" min-date="obsCusOverview.startDate"></date-time-picker>
+            </div>
+
+            <button class="btn btn-default" style="margin-left: 15px;" ng-click="obsCusOverview.query()"><strong>查询</strong></button>
+            <div class="col-lg-12" style="height: 600px;width: 100%;" echarts="obsCusOverview.myChart" ng-show="obsCusOverview.show"></div>
+        </form>
+    </div>
+</div>
+<div class="panel panel-default clearfix">
+    <div class="panel-body">
+        <h4>资源统计</h4>
+            <div class="panel panel-default" style="margin-bottom:5px;margin-top:10px;" data-ng-show = "true">
+                <div class="panel-heading" style = "height:40px;">
+                    <div class="row">
+                        <label class = "control-label col-sm-3 color-blue">消费统计</label>
+                        <label class = "control-label col-sm-3" >存储容量：{{obsCusOverview.obsUsedTable.result[0].avgStorageUsed}}/天</label>
+                        <label class = "control-label col-sm-3" >下载流量：{{obsCusOverview.obsUsedTable.result[0].avgDownLoad}}</label>
+                        <label class = "control-label col-sm-3" >请求次数：{{obsCusOverview.obsUsedTable.result[0].avgCountRequest}}</label>
+                    </div>
+                </div>
+                <div class="panel-body" style = "padding:5px;">
+                    <eayun-table data-api="obsCusOverview.obsUsedTable.api" data-ajax-source="obsCusOverview.obsUsedTable.source" data-param="obsCusOverview.obsUsedTable.getParams"
+                                 data-result="obsCusOverview.obsUsedTable.result">
+                        <table class="table table-eayun-info" style = "margin-bottom:0px;">
+                            <thead>
+                                <tr>
+                                    <th class = "col-sm-3" style="text-align:left;">日期</th>
+                                    <th class = "col-sm-3" style="text-align:left;">存储容量</th>
+                                    <th class = "col-sm-3" style="text-align:left;">下载流量</th>
+                                    <th class = "col-sm-3" style="text-align:left;">请求次数</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr data-ng-repeat="model in obsCusOverview.obsUsedTable.result">
+                                    <td style="text-align:left;"><span ng-bind="model.timeDis"></span></td>
+                                    <td style="text-align:left;"><span ng-bind="model.usedStorage"></span></td>
+                                    <td style="text-align:left;"><span ng-bind="model.loadDown"></span></td>
+                                    <td style="text-align:left;"><span ng-bind="model.requestCount"></span></td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                        <eayun-table-page></eayun-table-page>
+                    </eayun-table>
+                </div>
+            </div>
+    </div>
+</div>
+
+<div class="panel panel-default clearfix">
+    <div class="panel-body">
+        <h4>历史账单</h4>
+        <div class="panel panel-default" style="margin-bottom:5px;margin-top:10px;" data-ng-show = "true">
+            <div class="panel-body" style = "padding:5px;">
+                <eayun-table data-api="obsCusOverview.obsHistoryTable.api" data-ajax-source="obsCusOverview.obsHistoryTable.source" data-param="obsCusOverview.obsHistoryTable.getParams"
+                             data-result="obsCusOverview.obsHistoryTable.result">
+                    <table class="table table-eayun-info" style = "margin-bottom:0px;">
+                        <thead>
+                        <tr>
+                            <th class = "col-sm-2" style="text-align:left;">月份</th>
+                            <th class = "col-sm-2" style="text-align:left;">存储容量</th>
+                            <th class = "col-sm-2" style="text-align:left;">下载流量</th>
+                            <th class = "col-sm-2" style="text-align:left;">请求次数</th>
+                            <th class = "col-sm-2" style="text-align:left;">费用价格</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr data-ng-repeat="model in obsCusOverview.obsHistoryTable.result">
+                            <td style="text-align:left;"><span ng-bind="::model.timeDis"></span></td>
+                            <td style="text-align:left;"><span ng-bind="::model.usedStorage"></span></td>
+                            <td style="text-align:left;"><span ng-bind="::model.loadDown"></span></td>
+                            <td style="text-align:left;"><span ng-bind="::model.requestCount"></span></td>
+                            <td style="text-align:left;"><span ng-bind="::model.cost"></span></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <eayun-table-page></eayun-table-page>
+                </eayun-table>
+            </div>
+        </div>
+
+
+    </div>
+</div>

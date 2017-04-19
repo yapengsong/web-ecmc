@@ -1,0 +1,65 @@
+<form class="form-inline">
+    <input name="radio" data-ng-model="person.radioFirst" value="0" class="control-label" type="radio" ng-change="person.queryTable()"/>
+    <span class="control-label" style="margin-left: 5px;">运维自建</span>
+    <input name="radio" data-ng-model="person.radioFirst" value="1" class="control-label" type="radio" ng-change="person.queryTable()"
+           style="margin-left: 15px;"/>
+    <eayun-select class="form-control form-select" show-length="10" style="margin-left: 5px;" ng-model="person.cusId"
+                  disabled="{{person.radioFirst == '1' ? '' : 'true'}}" ng-change="person.queryTable()" placeholder="客户自创建">
+        <eayun-option value="customer.cusId" text="{{customer.cusName}}"
+                      ng-repeat="customer in person.allCustomerList"></eayun-option>
+    </eayun-select>
+</form>
+<form class="form-inline">
+
+    <a class="btn btn-primary" data-ng-click="person.add()" style="margin-right: 15px;" ng-if="hasPermission('mon_contact_create')"
+       data-ng-show="person.radioFirst == '0'">
+        <span class="glyphicon glyphicon-plus"></span> 创建联系人
+    </a>
+
+    <eayun-search ng-model="person.search" options="person.options" ></eayun-search>
+</form>
+<eayun-table data-api="person.personTable.api" data-ajax-source="person.personTable.source"
+             data-param="person.personTable.getParams"
+             data-result="person.personTable.result"
+             ng-if="hasPermission('mon_contact')">
+    <table class="table table-eayun">
+        <thead>
+        <tr>
+            <th>名称</th>
+            <th>手机号</th>
+            <th>电子邮箱</th>
+            <th>通知方式</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr data-ng-repeat="contactPerson in person.personTable.result">
+            <td ng-bind="::contactPerson.name"></td>
+            <td ng-bind="::contactPerson.phone"></td>
+            <td ng-bind="::contactPerson.email"></td>
+            <td>
+                <input type="checkbox" ng-checked="contactPerson.smsNotify == '1' ? true : false"
+                       ng-if="hasPermission('mon_contact_change')"
+                       data-ng-model="contactPerson.smsNotify" data-ng-disabled="person.radioFirst == '1'"
+                       data-ng-click="person.updateConnect($event,{mcId: contactPerson.id,type: 'sms',smsNotify: contactPerson.smsNotify,mcName:contactPerson.name})"/>
+                短信通知&nbsp;&nbsp;
+                <input type="checkbox" ng-checked="contactPerson.mailNotify == '1' ? true : false"
+                       ng-if="hasPermission('mon_contact_change')"
+                       data-ng-model="contactPerson.mailNotify" data-ng-disabled="person.radioFirst == '1'"
+                       data-ng-click="person.updateConnect($event,{mcId: contactPerson.id,type: 'email',mcName:contactPerson.name})"/>
+                邮件通知
+            </td>
+            <td>
+                <button class="btn btn-tablemng btn-first" data-ng-show="person.radioFirst == '0'" ng-if="hasPermission('mon_contact_modify')"
+                        data-ng-click="person.edit(contactPerson)">编辑
+                </button>
+                <button class="btn btn-tabledel" data-ng-show="person.radioFirst == '0'" ng-if="hasPermission('mon_contact_delete')"
+                        data-ng-disabled="contactPerson.linkedToAlarmRule"
+                        data-ng-click="person.delete(contactPerson)">删除
+                </button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <eayun-table-page></eayun-table-page>
+</eayun-table>

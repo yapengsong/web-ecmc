@@ -1,0 +1,142 @@
+<!-- 当前位置下拉列表 -->
+<div class="title-inline">
+    <div class="form-group">
+        <label class="control-label">当前位置：</label>
+        <div class="btn-group" role="group" style="font-size:14px;">客户管理
+        </div>
+    </div>
+</div>
+<div class="panel panel-default clearfix">
+    <div class="panel-body">
+        <!--<h4>客户总览</h4>-->
+        <div>
+            <h4 style="float: left; margin-bottom: 0px;">客户总览</h4>
+            <div style="float: right">
+                <expander data-ng-click="manage.toggle()">
+                    <label class="pointer color-blue" data-ng-if="manage.overview.show">收起</label>
+                    <label class="pointer color-blue" data-ng-if="!manage.overview.show">展开</label>
+                </expander>
+
+            </div>
+        </div>
+
+
+
+        <div style="clear: both; margin-top: 20px" data-ng-if="manage.overview.show && hasPermission('customer_query')">
+            <div class="col-lg-4">
+                <div class="customer-overview-group">
+                    <div class="customer-overview-name">当前客户数量（位）</div>
+                    <div class="customer-overview-value" ng-bind="manage.customerOverview.customerUsed"></div>
+                </div>
+                <div class="customer-overview-group">
+                    <div class="customer-overview-name">项目数量（个）</div>
+                    <div class="customer-overview-value" ng-bind="manage.customerOverview.projectUsed"></div>
+                </div>
+                <div class="customer-overview-group">
+                    <div class="customer-overview-name">已创建云主机数量（台）</div>
+                    <div class="customer-overview-value"  ng-bind="manage.customerOverview.vmUsed"></div>
+                </div>
+                <div class="customer-overview-group">
+                    <div class="customer-overview-name">已创建云硬盘容量（GB）</div>
+                    <div class="customer-overview-value"  ng-bind="manage.customerOverview.vdiskUsed"></div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="customer-overview-group">
+                    <div class="customer-overview-name">已创建VPC数量（个）</div>
+                    <div class="customer-overview-value"  ng-bind="manage.customerOverview.vpcUsed"></div>
+                </div>
+                <div class="customer-overview-group">
+                    <div class="customer-overview-name">已使用带宽（Mbps）</div>
+                    <div class="customer-overview-value"  ng-bind="manage.customerOverview.bandwidthUsed"></div>
+                </div>
+                <div class="customer-overview-group">
+                    <div class="customer-overview-name">已分配公网IP数量（个）</div>
+                    <div class="customer-overview-value"  ng-bind="manage.customerOverview.fipUsed"></div>
+                </div>
+                <div class="customer-overview-group">
+                    <div class="customer-overview-name">已创建负载均衡数量（个）</div>
+                    <div class="customer-overview-value"  ng-bind="manage.customerOverview.banlancerUsed"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="panel panel-default clearfix">
+    <div class="panel-body">
+        <h4>客户信息管理</h4>
+
+        <form class="form-inline">
+            <a class="btn btn-primary" data-ng-click="hasPermission('customer_create')?manage.add():''" style="margin-right: 15px;" data-ng-if="hasPermission('customer_create')">
+                <span class="glyphicon glyphicon-plus"></span> 创建客户及项目
+            </a>
+            <a class="click-link" data-ng-click="manage.showNotCreatedCus()" style="margin-right: 15px;" data-ng-if="hasPermission('customer_uncreated')">
+                 查看待创建客户（{{manage.uncreatedCusNum}}）
+            </a>
+            <eayun-search ng-model="manage.search"
+                          ng-if="hasPermission('customer_query')"
+                          options="manage.options" style="float:right;margin-bottom: 20px;">
+            </eayun-search>
+        </form>
+        <eayun-table data-api="manage.cusTable.api" data-ajax-source="manage.cusTable.source" data-param="manage.cusTable.getParams"
+                     ng-if="hasPermission('customer_query')"
+                     data-result="manage.cusTable.result">
+            <table class="table table-eayun">
+                <thead>
+                <tr>
+                    <th>客户名称</th>
+                    <th>项目数量</th>
+                    <th>客户管理员账号</th>
+                    <th>账户余额</th>
+                    <th>信用额度</th>
+                    <th>报警数量</th>
+                    <th class="col-lg-1">
+                        <eayun-select type="btn" class="btn-group btn-group-xs" ng-change="manage.queryByCusState()"
+                                      data-ng-model="manage.cusState">
+                            <eayun-option value="" text="全部状态" selected></eayun-option>
+                            <eayun-option value="cusState.id" text="{{cusState.name}}"
+                                          ng-repeat="cusState in manage.cusStates"></eayun-option>
+                        </eayun-select>
+                    </th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr data-ng-repeat="customer in manage.cusTable.result">
+                    <td class="click-link"
+                        data-ng-click="hasPermission('customer_info')?manage.manageProject(customer.cusId):''"
+                        ng-bind="::customer.cusOrg"
+                        data-ng-disabled="!hasPermission('customer_info')">
+                    </td>
+                    <td ng-bind="::customer.prjCount"></td>
+                    <td ng-bind="::customer.adminAccount"></td>
+                    <td >
+                        <span>￥
+                        <span ng-bind="::customer.balance |number:2"></span>
+                        </span>
+                    </td>
+                    <td >
+                        <span>￥
+                        <span ng-bind="::customer.creditLines |number:2"></span>
+                        </span>
+                    </td>
+
+                    <td ng-bind="::customer.alarmCount"></td>
+                    <td ng-bind="customer.isBlocked?'冻结':'活跃'"></td>
+                    <td>
+                        <button type="button" class="btn btn-tablemng"
+                                ng-click="manage.manageProject(customer.cusId)"
+                                data-ng-if="hasPermission('customer_info')">
+                            管理项目
+                        </button>
+                        <!--<button type="button" class="btn btn-tabledel">冻结</button>-->
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <eayun-table-page></eayun-table-page>
+        </eayun-table>
+    </div>
+</div>

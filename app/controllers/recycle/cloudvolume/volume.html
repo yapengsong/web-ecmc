@@ -1,0 +1,63 @@
+<div class="form-inline">
+    <eayun-search data-ng-model="recycleVolume.search" options="recycleVolume.options"></eayun-search>
+</div>
+<eayun-auto-refresh interval="5000" refresh="recycleVolume.refresh"></eayun-auto-refresh>
+<eayun-table data-api="recycleVolume.table.api" data-ajax-source="recycleVolume.table.source" data-param="recycleVolume.table.getParams"
+             data-result="recycleVolume.table.result">
+    <table class="table table-eayun">
+        <thead>
+        <tr>
+            <th>名称</th>
+            <th>状态</th>
+            <th>硬盘属性</th>
+            <th>容量</th>
+            <th>挂载的云主机</th>
+            <th>
+                <eayun-select type="btn" class="btn-group btn-group-xs" data-ng-model="recycleVolume.dcId"
+                              data-ng-change="recycleVolume.queryTable()">
+                    <eayun-option value="" text="数据中心（全部）" selected></eayun-option>
+                    <eayun-option value="dc.id" text="{{dc.name}}" data-ng-repeat="dc in recycleVolume.dcList"></eayun-option>
+                </eayun-select>
+            </th>
+            <th>客户</th>
+            <th>项目</th>
+            <th>时间</th>
+            <th style="min-width: 100px;">操作</th>
+        </tr>
+        </thead>
+        <tbody><tr data-ng-repeat="vol in recycleVolume.table.result">
+            <td class="click-link"
+                data-ng-click="recycleVolume.detail(vol)"
+                title="{{vol.volName}}">
+                {{vol.volName.length > 20 ? vol.volName.substring(0, 19) + '...' :vol.volName}}
+            </td>
+            <td>
+                <span class="state-block"
+                      data-ng-class="recycleVolume.vmStatusClass[$index] != '' ? recycleVolume.vmStatusClass[$index] : ''"
+                      ng-init="recycleVolume.vmStatusClass[$index] = recycleVolume.checkVmStatus(vol,$index)">
+                </span>
+                <span>{{(vol.volStatus== 'DELETING' && '2' == vol.isDeleted) ? '删除中' : '已删除'}}</span>
+            </td>
+            <td>{{vol.volBootable=='1'?'系统盘':'数据盘'}}</td>
+            <td>{{vol.volSize}}GB</td>
+            <td data-ng-if="vol.vmName != 'null'" class="click-link" data-ng-click="recycleVolume.detailHost(vol)" data-ng-bind="vol.vmName == 'null' ? '--' : vol.vmName"></td>
+            <td data-ng-if="vol.vmName == 'null'" data-ng-click="recycleVolume.detailHost(vol)" data-ng-bind="vol.vmName == 'null' ? '--' : vol.vmName"></td>
+            <td>{{vol.dcName}}</td>
+            <td data-ng-bind="vol.cusOrg"></td>
+            <td data-ng-bind="vol.prjName"></td>
+            <td>
+                <span>{{'创建时间：'+(vol.createTime|date:'yyyy-MM-dd HH:mm:ss')}}<br></span>
+                <span>{{'删除时间：'+(vol.deleteTime|date:'yyyy-MM-dd HH:mm:ss')}}</span>
+            </td>
+            <td>
+                <button class="btn btn-tabledel btn-first"
+                        data-ng-if="hasPermission('recycle_volume_delete')"
+                        data-ng-disabled="vol.volBootable == 1 || (vol.volStatus== 'DELETING' && '2' == vol.isDeleted)"
+                        data-ng-click="recycleVolume.deleteVol(vol)">删除
+                </button>
+                <span data-ng-if="!hasPermission('recycle_volume_delete')">----</span>
+            </td>
+        </tr></tbody>
+    </table>
+    <eayun-table-page></eayun-table-page>
+</eayun-table>

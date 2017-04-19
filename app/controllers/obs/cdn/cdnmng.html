@@ -1,0 +1,94 @@
+<div class="panel panel-default clearfix">
+    <div class="panel-body">
+        <form class="form-inline">
+            <div class="form-group" style="margin-left:15px">
+                <eayun-select class="form-control form-select" placeholder="客户--" ng-model="cdn.customer" ng-change="cdn.changeCus()">
+                    <eayun-option value="cus" text="{{cus.cusOrg}}"
+                                  ng-repeat="cus in cdn.cusList"></eayun-option>
+                </eayun-select>
+
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="panel panel-default clearfix">
+    <div class="panel-body">
+        <h4>本月使用量</h4>
+        <div>
+            <div class="col-lg-4">
+                <div class="obs-overview-all obs-overview-one">
+                    <label class="control-label">CDN下载流量：</label>
+                    <label class="control-label obs-control-label"><span ng-bind="cdn.usedInMonth.cdnFlowStr"></span></label>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="obs-overview-all obs-overview-one">
+                    <label class="control-label">回源流量：</label>
+                    <label class="control-label obs-control-label"><span ng-bind="cdn.usedInMonth.backsourceStr"></span></label>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="panel panel-default clearfix">
+    <div class="panel-body">
+        <h4>加速域名</h4>
+        <div class="panel panel-default" style="margin-bottom:5px;margin-top:10px;">
+            <div class="panel-body" style = "padding:5px;">
+                <eayun-table data-api="cdn.cdnDomainTable.api" data-ajax-source="cdn.cdnDomainTable.source" data-param="cdn.cdnDomainTable.getParams"
+                             data-result="cdn.cdnDomainTable.result">
+                    <table class="table table-eayun-info" style = "margin-bottom:0px;">
+                        <thead>
+                        <tr>
+                            <th class = "col-sm-3" style="text-align:left;">加速域名</th>
+                            <th class = "col-sm-2" style="text-align:left;">CDN域名</th>
+                            <th class = "col-sm-2" style="text-align:left;">源站</th>
+                            <th class = "col-sm-1" style="text-align:left;">状态</th>
+                            <th class = "col-sm-2" style="text-align:left;">本月使用CDN流量</th>
+                            <th class = "col-sm-2" style="text-align:left;">本月回源流量</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr data-ng-repeat="model in cdn.cdnDomainTable.result">
+                            <td style="text-align:left;"><span ng-bind-html="::model.bucketPath  | ellipsis:30" class="click-link" data-ng-click="cdn.queryDomain(model.domainId)"></span></td>
+                            <td style="text-align:left;"><span ng-bind="::model.cdnPath"></span></td>
+                            <td style="text-align:left;"><span ng-bind-html="::model.eosPath  | ellipsis:30"></span></td>
+                            <td style="text-align:left;"><span class ="state-block" data-ng-class="cdn.StatusClass[$index]!=''?cdn.StatusClass[$index]:''" ng-init="cdn.StatusClass[$index] = cdn.checkStatusClass(model,$index)"></span>
+                                {{model.cdnStatus==2?"已加速":(model.cdnStatus==1?"设置中":"未加速")}}</td>
+                            <td style="text-align:left;"><span ng-bind="::model.cdnFlowStr"></span></td>
+                            <td style="text-align:left;"><span ng-bind="::model.backsourceStr"></span></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <eayun-table-page></eayun-table-page>
+                </eayun-table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="panel panel-default clearfix">
+    <div class="panel-body">
+        <h4>域名详情</h4>
+        <form class="form-inline">
+            <div class="form-group" style="margin-left:15px">
+                <eayun-select class="form-control form-select" ng-model="cdn.domain" ng-change="cdn.changeDomain()">
+                    <eayun-option value="''" text="所有域名"" selected></eayun-option>
+                    <eayun-option value="do.domainId" text="{{do.bucketPath}}"
+                                  ng-repeat="do in cdn.domainList"></eayun-option>
+                </eayun-select>
+
+            </div>
+            <div class="form-group" style="margin-left:15px">
+                <span style="font-size:14px;">时间范围：</span>
+                <date-time-picker class="form-group" style="margin-left:10px;" data-format="yyyy-MM-dd" show-time="false" ng-model="cdn.startTime" max-date="cdn.endTime"></date-time-picker>
+                <span style="margin-left:10px;">—</span>
+                <date-time-picker class="form-group" style="margin-left:10px;" data-format="yyyy-MM-dd" show-time="false" ng-model="cdn.endTime" min-date="cdn.startTime" max-date="cdn.now"></date-time-picker>
+            </div>
+
+            <button class="btn btn-default" style="margin-left: 15px;" ng-click="cdn.query()"><strong>查询</strong></button>
+            <div class="col-lg-10" style="height: 400px;width: 100%;margin-top:30px;" echarts="cdn.myChart" ng-show="cdn.show"></div>
+        </form>
+    </div>
+</div>

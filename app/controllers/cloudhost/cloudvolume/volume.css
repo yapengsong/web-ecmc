@@ -1,0 +1,24 @@
+.vm-delete-label {
+    padding-left: 100px !important;
+    font-size: 16px;
+}
+
+.vm-delete-checkbox {
+    padding-top: 0px;
+    padding-left: 100px;
+    margin-top: 10px;
+}
+
+.vm-delete-checkbox1 {
+    padding-top: 0px;
+    padding-left: 100px;
+    margin-top: -5px;
+}
+
+.vm-delete-footer {
+    margin-top: 30px !important;
+}
+
+.delete-name-color {
+    color: #07C;
+}

@@ -1,0 +1,38 @@
+<div>
+    <form class="form-horizontal" name="myForm" novalidate>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">信用额度:</label>
+
+            <div class="col-sm-6"
+                 data-ng-class="(myForm.creditLines.$dirty && myForm.creditLines.$invalid) ? 'has-error' : ''">
+                <div >
+                <div class="input-group">
+                    <span class="input-group-addon">￥</span>
+                    <input type="text" name="creditLines" class="form-control" data-ng-model="credit.creditLines"
+                           data-ng-change="credit.checkPattern()"
+                           ng-pattern='/^([1-9]\d{0,6}|\d)(\.\d\d|\.\d)?$/' maxlength="10"
+                           required/>
+
+                </div>
+
+                </div>
+                <label class="control-label"
+                       data-ng-class="myForm.creditLines.$dirty && myForm.creditLines.$invalid ? 'show' : 'hide'"
+                       style="text-align: left;">请输入小于10,000,000的金额
+                </label>
+            </div>
+            <span class="col-sm-3 control-label font-color-gay" style="text-align: left;padding-left: 0px;padding-right: 0px;">
+                精确到分，如￥1.00
+            </span>
+        </div>
+    </form>
+</div>
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-primary btn-modal" data-ng-click="commit()" style="margin-left: 15px;"
+            data-ng-disabled="myForm.$invalid">提 交
+    </button>
+    <button type="button" class="btn btn-default btn-modal" data-ng-click="cancel()" style="margin-left: 15px;">取 消
+    </button>
+</div>

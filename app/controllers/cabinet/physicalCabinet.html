@@ -1,0 +1,52 @@
+<h4>机柜</h4>
+<form class="form-inline" ng-submit="physicalCabinet.doSearch()" >
+
+    <button type="button" class="btn btn-primary" ng-click="physicalCabinet.add()" style="margin-right: 15px;" data-ng-disabled="!hasPermission('phy_cabinet_create')">
+        <span class="glyphicon glyphicon-plus"></span> 添加机柜
+    </button>
+
+    <div class="input-group has-feedback search-group">
+        <input type="text" class="form-control" placeholder="请输入机柜名称搜索" ng-model="physicalCabinet.cabinetName"data-ng-disabled="!hasPermission('phy_cabinet_query')">
+        <span class="form-control-feedback pointer search"  ng-click="physicalCabinet.doSearch()"></span>
+    </div>
+</form>
+<form class="form-inline form-count">
+
+    <eayun-table data-api="physicalCabinet.myTable.api" data-ajax-source="physicalCabinet.myTable.source" data-param="physicalCabinet.myTable.getParams"
+                 data-result="physicalCabinet.myTable.result">
+        <table class="table table-eayun" >
+            <thead>
+            <tr>
+                <th>机柜名称</th>
+                <th>总容量(U)</th>
+                <th>已用容量(U)</th>
+                <th>可用容量(U)</th>
+                <th >
+                    <eayun-select type="btn" class="btn-group btn-group-xs" data-ng-model="physicalCabinet.dcId"
+                                  data-ng-change="physicalCabinet.doSearch()">
+                        <eayun-option value="''" text="数据中心（全部）" selected></eayun-option>
+                        <eayun-option value="dcList.id" text="{{dcList.name}}"
+                                      ng-repeat="dcList in physicalCabinet.dcList"></eayun-option>
+                    </eayun-select>
+                </th>
+                <th width="15%">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="pc in physicalCabinet.myTable.result" data-ng-if="hasPermission('phy_cabinet_query')">
+            <!--<tr>-->
+                <td  class="click-link" ng-click="physicalCabinet.detail(pc.id,pc.dataCenterId)" data-ng-bind-html="::pc.name " data-ng-disabled="!hasPermission('phy_cabinet_query')"></td>
+                <td ng-bind="::pc.totalCapacity"></td>
+                <td ng-bind="::pc.usedCapacity"></td>
+                <td ng-bind="::(pc.totalCapacity-pc.usedCapacity)"></td>
+                <td ng-bind="::pc.dataCenterName"></td>
+                <td>
+                    <button class="btn btn-tablemng" ng-click="physicalCabinet.edit(pc.id)" data-ng-show="hasPermission('phy_cabinet_modify')">编辑</button>
+                    <button class="btn btn-tabledel" ng-click="physicalCabinet.delete(pc.id,pc.dataCenterId)" data-ng-show="hasPermission('phy_cabinet_delete')">删除</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <eayun-table-page></eayun-table-page>
+    </eayun-table>
+</form>

@@ -1,0 +1,61 @@
+<!-- 当前位置下拉列表 -->
+<div class="title-inline">
+    <div class="form-group">
+        <label class="control-label">当前位置：</label>
+        <div class="btn-group" role="group" style="font-size:14px;">公告管理
+        </div>
+    </div>
+</div>
+<div class="panel panel-default clearfix">
+    <div class="panel-body">
+        <h4>公告管理</h4>
+        <form class="form-inline">
+            <label class="control-label" style="margin-right: 15px;">时间范围：</label>
+            <date-time-picker data-format="yyyy-MM-dd HH:mm:ss" data-ng-model="notice.beginTime" max-date="notice.endTime" show-time="true"></date-time-picker>
+            <span style="margin: 0px 15px;">—</span>
+            <date-time-picker data-format="yyyy-MM-dd HH:mm:ss" data-ng-model="notice.endTime" min-date="notice.startTime" show-time="true"></date-time-picker>
+
+            <label class="control-label" style="margin: 0px 15px;">公告标题：</label>
+            <input class="form-control" data-ng-model="notice.title" style="margin: 0px 10px;"/>
+
+            <button class="btn btn-default" data-ng-click="notice.queryTitle()" style="margin: 0px 15px;">查  询</button>
+
+            <button class="btn btn-primary" data-ng-click="notice.add()" ng-show="hasPermission('sys_notice_create')">
+                <span class="glyphicon glyphicon-plus"></span> 创建公告
+            </button>
+        </form>
+        <eayun-table data-api="notice.noticeTable.api" data-ajax-source="notice.noticeTable.source" data-param="notice.noticeTable.getParams"
+                     data-result="notice.noticeTable.result">
+            <table class="table table-striped striped-text-middle">
+                <thead>
+                <tr>
+                    <th>公告标题</th>
+                    <!-- <th>公告摘要</th>
+                    <th>公告内容</th> -->
+                    <th>生效时间</th>
+                    <th>截止时间</th>
+                    <th>URL</th>
+                    <th>启用状态</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr data-ng-repeat="noticeModel in notice.noticeTable.result">
+                    <td ng-bind="::noticeModel.title.length>20?noticeModel.title.substring(0,20)+'...':noticeModel.title" title="{{noticeModel.title}}" class="click-link" data-ng-click="notice.detail(noticeModel)"></td>
+                    <!-- <td ng-bind="::noticeModel.memo.length>20?noticeModel.memo.substring(0,20)+'...':noticeModel.memo" title="{{noticeModel.memo}}" ></td>
+                    <td ng-bind="::noticeModel.content.length>20?noticeModel.content.substring(0,20)+'...':noticeModel.content" title="{{noticeModel.content}}" ></td> -->
+                    <td ng-bind="::noticeModel.validTime|date : 'yyyy-MM-dd HH:mm:ss'"></td>
+                    <td ng-bind="::noticeModel.invalidTime|date : 'yyyy-MM-dd HH:mm:ss'"></td>
+                    <td ng-bind="::noticeModel.url == 'null' ? '' : noticeModel.url.length>20?noticeModel.url.substring(0,20)+'...' : noticeModel.url" title="{{noticeModel.url}}"></td>
+                    <td>{{noticeModel.isUsed == '1' ? '已启用' : '未启用'}}</td>
+                    <td>
+                        <button class="btn btn-tablemng btn-first" data-ng-click="notice.edit(noticeModel)" ng-show="hasPermission('sys_notice_modify')">编辑</button>
+                        <button class="btn btn-tabledel" data-ng-click="notice.delete(noticeModel)" ng-show="hasPermission('sys_notice_delete')">删除</button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <eayun-table-page></eayun-table-page>
+        </eayun-table>
+    </div>
+</div>

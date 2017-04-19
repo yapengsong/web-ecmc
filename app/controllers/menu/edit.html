@@ -1,0 +1,84 @@
+<form class="form-horizontal" name="editMenu">
+    <div class="form-group">
+        <label class="col-sm-3 control-label">名称：</label>
+
+        <div class="col-sm-8"
+             data-ng-class="(editMenu.name.$dirty && editMenu.name.$error.required
+             || editMenu.name.$error.maxlength) ? 'has-error' : ''">
+            <input type="text" class="form-control" data-ng-model="edit.menu.name" ng-maxlength="20" name="name" required/>
+            <label class="control-label hide"
+                   data-ng-class="editMenu.name.$dirty && editMenu.name.$error.required ? 'show' : 'hide'"
+                   style="text-align: left;">名称不能为空</label>
+            <label class="control-label hide"
+                   data-ng-class="editMenu.name.$dirty && editMenu.name.$error.maxlength ? 'show' : 'hide'"
+                   style="text-align: left;">请输入1-20位字符</label>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">描述：</label>
+
+        <div class="col-sm-8"
+             data-ng-class="(editMenu.description.$dirty && editMenu.description.$error.maxlength) ? 'has-error' : ''">
+            <input type="text" class="form-control" data-ng-model="edit.menu.description" name="description"
+                ng-maxlength="200"/>
+            <label class="control-label hide"
+                   data-ng-class="editMenu.description.$dirty && editMenu.description.$error.maxlength ? 'show' : 'hide'"
+                   style="text-align: left;">不能超过200位字符</label>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">页面地址：</label>
+
+        <div class="col-sm-8"
+             data-ng-class="(editMenu.url.$dirty && editMenu.url.$error.required || editMenu.url.$error.maxlength) ? 'has-error' : ''">
+            <input type="text" class="form-control" data-ng-model="edit.menu.url" ng-maxlength="100" name="url"/>
+            <label class="control-label hide"
+                   data-ng-class="editMenu.url.$dirty && editMenu.url.$error.maxlength ? 'show' : 'hide'"
+                   style="text-align: left;">不能超过100位字符</label>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">图标：</label>
+
+        <div class="col-sm-8"
+             data-ng-class="(editMenu.icon.$dirty && editMenu.icon.$error.maxlength) ? 'has-error' : ''">
+            <input type="text" class="form-control" data-ng-model="edit.menu.icon" ng-maxlength="100" name="icon"/>
+            <label class="control-label hide"
+                   data-ng-class="editMenu.icon.$dirty && editMenu.icon.$error.maxlength ? 'show' : 'hide'"
+                   style="text-align: left;">不能超过100位字符</label>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">所属菜单：</label>
+
+        <div class="col-sm-8">
+            <eayun-select-tree class="form-control form-select" ng-model="edit.menu.parentId" options-data="edit.tree" value-field="id" text-field="name"/>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">排序：</label>
+
+        <div class="col-sm-8"
+             data-ng-class="(editMenu.orderNo.$dirty && editMenu.orderNo.$error.required
+             || editMenu.orderNo.$dirty && editMenu.orderNo.$error.max
+             || editMenu.orderNo.$error.min) ? 'has-error' : ''">
+            <input type="number" class="form-control form-select" ng-model="edit.menu.orderNo"
+                   name="orderNo" required onpaste="return false;" min="1" max="999" step="1">
+            <label class="control-label hide"
+                   data-ng-class="editMenu.orderNo.$dirty && editMenu.orderNo.$error.required ? 'show' : 'hide'"
+                   style="text-align: left;">排序不能为空</label>
+            <label class="control-label hide"
+                   data-ng-class="editMenu.orderNo.$dirty && editMenu.orderNo.$error.max || editMenu.orderNo.$error.min ? 'show' : 'hide'"
+                   style="text-align: left;">请输入1-999的整数</label>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">是否启用：</label>
+
+        <div class="col-sm-5">
+            <input type="checkbox" style="margin-top: 10px;" data-ng-model="edit.menu.enableFlag" ng-true-value="'1'"
+                   ng-false-value="'0'"/>
+            <span> 启用</span>
+        </div>
+    </div>
+</form>

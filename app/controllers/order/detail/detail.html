@@ -1,0 +1,132 @@
+<div class="title-inline">
+    <div class="form-group">
+        <label class="control-label">当前位置：
+            <a style="cursor: pointer;" data-ui-sref="app.order">订单管理</a>&nbsp;>
+            <span> 订单详情</span>
+        </label>
+    </div>
+</div>
+
+
+<div class="panel panel-default clearfix">
+    <div class="panel-body">
+
+
+        <h4>订单概要</h4>
+        <form class="form-inline">
+            <button
+                    data-ng-if="detailMng.order.orderType == '0' && detailMng.order.orderState=='4'"
+                    data-ng-click="detailMng.orderResource(detailMng.order.orderNo)"
+                    class="btn btn-primary">查看资源</button>
+        </form>
+        <table class="table table-eayun">
+            <tr>
+                <td style="background-color: #EEE;font-weight: bold;font-size: 14px;">客户名称</td>
+                <td style="text-align: left;" colspan="3">
+                    <span data-ng-bind="::detailMng.order.cusName"></span>
+                </td>
+            </tr>
+            <tr>
+                <td style="background-color: #EEE;font-weight: bold;font-size: 14px;">订单编号</td>
+                <td style="text-align: left;"><span data-ng-bind="::detailMng.order.orderNo"></span></td>
+                <td style="background-color: #EEE;font-weight: bold;font-size: 14px;">产品名称</td>
+                <td style="text-align: left;"><span data-ng-bind="::detailMng.order.prodName"></span></td>
+            </tr>
+            <tr>
+                <td style="background-color: #EEE;font-weight: bold;font-size: 14px;">类型</td>
+                <td style="text-align: left;"><span
+                        data-ng-bind="::detailMng.order.orderTypeName"></span></td>
+                <td style="background-color: #EEE;font-weight: bold;font-size: 14px;">订单状态</td>
+                <td style="text-align: left;"><span
+                        data-ng-bind="::detailMng.order.orderStateName"></span>
+                </td>
+            </tr>
+            <tr>
+                <td style="background-color: #EEE;font-weight: bold;font-size: 14px;">创建时间</td>
+                <td style="text-align: left;"><span
+                        data-ng-bind="::detailMng.order.createTime|date:'yyyy-MM-dd HH:mm:ss'"></span></td>
+                <td style="background-color: #EEE;font-weight: bold;font-size: 14px;" data-ng-if="detailMng.order.orderState != '3' && detailMng.order.orderState != '5' ">完成时间</td>
+                <td style="text-align: left;" data-ng-if="detailMng.order.orderState != '3' && detailMng.order.orderState != '5' ">
+                    <span
+                        data-ng-bind="detailMng.order.completeTime==null?'--':detailMng.order.completeTime|date:'yyyy-MM-dd HH:mm:ss' ">
+                    </span>
+                </td>
+                <td style="background-color: #EEE;font-weight: bold;font-size: 14px;" data-ng-if="detailMng.order.orderState == '3' || detailMng.order.orderState == '5' ">取消时间</td>
+                <td style="text-align: left;" data-ng-if="detailMng.order.orderState == '3' || detailMng.order.orderState == '5' ">
+                    <span
+                            data-ng-bind="::detailMng.order.canceledTime|date:'yyyy-MM-dd HH:mm:ss'">
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td style="background-color: #EEE;font-weight: bold;font-size: 14px;">金额</td>
+                <td style="text-align: left;" colspan="3">
+                    <span class="color-blue" style="font-weight:bold;">￥ {{::detailMng.order.paymentAmount|number:2}}　</span>
+                                <span class="font-color-gay" data-ng-if="detailMng.order.payType != '2' && (detailMng.order.orderState == '2' || detailMng.order.orderState == '4')">
+                                    =（现金支付：￥ {{::detailMng.order.thirdPartPayment|number:2}}）
+                                    +（余额支付：￥ {{::detailMng.order.accountPayment|number:2}}）
+                                </span>
+                </td>
+            </tr>
+        </table>
+
+
+
+            <div class="divider"></div>
+
+        <h4>订单详情</h4>
+        <table class="table table-eayun">
+            <thead>
+            <tr>
+                <th class="col-sm-1">产品名称</th>
+                <th class="col-sm-1">数量</th>
+                <th class="col-sm-2">具体配置</th>
+                <th class="col-sm-2" data-ng-if="detailMng.order.orderState != '4'">购买周期</th>
+                <th class="col-sm-2" data-ng-if="detailMng.order.orderState == '4'">起止时间</th>
+                <th class="col-sm-1">付款方式</th>
+                <th class="col-sm-1">金额</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td ng-bind="::detailMng.order.prodName"></td>
+                <td ng-bind="::detailMng.order.prodCount"></td>
+                <td ng-bind-html="::detailMng.order.prodConfig"
+                    style="text-align: left"></td>
+                <td data-ng-if="detailMng.order.payType=='1' && detailMng.order.orderState != '4' && detailMng.order.orderType!='2'">
+                    {{detailMng.order.buyCycle}}个月
+                </td>
+                <td data-ng-if="detailMng.order.payType=='2' || (detailMng.order.payType=='1' && detailMng.order.orderState != '4' && detailMng.order.orderType=='2')" data-ng-bind="'--'">
+                <td data-ng-if="detailMng.order.payType=='1' && detailMng.order.orderState == '4'">
+                    {{detailMng.order.resourceBeginTime|date:'yyyy-MM-dd HH:mm:ss' }}
+                     至 {{detailMng.order.resourceExpireTime|date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                <td ng-bind="::detailMng.order.payTypeName"></td>
+                <td class="ey-text-error">
+                    <span class="color-blue">￥ {{::detailMng.order.paymentAmount|number:2}}</span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div class="pull-right payables">
+            <div class="form-group">
+                <span>应付款：</span>
+                <span>￥
+                    <span class="color-blue" style="font-size:16px;" ng-bind="::detailMng.order.paymentAmount|number:2">
+                    </span>
+                </span>
+            </div>
+
+            <div class="form-group">
+                <hr style="border:1px solid #DCDCDC">
+            </div>
+            <div class="form-group actual-payments">
+                <span>实际付款：</span>
+                <span>￥
+                    <span class="color-blue" ng-bind="::detailMng.order.paymentAmount|number:2"></span>
+                </span>
+            </div>
+        </div>
+
+    </div>
+</div>

@@ -1,0 +1,48 @@
+
+        <h4>菜单管理</h4>
+
+        <form class="form-inline">
+            <button class="btn btn-primary" data-ng-click="menu.add(menu.menu)" ng-if="hasPermission('sys_menu_create')" style="margin-right: 15px;">
+                <span class="glyphicon glyphicon-plus"></span> 创建菜单
+            </button>
+            <button class="btn btn-default" data-ng-click="menu.edit(menu.menu)" ng-if="hasPermission('sys_menu_modify')" style="margin:0 15px">
+                <span class="glyphicon glyphicon-pencil"></span> 编辑
+            </button>
+            <button class="btn btn-default" data-ng-click="menu.delete(menu.menu)" ng-if="hasPermission('sys_menu_delete') && menu.menu.lock == '0'">
+                删除
+            </button>
+        </form>
+        <form class="row">
+            <div class="col-lg-12">
+                <div class=" details-group">
+                    <div class="details-name">名称：</div>
+                    <div class="details-value">
+                        <span ng-bind="menu.menu.name"></span>
+                    </div>
+                </div>
+                <div class=" details-group">
+                    <div class="details-name">描述：</div>
+                    <div class="details-value">
+                        <span ng-bind-html="menu.menu.description | ellipsis:10"></span>
+                    </div>
+                </div>
+                <div class="details-group">
+                    <div class="details-name">页面地址：</div>
+                    <div class="details-value">
+                        <span ng-bind="menu.menu.url"></span>
+                    </div>
+                </div>
+                <div class=" details-group">
+                    <div class="details-name">排序：</div>
+                    <div class="details-value">
+                        <span ng-bind="menu.menu.orderNo"></span>
+                    </div>
+                </div>
+                <div class=" details-group">
+                    <div class="details-name">图标：</div>
+                        <div class="details-value">
+                        <span ng-bind="menu.menu.icon"></span>
+                    </div>
+                </div>
+            </div>
+        </form>

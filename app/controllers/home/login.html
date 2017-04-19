@@ -1,0 +1,63 @@
+<div class="login">
+    <!--<div ng-include="'controllers/home/top.html'"></div>-->
+    <div class="container">
+        <div class="login-box">
+            <!--<div class="pull-left box-left">-->
+                <!--<img src="images/login.png">-->
+            <!--</div>-->
+                <!--<div class="form-title">-->
+                    <!--<span>登录账户</span>-->
+                <!--</div>-->
+                <!--<div class="form-split">-->
+                <!--</div>-->
+                <div class="logo">
+                    <img src="../images/loadLogo.png">
+                </div>
+                <div class="form-error" ng-show="login.error">
+                    <!--<span class="glyphicon glyphicon-remove icon"></span>-->
+                    <span ng-bind="login.error"></span>
+                </div>
+                <form name="loginForm" novalidate>
+                    <div class="form-group">
+                        <!--<label>用户名：</label>-->
+
+                        <!--<div>-->
+                            <input type="text" class="form-control" ng-model="login.userName" placeholder="请输入用户名"
+                                   required>
+                        <!--</div>-->
+                    </div>
+                    <!--<label>密码：</label>-->
+
+                    <div class="form-group has-feedback">
+                        <input ng-keypress="login.forbid($event)" ng-click="login.clicked()" ng-keyup="login.capitaled($event)"
+                               type="password" class="form-control" ng-model="login.passWord" placeholder="请输入登录密码" required>
+                        <span class="glyphicon glyphicon-text-background form-control-feedback"
+                              ng-class="login.lastChart?'show':'hide'"></span>
+                    </div>
+                    <!--<label>验证码：</label>-->
+
+                    <div class="form-group captcha">
+                        <input type="text" class="form-control" ng-model="login.captcha" placeholder="请输入验证码" required>
+                        <img class="img-responsive pointer"
+                             ng-src="/api/action/validetImg?type=login&random={{login.random}}"
+                             ng-click="login.changeCaptcha()" title="切换验证码"/>
+
+                        <p class="help-block text-left">
+                            <span class="color-info pointer" ng-click="login.changeCaptcha()"><img src="../images/loadRefresh.png"></span>
+                        </p>
+                    </div>
+                    <div class="form-group">
+                        <div class="btn-group btn-group-justified">
+                            <div class="btn-group">
+                                <button class="btn btn-lg btn-primary" ng-disabled="loginForm.$invalid"
+                                        ng-click="login.login()">登 录
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+        </div>
+        <footer  ng-include="'controllers/home/bottom.html'"></footer>
+    </div>
+</div>
+

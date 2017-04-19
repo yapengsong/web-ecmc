@@ -1,0 +1,60 @@
+<div class="modal-header">
+    <span class="modal-title">编辑客户访问次数</span>
+    <img ng-click="cancel()" src="images/close.png">
+</div>
+
+<div  class="modal-body">
+    <div class="eayun-modal-dialog"  ng-style="{'width': 600 }">
+    <form class="form-horizontal"  novalidate>
+        <div class="form-group">
+            <label class="col-sm-2 control-label"  style="text-align: right;margin-left: 20px;">客户名称：</label>
+
+            <div class="col-sm-4 control-label ng-binding" style="text-align: left">
+                {{apiRestrict.cusOrg}}
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label"  style="text-align: right;margin-left: 20px;">API类型：</label>
+
+            <div class="col-sm-4">
+                <eayun-select  class="form-control" data-ng-model="apiRestrict.apiType"  ng-change="apiRestrict.change(apiRestrict.apiType)" required>
+                    <eayun-option value="oc" text="{{oc.version}}/{{oc.apiTypeName}}"
+                                  ng-repeat="oc in apiRestrict.apiTypeList"></eayun-option>
+                </eayun-select>
+            </div>
+        </div>
+        </form>
+    <form class="form-horizontal"  novalidate name="myForm">
+        <div class="control-label api-restrict-table" style="display:block;width:550px;padding-top:0px">
+            <table class="table-striped col-sm-12">
+                <tbody>
+                <tr data-ng-repeat="actions in apiRestrict.actionList">
+                    <td class="col-sm-4 api-restrict-text-left" style="text-align: left;padding-right: 0px"><span class="color-require">*</span>{{actions.actionName}}</td>
+                    <td class="col-sm-5"
+                        data-ng-class="(myForm.count{{$index}}.$dirty && myForm.count{{$index}}.$invalid)?'has-error':''">
+                        <input type="text" name="count{{$index}}" data-ng-model="actions.count"
+                               placeholder="请输入访问次数"
+                               data-ng-pattern="/^([1-9]\d{0,3}|10000|0)$/" class="form-control" maxlength="9"
+                               required/>
+                    </td>
+                    <td style="text-align: left">次</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-sm-12" data-ng-class="(myForm.$dirty&&myForm.$invalid)? 'has-error':''" style="margin-left:5px;">
+            <label class="control-label" data-ng-show="myForm.$dirty&&myForm.$invalid">请输入0~10000的整数</label>
+        </div>
+    </form>
+        <div style="margin-top:20px;margin-left: 20px;">
+            <span class="font-color-gay " style="font-size: 14px;" >每小时可请求次数，必须是整型数字，范围0~10000</span>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-primary btn-modal" data-ng-click="commit()" style="margin-left: 15px;"data-ng-disabled="myForm.$invalid || myForm.$invalid"
+    >确 定
+    </button>
+    <button type="button" class="btn btn-default btn-modal" data-ng-click="cancel()" style="margin-left: 15px;">取 消
+    </button>
+</div>

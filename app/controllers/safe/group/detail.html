@@ -1,0 +1,209 @@
+<!-- 当前位置下拉列表 -->
+<div class="title-inline">
+    <div class="form-group">
+        <label class="control-label">当前位置：
+        	<a class="pointer" ui-sref="app.safe.tabs.firewall">安全</a> > 
+            <a class="pointer" ui-sref="app.safe.tabs.group">安全组</a>
+            > 安全组详情
+        </label>
+    </div>
+</div>
+
+<div class="panel panel-default clearfix">
+    <div class="panel-body">
+        <h4>安全组详情</h4>
+
+        <div class="details">
+            <form class="row">
+
+
+
+
+                <div class="col-lg-6">
+                    <div class="details-group">
+
+                            <div class="details-name"
+                                 hint="controllers/safe/group/editdetailname.html"
+                                 hint-show="detail.hintNameShow"
+                                 tooltip-class="tooltip-edit"
+                                 tooltip-placement="right">安全组名称：</div>
+                            <div class="details-value">
+                                <span data-ng-class="detail.volNameEditable?'hide':'show'" data-ng-bind-html="detail.safeGroup.sgName=='default'?'默认安全组':detail.safeGroup.sgName | ellipsis:20" ></span>
+                               <!-- <span data-ng-class="detail.volNameEditable?'hide':'show'" data-ng-bind="::detail.safeGroup.sgName"></span>-->
+                            </div>
+	                    <span class="badge" data-ng-class="detail.safeGroup.defaultGroup!='defaultGroup'?'show':'hide'" data-ng-click="detail.edit('volName')" data-ng-if="hasPermission('securitygroup_modify')">
+		                 <span class="glyphicon glyphicon-pencil"></span>
+                        </span>
+
+                    </div>
+                    <div class="details-group">
+                        <div class="details-name">安全组ID：</div>
+                        <div class="details-value" ng-bind="::detail.safeGroup.sgId"></div>
+                    </div>
+                    <div class="details-group">
+                        <div class="details-name">所属数据中心：</div>
+                        <div class="details-value" ng-bind="::detail.safeGroup.dcName"></div>
+                    </div>
+					<div class="details-group">
+                        <div class="details-name">创建时间：</div>
+                        <div class="details-value" ng-bind="::detail.safeGroup.createTime|date : 'yyyy-MM-dd HH:mm:ss'"></div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="details-group">
+                        <div class="details-name"
+                             hint="controllers/safe/group/editdetaildesc.html"
+                             hint-show="detail.hintDescShow"
+                             tooltip-class="tooltip-edit"
+                             tooltip-placement="right">描述：</div>
+                        <div class="details-value">
+                            <span data-ng-class="detail.volDescEditable?'hide':'show'" data-ng-bind-html="detail.safeGroup.sgDescription | ellipsis:40" ></span>
+                            <!-- <span data-ng-class="detail.volNameEditable?'hide':'show'" data-ng-bind="::detail.safeGroup.sgName"></span>-->
+                        </div>
+	                    <span class="badge" data-ng-class="detail.safeGroup.defaultGroup!='defaultGroup'?'show':'hide'" data-ng-click="detail.edit('volDesc')" data-ng-if="hasPermission('securitygroup_modify')">
+		                 <span class="glyphicon glyphicon-pencil"></span>
+                        </span>
+
+
+
+                    </div>
+                    <div class="details-group">
+                        <div class="details-name">所属项目：</div>
+                        <div class="details-value" ng-bind="::detail.safeGroup.prjName"></div>
+                    </div>
+                    <div class="details-group">
+                        <div class="details-name">所属客户：</div>
+                        <div class="details-value" ng-bind="::detail.safeGroup.cusOrg"></div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="panel panel-default clearfix">
+    <div class="panel-body">
+    <form class="form-inline">
+
+        <button class="btn btn-primary"  data-ng-click="detail.createRule(detail.safeGroup)" style="margin-right: 15px;" ng-show="hasPermission('securitygroup_manageaddrule')&&detail.safeGroup.defaultGroup!='defaultGroup'">
+            <span class="glyphicon glyphicon-plus"></span> 添加规则
+        </button>
+        </form>
+        <eayun-table data-api="detail.sgRuleTable.api"
+                     data-ajax-source="detail.sgRuleTable.source"
+                     data-param="detail.sgRuleTable.getParams"
+                     data-result="detail.sgRuleTable.result">
+            <table class="table table-eayun">
+                <thead>
+                <tr>
+                    <th>方向</th>
+                    <th>类型</th>
+                    <th>协议</th>
+                    <th>端口范围</th>
+                    <th>ICMP类型/编码</th>
+                    <th>源地址</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr data-ng-repeat="rule in detail.sgRuleTable.result">
+                    <td ng-bind="::rule.direction=='egress'?'出方向':'入方向'"></td>
+                    <td ng-bind="::rule.ethertype"></td>
+                    <td style="text-transform: uppercase;" ng-bind="::rule.protocol==''? '所有':rule.protocol=='All'?'所有':rule.protocol"></td>
+
+                    <td data-ng-show="rule.icMp=='--'&&rule.portRangeMin!='null'&&rule.portRangeMin!=rule.portRangeMax">
+                        {{rule.portRangeMin+"-"+rule.portRangeMax}}
+                    </td>
+
+                    <td data-ng-show="rule.icMp=='--'&&rule.portRangeMin!=''&&rule.portRangeMin==rule.portRangeMax&&rule.protocolExpand==''">
+                        {{rule.portRangeMin+"-"+rule.portRangeMax}}
+                    </td>
+                    <td data-ng-show="rule.icMp=='--'&&rule.portRangeMin!=''&&rule.portRangeMin==rule.portRangeMax&&rule.protocolExpand!=''">
+                        {{rule.protocolExpand}}
+                    </td>
+                    <td data-ng-show="rule.icMp==''&&rule.portRangeMin!=''&&rule.portRangeMin==rule.portRangeMax&&rule.protocolExpand!=''">
+                        {{rule.protocolExpand}}
+                    </td>
+
+
+                    <td data-ng-show="(rule.icMp!='--'&&rule.protocolExpand=='')||(rule.icMp==''&&rule.protocolExpand==''&&rule.portRangeMin=='')">
+                        --
+                    </td>
+                    <td data-ng-show="rule.icMp=='--'&&rule.protocolExpand==''&&rule.portRangeMin==''">
+                        --
+                    </td>
+
+
+                   <td data-ng-bind="::rule.icMp==''?'--':rule.icMp"></td>
+                    <td class="col-sm-2" data-ng-show="rule.remoteIpPrefix==''&&rule.remoteGroupName==''">{{rule.remoteIpPrefix==''? '0.0.0.0/0' + '(CIDR)':rule.remoteIpPrefix+'(CIDR)'}}</td>
+                    <td class="col-sm-2" data-ng-show="rule.remoteIpPrefix!=''&&rule.remoteGroupName==''">{{rule.remoteIpPrefix+'(CIDR)'}}</td>
+                    <td class="col-sm-2" data-ng-show="rule.remoteGroupName!=''">{{rule.remoteGroupName=="default"?"默认安全组":rule.remoteGroupName}}</td>
+                    <td ng-show="hasPermission('securitygroup_managedelrule')&&detail.safeGroup.defaultGroup!='defaultGroup'" >
+                        <button class="btn btn-tabledel btn-first"  data-ng-click="detail.deleteGroupRule(rule)" >删除</button>
+                    </td>
+                    <td ng-show="hasPermission('securitygroup_managerule')&&detail.safeGroup.defaultGroup=='defaultGroup'">
+                        --
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <eayun-table-page></eayun-table-page>
+        </eayun-table>
+    </div>
+</div>
+
+<div class="panel panel-default clearfix">
+    <div class="panel-body">
+        <form class="form-inline">
+        <button class="btn btn-primary"  data-ng-click="detail.manage(detail.safeGroup.sgId,detail.safeGroup.prjId,detail.safeGroup.sgName,detail.safeGroup.cusOrg)" ng-show="hasPermission('securitygroup_manageaddcloudhost')">
+            <span class="glyphicon glyphicon-plus"></span> 添加云主机
+        </button>
+            </form>
+        <eayun-table data-api="detail.sgcloudhostTable.api"
+                     data-ajax-source="detail.sgcloudhostTable.source"
+                     data-param="detail.sgcloudhostTable.getParams"
+                     data-result="detail.sgcloudhostTable.result">
+            <table class="table table-eayun">
+                <thead>
+                <tr>
+                    <th>云主机名称</th>
+                    <th>状态</th>
+                    <th>所属网络</th>
+                    <th>IP地址</th>
+
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr data-ng-repeat="rule in detail.sgcloudhostTable.result">
+                 <td data-ng-bind="::rule.vmname"></td>
+                    <td>
+                          <span class="state-block"
+                                data-ng-class="detail.vmStatusClass[$index] != '' ? detail.vmStatusClass[$index] : ''"
+                                ng-init="detail.vmStatusClass[$index] = detail.checkVmStatus(rule,$index)">
+                </span>
+                        <span data-ng-bind="rule.statusForDis"></span>
+
+                    </td>
+                    <td >
+                        <span data-ng-bind="'受管子网：'+(rule.subnet_name+'('+(rule.cidr==''? '--':rule.cidr)+')')"></span><br>
+
+                        <span data-ng-bind="'自管子网：'+(rule.sbName+'('+(rule.selfip==''? '--':rule.selfip)+')')"></span>
+
+                    </td>
+                    <td >
+                        <span data-ng-bind="'受管子网：'+(rule.vm_ip==''?'--':rule.vm_ip)"></span><br>
+                        <span data-ng-bind="'公网：'+(rule.flo_ip==''?'--':rule.flo_ip)"></span><br>
+                        <span data-ng-bind="'自管子网：'+(rule.selfip==''?'--':rule.selfip)"></span>
+                    </td>
+
+                    <td>
+                        <button class="btn btn-tabledel btn-first"  data-ng-click="detail.deleteGroupcloudhost(rule.sgid,rule.vmid,rule.prj_id,rule.dcid,detail.safeGroup.sgName,rule.vmname)" ng-show="hasPermission('securitygroup_managedeletecloudhost')">移除</button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <eayun-table-page></eayun-table-page>
+        </eayun-table>
+    </div>
+</div>

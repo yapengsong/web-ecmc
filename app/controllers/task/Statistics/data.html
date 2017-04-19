@@ -1,0 +1,52 @@
+<div class="panel panel-default clearfix">
+    <div class="panel-body">
+        <h4>数据统计</h4>
+        <form class="form-inline">
+                <label class="control-label" style="font-size:14px;float: left;margin-bottom: -50px;">任务名称：{{::data.taskName}}</label>
+                <div style="text-align: right;">
+                    <form class="form-inline">
+                        <span style="font-size:14px;">时间范围：</span>
+                        <date-time-picker class="form-group" style="margin-left:10px;" data-ng-model="data.startTime"
+                                          data-format="yyyy-MM-dd"
+                                          show-time="true" max-date="data.endTime"></date-time-picker>
+                        <span style="margin-left:0px;">—</span>
+                        <date-time-picker class="form-group" data-ng-model="data.endTime" style="margin-left:10px;"
+                                          data-format="yyyy-MM-dd"
+                                          show-time="true" min-date="data.startTime"></date-time-picker>
+                        <button class="btn btn-default" style="margin-left: 15px;" data-ng-click="data.doSearch()">
+                            <strong>查询</strong>
+                        </button>
+                        <button class="btn btn-default" ng-click="data.chart(data.model.Idd)" style="marin-top: 15px;">
+                            <span></span> 查看图表
+                        </button>
+                    </form>
+                </div>
+        </form>
+        <form class="form-inline form-count">
+            <eayun-table data-api="data.myTable.api" data-ajax-source="data.myTable.source"
+                         data-param="data.myTable.getParams"
+                         data-result="data.myTable.result">
+                <table class="table table-eayun">
+                    <thead>
+                    <tr>
+                        <th>时间</th>
+                        <th>总次数</th>
+                        <th>成功次数</th>
+                        <th>失败次数</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="data in data.myTable.result">
+                        <!--<tr>-->
+                        <td class="" ng-bind="::data.statisticsDate |date:'yyyy-MM-dd' "></td>
+                        <td class="" ng-bind="::data.totalCount"></td>
+                        <td class="" ng-bind="::data.sucCount"></td>
+                        <td class="" ng-bind="::data.falCount"></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <eayun-table-page></eayun-table-page>
+            </eayun-table>
+        </form>
+    </div>
+</div>

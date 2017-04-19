@@ -1,0 +1,13 @@
+<form class="form-horizontal" name="editPool">
+
+    <div class="form-group has-feedback" >
+        <label class="col-sm-3 control-label">名称：</label>
+        <div class="col-sm-8" data-ng-class="(editPool.name.$dirty && (editPool.name.$invalid || edit.checkName)) ? 'has-error' : ''">
+            <input type="text" class="form-control" name="name" maxlength="20" data-ng-model="edit.resourcePool.poolName" placeholder="请输入名称"
+                   ng-change="edit.checkPoolName(edit.resourcePool)"  ng-pattern='/^[\u4e00-\u9fa5a-zA-Z0-9]([\u4e00-\u9fa5_a-zA-Z0-9\s]{0,18}[\u4e00-\u9fa5a-zA-Z0-9]){0,1}$/' required>
+            <label class="control-label" ng-show="editPool.name.$dirty && editPool.name.$valid  && edit.checkName">资源池名称已存在</label>
+            <label class="control-label" ng-if="editPool.name.$dirty && editPool.name.$invalid">请输入1-20位字符,支持数字、中英文、下划线、空格</label>
+        </div>
+    </div>
+
+</form>

@@ -1,0 +1,54 @@
+<div class="data-tree">
+    <div class="data-left">
+        <tree-view tree-data="dataTree.tree" text-field="nodeNameZh" item-clicked="dataTree.itemClicked($item)"
+                   can-checked="false"></tree-view>
+    </div>
+    <div class="data-right">
+        <form class="form-inline">
+            <label class="control-label" style="margin-right: 15px;">节点名称：</label>
+            <input class="form-control" data-ng-model="dataTree.nodeName" style="margin-right: 15px;"/>
+            <label class="control-label" style="margin-right: 15px;">节点ID：</label>
+            <input class="form-control" data-ng-model="dataTree.nodeId" style="margin-right: 15px;"/>
+            <button class="btn btn-default" ng-click="dataTree.query()" style="margin: 0px 15px;">查询</button>
+            <button class="btn btn-default" ng-click="dataTree.add()" ng-show="hasPermission('sys_enum_create')" style="margin: 0px 15px;">添加</button>
+            <button class="btn btn-default" ng-click="dataTree.delete()" ng-show="hasPermission('sys_enum_delete')" style="margin: 0px 15px;">删除</button>
+            <button class="btn btn-default" ng-click="dataTree.sort()" ng-show="hasPermission('sys_enum_orderBy')" style="margin: 0px 15px;">节点排序</button>
+        </form>
+        <eayun-table data-api="dataTree.treeTable.api" data-ajax-source="dataTree.treeTable.source"
+                     data-param="dataTree.treeTable.getParams"
+                     data-result="dataTree.treeTable.result">
+            <table class="table table-eayun">
+                <thead>
+                <tr>
+                    <th style="width:3%"><input type="checkbox" data-ng-click="dataTree.checkAll()"
+                                                data-ng-model="dataTree.isAllChecked" class="checkbox-style"></th>
+                    <th style="width:10%">节点名称</th>
+                    <th style="width:10%">英文名称</th>
+                    <th style="width:5%">节点ID</th>
+                    <th style="width:5%">根节点</th>
+                    <th style="width:50%">备注</th>
+                    <th style="width:5%">子节点数</th>
+                    <th style="width:5%">操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat=" treeitem in dataTree.treeTable.result">
+                    <td><input type="checkbox" data-ng-model="treeitem.isCheck" data-ng-click="dataTree.getChecked()"
+                               class="checkbox-style"></td>
+                    <td ng-bind="::treeitem.nodeNameZh.length>10?treeitem.nodeNameZh.substring(0,10)+'...':treeitem.nodeNameZh" title="{{treeitem.nodeNameZh}}" class="click-link"
+                        data-ng-click="dataTree.nextQuery(treeitem)"></td>
+                    <td ng-bind="::treeitem.nodeNameEn.length>10?treeitem.nodeNameEn.substring(0,10)+'...':treeitem.nodeNameEn" title="{{treeitem.nodeNameEn}}"></td>
+                    <td ng-bind="::treeitem.nodeId"></td>
+                    <td ng-bind="::treeitem.isRoot == '1'?'是':'否'"></td>
+                    <td ng-bind="::treeitem.memo.length>30?treeitem.memo.substring(0,30)+'...':treeitem.memo" title="{{treeitem.memo}}"></td>
+                    <td ng-bind="::treeitem.childrenSize"></td>
+                    <td>
+                        <button class="btn btn-tablemng btn-first" ng-show="hasPermission('sys_enum_modify')" ng-click="dataTree.edit(treeitem)">修改</button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <eayun-table-page></eayun-table-page>
+        </eayun-table>
+    </div>
+</div>

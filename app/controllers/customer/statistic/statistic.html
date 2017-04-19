@@ -1,0 +1,161 @@
+<!-- 当前位置下拉列表 -->
+<div class="title-inline">
+    <div class="form-group">
+        <label class="control-label">当前位置：
+            <a style="cursor: pointer;" data-ui-sref="app.customer">客户管理</a>&nbsp;>
+            <span> 资源统计</span>
+        </label>
+    </div>
+</div>
+<div class="panel panel-default clearfix">
+    <div class="panel-body">
+        <h4>资源统计</h4>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label"  style="font-size:14px;">项目名称：{{statistic.prjName}}</label>
+
+            <div style="text-align: right;">
+                <form class="form-inline">
+                    <span style="font-size:14px;">时间范围：</span>
+                    <date-time-picker class="form-group" style="margin-left:10px;" data-ng-model="statistic.startTime"
+                                      data-format="yyyy-MM-dd HH:mm:ss"
+                                      show-time="true" max-date="statistic.endTime"></date-time-picker>
+                    <span style="margin-left:0px;">—</span>
+                    <date-time-picker class="form-group" data-ng-model="statistic.endTime" style="margin-left:10px;"
+                                      data-format="yyyy-MM-dd HH:mm:ss"
+                                      show-time="true" min-date="statistic.startTime"></date-time-picker>
+                    <button class="btn btn-default" style="margin-left: 15px;" data-ng-click="statistic.queryList()">
+                        <strong>查询</strong>
+                    </button>
+                    <button class="btn btn-primary" style="margin-left: 15px;" data-ng-click="statistic.createExcel()">
+                        <span class="glyphicon glyphicon-paste"></span><strong> 导出Excel</strong>
+                    </button>
+                </form>
+            </div>
+        </div>
+        <div style="display: none;">
+            <iframe id="excel-export-iframe" frameborder="0"></iframe>
+        </div>
+        <!-- 导航页签 -->
+        <tabs class="nav-tabs-online">
+            <tab data-ng-class="statistic.showTab == 'cloud'?'active':''" data-ng-click="statistic.setShowTab('cloud')">
+                云主机
+            </tab>
+            <tab data-ng-class="statistic.showTab == 'vol'?'active':''" data-ng-click="statistic.setShowTab('vol')">
+                云硬盘
+            </tab>
+            <tab data-ng-class="statistic.showTab == 'net'?'active':''" data-ng-click="statistic.setShowTab('net')">网络
+            </tab>
+        </tabs>
+        <label class="control-label" style="font-weight: bold;margin-bottom:10px;">统计时间周期：</label>
+        <label class="control-label" style="margin-bottom:10px;">{{statistic.startTime|date:"yyyy-MM-dd HH:mm:ss"}}--{{statistic.endTime|date:"yyyy-MM-dd HH:mm:ss"}}</label>
+
+        <div data-ng-show="statistic.showTab == 'cloud'">
+                <div class="panel-body" style="padding:5px;" data-ng-if = "statistic.showCon">
+                    <eayun-table data-api="statistic.vmTable.api" data-ajax-source="statistic.vmTable.source"  data-param="statistic.vmTable.getParams"
+                                 data-result="statistic.vmTable.result">
+                        <table class="table table-eayun" style = "margin-bottom:0px;">
+                            <thead>
+                            <tr>
+                                <th class = "col-sm-2">主机名称</th>
+                                <th class = "col-sm-1" style="cursor: pointer;" data-ng-click="statistic.changeVmSort('CPU')">CPU<span class="{{statistic.sortCpuClass}}"></span></th>
+                                <th class = "col-sm-1" style="cursor: pointer;" data-ng-click="statistic.changeVmSort('RAM')">内存<span class="{{statistic.sortRamClass}}"></span></th>
+                                <th class = "col-sm-1">挂载云硬盘数</th>
+                                <th class = "col-sm-2" style="cursor: pointer;" data-ng-click="statistic.changeVmSort('START')">开始时间<span class="{{statistic.sortStartClass}}"></span></th>
+                                <th class = "col-sm-2">截止时间</th>
+                                <th class = "col-sm-2" style="cursor: pointer;" data-ng-click="statistic.changeVmSort('HOURS')">累计时长<span class="{{statistic.sortHoursClass}}"></span></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr data-ng-repeat="details in statistic.vmTable.result">
+                                <td>{{details.vmName}}</td>
+                                <td>{{details.vmFlavorCpu}}核</td>
+                                <td>{{details.vmFlavorRam}}M</td>
+                                <td>{{details.vmvolCount}}</td>
+                                <td>{{details.startTime|date:"yyyy-MM-dd HH:mm:ss"}}</td>
+                                <td>{{details.endTime|date:"yyyy-MM-dd HH:mm:ss"}}</td>
+                                <td>{{details.vmHour}}小时</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <eayun-table-page></eayun-table-page>
+                    </eayun-table>
+                </div>
+            </div>
+            <div data-ng-show="statistic.showTab == 'vol'">
+                <div class="panel-body" style = "padding:5px;" data-ng-if = "statistic.showCon">
+                    <eayun-table data-api="statistic.volTable.api" data-ajax-source="statistic.volTable.source" data-param="statistic.volTable.getParams"
+                                 data-result="statistic.volTable.result">
+                        <table class="table table-eayun" style = "margin-bottom:0px;">
+                            <thead>
+                            <tr>
+                                <th class = "col-sm-2">硬盘名称</th>
+                                <th style="cursor: pointer;" data-ng-click="statistic.changeVolSort('VOL')">硬盘容量<span class="{{statistic.sortVolSizeClass}}"></span></th>
+                                <th class = "col-sm-3">挂载云主机名称</th>
+                                <th style="cursor: pointer;" class = "col-sm-2" data-ng-click="statistic.changeVolSort('START')">开始时间<span class="{{statistic.sortVolStartClass}}"></span></th>
+                                <th class = "col-sm-2">截止时间</th>
+                                <th style="cursor: pointer;" data-ng-click="statistic.changeVolSort('HOURS')">累计时长<span class="{{statistic.sortVolHoursClass}}"></span></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr data-ng-repeat="details in statistic.volTable.result">
+                                <td>
+                                    <div ng-bind-html="details.volumeName | ellipsis:15" style="width: auto;"></div>
+                                </td>
+                                <td>{{details.volumeSize}}GB</td>
+                                <td>{{details.volvmName=='null'?'':details.volvmName}}</td>
+                                <td>{{details.startTime|date:"yyyy-MM-dd HH:mm:ss"}}</td>
+                                <td>{{details.endTime|date:"yyyy-MM-dd HH:mm:ss"}}</td>
+                                <td>{{details.volHour}}小时</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <eayun-table-page></eayun-table-page>
+                    </eayun-table>
+                </div>
+        </div>
+        <div data-ng-show="statistic.showTab == 'net'">
+            <div class="panel panel-default" style="margin-bottom:5px;margin-top:10px;"
+                 data-ng-if="statistic.showCon">
+                <div class="panel-heading" style="height:40px;">
+                    <div class="row">
+                        <label class="control-label col-sm-4 color-blue">公网流量</label>
+                        <label class="control-label col-sm-4 nowrap"  data-ng-show = "statistic.netRes.volumeTypeNmae=='yes'">上行流量累计：{{statistic.netRes.netDownFlowCount
+                            | number:0}}MB</label>
+                        <label class = "control-label col-sm-4 nowrap" data-ng-hide = "statistic.netRes.volumeTypeNmae=='yes'">上行流量累计：--</label>
+                        <!--<label class="control-label col-sm-4 nowrap">上行流量累计：&#45;&#45;</label>-->
+                        <label class="control-label col-sm-2 nowrap"  data-ng-show = "statistic.netRes.vmFlavorName=='yes'">下行流量累计：{{statistic.netRes.netUpFlowCount
+                            | number:0}}MB</label>
+                        <label class = "control-label col-sm-2 nowrap" data-ng-hide = "statistic.netRes.vmFlavorName=='yes'">下行流量累计：--</label>
+                        <!--<label class="control-label col-sm-2 nowrap">下行流量累计：&#45;&#45;</label>-->
+                        <h4 class="panel-title col-sm-2 color-blue"
+                            style="text-align:right;position:relative;top:-7px;">
+                            <button class="btn btn-primary" data-ng-click="statistic.showHistogram()">查看柱状图</button>
+                        </h4>
+                    </div>
+                </div>
+                <div class="panel-body" style="padding:5px;">
+
+                    <table class="table table-eayun-info" style="margin-bottom:0px;">
+                        <thead>
+                        <tr>
+                            <th class="col-sm-4" style="text-align:left;">时间</th>
+                            <th class="col-sm-4" style="text-align:left;">上行流量</th>
+                            <th class="col-sm-4" style="text-align:left;">下行流量</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr data-ng-repeat="detail in statistic.netRes.detailsList | orderBy : '-everyDate'">
+                            <td style="text-align:left;" >{{detail.everyDate}}</td>
+                            <td style="text-align:left;" data-ng-show = "detail.volumeName=='yes'">{{detail.downCount | number:0}}MB</td><!--上行流量  -->
+                            <td style="text-align:left;" data-ng-show = "detail.volumeName=='no'">--</td>
+                            <td style="text-align:left;" data-ng-show = "detail.vmName=='yes'">{{detail.upCount | number:0}}MB</td><!--下行流量  -->
+                            <td style="text-align:left;" data-ng-show = "detail.vmName=='no'">--</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

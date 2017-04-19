@@ -1,0 +1,24 @@
+<form class="input-group has-feedback search-group" ng-submit="search.doSearch()">
+    <eayun-select type="btn" class="input-group-btn" ng-if="search.showSelectBtn" ng-model="search.selected"
+                  ng-change="search.changeSelect()">
+        <eayun-option value="select.key" text="{{select.value}}"
+                      ng-repeat="select in search.selectArray" ng-click="search.value = ''"></eayun-option>
+    </eayun-select>
+
+    <input type="text" ng-model="search.value" class="form-control"
+           data-ng-blur="search.showFilter = false"
+           data-ng-focus="search.showFilter = true"
+           placeholder="{{search.placeholder}}">
+    <span ng-click="search.doSearch()" class="form-control-feedback pointer search"></span>
+
+    <ul ng-if="search.hasFilter && search.series" class="filter" ng-class="search.showFilter?'show':''">
+        <li ng-repeat="item in search.series.data | orderBy | multiFilter:search.value"
+            class="pointer">
+            <label ng-click="search.series.multi || search.select(item)">
+                <input type="checkbox" ng-if="search.series.multi" ng-click="search.select(item)"
+                       ng-checked="(','+search.value).indexOf(','+item+',')!==-1">
+                <span ng-bind="item"></span>
+            </label>
+        </li>
+    </ul>
+</form>

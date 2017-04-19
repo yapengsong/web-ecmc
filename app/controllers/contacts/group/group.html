@@ -1,0 +1,92 @@
+<div style="position:relative;border:1px solid #e3e3e3;">
+    <!-- 左侧联系组列表 -->
+    <div class=""
+         style="width: 250px;border-right:1px solid #e3e3e3;position: absolute;left: 0;top: 0;bottom: 0;overflow-y: auto;">
+        <div style="margin:15px;border-bottom:1px solid #e3e3e3;">
+            <h5>
+                <label class="color-blue" role="button" data-ng-click="group.add()" ng-if="hasPermission('mon_contact_group_create')">
+                    <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>&nbsp;添加联系组
+                </label>
+            </h5>
+        </div>
+
+        <div style="margin:15px;border-bottom:1px solid #e3e3e3;"
+             ng-if="hasPermission('mon_contact_group')"
+             data-ng-repeat="contactGroup in group.contactGroupList">
+            <div data-ng-click="group.getContactTable(contactGroup.id)" style="float:left;cursor:pointer;"><strong
+                    ng-class="group.selected == contactGroup.id ? 'color-blue' : ''">{{contactGroup.name}}</strong>
+            </div>
+            <div style="float:right; margin-right:0px;">
+                <span class="glyphicon glyphicon-pencil" style="cursor:pointer" ng-if="hasPermission('mon_contact_group_modify')"
+                      data-ng-click="group.edit(contactGroup)"></span>&nbsp;&nbsp;&nbsp;&nbsp;
+                <span class="glyphicon glyphicon-trash " style="cursor:pointer"
+                      data-ng-click="group.delete(contactGroup)" data-ng-if="contactGroup.contactNum == 0&&hasPermission('mon_contact_group_delete')"></span>
+                <span class="glyphicon glyphicon-trash " style="color: #e3e3e3;" data-ng-if="contactGroup.contactNum != 0&&hasPermission('mon_contact_group_delete')"></span>
+            </div>
+            <br/>
+
+            <div style="padding-top:5px;padding-bottom:5px;">
+                <font color="#e2e2e2">共{{contactGroup.contactNum}}个联系人</font>
+            </div>
+        </div>
+    </div>
+    <div class="" style="margin-left: 250px; margin-right: 250px;">
+        <eayun-table data-api="group.groupTable.api" data-ajax-source="group.groupTable.source"
+                     data-param="group.groupTable.getParams"
+                     data-result="group.groupTable.result" style="min-height:550px;"
+                     ng-if="hasPermission('mon_contact_group')">
+            <table class="table table-eayun">
+                <thead>
+                <tr>
+                    <th>姓名</th>
+                    <th>手机号</th>
+                    <th>电子邮件</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr data-ng-repeat="personInGroup in group.groupTable.result">
+                    <td ng-bind="::personInGroup.name" style="word-break:break-all; word-wrap:break-all;"></td>
+                    <td ng-bind="::personInGroup.phone"></td>
+                    <td ng-bind="::personInGroup.email"></td>
+                    <td>
+                        <img src="images/removeContact.png" onmouseover="this.src='images/removeContactHover.png'"
+                             onmouseout="this.src='images/removeContact.png'"
+                             style="cursor:pointer"
+                             ng-if="hasPermission('mon_contact_group_detail')"
+                             data-ng-click="group.removePersonFromGroup({groupId: group._groupId,contactId: personInGroup.id,groupName:personInGroup.name},personInGroup.name)"/>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <eayun-table-page></eayun-table-page>
+        </eayun-table>
+    </div>
+    <!-- 右侧组外联系人 -->
+    <div class=""
+         style="width: 250px;border-left: 1px solid #ddd;position: absolute;top: 0;right: 0;bottom:0;overflow-y: auto;">
+        <div style="margin:15px;border-bottom:1px solid #e3e3e3;"
+             ng-if="hasPermission('mon_contact_group')"
+             data-ng-repeat="personOutOfGroup in group.contactListOutOfGroup">
+            <div style="float:left"><strong>{{personOutOfGroup.name}}</strong></div>
+            <div style="float:right; margin-right:0px;">
+                <img src="images/addContact.png" onmouseover="this.src='images/addContactHover.png'"
+                     onmouseout="this.src='images/addContact.png'"
+                     style="cursor:pointer"
+                     ng-if="hasPermission('mon_contact_group_detail')"
+                     data-ng-click="group.addPersonToGroup({groupId: group._groupId,contactId: personOutOfGroup.id,groupName:personOutOfGroup.name})"/>
+            </div>
+            <br>
+
+            <div style="padding-top:5px;padding-bottom:5px;">
+                <font color="#999999">手机号：{{personOutOfGroup.phone}}</font>
+                <br>
+                <font color="#999999">邮箱：{{personOutOfGroup.email.length>25?personOutOfGroup.email.substring(0,24):personOutOfGroup.email}}</font>
+            </div>
+        </div>
+        <div style="margin:15px;"
+             ng-show="group.contactListOutOfGroup.length == 0">
+            <font color="#999999">当前无待选联系人</font>
+        </div>
+    </div>
+</div>

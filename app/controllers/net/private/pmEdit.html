@@ -1,0 +1,87 @@
+<form class="form-horizontal" name="myForm" novalidate>
+    <div class="form-group has-feedback">
+        <label class="col-sm-3 control-label">协议：</label>
+        <div class="col-sm-4" data-ng-class="(myForm.protocol.$dirty && myForm.protocol.$invalid) ? '' : ''">
+            <eayun-select name="protocol"
+                          class="form-control"
+                          data-ng-model="editPM.portMapping.protocol"
+                          data-ng-change="editPM.changeProtocol()"
+                          placeholder="请选择协议"
+                          required>
+                <eayun-option value="'tcp'" text="TCP"></eayun-option>
+                <eayun-option value="'udp'" text="UDP"></eayun-option>
+            </eayun-select>
+        </div>
+    </div>
+
+    <div class="form-group has-feedback">
+        <label class="col-sm-3 control-label">源IP：</label>
+        <div class="col-sm-4 control-label" style="text-align: left;">
+            <span data-ng-bind="editPM.portMapping.resourceIp"></span>
+        </div>
+    </div>
+
+    <div class="form-group has-feedback">
+        <label class="col-sm-3 control-label">源端口：</label>
+        <div class="col-sm-4" data-ng-class="(myForm.resourcePort.$invalid || editPM.checkResourcePortFlag) ? 'has-error' : ''">
+            <input type="text" class="form-control" style="padding-right:10px;" name="resourcePort" data-ng-model="editPM.portMapping.resourcePort"
+                   data-ng-pattern="/^(^[1-9]\d{0,3}$)|(^[1-5]\d{4}$)|(^6[0-4]\d{3}$)|(^65[0-4]\d{2}$)|(^655[0-2]\d$)|(^6553[0-5]$)$/"
+                   data-ng-change="editPM.checkResourcePort()"
+                   placeholder="请输入源端口号"
+                   required >
+            <label class="control-label hide"
+                   data-ng-class="(myForm.resourcePort.$valid &&  editPM.checkResourcePortFlag) ? 'show' : 'hide'"
+                   style="text-align: left;">源端口已存在</label>
+            <label class="control-label hide"
+                   data-ng-class="(myForm.resourcePort.$dirty && myForm.resourcePort.$invalid) ? 'show' : 'hide'"
+                   style="text-align: left;">请输入1到65535的整数</label>
+        </div>
+    </div>
+
+    <div class="form-group has-feedback">
+        <label class="col-sm-3 control-label">目的子网：</label>
+        <div class="col-sm-8" data-ng-class="(myForm.subnet.$dirty && myForm.subnet.$invalid) ? '' : ''">
+            <eayun-select name="subnet" class="form-control"
+                          data-ng-model="editPM.portMapping.subnetId"
+                          data-ng-change="editPM.changeSubnetId()"
+                          placeholder="请选择目的子网"
+                          required >
+                <eayun-option data-ng-repeat="subnet in editPM.subnetList" value="subnet.subnetId" text="{{subnet.subnetName + '(' + subnet.cidr + ')'}}" data-ng-if="subnet.subnetType==1"></eayun-option>
+            </eayun-select>
+        </div>
+    </div>
+
+    <div class="form-group has-feedback">
+        <label class="col-sm-3 control-label">目的IP：</label>
+        <div class="col-sm-8" data-ng-class="(myForm.destinyId.$dirty && myForm.destinyId.$invalid) ? '' : ''">
+            <eayun-select name="destinyId"
+                          class="form-control"
+                          data-ng-model="editPM.vm"
+                          data-ng-change="editPM.changeIp()"
+                          placeholder="请选择目的IP"
+                          required>
+                <eayun-option data-ng-repeat="vm in editPM.vmList"  value="vm" text="{{vm.vmName + '(' + vm.vmIp + ')'}}"></eayun-option>
+            </eayun-select>
+        </div>
+    </div>
+
+    <div class="form-group has-feedback">
+        <label class="col-sm-3 control-label">目的端口：</label>
+        <div class="col-sm-4" data-ng-class="(myForm.destinyPort.$dirty && myForm.destinyPort.$invalid) ? 'has-error' : ''">
+            <input type="text" class="form-control" style="padding-right:10px;"
+                   name="destinyPort"
+                   data-ng-model="editPM.portMapping.destinyPort"
+                   data-ng-pattern="/^(^[1-9]\d{0,3}$)|(^[1-5]\d{4}$)|(^6[0-4]\d{3}$)|(^65[0-4]\d{2}$)|(^655[0-2]\d$)|(^6553[0-5]$)$/"
+                   placeholder="请输入目的端口号"
+                   required>
+            <label class="control-label hide"
+                   data-ng-class="(myForm.destinyPort.$dirty && myForm.destinyPort.$invalid) ? 'show' : 'hide'"
+                   style="text-align: left;">请输入1到65535的整数</label>
+        </div>
+    </div>
+    <!-- 按钮区域 -->
+     <div class="modal-footer" >
+       <button type="button" class="btn btn-primary btn-modal" ng-click="commit()"  ng-disabled="myForm.$invalid || editPM.checkResourcePortFlag">确  定</button>
+       <button type="button" class="btn btn-default btn-modal btn-left" ng-click="cancel()">取  消</button>
+     </div>
+</form>

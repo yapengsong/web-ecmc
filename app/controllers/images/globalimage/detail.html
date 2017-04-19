@@ -1,0 +1,129 @@
+<div class="details" style="font-size: 12px;">
+    <form class="row" name="myForm">
+        <div class="col-lg-12">
+
+            <div class="details-group">
+                <div class="details-name">所属数据中心：</div>
+                <div class="details-value">
+                    {{null == glodetail.item.dcName || 'null' == glodetail.item.dcName?"":glodetail.item.dcName}}
+                </div>
+            </div>
+
+            <div class="details-group">
+                <div class="details-name">镜像ID：</div>
+                <div class="details-value">
+                    {{glodetail.item.imageId}}
+                </div>
+            </div>
+
+            <div class="details-group">
+                <div class="details-name">镜像名称：</div>
+                <div class="details-value">
+                    <span  data-ng-bind-html="glodetail.item.imageName | ellipsis:20"></span>
+                </div>
+            </div>
+
+            <div class="details-group">
+                <div class="details-name">镜像格式：</div>
+                <div class="details-value">
+                    {{glodetail.item.diskFormat}}
+                </div>
+            </div>
+
+            <div class="details-group">
+                <div class="details-name">操作系统：</div>
+                <div class="details-value">
+                    <span >{{(glodetail.item.osTypeName!='null'&&null!=glodetail.item.osTypeName&&'其他'!=glodetail.item.osTypeName)?glodetail.item.osTypeName:''}}</span>
+                </div>
+            </div>
+
+
+            <div class="details-group">
+                <div class="details-name">系统类型：</div>
+                <div class="details-value">
+                    {{(glodetail.item.sysTypeName!='null'&&glodetail.item.sysTypeName!=null&&glodetail.item.sysTypeName!='其他')?glodetail.item.sysTypeName:''}}
+                </div>
+            </div>
+
+            <div class="details-group">
+                <div class="details-name">系统详情：</div>
+                <div class="details-value">
+                    <div class="details-value">
+                        <span  data-ng-bind-html="glodetail.item.sysDetail | ellipsis:30"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="details-group">
+                <div class="details-name">状态：</div>
+                <div class="details-value">
+                    <label class="control-label"><span class="state-block" data-ng-class="glodetail.color != '' ? glodetail.color : ''"></span>{{glodetail.item.statusForDis}}</label>
+                </div>
+            </div>
+
+            <div class="details-group">
+                <div class="details-name">最小CPU：</div>
+                <div class="details-value">
+                    {{glodetail.item.minCpu}}核
+                </div>
+            </div>
+
+            <div class="details-group">
+                <div class="details-name">最小内存：</div>
+                <div class="details-value">
+                    {{glodetail.item.minRam}}GB
+                </div>
+            </div>
+
+            <div class="details-group">
+                <div class="details-name">最小磁盘：</div>
+                <div class="details-value" >
+                    {{glodetail.item.minDisk}}GB
+                </div>
+            </div>
+
+            <div class="details-group">
+                <div class="details-name">创建云主机数量：</div>
+                <div class="details-value">
+                    {{glodetail.item.vmNum}}
+                </div>
+            </div>
+
+            <div class="details-group">
+                <div class="details-name">最大CPU：</div>
+                <div class="details-value">
+                    {{null == glodetail.item.maxCpu?'':glodetail.item.maxCpu+'核'}}
+                </div>
+            </div>
+
+
+            <div class="details-group">
+                <div class="details-name">最大内存：</div>
+                <div class="details-value">
+                    {{null == glodetail.item.maxRam?'':glodetail.item.maxRam+'GB'}}
+                </div>
+            </div>
+
+            <div class="details-group">
+                <div class="details-name">创建时间：</div>
+                <div class="details-value">
+                    {{glodetail.item.createdTime|date:'yyyy-MM-dd HH:mm:ss'}}
+                </div>
+            </div>
+
+
+            <div class="details-group">
+                <div class="details-name">描述：</div>
+                <div class="details-value">
+                    <span data-ng-bind-html="glodetail.item.imageDescription | ellipsis:30"></span>
+                </div>
+            </div>
+
+
+
+        </div>
+    </form>
+</div>
+<div class="modal-footer" >
+    <button class="btn btn-default btn-modal" ng-click="cancel()">关闭</button>
+</div>

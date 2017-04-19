@@ -1,0 +1,175 @@
+<form class="form-horizontal" name="myForm" novalidate>
+    <div class="form-group has-feedback">
+        <label class="col-sm-3 control-label">所属数据中心：</label>
+
+        <div class="col-sm-8 ">
+            <eayun-select class="form-control" data-ng-model="ruleEdit.ruleModel.dcId"
+                          data-ng-change="ruleEdit.getAllProjectListByDcId"
+                          placeholder="请选择数据中心" ng-disabled="true" required>
+                <eayun-option value="dcResource.id" text="{{dcResource.name}}"
+                              data-ng-repeat="dcResource in ruleEdit.allDcResourceList"></eayun-option>
+            </eayun-select>
+        </div>
+    </div>
+
+    <div class="form-group has-feedback">
+        <label class="col-sm-3 control-label">所属项目：</label>
+
+        <div class="col-sm-8 ">
+            <eayun-select class="form-control" data-ng-model="ruleEdit.ruleModel.prjId"
+                          data-ng-change="ruleEdit.changePrj()" ng-disabled="true"
+                          placeholder="请选择项目" required>
+                <eayun-option value="project.projectId" text="{{project.prjName}}"
+                              data-ng-repeat="project in ruleEdit.allProjectList"></eayun-option>
+            </eayun-select>
+        </div>
+    </div>
+
+    <div class="form-group has-feedback">
+        <label class="col-sm-3 control-label">防火墙规则名称：</label>
+
+        <div class="col-sm-8" data-ng-class="(myForm.name.$dirty && (myForm.name.$invalid || ruleEdit.fwRuleNameIsExist)) ? 'has-error' : ''">
+            <input type="text" class="form-control" name="name" data-ng-model="ruleEdit.ruleModel.fwrName"
+                   data-ng-pattern="/^[\u4e00-\u9fa5a-zA-Z0-9]([\u4e00-\u9fa5_a-zA-Z0-9\s]{0,18}[\u4e00-\u9fa5a-zA-Z0-9]){0,1}$/"
+                   placeholder="请输入规则名称" data-ng-change="ruleEdit.checkFwRuleName()"
+                   maxlength="20" required>
+            <label class="control-label hide"
+                   data-ng-class="(myForm.name.$dirty && myForm.name.$error.required) ? 'show' : 'hide'"
+                   style="text-align: left;">规则名称不能为空</label>
+            <label class="control-label hide"
+                   data-ng-class="(myForm.name.$dirty && ruleEdit.fwRuleNameIsExist) ? 'show' : 'hide'"
+                   style="text-align: left;">规则名称已存在</label>
+            <label class="control-label hide"
+                   data-ng-class="(myForm.name.$dirty && myForm.name.$error.pattern) ? 'show' : 'hide'"
+                   style="text-align: left;">请输入1-20位字符,支持数字、中英文、下划线、空格</label>
+        </div>
+    </div>
+
+    <div class="form-group has-feedback">
+        <label class="col-sm-3 control-label">协议：</label>
+
+        <div class="col-sm-8 " data-ng-class="(myForm.protocol.$dirty && myForm.protocol.$invalid) ? 'has-error' : ''">
+            <eayun-select name="protocol" class="form-control" data-ng-model="ruleEdit.ruleModel.protocol"
+                          placeholder="----选择一个协议----" required>
+                <eayun-option value="'tcp'" text="TCP"></eayun-option>
+                <eayun-option value="'udp'" text="UDP"></eayun-option>
+                <eayun-option value="'icmp'" text="ICMP"></eayun-option>
+                <eayun-option value="'any'" text="任何"></eayun-option>
+            </eayun-select>
+        </div>
+    </div>
+
+    <div class="form-group has-feedback">
+        <label class="col-sm-3 control-label">源IP地址/子网：</label>
+
+        <div class="col-sm-8"
+             data-ng-class="(myForm.sourceIpaddress.$dirty && myForm.sourceIpaddress.$invalid) ? 'has-error' : ''">
+            <input type="text" class="form-control" name="sourceIpaddress"
+                   data-ng-model="ruleEdit.ruleModel.sourceIpaddress"
+                   ajax-valid="ruleEdit.checkIp(value,'sourceIpaddress')"
+                   placeholder="请输入源IP地址/子网" ><!--required-->
+            <label class="control-label hide"
+                   data-ng-class="(myForm.source_ip_address.$dirty && myForm.source_ip_address.$error.required && !ruleEdit.sourceIpaddress) ? 'show' : 'hide'"
+                   style="text-align: left;">源IP地址/子网不能为空</label>
+            <label class="control-label hide" data-ng-class="ruleEdit.sourceIpaddress ? 'show' : 'hide'"
+                   style="text-align: left;">请输入正确的IPv4地址格式</label>
+        </div>
+    </div>
+
+    <div class="form-group has-feedback"
+         ng-if="ruleEdit.ruleModel.protocol != 'any' && ruleEdit.ruleModel.protocol != 'icmp'">
+        <label class="col-sm-3 control-label">源端口/端口范围：</label>
+
+        <div class="col-sm-8"
+             data-ng-class="(myForm.sourcePort.$dirty && myForm.sourcePort.$invalid) ? 'has-error' : ''">
+            <input type="text" class="form-control" name="sourcePort" data-ng-model="ruleEdit.ruleModel.sourcePort"
+                   ajax-valid="ruleEdit.checkPort(value,'sourcePort')"
+                   placeholder="请输入源端口/端口范围" ><!--required-->
+            <label class="control-label hide"
+                   data-ng-class="(myForm.source_port.$dirty && myForm.source_port.$error.required&&!ruleEdit.sourcePort) ? 'show' : 'hide'"
+                   style="text-align: left;">源端口/端口范围不能为空</label>
+            <label class="control-label hide" data-ng-class="ruleEdit.sourcePort ? 'show' : 'hide'"
+                   style="text-align: left;">端口格式为A或A:B，其中A和B范围为1-65535</label>
+        </div>
+    </div>
+
+    <div class="form-group has-feedback">
+        <label class="col-sm-3 control-label">目的IP地址/子网：</label>
+
+        <div class="col-sm-8"
+             data-ng-class="(myForm.destinationIpaddress.$dirty && myForm.destinationIpaddress.$invalid) ? 'has-error' : ''">
+            <input type="text" class="form-control" name="destinationIpaddress"
+                   ajax-valid="ruleEdit.checkIp(value,'destinationIpaddress')"
+                   data-ng-model="ruleEdit.ruleModel.destinationIpaddress" placeholder="请输入目的IP地址/子网"><!--required-->
+            <label class="control-label hide"
+                   data-ng-class="(myForm.destination_ip_address.$dirty && myForm.destination_ip_address.$error.required&&!ruleEdit.destinationIpaddress) ? 'show' : 'hide'"
+                   style="text-align: left;">目的IP地址/子网不能为空</label>
+            <label class="control-label hide" data-ng-class="ruleEdit.destinationIpaddress ? 'show' : 'hide'"
+                   style="text-align: left;">请输入正确的IPv4地址格式</label>
+        </div>
+    </div>
+
+
+    <div class="form-group has-feedback" ng-if="ruleEdit.ruleModel.protocol!='any' && ruleEdit.ruleModel.protocol!='icmp'">
+        <label class="col-sm-3 control-label">
+            <nobr>目的端口/端口范围：</nobr>
+        </label>
+
+        <div class="col-sm-8"
+             data-ng-class="(myForm.destinationPort.$dirty && myForm.destinationPort.$invalid) ? 'has-error' : ''">
+            <input type="text" class="form-control" name="destinationPort"
+                   data-ng-model="ruleEdit.ruleModel.destinationPort"
+                   ajax-valid="ruleEdit.checkPort(value,'destinationPort')"
+                   placeholder="请输入目的端口/端口范围" ><!--required-->
+            <label class="control-label hide"
+                   data-ng-class="(myForm.destination_port.$dirty && myForm.destination_port.$error.required && !ruleEdit.destinationPort) ? 'show' : 'hide'"
+                   style="text-align: left;">目的端口/端口范围不能为空</label>
+            <label class="control-label hide" data-ng-class="ruleEdit.destinationPort ? 'show' : 'hide'"
+                   style="text-align: left;">端口格式为A或A:B，其中A和B范围为1-65535</label>
+        </div>
+    </div>
+
+
+    <div class="form-group has-feedback">
+        <label class="col-sm-3 control-label">动作：</label>
+
+        <div class="col-sm-8 " data-ng-class="(myForm.action.$dirty && myForm.action.$invalid) ? 'has-error' : ''">
+            <eayun-select name="action" class="form-control" data-ng-model="ruleEdit.ruleModel.fwrAction"
+                          placeholder="--选择一个动作--"
+                          required>
+                <eayun-option value="'allow'" text="允许"></eayun-option>
+                <eayun-option value="'deny'" text="拒绝"></eayun-option>
+            </eayun-select>
+        </div>
+    </div>
+
+    <!--<div class="form-group has-feedback">
+        <label class="col-sm-3 control-label">激活：</label>
+
+        <div class="col-sm-8">
+            <div class="col-sm-2">
+                <label class="radio-inline"><input type="radio" name="enabled" value="1"
+                                                   data-ng-model="ruleEdit.ruleModel.fwrEnabled">是</label>
+            </div>
+            <div class="col-sm-2">
+                <label class="radio-inline"><input type="radio" name="enabled" value="0"
+                                                   data-ng-model="ruleEdit.ruleModel.fwrEnabled">否</label>
+            </div>
+        </div>
+    </div>-->
+
+    <!--<div class="form-group has-feedback">
+        <label class="col-sm-3 control-label">描述：</label>
+
+        <div class="col-sm-8">
+            <textarea type="text" class="form-control" name="description"
+                      data-ng-model="ruleEdit.ruleModel.description"></textarea>
+        </div>
+    </div>-->
+
+    <!-- 按钮区域 -->
+     <div class="modal-footer" >
+      <button type="button" class="btn btn-primary btn-modal" ng-click="commit()"  ng-disabled="!myForm.$valid || ruleEdit.fwRuleNameIsExist">确  定</button>
+      <button type="button" class="btn btn-default btn-modal" ng-click="cancel()">取  消</button>
+    </div>
+</form>

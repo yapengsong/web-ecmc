@@ -1,0 +1,20 @@
+<!-- 当前位置下拉列表 -->
+<div class="title-inline">
+    <div class="form-group">
+        <label class="control-label">当前位置：</label>
+        <div class="btn-group" role="group" style="font-size:14px;">联系人管理
+        </div>
+    </div>
+</div>
+<!-- 导航页签 -->
+<tabs class="nav-tabs-underline">
+    <tab-underline ui-sref-active="active" data-ui-sref="app.contacts.tab.person">管理联系人</tab-underline>
+    <tab-underline ui-sref-active="active" data-ui-sref="app.contacts.tab.group">管理联系人组</tab-underline>
+</tabs>
+
+<!-- 子页面展示区 -->
+<div class="panel panel-default clearfix">
+    <div class="panel-body">
+        <div ui-view=""></div>
+    </div>
+</div>

@@ -1,0 +1,68 @@
+
+<form class="form-horizontal data-center">
+    <div class="col-lg-6" >
+        <div class="details-group">
+            <div class="details-name">所属数据中心：</div>
+            <div class="details-value"><span ng-bind="::detail.model.dataCenterName"></span></div>
+        </div>
+        <div class="details-group">
+            <div class="details-name">规格：</div>
+            <div class="details-value"><span ng-bind="::detail.model.spec"></span></div>
+        </div>
+        <div class="details-group">
+            <div class="details-name">交换机名称：</div>
+            <div class="details-value"><span ng-bind-html="::detail.model.name |ellipsis:18"></span></div>
+        </div>
+        <div class="details-group">
+            <div class="details-name">交换机ID：</div>
+            <div class="details-value"><span ng-bind-html="::detail.model.id |ellipsis:18"></span></div>
+        </div>
+        <div class="details-group">
+            <div class="details-name">端口数：</div>
+            <div class="details-value"><span ng-bind="::detail.model.portCapacity"></span></div>
+        </div>
+        <div class="details-group">
+            <div class="details-name">接口类型：</div>
+            <div class="details-value"><span ng-bind-html="::detail.model.interfaceModel |ellipsis:19"></span></div>
+        </div>
+        <div class="details-group">
+            <div class="details-name">责任人：</div>
+            <div class="details-value"><span ng-bind="::detail.model.responPerson"></span></div>
+        </div>
+        <div class="details-group">
+            <div class="details-name">备注：</div>
+            <div class="details-value"><span ng-bind-html="::detail.model.memo |ellipsis:19"></span></div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="details-group">
+            <div class="details-name">所属机柜：</div>
+            <div class="details-value"><span ng-bind="::detail.model.cabinetName"></span></div>
+        </div>
+        <div class="details-group">
+            <div class="details-name">所属机柜位置：</div>
+            <div class="details-value"><span ng-bind="::detail.startState"></span>U~<span ng-bind="::detail.endState"></span>U</div>
+        </div>
+        <div class="details-group">
+            <div class="details-name">交换机Ip地址：</div>
+            <div class="details-value"><span ng-bind="::detail.model.ipAddress"></span></div>
+        </div>
+        <div class="details-group">
+            <div class="details-name">交换机型号：</div>
+            <div class="details-value"><span ng-bind-html="::detail.model.switchModel |ellipsis:18"></span></div>
+        </div>
+        <div class="details-group">
+            <div class="details-name">转发功能：</div>
+            <div class="details-value"><span ng-bind-html="::detail.model.forwardFunc |ellipsis:19"></span></div>
+        </div>
+        <div class="details-group">
+            <div class="details-name">联系电话：</div>
+            <div class="details-value"><span ng-bind="::detail.model.responPersonMobile"></span></div>
+        </div>
+    </div>
+</form>
+<div class="modal-footer gd_footer">
+    <div class="col-md-12 text-center">
+        <button class="btn button-orange" type="button" ng-click="cancel()">关闭</button>
+    </div>
+</div>

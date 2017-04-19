@@ -1,0 +1,60 @@
+<h4>交换机</h4>
+
+<form class="form-inline"ng-submit="physicalSwitch.doSearch()">
+    <button type="button" class="btn btn-primary" ng-click="physicalSwitch.add()" style="margin-right: 15px;" data-ng-disabled="!hasPermission('phy_switch_create')">
+        <span class="glyphicon glyphicon-plus"></span> 添加交换机
+    </button>
+
+    <div class="input-group has-feedback search-group">
+        <input type="text" class="form-control" placeholder="请输入交换机名称搜索" ng-model="physicalSwitch.switchName"  data-ng-disabled="!hasPermission('phy_switch_query')">
+        <span class="form-control-feedback pointer search"  ng-click="physicalSwitch.doSearch()"></span>
+    </div>
+
+</form>
+<form class="form-count">
+
+    <eayun-table data-api="physicalSwitch.myTable.api" data-ajax-source="physicalSwitch.myTable.source" data-param="physicalSwitch.myTable.getParams"
+                 data-result="physicalSwitch.myTable.result">
+        <table class="table table-eayun">
+            <thead>
+            <tr>
+                <th >交换机名称</th>
+                <th>交换机型号</th>
+                <th>IP地址</th>
+                <th>端口数</th>
+                <th>接口类型</th>
+                <th>转发功能</th>
+                <th  >
+                    <eayun-select type="btn" class="btn-group btn-group-xs" data-ng-model="physicalSwitch.dcId"
+                                  data-ng-change="physicalSwitch.doSearch()">
+                        <eayun-option value="''" text="数据中心（全部）" selected></eayun-option>
+                        <eayun-option value="dcList.id" text="{{dcList.name}}"
+                                      ng-repeat="dcList in physicalSwitch.dcList"></eayun-option>
+                    </eayun-select>
+                </th>
+                <th >所属机柜</th>
+                <th style="min-width: 200px;" width="13%">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="ps in physicalSwitch.myTable.result" data-ng-if="hasPermission('phy_switch_query')">
+            <!--<tr>-->
+                <td class="click-link" ng-click="physicalSwitch.detail(ps.id)" ng-bind-html="::ps.name.length>15?ps.name.substring(0,13)+'...':ps.name"title="{{ps.name}}"class="click-link" ></td>
+
+                <td ng-bind-html="::ps.switchModel.length>15?ps.switchModel.substring(0,13)+'...':ps.switchModel"title="{{ps.switchModel}}"></td>
+                <td ng-bind="::ps.ipAddress"></td>
+                <td ng-bind="::ps.portCapacity"></td>
+                <td ng-bind-html="::ps.interfaceModel.length>15?ps.interfaceModel.substring(0,13)+'...':ps.interfaceModel"title="{{ps.interfaceModel}}"></td>
+                <td ng-bind-html="::ps.forwardFunc.length>15?ps.forwardFunc.substring(0,13)+'...':ps.forwardFunc"title="{{ps.forwardFunc}}"></td>
+                <td ng-bind="::ps.dataCenterName"></td>
+                <td ng-bind="::ps.cabinetName"></td>
+                <td>
+                    <button class="btn btn-tablemng" ng-click="physicalSwitch.editSwitch(ps.id)" data-ng-show="hasPermission('phy_switch_modify')">编辑</button>
+                    <button class="btn btn-tabledel" ng-click="physicalSwitch.deleteSwitch(ps.id)" data-ng-show="hasPermission('phy_switch_delete')">删除</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <eayun-table-page></eayun-table-page>
+    </eayun-table>
+</form>

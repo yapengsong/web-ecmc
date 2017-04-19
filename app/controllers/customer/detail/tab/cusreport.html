@@ -1,0 +1,33 @@
+<!-- 当前位置下拉列表 -->
+<div class="title-inline">
+    <div class="form-group">
+        <label class="control-label">当前位置：
+            <a style="cursor: pointer;" data-ui-sref="app.customer">客户管理</a>&nbsp;>
+            <span> 费用报表</span>
+        </label>
+    </div>
+</div>
+
+<div class="panel panel-default clearfix">
+    <div class="panel-body">
+        <h4>客户详情</h4>
+        <!-- 导航页签 -->
+        <tabs class="nav-tabs-online">
+            <tab ui-sref-active="active" data-ui-sref="app.customer.detail.cusandprojects">客户及项目信息</tab>
+            <tab ui-sref-active="active" data-ui-sref="app.customer.detail.cusreport({cusId:detailMng.cusId})">费用报表
+            </tab>
+            <tab ui-sref-active="active" data-ui-sref="app.customer.detail.cusrecords">交易记录</tab>
+        </tabs>
+        <div class="form-inline">
+            <button class="btn" data-ng-class="cusReport.isPostPaid ? 'btn-primary' : 'btn-default'"
+                    data-ng-click="cusReport.postPaidReport()">后付费
+            </button>
+            <button class="btn" data-ng-class="cusReport.isPostPaid ? 'btn-default' : 'btn-primary'"
+                    data-ng-click="cusReport.prePaidReport()">预付费
+            </button>
+        </div>
+
+        <!-- 子页面展示区 -->
+        <div data-ui-view=""></div>
+    </div>
+</div>

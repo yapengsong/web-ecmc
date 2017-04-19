@@ -1,0 +1,115 @@
+<form class="form-horizontal">
+    <div class="form-group">
+        <label class="col-sm-3 control-label">所属数据中心：</label>
+
+        <div class="col-sm-7">
+            <label class="control-label">{{null == customdetail.item.dcName || 'null' == customdetail.item.dcName?"":customdetail.item.dcName}}</label>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">所属项目：</label>
+
+        <div class="col-sm-7">
+            <label class="control-label">{{null == customdetail.item.prjName || 'null' == customdetail.item.prjName?"":customdetail.item.prjName}}</label>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">所属客户：</label>
+
+        <div class="col-sm-7">
+            <label class="control-label">{{null == customdetail.item.cusOrg || 'null' == customdetail.item.cusOrg?"":customdetail.item.cusOrg}}</label>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">镜像ID：</label>
+
+        <div class="col-sm-7">
+            <label class="control-label">{{customdetail.item.imageId}}</label>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">镜像名称：</label>
+
+        <div class="col-sm-7">
+            <label class="control-label">{{customdetail.item.imageName}}</label>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">系统：</label>
+
+        <div class="col-sm-7">
+            <label class="control-label"> {{(null==customdetail.item.sysTypeName||'null'==customdetail.item.sysTypeName||'其他'==customdetail.item.sysTypeName)?'':customdetail.item.sysTypeName}}</label>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">状态：</label>
+
+        <div class="col-sm-7">
+            <label class="control-label"><span class="state-block" data-ng-class="customdetail.color != '' ? customdetail.color : ''"></span>{{customdetail.item.statusForDis}}</label>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-3 control-label">最小CPU：</label>
+
+        <div class="col-sm-7 has-feedback">
+            <label class="control-label" style = "text-align:left;">{{customdetail.item.minCpu}}核</label>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">最小内存：</label>
+
+        <div class="col-sm-7 has-feedback">
+            <label class="control-label" style = "text-align:left;">{{customdetail.item.minRam>1?customdetail.item.minRam:1}}GB</label>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">最小磁盘：</label>
+
+        <div class="col-sm-7 has-feedback">
+            <label class="control-label" style = "text-align:left;">{{customdetail.item.minDisk}}GB</label>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">最大CPU：</label>
+
+        <div class="col-sm-7 has-feedback">
+            <label class="control-label" style = "text-align:left;">{{null == customdetail.item.maxCpu?'':customdetail.item.maxCpu+'核'}}</label>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">最大内存：</label>
+
+        <div class="col-sm-7 has-feedback">
+            <label class="control-label" style = "text-align:left;">{{null == customdetail.item.maxRam?'':customdetail.item.maxRam+'GB'}}</label>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-3 control-label">创建云主机数量：</label>
+
+        <div class="col-sm-7 has-feedback">
+            <label class="control-label" style = "text-align:left;">{{customdetail.item.vmNum}}</label>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">创建时间：</label>
+
+        <div class="col-sm-7 has-feedback">
+            <label class="control-label" style = "text-align:left;">{{customdetail.item.createdTime|date:'yyyy-MM-dd HH:mm:ss'}}</label>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-3 control-label">描述：</label>
+
+        <div class="col-sm-7 has-feedback">
+         <label  class="control-label"  style = "text-align:left;"   data-ng-bind-html="customdetail.item.imageDescription | ellipsis:30"></label>
+            <!--<label class="control-label" style = "text-align:left;">{{null == customdetail.item.imageDescription || 'null' == customdetail.item.imageDescription?"":customdetail.item.imageDescription}}</label>-->
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <button class="btn btn-primary btn-modal" data-ng-click="commit()">关 闭</button>
+    </div>
+</form>

@@ -1,0 +1,26 @@
+<!-- 当前位置下拉列表 -->
+<div class="title-inline">
+    <div class="form-group">
+        <label class="control-label">当前位置：</label>
+
+        <div class="btn-group" role="group" style="font-size:14px;">用户管理
+        </div>
+    </div>
+</div>
+<div class="second-menu-page" ng-controller="DepartmentTreeCtrl as tree" data-ng-hide="!hasPermission('sys_user_query')">
+    <div class="data-tree" style="white-space: nowrap;">
+        <div class="panel panel-default clearfix data-left">
+            <div class="panel-body">
+        <tree-view tree-data="tree.departmentTree" text-field="name" item-clicked="tree.itemClicked($item)"
+                   can-checked="false"  expend-level="-1"></tree-view>
+            </div>
+        </div>
+    </div>
+    <div class="second-menu-right" style="margin-left:16%">
+        <div class="panel panel-default clearfix">
+            <div class="panel-body">
+                <div ui-view=""></div>
+            </div>
+        </div>
+    </div>
+</div>

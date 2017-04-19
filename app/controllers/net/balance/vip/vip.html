@@ -1,0 +1,60 @@
+<form class="form-inline">
+    <div class="form-group">
+        <button class="btn btn-primary"
+                style="margin-right: 15px;"
+                data-ng-click="vip.createVIP()">
+            <span class="glyphicon glyphicon-plus"></span> 创建VIP
+        </button>
+    </div>
+    <div class="form-group">
+        <eayun-search ng-model="vip.search" options="vip.options"></eayun-search>
+    </div>
+</form>
+
+<eayun-table data-api="vip.table.api" data-ajax-source="vip.table.source" data-param="vip.table.getParams"
+             data-result="vip.table.result">
+    <table class="table table-eayun">
+        <thead>
+        <tr>
+            <th class="col-sm-1">名称</th>
+            <th class="col-sm-1" >状态</th>
+            <th class="col-sm-1">IP地址</th>
+            <th class="col-sm-1">协议</th>
+            <th class="col-sm-1">协议端口</th>
+            <th class="col-sm-2" >资源池</th>
+            <th class="col-sm-1">客户</th>
+            <th class="col-sm-1">所属项目</th>
+            <th class="col-sm-1">
+                <eayun-select type="btn" class="btn-group btn-group-xs" data-ng-model="vip.dcId"
+                              data-ng-change="vip.refreshTable()">
+                    <eayun-option value="''" text="数据中心（全部）" selected></eayun-option>
+                    <eayun-option value="dc.id" text="{{dc.name}}"
+                                  ng-repeat="dc in vip.dcList"></eayun-option>
+                </eayun-select>
+            </th>
+            <th >操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr data-ng-repeat="v in vip.table.result">
+            <td data-ng-bind="::v.vipName"  style="word-break:break-all; word-wrap:break-all;"></td>
+            <td><span class="state-block"
+                      data-ng-class="vip.vipStatusClass[$index] != '' ? vip.vipStatusClass[$index] : ''"
+                      ng-init="vip.vipStatusClass[$index] = vip.getVipStatus(v,$index)"></span>{{v.vipStatus}}
+            </td>
+            <td data-ng-bind="::v.vipAddress"></td>
+            <td data-ng-bind="::v.vipProtocol"></td>
+            <td data-ng-bind="::v.protocolPort"></td>
+            <td data-ng-bind="::v.poolName"  style="word-break:break-all; word-wrap:break-all;"></td>
+            <td data-ng-bind="::v.cusOrg"></td>
+            <td data-ng-bind="::v.prjName"></td>
+            <td data-ng-bind="::v.dcName"></td>
+            <td>
+                <button class="btn btn-tablemng btn-first" data-ng-click="vip.editVip(v)" data-ng-show="vip.isDeletable">编辑</button>
+                <button class="btn btn-tabledel" data-ng-click="vip.deleteVip(v)">删除</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <eayun-table-page></eayun-table-page>
+</eayun-table>

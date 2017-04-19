@@ -1,0 +1,86 @@
+<div class="title-inline">
+    <div class="form-group">
+        <label class="control-label">当前位置：
+            <a style="cursor: pointer;" data-ui-sref="app.customer">客户管理</a>&nbsp;>
+            <a style="cursor: pointer;" data-ui-sref="app.customer.detail.cusreport.postpaid({cusId:postpaidDetail.cusId})">费用报表</a>&nbsp;>
+            <span> 报表详情</span>
+        </label>
+    </div>
+</div>
+<div class="panel panel-default clearfix">
+    <div class="panel-body">
+
+        <h4>费用概要</h4>
+        <table class="table table-eayun">
+            <tr>
+                <td style="background-color: #EEE;font-weight: bold;font-size: 14px;">订单编号</td>
+                <td style="text-align: left;"><span data-ng-bind="postpaidDetail.model.orderNo"></span></td>
+                <td style="background-color: #EEE;font-weight: bold;font-size: 14px;">产品</td>
+                <td style="text-align: left;"><span data-ng-bind="postpaidDetail.model.productName"></span></td>
+            </tr>
+            <tr>
+                <td style="background-color: #EEE;font-weight: bold;font-size: 14px;">计费时间</td>
+                <td style="text-align: left;"><span
+                        data-ng-bind="postpaidDetail.model.monTime|date:'yyyy-MM-dd HH:mm:ss'"></span></td>
+                <td style="background-color: #EEE;font-weight: bold;font-size: 14px;">费用起止时间</td>
+                <td style="text-align: left;"><span
+                        data-ng-bind="postpaidDetail.model.monStart|date:'yyyy-MM-dd HH:mm:ss'"></span> 至 <span
+                        data-ng-bind="postpaidDetail.model.monEnd|date:'yyyy-MM-dd HH:mm:ss'"></span></td>
+            </tr>
+            <tr>
+                <td style="background-color: #EEE;font-weight: bold;font-size: 14px;">金额</td>
+                <td style="text-align: left;" colspan="3"><span class="color-blue" style="font-weight:bold;">￥ <span
+                        data-ng-bind="postpaidDetail.model.money|number:3"></span></span></td>
+            </tr>
+        </table>
+
+        <h4>费用详情</h4>
+        <label data-ng-bind="postpaidDetail.model.dcName"></label>
+        <div class="panel panel-default">
+            <div class="panel-heading" style="background-color: white;">
+                <div class="row" style="font-size:14px">
+                    <div class="col-lg-8"
+                         ng-if="postpaidDetail.model.resourceType!='5'&&postpaidDetail.model.resourceType!='6'"><span
+                            data-ng-bind="postpaidDetail.model.resourceTypeStr"></span>：<span
+                            data-ng-bind="postpaidDetail.model.resourceName"></span>（ID：<span
+                            data-ng-bind="postpaidDetail.model.resourceId"></span>）
+                    </div>
+                    <div class="col-lg-8" ng-if="postpaidDetail.model.resourceType=='5'"><span
+                            data-ng-bind="postpaidDetail.model.resourceTypeStr"></span>:<span
+                            data-ng-bind="postpaidDetail.model.resourceName"></span></div>
+                    <div class="col-lg-8" ng-if="postpaidDetail.model.resourceType=='6'"><span
+                            data-ng-bind="postpaidDetail.model.resourceTypeStr"></span></div>
+                    <div class="text-right pull-right" style="width:100px;">
+                        <expander data-target="#overview_dclist_0" data-expander-show="true" style="text-align: center;">
+                            <label class="pointer color-blue"
+                                   ng-click="postpaidDetail.$$active = !postpaidDetail.$$active"
+                                   ng-init="(postpaidDetail.$$active=true)"
+                                   ng-bind="postpaidDetail.$$active?'收起详情↑':'展开详情↓'"
+                                   style="font-size:14px;font-weight: normal;margin-bottom:0px;"></label>
+                        </expander>
+                    </div>
+                    <div class="pull-right" style="height:20px;border:1px solid #dbdbdb;"></div>
+                    <div class="col-lg-2 text-right pull-right"><span>应付金额小计：</span><span style="font-weight:bold"
+                                                                                          class="color-blue">￥ </span><span
+                            class="color-blue" data-ng-bind="postpaidDetail.model.money|number:3"></span></div>
+                </div>
+            </div>
+            <div class="collapse" id="overview_dclist_0" ng-class="'in'">
+                <div class="panel-body" style="background-color: #f8f8f8;">
+                    <table class="table table-eayun-info" style="margin-bottom:0px;margin-top: -20px;">
+                        <tbody>
+                        <tr data-ng-repeat="list in postpaidDetail.model.configList">
+                            <td style="text-align:left;border-top: 0px solid;padding-left:0px"><span
+                                    data-ng-bind="::list.name"></span></td>
+                            <td style="text-align:left;border-top: 0px solid;"><span data-ng-bind="::list.units"></span>
+                            </td>
+                            <td style="text-align:right;border-top: 0px solid;"><span class="color-blue">￥ </span><span
+                                    class="color-blue" data-ng-bind="::list.price"></span></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

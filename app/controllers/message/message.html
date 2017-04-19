@@ -1,0 +1,91 @@
+<!-- 当前位置下拉列表 -->
+<div class="title-inline">
+    <div class="form-group">
+        <label class="control-label">当前位置：
+            <span class="pointer" ui-sref="app.message">消息管理</span>
+
+        </label>
+    </div>
+</div>
+
+<div class="panel panel-default clearfix">
+    <div class="panel-body">
+        <h4>消息管理</h4>
+
+        <form class="form-inline">
+            <label class="control-label" style="margin-right: 15px;">时间范围：</label>
+            <date-time-picker data-format="yyyy-MM-dd" data-ng-model="message.beginTime"
+                              max-date="message.endTime"></date-time-picker>
+            <span style="margin: 0px 15px;">—</span>
+            <date-time-picker data-format="yyyy-MM-dd" data-ng-model="message.endTime"
+                              min-date="message.beginTime"></date-time-picker>
+
+            <label class="control-label" style="margin: 0px 15px;">消息标题：</label>
+            <input class="form-control" data-ng-model="message.title" style="margin: 0px 10px;"/>
+
+            <button class="btn btn-default" style="margin: 0px 15px;" data-ng-click="message.queryTable()">查 询</button>
+
+            <button class="btn btn-primary" data-ng-click="message.add()"
+                    data-ng-if="hasPermission('sys_message_create')">
+                <span class="glyphicon glyphicon-plus"></span> 创建消息
+            </button>
+        </form>
+        <eayun-table data-api="message.messageTable.api" data-ajax-source="message.messageTable.source"
+                     data-param="message.messageTable.getParams"
+                     data-result="message.messageTable.result">
+            <table class="table table-striped striped-text-middle">
+                <thead>
+                <tr>
+                    <th style="width: 450px">消息标题</th>
+                    <th >生效时间</th>
+
+                    <th >
+                        <eayun-select type="btn" class="btn-group btn-group-xs" data-ng-model="message.issyssend"  data-ng-change="message.queryTable()">
+                            <eayun-option value="" text="发送类型(全部)" selected></eayun-option>
+                            <eayun-option value="1" text="系统发送"></eayun-option>
+                            <eayun-option value="0" text="手工发送"></eayun-option>
+                        </eayun-select>
+                    </th>
+                    <th style="width: 450px">收件人</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr data-ng-repeat="msgModel in message.messageTable.result">
+                    <td class="click-link" data-ng-click="message.detail(msgModel)" ng-bind-html="::msgModel.newsTitle.length>45?msgModel.newsTitle.substring(0,45)+'...':msgModel.newsTitle"title="{{msgModel.newsTitle}}"></td>
+                    <td data-ng-bind="::msgModel.sendDate|date : 'yyyy-MM-dd HH:mm:ss'"></td>
+                    <td data-ng-bind="msgModel.isSysSend=='1'?'系统发送':'手工发送'"></td>
+                    <td data-ng-if="msgModel.cusId != 'ALL'"
+                        title="{{msgModel.cusCpname}}{{msgModel.recType=='1' ? '下的所有人':'下的超级管理员'}}">
+                        {{msgModel.cusCpname.length > 32 ? msgModel.cusCpname.substr(0,32) + '...' :
+                        msgModel.cusCpname}}
+                        {{msgModel.recType == '1' ? '下的所有人' : '下的超级管理员'}}
+                    </td>
+                    <td data-ng-if="msgModel.cusId == 'ALL'">
+                        {{msgModel.recType == '1' ? '所有人' : '所有超级管理员'}}
+                    </td>
+                    <td data-ng-if="msgModel.isSysSend!='1'">
+                        <button class="btn btn-tablemng" ng-click="message.edit(msgModel)" data-ng-if="hasPermission('sys_message_modify')">编辑</button>
+                        <button class="btn btn-tabledel" ng-click="message.delete(msgModel)"data-ng-if="hasPermission('sys_message_delete') &&msgModel.isSysSend!='1'">删除</button>
+
+
+
+                        <!--<span class="click-link" data-ng-click="message.edit(msgModel) "-->
+                              <!--data-ng-if="hasPermission('sys_message_modify') &&msgModel.isSysSend!='1'">编辑</span>-->
+                        <!--<span class="click-link" data-ng-click="message.delete(msgModel)" style="margin-left: 15px;"-->
+                              <!--data-ng-if="hasPermission('sys_message_delete') &&msgModel.isSysSend!='1'">删除</span>-->
+                        <!--<button class="btn btn-tablemng btn-first" data-ng-click="message.edit(msgModel)"
+                                data-ng-if="hasPermission('sys_message_modify')">编辑
+                        </button>
+                        <button class="btn btn-tabledel" data-ng-click="message.delete(msgModel)"
+                                data-ng-if="hasPermission('sys_message_delete')">删除
+                        </button>-->
+                    </td>
+                    <td data-ng-if="msgModel.isSysSend=='1'">----</td>
+                </tr>
+                </tbody>
+            </table>
+            <eayun-table-page></eayun-table-page>
+        </eayun-table>
+    </div>
+</div>

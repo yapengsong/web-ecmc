@@ -1,0 +1,46 @@
+<form class="form-horizontal" name="addRole">
+    <div class="form-group">
+        <label class="col-sm-3 control-label">ID：</label>
+
+        <div class="col-sm-8">
+            <label class="control-label">1234567</label>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">编号：</label>
+
+        <div class="col-sm-8"
+             data-ng-class="(addRole.number.$dirty && addRole.number.$error.required) ? 'has-error' : ''">
+            <input type="text" class="form-control" data-ng-model="role.number" name="number" required/>
+            <label class="control-label hide"
+                   data-ng-class="addRole.number.$dirty && addRole.number.$error.required ? 'show' : 'hide'"
+                   style="text-align: left;">编号不能为空</label>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">名称：</label>
+
+        <div class="col-sm-8"
+             data-ng-class="(addRole.name.$dirty && addRole.name.$error.required) ? 'has-error' : ''">
+            <input type="text" class="form-control" data-ng-model="role.name" name="name" required/>
+            <label class="control-label hide"
+                   data-ng-class="addRole.name.$dirty && addRole.name.$error.required ? 'show' : 'hide'"
+                   style="text-align: left;">名称不能为空</label>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">描述：</label>
+
+        <div class="col-sm-8">
+            <input type="text" class="form-control" data-ng-model="role.description" name="description" required/>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">是否启用：</label>
+
+        <div class="col-sm-2">
+            <input type="checkbox" style="margin-top: 10px;" data-ng-model="role.isUser" name="isUser"/>
+            <span> 启用</span>
+        </div>
+    </div>
+</form>

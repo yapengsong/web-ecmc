@@ -1,0 +1,14 @@
+.switch-vertical-line {
+    border-width: 0 1px 0 0;
+    border-right: 1px solid #DCDCDC;
+    margin: 6px 10px;
+    float: left;
+    height: 24px;
+}
+.api-overview-date{
+    width:auto;
+    height: 32px;
+}
+.api-overview-ding{
+    margin-right:55px;
+}

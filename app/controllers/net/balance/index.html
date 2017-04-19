@@ -1,0 +1,9 @@
+<!-- 导航页签 -->
+<tabs class="nav-tabs-online">
+    <!-- 只要具有负载均衡器权限，则负载均衡下面的两个页签均可见-->
+    <tab ui-sref-active="active" data-ui-sref="app.net.tabs.balance.load"  ng-if="hasPermission('vir_loadbalance')">负载均衡器</tab>
+    <tab ui-sref-active="active" data-ui-sref="app.net.tabs.balance.monitor"  ng-if="hasPermission('vir_loadbalance')">健康检查</tab>
+</tabs>
+
+<!-- 子页面展示区 -->
+<div ui-view=""></div>

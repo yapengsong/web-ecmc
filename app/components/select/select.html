@@ -1,0 +1,15 @@
+<div class="eayun-select ng-cloak" ng-cloak ng-class="disabled?'disabled':''">
+    <input type="text" class="eayun-select-input form-control" title="{{textTip}}" value="{{text}}"
+           placeholder="{{placeholder}}" data-ng-click="open()" style="cursor:pointer;" readonly="true">
+
+    <div class="eayun-select-btn" type="button" data-ng-click="open()"><span
+            class="glyphicon glyphicon-menu-down"></span></div>
+    <ul class="eayun-select-menu dropdown-menu hide" ng-transclude
+        ng-class="showMenu&&(options.length> 1 || (options.length == 1 && options[0].selected == false) || options[0].value == 'stay')?'show':'hide'"></ul>
+    <ul class="eayun-select-menu dropdown-menu hide"
+        ng-class="showMenu&&(options.length==0 || (options.length == 1 && options[0].selected == true && options[0].value != 'stay'))?'show':'hide'">
+        <li><a id="nochoice">无可选项</a></li>
+    </ul>
+</div>
+
+

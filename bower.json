@@ -1,0 +1,41 @@
+{
+  "name": "eayun-ecmc",
+  "description": "",
+  "version": "0.0.0",
+  "homepage": "",
+  "private": true,
+  "dependencies": {
+    "jquery": "^2.2.1",
+    "angular": "^1.5.0",
+    "angular-cookies": "^1.5.0",
+    "angular-sanitize": "^1.5.0",
+    "angular-ui-router": "^0.2.18",
+    "bootstrap": "^3.3.6",
+    "angular-animate": "^1.5.0",
+    "echarts": "^3.1.5",
+    "ng-file-upload": "^12.0.4",
+    "trumbowyg": "^2.4.2"
+  },
+  "devDependencies": {},
+  "overrides": {
+    "bootstrap": {
+      "main": [
+        "less/bootstrap.less",
+        "dist/css/bootstrap.css",
+        "dist/js/bootstrap.js"
+      ]
+    },
+    "echarts": {
+      "main": [
+        "dist/echarts.common.js"
+      ]
+    },
+    "trumbowyg": {
+      "main": [
+        "dist/trumbowyg.js",
+        "dist/langs/zh_cn.min.js",
+        "dist/ui/trumbowyg.css"
+      ]
+    }
+  }
+}

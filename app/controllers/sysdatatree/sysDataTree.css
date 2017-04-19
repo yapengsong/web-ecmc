@@ -1,0 +1,9 @@
+.data-tree .data-left{
+    width: 15%;
+    float:left;
+    overflow: auto;
+    white-space: nowrap;
+}
+.data-tree .data-right{
+    margin-left: 16%;
+}

@@ -1,0 +1,101 @@
+<form class="form-horizontal" name="editNet" novalidate>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">所属数据中心：</label>
+
+        <div class="col-sm-8">
+            <eayun-select ng-disabled="route.route.routeId" class="form-control" ng-model="route.route.dcId"
+                          ng-change="route.dcChange()" required>
+                <eayun-option value="" text="请选择数据中心" selected></eayun-option>
+                <eayun-option value="dc.id" text="{{::dc.name}}" ng-repeat="dc in route.dcList"></eayun-option>
+            </eayun-select>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">所属项目：</label>
+
+        <div class="col-sm-8">
+            <eayun-select ng-disabled="route.route.routeId" class="form-control" ng-model="route.route.prjId"
+                          ng-change="route.prjChange()" required>
+                <eayun-option value="" text="请选择项目" selected></eayun-option>
+                <eayun-option value="prj.projectId" text="{{::prj.prjName}}"
+                              ng-repeat="prj in route.prjList"></eayun-option>
+            </eayun-select>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">所属网络：</label>
+
+        <div class="col-sm-8">
+            <eayun-select ng-disabled="route.route.routeId" class="form-control" ng-model="route.route.netWorkId"
+                          required>
+                <eayun-option value="" text="请选择网络" selected></eayun-option>
+                <eayun-option value="net.netId" text="{{::net.netName}}"
+                              ng-repeat="net in route.netList"></eayun-option>
+            </eayun-select>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">路由名称：</label>
+
+        <div class="col-sm-8"
+             data-ng-class="(editNet.name.$dirty && editNet.name.$invalid) ? 'has-error' : ''">
+            <input type="text" class="form-control" data-ng-model="route.route.routeName" name="name"
+                   ajax-valid="route.checkName(value)" maxlength="34"
+                   ng-pattern='/^[\u4e00-\u9fa5a-zA-Z0-9]([\u4e00-\u9fa5_a-zA-Z0-9\s]{0,32}[\u4e00-\u9fa5a-zA-Z0-9]){0,1}$/'
+                   required/>
+            <label class="control-label hide"
+                   data-ng-class="editNet.name.$dirty && editNet.name.$error.required ? 'show' : 'hide'"
+                   style="text-align: left;">路由名称不能为空</label>
+            <label class="control-label hide"
+                   data-ng-class="editNet.name.$dirty && editNet.name.$error.pattern ? 'show' : 'hide'"
+                   style="text-align: left;">请输入1-34位字符,支持数字、中英文、下划线、空格</label>
+            <label class="control-label hide"
+                   data-ng-class="editNet.name.$dirty && editNet.name.$error.ajaxValid ? 'show' : 'hide'"
+                   style="text-align: left;">名称已存在</label>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">路由带宽：</label>
+
+        <div class="col-sm-5"
+             data-ng-class="(editNet.rate.$dirty && editNet.rate.$invalid)||((1.0*(route.route.rate?route.route.rate:0)+route.quota.countBandUse > route.quota.countBand)||(route.quota.countBandUse>=route.quota.countBand)) ? 'has-error' : ''">
+            <input type="text" class="form-control" data-ng-model="route.route.rate" name="rate"
+                   placeholder="请输入大于0的整数" ng-pattern="/^[1-9]\d*$/" required maxlength="9" />
+            <label class="control-label hide"
+                   data-ng-class="editNet.rate.$dirty && editNet.rate.$invalid &&(route.quota.countBandUse<route.quota.countBand) ? 'show' : 'hide'"
+                   style="text-align: left;">请输入大于0的整数</label>
+            <label class="control-label" data-ng-if="(1.0*(route.route.rate?route.route.rate:0)+route.quota.countBandUse > route.quota.countBand)&&(route.quota.countBandUse<route.quota.countBand)">不能超过{{route.quota.countBand-route.quota.countBandUse}}Mbps</label>
+            <label class="control-label" data-ng-if="(route.quota.countBandUse>=route.quota.countBand)">已无可用带宽,请申请配额</label>
+        </div>
+        <div class="col-sm-3">
+            <label class="control-label text-left">Mbps</label>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">带宽使用情况：</label>
+
+        <div class="col-sm-5"
+             data-ng-class="(1.0*(route.route.rate?route.route.rate:0)+edit.quota.countBandUse > route.quota.countBand) ? 'has-error' : ''">
+            <div class="progress" style="margin-top:12px;">
+                <div class="progress-bar"
+                     data-ng-class="((1.0*(route.route.rate?route.route.rate:0)+route.quota.countBandUse)/route.quota.countBand)>=0.8 ?'progress-bar-danger':'progress-bar-info'"
+                     data-role="progressbar"
+                     data-aria-valuemax="100"
+                     data-ng-style="{'width':((1.0*(route.route.rate?route.route.rate:0)+route.quota.countBandUse)/route.quota.countBand)*100+'%'}"
+                     data-placement="top">
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <label class="control-label">{{1.0*(route.route.rate?route.route.rate:0)+route.quota.countBandUse}}/{{route.quota.countBand}}已使用</label>
+        </div>
+    </div>
+</form>
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-primary btn-modal" data-ng-click="commit()"
+            data-ng-disabled="editNet.$invalid || route.route.rate>(route.quota.countBand-route.quota.countBandUse) ">确
+        定
+    </button>
+    <button type="button" class="btn btn-default btn-modal" data-ng-click="cancel()">取 消</button>
+</div>

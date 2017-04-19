@@ -1,0 +1,106 @@
+<style type="text/css">
+    .cidr-div{
+        border: 1px solid #ccc;
+        border-radius:4px;
+    }
+    .cidr-error{
+        border: 1px solid #A94442;
+        border-radius:4px;
+    }
+    .cidr-show{
+        text-align: left!important;
+        height: 20px;
+    }
+    .cidr-show-error{
+        text-align: left!important;
+        height: 20px;
+        color: #A94442;
+    }
+</style>
+<form class="form-horizontal" name="myForm">
+    <!--数据中心-->
+    <div class="form-group">
+
+        <label class="col-sm-3 control-label">数据中心：</label>
+
+        <div class="col-sm-8" data-ng-class="(myForm.dcName.$dirty && myForm.dcName.$invalid) ? 'has-error' : ''">
+            <eayun-select name="dcName" class="form-control"  data-ng-model="add.lbMember.dcId" placeholder="请选择数据中心"
+                          ng-change="add.getProjectListByDcId(add.lbMember.dcId)" required>
+                <eayun-option value="dc.id" text="{{dc.name}}" data-ng-repeat="dc in add.dcList"></eayun-option>
+            </eayun-select>
+
+
+        </div>
+    </div>
+    <!--所属项目-->
+    <div class="form-group" >
+        <label class="col-sm-3 control-label">所属项目：</label>
+        <div class="col-sm-8" data-ng-class="(myForm.prjName.$dirty && myForm.prjName.$invalid) ? 'has-error' : ''">
+            <eayun-select name="prjName" class="form-control"  data-ng-model="add.lbMember.prjId"
+                          data-ng-change="add.getPoolListByPrjId(add.lbMember)"
+                          placeholder="请选择项目" required>
+                <eayun-option value="prj.projectId" text="{{prj.prjName}}" data-ng-repeat="prj in add.prjList"></eayun-option>
+            </eayun-select>
+
+        </div>
+    </div>
+    <!--资源池-->
+    <div class="form-group" >
+        <label class="col-sm-3 control-label">资源池：</label>
+        <div class="col-sm-8" data-ng-class="(myForm.poolName.$dirty && myForm.poolName.$invalid) ? 'has-error' : ''">
+            <eayun-select name="poolName" class="form-control"  data-ng-model="add.poolSelected"
+                          data-ng-change="add.getVmListBySubnetId(add.poolSelected.subnetId)"
+                          placeholder="请选资源池" required>
+                <eayun-option value="pool" text="{{pool.poolName}}" data-ng-repeat="pool in add.poolList"></eayun-option>
+            </eayun-select>
+
+        </div>
+    </div>
+
+    <label class="col-sm-8 control-label" style="font-weight: bold;text-align: left; " ng-show="!add.members||add.members.length==0">该子网下暂无主机!</label>
+    <br>
+    <div class="col-sm-12" style="padding-top: 20px;padding-bottom:20px;" ng-show="add.members.length!=0">
+        <div class="col-sm-12" data-ng-class="add.isErr?'cidr-error':'cidr-div'" style="max-height: 400px; overflow-y:auto;">
+            <table style="width: 100%">
+                <tbody>
+
+                <tr class="control-label" style="padding-top: 10px;height: 40px" data-ng-repeat="member in add.members">
+                    <span>{{member}}</span>
+                    <td>
+                        <input type="checkbox" style="width: 16px;height: 16px;" data-ng-model="member.isCheck" data-ng-click="add.changeCheckMember(member)">
+                    </td>
+                    <td style="width: 15px;"></td>
+                    <td style="width: 150px;text-align: left" title="{{member.vmName}}">
+                        {{member.vmName.length>8?member.vmName.substr(0,8)+'...':member.vmName}}
+                    </td>
+                    <td style="width: 15px;"></td>
+                    <td style="text-align: left;">
+                        内网IP: {{member.memberAddress}}
+                    </td>
+                    <td style="width: 15px;"></td>
+                    <td>监听端口：</td>
+                    <td style="width: 70px;" data-ng-class="(member.isPortExsit)?'has-error':''"><!--|| port.$error.pattern-->
+                        <input type="text" class="form-control" style="height: 30px;"
+                               ng-model="member.protocolPort" name="port"
+                               maxlength="5" data-ng-disabled="!member.isCheck" data-ng-change="add.checkPort(member)" data-ng-focus="add.checkPort(member)">
+                    </td>
+                    <td style="width: 15px;"></td>
+                    <td>权重：</td>
+                    <td style="width: 50px;" data-ng-class="member.isWeightError?'has-error':''">
+                        <input type="text" name="weight" class="form-control" style="height: 30px;"
+                               data-ng-model="member.memberWeight"
+                               maxlength="3" data-ng-disabled="!member.isCheck " data-ng-change="checkWeight(add.member)" data-ng-focus="checkWeight(add.member)">
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <label class="col-sm-6 control-label" ng-show="add.isErr" data-ng-class="add.isErr?'cidr-show-error':'cidr-show'" style="margin-top: 20px;padding-bottom: 20px;">{{add.showErrMsg}}</label><!-- -->
+    </div>
+   <!-- <label class="col-sm-6 control-label" data-ng-class="add.isErr?'cidr-show-error':'cidr-show'" ng-show="myForm.isTabErr">思考的飞机离开时{{add.showErrMsg}}</label>-->
+</form>
+
+<div class="modal-footer">
+    <button class="btn btn-primary btn-modal" ng-click="commit()" data-ng-disabled="!add.members||add.members.length==0||add.isTabErr||add.checkBtn||!add.isSelected">确  定</button>
+    <button class="btn btn-default btn-modal" style="margin-left:13px;" ng-click="cancel()">取  消</button>
+</div>

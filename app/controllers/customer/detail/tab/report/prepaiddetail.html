@@ -1,0 +1,101 @@
+<div class="title-inline">
+    <div class="form-group">
+        <label class="control-label">当前位置：
+            <a style="cursor: pointer;" data-ui-sref="app.customer">客户管理</a>&nbsp;>
+            <a style="cursor: pointer;" data-ui-sref="app.customer.detail.cusreport.prepaid({cusId:prepaidDetail.cusId})">费用报表</a>&nbsp;>
+            <span> 报表详情</span>
+        </label>
+    </div>
+</div>
+<div class="panel panel-default clearfix">
+    <div class="panel-body">
+        <h4>费用概要</h4>
+        <table class="table table-eayun">
+            <tr>
+                <td style="background-color: #EEE;font-weight: bold;font-size: 14px;">订单编号</td>
+                <td style="text-align: left;"><span ng-bind="::prepaidDetail.model.orderNo"></span></td>
+                <td style="background-color: #EEE;font-weight: bold;font-size: 14px;">产品</td>
+                <td style="text-align: left;"><span ng-bind="::prepaidDetail.model.prodName"></span></td>
+            </tr>
+            <tr>
+                <td style="background-color: #EEE;font-weight: bold;font-size: 14px;">订单类型</td>
+                <td style="text-align: left;"><span ng-bind="::prepaidDetail.model.orderTypeName"></span></td>
+                <td style="background-color: #EEE;font-weight: bold;font-size: 14px;">订单状态</td>
+                <td style="text-align: left;"><span ng-bind="::prepaidDetail.model.orderStateName"></span></td>
+            </tr>
+            <tr>
+                <td style="background-color: #EEE;font-weight: bold;font-size: 14px;">创建时间</td>
+                <td style="text-align: left;"><span
+                        ng-bind="prepaidDetail.model.createTime|date:'yyyy-MM-dd HH:mm:ss'"></span></td>
+                <td style="background-color: #EEE;font-weight: bold;font-size: 14px;" data-ng-if="prepaidDetail.model.orderState != '3' && prepaidDetail.model.orderState != '5' ">完成时间</td>
+                <td style="text-align: left;" data-ng-if="prepaidDetail.model.orderState != '3' && prepaidDetail.model.orderState != '5' ">
+                    <span
+                            data-ng-bind="prepaidDetail.model.completeTime==null?'--':prepaidDetail.model.completeTime|date:'yyyy-MM-dd HH:mm:ss' ">
+                    </span>
+                </td>
+                <td style="background-color: #EEE;font-weight: bold;font-size: 14px;" data-ng-if="prepaidDetail.model.orderState == '3' || prepaidDetail.model.orderState == '5' ">取消时间</td>
+                <td style="text-align: left;" data-ng-if="prepaidDetail.model.orderState == '3' || prepaidDetail.model.orderState == '5' ">
+                    <span
+                            data-ng-bind="prepaidDetail.model.canceledTime|date:'yyyy-MM-dd HH:mm:ss'">
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td style="background-color: #EEE;font-weight: bold;font-size: 14px;">金额</td>
+                <td style="text-align: left;" colspan="3"><span class="color-blue" style="font-size:14px;font-weight:bold;">￥ <span
+                        ng-bind="::prepaidDetail.model.paymentAmount|number:2"></span></span><span
+                        class="prepaidDetail-name" data-ng-if="prepaidDetail.model.payType != '2' && (prepaidDetail.model.orderState == '2' || prepaidDetail.model.orderState == '4')">
+                    　=（现金支付：￥ {{prepaidDetail.model.thirdPartPayment|number:2}}）+ （余额支付：￥ {{prepaidDetail.model.accountPayment|number:2}}）</span>
+                </td>
+            </tr>
+
+        </table>
+
+        <h4>费用详情</h4>
+        <table class="table table-eayun">
+            <thead>
+            <tr>
+                <th>产品</th>
+                <th>数量</th>
+                <th>具体配置</th>
+                <th>起止时间</th>
+                <th>付款方式</th>
+                <th>金额</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr>
+                <td><span ng-bind="::prepaidDetail.model.prodName"></span></td>
+                <td><span ng-bind="::prepaidDetail.model.prodCount"></span></td>
+                <td style="line-height:20px; text-align: left"><span ng-bind-html="::prepaidDetail.model.prodConfig"></span></td>
+                <td><span ng-bind="::prepaidDetail.model.resourceBeginTime|date:'yyyy-MM-dd HH:mm:ss'"></span> 至 <span
+                        ng-bind="::prepaidDetail.model.resourceExpireTime|date:'yyyy-MM-dd HH:mm:ss'"></span></td>
+                <td><span ng-bind="::prepaidDetail.model.payTypeName"></span></td>
+                <td><span class="color-blue">￥ <span
+                        ng-bind="::prepaidDetail.model.paymentAmount|number:2"></span></span></td>
+            </tr>
+            </tbody>
+        </table>
+        <div class="pull-right payables">
+            <div class="form-group">
+                <span>应付款：</span>
+                <span>￥
+                    <span class="color-blue" style="font-size:16px;" ng-bind="::prepaidDetail.model.paymentAmount|number:2">
+                    </span>
+                </span>
+            </div>
+
+            <div class="form-group">
+                <hr style="border:1px solid #DCDCDC">
+            </div>
+            <div class="form-group actual-payments">
+                <span>实际付款：</span>
+                <span>￥
+                    <span class="color-blue" ng-bind="::prepaidDetail.model.paymentAmount|number:2"></span>
+                </span>
+            </div>
+        </div>
+
+    </div>
+</div>

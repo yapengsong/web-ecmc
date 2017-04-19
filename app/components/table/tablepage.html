@@ -1,0 +1,46 @@
+<form class="form-inline" data-ng-cloak>
+    <!-- 表格分页组件模板 -->
+    <div class="form-group navbar-right hide" data-ng-class="true ?'show':'hide'">
+        <button type="button" class="btn btn-tablepage" data-ng-click="pageApi.back()"
+                data-ng-class="isCurrent(1) ? 'disabled':''"><span
+                class="glyphicon glyphicon-menu-left"></span></button>
+        <button type="button" class="btn btn-tablepage" data-ng-class="isCurrent(1) ? 'down':''"
+                data-ng-click="pageApi.first()">1
+        </button>
+        <span data-ng-show="buttons[0] > 2">...</span>
+        <button data-ng-show="canShowButton(buttons[0])" type="button" class="btn btn-tablepage"
+                data-ng-class="isCurrent(buttons[0]) ? 'down':''" data-ng-click="pageApi.goto(buttons[0])">
+            {{buttons[0]}}
+        </button>
+        <button data-ng-show="canShowButton(buttons[1])" type="button" class="btn btn-tablepage"
+                data-ng-class="isCurrent(buttons[1]) ? 'down':''" data-ng-click="pageApi.goto(buttons[1])">
+            {{buttons[1]}}
+        </button>
+        <button data-ng-show="canShowButton(buttons[2])" type="button" class="btn btn-tablepage"
+                data-ng-class="isCurrent(buttons[2]) ? 'down':''" data-ng-click="pageApi.goto(buttons[2])">
+            {{buttons[2]}}
+        </button>
+        <button data-ng-show="canShowButton(buttons[3])" type="button" class="btn btn-tablepage"
+                data-ng-class="isCurrent(buttons[3]) ? 'down':''" data-ng-click="pageApi.goto(buttons[3])">
+            {{buttons[3]}}
+        </button>
+        <span data-ng-show="(options.totalPage - buttons[3]) > 1" style="margin-left:10px;margin-right:10px;">...</span>
+        <button type="button" class="btn btn-tablepage" data-ng-click="pageApi.last()"
+                data-ng-class="isCurrent(options.totalPage) ? 'down':''"
+                data-ng-if="options.totalPage != 1">{{options.totalPage}}
+        </button>
+        <button type="button" class="btn btn-tablepage" data-ng-click="pageApi.next()"
+                data-ng-class="options.pageNumber == options.totalPage ? 'disabled':''"><span
+                class="glyphicon glyphicon-menu-right"></span></button>
+
+        <label class="control-label" style="margin-left:10px;">第<span
+                style="color:#0077cc;">{{options.pageNumber}}</span>页,共{{options.totalPage}}页&nbsp;&nbsp;第</label>
+        <input class="form-control" data-ng-model="number" type="text"
+               style="width: 60px;height: 30px;border-radius:1px;margin-left:10px;">
+        <label class="control-label" style="margin-left:10px;">页</label>
+        <button type="button" class="btn btn-primary" data-ng-disabled="number == ''"
+                style="font-size:12px;width:60px;height:30px;border-radius:1px;margin-left:10px;padding:0px;"
+                data-ng-click="pageApi.goto(number)">跳转
+        </button>
+    </div>
+</form>

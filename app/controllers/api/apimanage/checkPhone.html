@@ -1,0 +1,29 @@
+<form class="form-horizontal" name = "checkphone">
+    <div class="form-group">
+        <label class="col-sm-1 control-label"></label>
+        <div class="col-sm-11">
+            在修改您的手机号码之前，我们需要验证您的旧手机号码
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">旧手机号码：</label>
+        <div class="col-sm-3">
+            <label class="control-label">{{check.oldPhone}}</label>
+        </div>
+        <div class="col-sm-6">
+            <a class="btn btn-primary" data-ng-click="check.sendCode()" data-ng-hide="check.thismodel.isSend">发送验证码</a>
+            <button class="btn btn-primary.disabled" data-ng-disabled = "true" data-ng-show = "check.thismodel.isSend">{{check.thismodel.second}}s后可重新发送</button>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">验证码：</label>
+        <div class="col-sm-3" data-ng-class="(checkphone.verCode.$dirty && checkphone.verCode.$invalid) ? 'has-error' : ''">
+            <input type="text" class="form-control" name = "verCode" data-ng-model = "check.checkParams.code" required>
+            <label class="control-label" ng-show="checkphone.verCode.$dirty && checkphone.verCode.$error.required">请输入验证码</label>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary btn-modal" data-ng-click="commit()"  data-ng-disabled="!dialogForm.$valid" type = "button">下一步</button>
+        <button class="btn btn-default btn-modal" data-ng-click="cancel()" style = "margin-left:15px;" type = "button">取  消</button>
+    </div>
+</form>

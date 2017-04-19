@@ -1,0 +1,30 @@
+<style>
+
+</style>
+<!-- 当前位置下拉列表 -->
+<div class="title-inline">
+    <div class="form-group">
+        <label class="control-label">当前位置：</label>
+
+        <div class="btn-group" role="group" style="font-size:14px;">权限管理
+        </div>
+    </div>
+</div>
+
+<div class="second-menu-page" ng-if="hasPermission('sys_auth_query')">
+    <div class="" ng-controller="AuthorityMenuTreeCtrl as tree" style="white-space: nowrap;overflow: auto;width:15%">
+        <div class="panel panel-default clearfix">
+            <div class="panel-body">
+                <tree-view tree-data="tree.menuTree" text-field="name" item-clicked="tree.itemClicked($item)"
+                           can-checked="false"></tree-view>
+            </div>
+        </div>
+    </div>
+    <div class="second-menu-right" style="margin-left:16%">
+        <div class="panel panel-default clearfix">
+            <div class="panel-body">
+               <div ui-view></div>
+            </div>
+        </div>
+    </div>
+</div>

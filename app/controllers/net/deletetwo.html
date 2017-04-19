@@ -1,0 +1,19 @@
+<div style="min-width: 420px;max-width: 720px;">
+    <div class="modal-header">
+    <span class="modal-title">
+    </span>
+        <img ng-click="cancel()" src="images/close.png">
+    </div>
+
+    <div class="modal-body">
+        <div class="modal-confirm" style="word-break:break-all;">资源
+            <span class="delete-name-color">{{name}}</span>删除后将无法恢复，请谨慎操作。确认删除？
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <button class="btn btn-primary btn-modal" ng-click="commit()">确 定</button>
+        <button class="btn btn-default btn-modal" ng-click="cancel()" style="margin-left:15px;">取 消</button>
+
+    </div>
+</div>

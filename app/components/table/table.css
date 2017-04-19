@@ -1,0 +1,114 @@
+/* 表格样式 */
+.table > tbody > tr:hover {
+  background-color:#f1f1f1 !important;
+  background-clip: padding-box;
+}
+.table-eayun {
+  border: 1px solid #dbdbdb;
+  font-size: 12px;
+  color: #555555;
+}
+
+.table-eayun thead {
+  background-color: #e3e3e3;
+  white-space: nowrap;
+}
+
+.table-eayun thead tr th {
+  text-align: center;
+  vertical-align: middle;
+  height: 40px;
+  padding: 0 20px;
+}
+
+.table-eayun tbody tr td {
+  height: 45px;
+  border: 1px solid #dbdbdb;
+  text-align: center;
+  vertical-align: middle;
+  padding: 4px 20px;
+  /*position: relative;*/
+}
+
+.table-eayun tbody tr:nth-child(2n) {
+  background-color: #f8f8f8;
+  background-clip: padding-box;
+}
+
+.table-eayun .eayun-select button {
+  min-width: 120px;
+  max-width: 200px;
+  height: 30px;
+  font-size: 12px;
+  color: #555555;
+  background-color: #f8f8f8;
+}
+/* striped表格样式 */
+.table-striped > thead {
+  background-color:#e3e3e3;
+}
+.table-striped thead tr th {
+  vertical-align: middle;
+  height: 40px;
+  padding: 0 20px;
+}
+.table-striped thead > tr > th > div {
+  margin-left: -6px;
+}
+.table-striped tbody tr td {
+  height: 45px;
+  vertical-align: middle;
+  padding: 8px 20px;
+}
+.table-striped > tbody > tr:nth-of-type(2n+1){
+  background-color: #ffffff;
+  background-clip: padding-box;
+}
+.table-striped > tbody > tr:nth-of-type(2n) {
+  background-color: #f8f8f8;
+  background-clip: padding-box;
+}
+.striped-text-middle > tbody > tr > td {
+  vertical-align: middle;
+  position: relative;
+}
+.table-striped .eayun-select button {
+  min-width: 120px;
+  max-width: 200px;
+  height: 30px;
+  font-size: 12px;
+  color: #555555;
+  background-color: #f8f8f8;
+}
+/* info表格样式 */
+.table-eayun-info {
+  font-size: 12px;
+  color: #555555;
+}
+
+.table-eayun-info thead tr th {
+  background-color: #FFFFFF;
+  border-bottom: 2px solid #0077cc;
+  text-align: center;
+  vertical-align: middle;
+  height: 40px;
+  padding: 0 20px;
+}
+
+.table-eayun-info .eayun-select button {
+  min-width: 120px;
+  max-width: 200px;
+  height: 30px;
+  font-size: 12px;
+  color: #555555;
+  background-color: #f8f8f8;
+}
+
+.table-eayun-info tbody tr td {
+  height: 45px;
+  border-bottom: 1px solid #dbdbdb;
+  text-align: center;
+  vertical-align: middle;
+  padding: 4px 20px;
+  position: relative;
+}

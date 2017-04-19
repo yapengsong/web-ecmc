@@ -1,0 +1,55 @@
+<h4>存储</h4>
+<form class="form-inline"ng-submit="physicalStorage.doSearch()">
+    <button type="button" class="btn btn-primary" ng-click="physicalStorage.add()" style="margin-right: 15px;" data-ng-disabled="!hasPermission('phy_storage_create')">
+        <span class="glyphicon glyphicon-plus"></span> 添加存储
+    </button>
+
+    <div class="input-group has-feedback search-group">
+        <input type="text" class="form-control" placeholder="请输入存储名称搜索" ng-model="physicalStorage.storageName" data-ng-disabled="!hasPermission('phy_storage_query')">
+        <span class="form-control-feedback pointer search"  ng-click="physicalStorage.doSearch()"></span>
+    </div>
+
+</form>
+<form class="form-inline form-count">
+
+    <eayun-table data-api="physicalStorage.myTable.api" data-ajax-source="physicalStorage.myTable.source" data-param="physicalStorage.myTable.getParams"
+                 data-result="physicalStorage.myTable.result">
+        <table class="table table-eayun">
+            <thead>
+            <tr>
+                <th>存储名称</th>
+                <th >型号</th>
+                <th >容量</th>
+                <th >数据传输率</th>
+                <th  >
+                    <eayun-select type="btn" class="btn-group btn-group-xs" data-ng-model="physicalStorage.dcId"
+                                  data-ng-change="physicalStorage.doSearch()">
+                        <eayun-option value="''" text="数据中心（全部）" selected></eayun-option>
+                        <eayun-option value="dcList.id" text="{{dcList.name}}"
+                                      ng-repeat="dcList in physicalStorage.dcList"></eayun-option>
+                    </eayun-select>
+                </th>
+                <th >所属机柜</th>
+                <th width="15%">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="ps in physicalStorage.myTable.result"  data-ng-if="hasPermission('phy_storage_query')">
+            <!--<tr>-->
+                <td class="click-link" ng-click="physicalStorage.detail(ps.id)" ng-bind-html="::ps.name .length>15?ps.name.substring(0,13)+'...':ps.name"title="{{ps.name}}"class="click-link"></td>
+                <td ng-bind="ps.storageModel"></td>
+                <td ng-bind="ps.storageValue+'GB'"></td>
+                <td ng-bind="ps.dataRate+'kbps'"></td>
+                <td ng-bind="ps.dataCenterName"></td>
+                <td ng-bind="ps.cabinetName"></td>
+                <td>
+                    <button class="btn btn-tablemng" ng-click="physicalStorage.edit(ps.id)"data-ng-show="hasPermission('phy_storage_modify')">编辑</button>
+                    <button class="btn btn-tabledel" ng-click="physicalStorage.delete(ps.id)"data-ng-show="hasPermission('phy_storage_delete')">删除</button>
+
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <eayun-table-page></eayun-table-page>
+    </eayun-table>
+</form>

@@ -1,0 +1,21 @@
+<form class="form-horizontal row" name="transferForm" style="max-height: 550px;overflow-y: auto">
+    <input type="checkbox" ng-model="mailList.checkBoxAll"  ng-if="mailList.showCheckBox"
+           ng-change="mailList.checkAll()">{{mailList.showCheckBox?"全选":null}}
+    <table class="table table-striped striped-text-middle">
+        <tbody>
+        <tr data-ng-repeat="mail in mailList.mailList track by $index">
+            <td>
+                <input type="checkbox" ng-model="userMail"  ng-click="mailList.checkOther(mail,userMail)"
+                       ng-if="mailList.showCheckBox" >{{mail}}
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</form>
+<div class="modal-footer">
+    <button type="button" class="btn btn-primary btn-modal" data-ng-click="commit()" style="margin-left: 15px;"
+            data-ng-if="mailList.showCheckBox" data-ng-disabled="mailList.showBtnCom">提 交
+    </button>
+    <button type="button" class="btn btn-default btn-modal" data-ng-click="cancel()" style="margin-left: 15px;">{{mailList.showCheckBox?"取 消":"关 闭"}}
+    </button>
+</div>

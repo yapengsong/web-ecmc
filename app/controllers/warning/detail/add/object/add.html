@@ -1,0 +1,87 @@
+<div style="height:350px;">
+    <form class="form-horizontal" name="addAlarmObject">
+
+        <div class="pull-left" style="width: 370px;">
+            <label class="control-label">客户</label>
+            <eayun-select class="form-control" ng-model="objParams.cusId" ng-change="getObjListByCusId()" show-length="14">
+                <eayun-option value="customer.cusId" text="{{customer.cusOrg}}"
+                              ng-repeat="customer in allCustomerList"></eayun-option>
+            </eayun-select>
+
+            <span style="font-size:12px;">待选报警对象</span>
+
+            <div class="list-group-eayun" style="width:360px;">
+                <table style="width:360px;">
+                    <thead style="background-color: #f3f3f3;">
+                    <tr>
+                        <th style="width:120px;text-align: center;font-size: 12px;">主机名称</th>
+                        <th style="width:140px;text-align: center;font-size: 12px;">IP</th>
+                        <th style="width:60px;text-align: center;font-size: 12px;">操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr data-ng-repeat="alarmObject in objListOutRule" style="border-bottom:1px solid #f3f3f3;">
+                        <td style="width:120px;text-align: center;font-size: 12px;" title="{{alarmObject.objName}}">
+                            {{alarmObject.objName.length>10?alarmObject.objName.substring(0,10)+'...':alarmObject.objName}}
+                        </td>
+                        <td style="width:140px;text-align: left;font-size: 12px;padding-left:10px;">
+                            内网：{{(null != alarmObject.vmIp)&&('null' != alarmObject.vmIp)?alarmObject.vmIp:'----'}}<br>
+                            外网：{{(null != alarmObject.floatIp)&&('null' != alarmObject.floatIp)?alarmObject.floatIp:'----'}}
+                        </td>
+                        <td style="width:60px;text-align: center;font-size: 12px;">
+                            <span class="glyphicon glyphicon-plus color-blue pointer"
+                                  data-ng-click="addObjToRule(alarmObject, $index)"></span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="pull-right" style="width:370px;padding-left:10px;">
+            <label class="control-label">项目</label>
+            <eayun-select class="form-control form-select" ng-model="objParams.prjId" ng-change="getObjListByPrjId()" show-length="14">
+                <eayun-option value="project.projectId" text="{{project.prjName}}"
+                              ng-repeat="project in projectList"></eayun-option>
+            </eayun-select>
+            <span style="font-size:12px;">已选择报警对象：&nbsp;&nbsp;<span
+                class="click-td">{{selectedNumber}}</span></span>
+
+            <div class="list-group-eayun" style="width:360px;">
+                <table style="width:360px;">
+                    <thead style="background-color: #f3f3f3;">
+                    <tr>
+                        <th style="width:120px;text-align: center;font-size: 12px;">主机名称</th>
+                        <th style="width:140px;text-align: center;font-size: 12px;">IP</th>
+                        <th style="width:60px;text-align: center;font-size: 12px;">操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr data-ng-repeat="alarmObject in objListInRule" style="border-bottom:1px solid #f3f3f3;">
+                        <td style="width:120px;text-align: center;font-size: 12px;" title="{{alarmObject.objName}}">
+                            {{alarmObject.objName.length>10?alarmObject.objName.substring(0,10)+'...':alarmObject.objName}}
+                        </td>
+                        <td style="width:140px;text-align: left;font-size: 12px;padding-left:10px;">
+                            内网：{{(null != alarmObject.vmIp)&&('null' != alarmObject.vmIp)?alarmObject.vmIp:'----'}}<br>
+                            外网：{{(null != alarmObject.floatIp)&&('null' != alarmObject.floatIp)?alarmObject.floatIp:'----'}}
+                        </td>
+                        <td style="width:60px;text-align: center;font-size: 12px;">
+                            <span class="glyphicon glyphicon-remove color-error pointer"
+                                  data-ng-click="removeObjFromRule(alarmObject, $index)"></span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="select-list-md">
+            <span class="glyphicon glyphicon-menu-right" style="font-size: 2em"></span>
+        </div>
+
+    </form>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary btn-modal" ng-click="commit()">确 定</button>
+    <button class="btn btn-default btn-modal" ng-click="cancel()" style="margin-left:15px;">取 消</button>
+</div>

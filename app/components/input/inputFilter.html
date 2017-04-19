@@ -1,0 +1,9 @@
+<div class="ng-cloak form-control ey-select-input" ng-cloak ng-class="disabled?'disabled':''">
+    <input type="text" class="form-control magement" ng-model="text" ng-disabled="disabled"
+           placeholder="{{placeholder}}" ng-click="open()" ng-change="open()" maxlength="{{maxlength}}">
+    <ul class="dropdown-menu client hide" ng-class="showMenu?'show':'hide'" ng-if="keys.length>0">
+        <li class="pointer" ng-click="select(key,$event)" ng-repeat="key in keys">
+            <a data-ng-bind="key"></a>
+        </li>
+    </ul>
+</div>

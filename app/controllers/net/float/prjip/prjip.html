@@ -1,0 +1,44 @@
+<form class="form-horizontal" name="ipForPrj" novalidate>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">所属数据中心：</label>
+
+        <div class="col-sm-7">
+            <eayun-select class="form-control" ng-model="prjip.params.datacenter" ng-change="prjip.dcChange()" placeholder="请选择数据中心" required>
+                <eayun-option value="dc.id" text="{{::dc.name}}" ng-repeat="dc in prjip.dcList"></eayun-option>
+            </eayun-select>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">所属项目：</label>
+
+        <div class="col-sm-7" data-ng-class="(ipForPrj.pid.$dirty && (!prjip.isHaveNum)) ? 'has-error' : ''">
+            <eayun-select class="form-control" ng-model="prjip.params.project" name = "pid" ng-change="prjip.dcPrjChange()" placeholder="请选择项目" required>
+                <eayun-option value="prj.projectId" text="{{::prj.prjName}}"
+                              ng-repeat="prj in prjip.prjList"></eayun-option>
+            </eayun-select>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">IP数量：</label>
+
+        <div class="col-sm-7"
+             data-ng-class="(ipForPrj.num.$dirty && ipForPrj.num.$invalid)|| prjip.checkIpNum ? 'has-error' : ''">
+            <input type="text" class="form-control" data-ng-model="prjip.params.num" name="num"
+                   data-ng-pattern = "/^[1-9]\d*$/" data-ng-change="prjip.checkIp()" required maxlength="18"/>
+            <label class="control-label hide"
+                   data-ng-class="ipForPrj.num.$dirty && ipForPrj.num.$error.required ? 'show' : 'hide'"
+                   style="text-align: left;">IP数量不能为空</label>
+            <label class="control-label hide"
+                   data-ng-class="ipForPrj.num.$dirty && ipForPrj.num.$error.pattern ? 'show' : 'hide'"
+                   style="text-align: left;">请输入正整数</label>
+            <label class="control-label hide"
+                   data-ng-class="(ipForPrj.num.$dirty && prjip.checkIpNum) ? 'show' : 'hide'"
+                   style="text-align: left;">弹性公网IP超过项目限额</label>
+        </div>
+    </div>
+    <!-- 按钮区域 -->
+    <div class="modal-footer" >
+        <button type="button" class="btn btn-primary btn-modal" ng-click="commit()"  ng-disabled="!ipForPrj.$valid || prjip.checkIpNum">确  定</button>
+        <button type="button" class="btn btn-default btn-modal" ng-click="cancel()">取  消</button>
+    </div>
+</form>

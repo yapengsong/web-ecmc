@@ -1,0 +1,196 @@
+<style type="text/css">
+.subnet-cidr .ipadress {
+	border-color: #a94442;
+	color: #a94442;
+}
+</style>
+<form class="form-horizontal" name="myForm" novalidate>
+
+    <div class="form-group has-feedback">
+        <label class="col-sm-3 control-label">所属数据中心：</label>
+
+        <div class="col-sm-8" data-ng-class="(myForm.dcName.$dirty && myForm.dcName.$error.required) ? 'has-error' : ''">
+            <eayun-select name="dcName" class="form-control" data-ng-model="fwAdd.fwModel.dcId"
+                          data-ng-change="fwAdd.getProjectListByDcId(fwAdd.fwModel.dcId)"
+                          placeholder="请选择数据中心" required>
+                <eayun-option value="dcResource.id" text="{{dcResource.name}}"
+                              data-ng-repeat="dcResource in fwAdd.allDcResourceList"></eayun-option>
+            </eayun-select>
+            <label class="control-label hide"
+                   data-ng-class="(myForm.dcName.$dirty && myForm.dcName.$error.required) ? 'show' : 'hide'"
+                   style="text-align: left;">所属数据中心不能为空</label>
+        </div>
+    </div>
+
+    <div class="form-group has-feedback">
+        <label class="col-sm-3 control-label">所属项目：</label>
+
+        <div class="col-sm-8" data-ng-class="(myForm.prjName.$dirty && myForm.prjName.$error.required) ? 'has-error' : ''">
+            <eayun-select name="prjName" class="form-control" data-ng-model="fwAdd.fwModel.prjId"
+                          placeholder="请选择项目" data-ng-change="fwAdd.changeDorPId(fwAdd.fwModel)" required>
+                <eayun-option value="project.projectId" text="{{project.prjName}}"
+                              data-ng-repeat="project in fwAdd.allProjectList"></eayun-option>
+            </eayun-select>
+            <label class="control-label hide"
+                   data-ng-class="(myForm.prjName.$dirty && myForm.prjName.$error.required) ? 'show' : 'hide'"
+                   style="text-align: left;">所属项目不能为空</label>
+        </div>
+    </div>
+
+    <div class="form-group has-feedback">
+        <label class="col-sm-3 control-label">防火墙名称：</label>
+
+        <div class="col-sm-8" data-ng-class="(myForm.name.$dirty && (myForm.name.$invalid ||fwAdd.fwNameIsExist)) ? 'has-error' : ''">
+            <input type="text" class="form-control" name="name" data-ng-model="fwAdd.fwModel.fwName"
+                   data-ng-pattern="/^[\u4e00-\u9fa5a-zA-Z0-9]([\u4e00-\u9fa5_a-zA-Z0-9\s]{0,18}[\u4e00-\u9fa5a-zA-Z0-9]){0,1}$/"
+                   placeholder="请输入防火墙名称"
+                   maxlength="20" required data-ng-change="fwAdd.checkFwName()">
+            <label class="control-label hide"
+                   data-ng-class="(myForm.name.$dirty && myForm.name.$error.required) ? 'show' : 'hide'"
+                   style="text-align: left;">防火墙名称不能为空</label>
+            <label class="control-label hide"
+                   data-ng-class="(myForm.name.$dirty && fwAdd.fwNameIsExist) ? 'show' : 'hide'"
+                   style="text-align: left;">防火墙名称已存在</label>
+            <label class="control-label hide"
+                   data-ng-class="(myForm.name.$dirty && myForm.name.$error.pattern) ? 'show' : 'hide'"
+                   style="text-align: left;">请输入1-20位字符,支持数字、中英文、下划线、空格</label>
+        </div>
+    </div>
+	<!-- 现在默认创建策略，就不需要选择策略了 -->
+    <!-- <div class="form-group has-feedback hide" data-ng-class="fwAdd.fwModel.prjId != undefined ? 'show' : 'hide'">
+        <label class="col-sm-3 control-label">防火墙策略：</label>
+
+        <div class="col-sm-8" data-ng-class="(myForm.fwpName.$dirty && myForm.fwpName.$invalid) ? 'has-error' : ''">
+            <eayun-select name="fwpName" class="form-control" data-ng-model="fwAdd.fwModel.fwpId" placeholder="请选择一个策略" required>required
+                <eayun-option value="fwPolicy.fwpId" text="{{fwPolicy.fwpName}}"
+                              data-ng-repeat="fwPolicy in fwAdd.fwPolicyList"></eayun-option>
+            </eayun-select>
+        </div>
+    </div> -->
+    <!-- 规则 -->
+    <div class="form-group has-feedback">
+        <label class="col-sm-3 control-label">规则名称：</label>
+
+        <div class="col-sm-8" data-ng-class="(myForm.rname.$dirty && (myForm.rname.$invalid || fwAdd.fwRuleNameIsExist)) ? 'has-error' : ''">
+            <input type="text" class="form-control" name="rname" data-ng-model="fwAdd.fwModel.fwrName"
+                   data-ng-pattern="/^[\u4e00-\u9fa5a-zA-Z0-9]([\u4e00-\u9fa5_a-zA-Z0-9\s]{0,18}[\u4e00-\u9fa5a-zA-Z0-9]){0,1}$/"
+                   placeholder="请输入规则名称" data-ng-change="fwAdd.checkFwRuleName()"
+                   maxlength="20" required>
+            <label class="control-label hide"
+                   data-ng-class="(myForm.rname.$dirty && myForm.rname.$error.required) ? 'show' : 'hide'"
+                   style="text-align: left;">规则名称不能为空</label>
+            <label class="control-label hide"
+                   data-ng-class="(myForm.rname.$dirty && fwAdd.fwRuleNameIsExist) ? 'show' : 'hide'"
+                   style="text-align: left;">规则名称已存在</label>
+            <label class="control-label hide"
+                   data-ng-class="(myForm.rname.$dirty && myForm.rname.$error.pattern) ? 'show' : 'hide'"
+                   style="text-align: left;">请输入1-20位字符,支持数字、中英文、下划线、空格</label>
+        </div>
+    </div>
+
+    <div class="form-group has-feedback">
+        <label class="col-sm-3 control-label">协议：</label>
+
+        <div class="col-sm-8 " data-ng-class="(myForm.protocol.$dirty && myForm.protocol.$invalid) ? 'has-error' : ''">
+            <eayun-select name="protocol" class="form-control" data-ng-model="fwAdd.fwModel.protocol" data-ng-change="fwAdd.selectICMP()" 
+                          data-ng-required>
+                <eayun-option value="'tcp'" text="TCP" selected></eayun-option>
+                <eayun-option value="'udp'" text="UDP"></eayun-option>
+                <eayun-option value="'icmp'" text="ICMP"></eayun-option>
+                <eayun-option value="'any'" text="所有"></eayun-option>
+            </eayun-select>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-3 control-label">源IP地址：</label>
+
+        <div class="col-sm-8 subnet-cidr" style="border: 0px;">
+            <input data-ng-class="fwAdd.a1Error ? 'ipadress' : ''" type="text" class="form-control-ip" name="sourceIpaddress1" data-ng-model="fwAdd.fwModel.sourceIpaddress1" maxlength="3" data-ng-change="fwAdd.checkTypeCidr('a1','focus')" data-ng-focus="fwAdd.checkTypeCidr('a1','focus')" data-ng-blur ="fwAdd.checkTypeCidr('a1','blur')"><!-- ajax-valid="fwAdd.checkIp(value,'sourceIpaddress')" required-->
+            <label class="control-label">.</label>
+            <input data-ng-class="fwAdd.a2Error ? 'ipadress' : ''" type="text" class="form-control-ip" name="sourceIpaddress2" data-ng-model="fwAdd.fwModel.sourceIpaddress2" maxlength="3" data-ng-change="fwAdd.checkTypeCidr('a2','focus')" data-ng-focus="fwAdd.checkTypeCidr('a2','focus')" data-ng-blur ="fwAdd.checkTypeCidr('a2','blur')">
+			<label class="control-label">.</label>
+			<input data-ng-class="fwAdd.a3Error ? 'ipadress' : ''" type="text" class="form-control-ip" name="sourceIpaddress3" data-ng-model="fwAdd.fwModel.sourceIpaddress3" maxlength="3" data-ng-change="fwAdd.checkTypeCidr('a3','focus')" data-ng-focus="fwAdd.checkTypeCidr('a3','focus')" data-ng-blur ="fwAdd.checkTypeCidr('a3','blur')">
+			<label class="control-label">.</label>
+			<input data-ng-class="fwAdd.a4Error ? 'ipadress' : ''" type="text" class="form-control-ip" name="sourceIpaddress4" data-ng-model="fwAdd.fwModel.sourceIpaddress4" maxlength="3" data-ng-change="fwAdd.checkTypeCidr('a4','focus')" data-ng-focus="fwAdd.checkTypeCidr('a4','focus')" data-ng-blur ="fwAdd.checkTypeCidr('a4','blur')">
+            <label class="control-label" ng-repeat-end>/</label>
+            <input data-ng-class="fwAdd.a5Error ? 'ipadress' : ''" type="text" class="form-control-p" name="sourceIpaddress5" data-ng-model="fwAdd.fwModel.sourceIpaddress5" maxlength="2" data-ng-change="fwAdd.checkTypeCidr('a5','focus')" data-ng-focus="fwAdd.checkTypeCidr('a5','focus')" data-ng-blur ="fwAdd.checkTypeCidr('a5','blur')">
+            
+            <label class="control-label" data-ng-class="!fwAdd.cidraError ? 'ipadress' : ''" style="text-align: left;" ng-bind="fwAdd.sourrange"></label>
+        </div>
+    </div>
+
+    <div class="form-group has-feedback"
+         ng-if="fwAdd.fwModel.protocol != 'any' && fwAdd.fwModel.protocol != 'icmp'">
+        <label class="col-sm-3 control-label">源端口：</label>
+
+        <div class="col-sm-8"
+             data-ng-class="(myForm.sourcePort.$dirty && myForm.sourcePort.$invalid) ? 'has-error' : ''" >
+            <input type="text" class="form-control" name="sourcePort" data-ng-model="fwAdd.fwModel.sourcePort"
+                   ajax-valid="fwAdd.checkPort(value,'sourcePort')"
+                   placeholder="请输入源端口或端口范围 例如:80或80:100" ><!--required-->
+            <label class="control-label hide"
+                   data-ng-class="(myForm.sourcePort.$dirty && myForm.sourcePort.$error.required&&!fwAdd.sourcePort) ? 'show' : 'hide'"
+                   style="text-align: left;">源端口不能为空</label>
+            <label class="control-label hide" data-ng-class="fwAdd.sourcePort ? 'show' : 'hide'"
+                   style="text-align: left;">端口格式为A或A:B,其中A和B范围为1-65535,且B大于A</label>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-3 control-label">目的IP地址：</label>
+
+        <div class="col-sm-8 subnet-cidr" style="border: 0px;">
+            <input data-ng-class="fwAdd.b1Error ? 'ipadress' : ''" type="text" class="form-control-ip" name="destinationIpaddress1" data-ng-model="fwAdd.fwModel.destinationIpaddress1" maxlength="3" data-ng-change="fwAdd.checkTypeCidr('b1','focus')" data-ng-focus="fwAdd.checkTypeCidr('b1','focus')" data-ng-blur ="fwAdd.checkTypeCidr('b1','blur')"><!--required ajax-valid="fwAdd.checkIp(value,'destinationIpaddress')"-->
+            <label class="control-label">.</label>
+            <input data-ng-class="fwAdd.b2Error ? 'ipadress' : ''" type="text" class="form-control-ip" name="destinationIpaddress2" data-ng-model="fwAdd.fwModel.destinationIpaddress2" maxlength="3" data-ng-change="fwAdd.checkTypeCidr('b2','focus')" data-ng-focus="fwAdd.checkTypeCidr('b2','focus')" data-ng-blur ="fwAdd.checkTypeCidr('b2','blur')">
+        	<label class="control-label">.</label>
+        	<input data-ng-class="fwAdd.b3Error ? 'ipadress' : ''" type="text" class="form-control-ip" name="destinationIpaddress3" data-ng-model="fwAdd.fwModel.destinationIpaddress3" maxlength="3" data-ng-change="fwAdd.checkTypeCidr('b3','focus')" data-ng-focus="fwAdd.checkTypeCidr('b3','focus')" data-ng-blur ="fwAdd.checkTypeCidr('b3','blur')">
+        	<label class="control-label">.</label>
+        	<input data-ng-class="fwAdd.b4Error ? 'ipadress' : ''" type="text" class="form-control-ip" name="destinationIpaddress4" data-ng-model="fwAdd.fwModel.destinationIpaddress4" maxlength="3" data-ng-change="fwAdd.checkTypeCidr('b4','focus')" data-ng-focus="fwAdd.checkTypeCidr('b4','focus')" data-ng-blur ="fwAdd.checkTypeCidr('b4','blur')">
+        	<label class="control-label" ng-repeat-end>/</label>
+        	<input data-ng-class="fwAdd.b5Error ? 'ipadress' : ''" type="text" class="form-control-p" name="destinationIpaddress5" data-ng-model="fwAdd.fwModel.destinationIpaddress5" maxlength="2" data-ng-change="fwAdd.checkTypeCidr('b5','focus')" data-ng-focus="fwAdd.checkTypeCidr('b5','focus')" data-ng-blur ="fwAdd.checkTypeCidr('b5','blur')">
+        	<label class="control-label" data-ng-class="!fwAdd.cidrbError ? 'ipadress' : ''" style="text-align: left;" ng-bind="fwAdd.destrange"></label>
+        </div>
+    </div>
+
+
+    <div class="form-group has-feedback" ng-if="fwAdd.fwModel.protocol!='any'&& fwAdd.fwModel.protocol!='icmp'">
+        <label class="col-sm-3 control-label">
+            <nobr>目的端口：</nobr>
+        </label>
+
+        <div class="col-sm-8"
+             data-ng-class="(myForm.destinationPort.$dirty && myForm.destinationPort.$invalid) ? 'has-error' : ''">
+            <input type="text" class="form-control" name="destinationPort"
+                   data-ng-model="fwAdd.fwModel.destinationPort"
+                   ajax-valid="fwAdd.checkPort(value,'destinationPort')"
+                   placeholder="请输入目的端口或端口范围 例如:80或80:100" ><!--required-->
+            <label class="control-label hide"
+                   data-ng-class="(myForm.destinationPort.$dirty && myForm.destinationPort.$error.required&&!fwAdd.destinationPort) ? 'show' : 'hide'"
+                   style="text-align: left;">目的端口不能为空</label>
+            <label class="control-label hide" data-ng-class="fwAdd.destinationPort ? 'show' : 'hide'"
+                   style="text-align: left;">端口格式为A或A:B,其中A和B范围为1-65535,且B大于A</label>
+        </div>
+    </div>
+
+
+    <div class="form-group has-feedback">
+        <label class="col-sm-3 control-label">动作：</label>
+
+        <div class="col-sm-8 " data-ng-class="(myForm.fwrAction.$dirty && myForm.fwrAction.$invalid) ? 'has-error' : ''">
+            <eayun-select name="fwrAction" class="form-control" data-ng-model="fwAdd.fwModel.fwrAction"
+                          placeholder="--选择一个动作--"
+                          required>
+                <eayun-option value="'allow'" text="允许" selected></eayun-option>
+                <eayun-option value="'deny'" text="拒绝"></eayun-option>
+            </eayun-select>
+        </div>
+    </div>
+
+    <!-- 按钮区域 -->
+     <div class="modal-footer" >
+      <button type="button" class="btn btn-primary btn-modal" ng-click="commit()"  ng-disabled="!myForm.$valid || fwAdd.fwNameIsExist || fwAdd.fwRuleNameIsExist || !fwAdd.cidraError || !fwAdd.cidrbError">确  定</button>
+      <button type="button" class="btn btn-default btn-modal" ng-click="cancel()">取  消</button>
+    </div>
+</form>

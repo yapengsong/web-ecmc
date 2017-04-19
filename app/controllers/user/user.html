@@ -1,0 +1,65 @@
+<!-- 当前位置下拉列表 -->
+<div class="title-inline">
+    <div class="form-group">
+        <label class="control-label">当前位置：</label>
+        <div class="btn-group" role="group" style="font-size:14px;">用户管理
+        </div>
+    </div>
+</div>
+<div class="second-menu-page">
+    <div class="second-menu">
+        <expander class="second-menu-target expander" ui-sref-active="active" style="margin-top:7px;"
+                  data-target="#second-menu-resouce-first" data-expander-show="true">
+            <span><strong>北京事业部</strong></span>
+            <span class="icon toggle" style="margin-left:20px;"></span>
+        </expander>
+        <div class="second-menu-group" id="second-menu-resouce-first">
+            <div class="second-menu-item" data-ng-class="user.guide == 'operation' ? 'active' : ''" data-ng-click="user.changeGuide('operation')">运维部
+            </div>
+            <div class="second-menu-item" data-ng-class="user.guide == 'product' ? 'active' : ''" data-ng-click="user.changeGuide('product')">产品部
+            </div>
+            <div class="second-menu-item" data-ng-class="user.guide == 'develop' ? 'active' : ''" data-ng-click="user.changeGuide('develop')">开发部
+            </div>
+        </div>
+    </div>
+    <div class="second-menu-right">
+        <div class="panel panel-default clearfix">
+            <div class="panel-body">
+                <h4>用户管理</h4>
+                <form class="form-inline">
+                    <button class="btn btn-primary" data-ng-click="user.add()">
+                        <span class="glyphicon glyphicon-plus"></span> 创建用户
+                    </button>
+                </form>
+                <eayun-table data-api="user.userTable.api" data-ajax-source="user.userTable.source" data-param="user.userTable.getParams"
+                             data-result="user.userTable.result">
+                    <table class="table table-eayun">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>名称</th>
+                            <th>联系电话</th>
+                            <th>邮箱</th>
+                            <th>部门</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>2</td>
+                            <td>3</td>
+                            <td>4</td>
+                            <td>5</td>
+                            <td>
+                                <button class="btn btn-tablemng btn-first" data-ng-click="user.edit()">编辑</button>
+                                <button class="btn btn-tabledel" data-ng-click="user.delete()">删除</button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </eayun-table>
+            </div>
+        </div>
+    </div>
+</div>

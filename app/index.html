@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="易云捷讯科技（北京）股份有限公司">
+    <title>易云捷讯科技（北京）股份有限公司</title>
+    <!-- build:css style.css -->
+    <!-- bower:css -->
+    <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="../bower_components/trumbowyg/dist/ui/trumbowyg.css" />
+    <!-- endbower -->
+
+    <!-- inject:css -->
+
+    <link rel="stylesheet" href="filter/ellipsis.css">
+
+    <link rel="stylesheet" href="styles/app.css">
+
+    <link rel="stylesheet" href="styles/icons.css">
+
+    <link rel="stylesheet" href="controllers/cloudhost/host.css">
+
+    <link rel="stylesheet" href="controllers/customer/customer.css">
+
+    <link rel="stylesheet" href="controllers/department/list.css">
+
+    <link rel="stylesheet" href="controllers/home/home.css">
+
+    <link rel="stylesheet" href="controllers/home/login.css">
+
+    <link rel="stylesheet" href="controllers/ip/ip.css">
+
+    <link rel="stylesheet" href="controllers/log/log.css">
+
+    <link rel="stylesheet" href="controllers/price/price.css">
+
+    <link rel="stylesheet" href="controllers/recycle/recycle.css">
+
+    <link rel="stylesheet" href="controllers/sysdatatree/sysDataTree.css">
+
+    <link rel="stylesheet" href="controllers/workorder/detailWorkorder.css">
+
+    <link rel="stylesheet" href="template/datepicker/datetimepicker.css">
+
+    <link rel="stylesheet" href="controllers/unit/unitIndex.css">
+
+    <link rel="stylesheet" href="components/btn/btn.css">
+
+    <link rel="stylesheet" href="components/input/inputFilter.css">
+
+    <link rel="stylesheet" href="components/loading/loading.css">
+
+    <link rel="stylesheet" href="components/search/search.css">
+
+    <link rel="stylesheet" href="components/table/table.css">
+
+    <link rel="stylesheet" href="components/tabs/tabs.css">
+
+    <link rel="stylesheet" href="components/toast/toast.css">
+
+    <link rel="stylesheet" href="components/tree/tree.css">
+
+    <link rel="stylesheet" href="components/wysiwyg/wysiwyg.css">
+
+    <link rel="stylesheet" href="components/select/select.css">
+
+    <link rel="stylesheet" href="components/select/selectInput.css">
+
+    <link rel="stylesheet" href="components/modal/modal.css">
+
+    <link rel="stylesheet" href="controllers/center/detail/detail.css">
+
+    <link rel="stylesheet" href="controllers/net/private/private.css">
+
+    <link rel="stylesheet" href="controllers/net/vpn/vpn.css">
+
+    <link rel="stylesheet" href="controllers/obs/obsOverview/obs.css">
+
+    <link rel="stylesheet" href="controllers/storage/edit/edit.css">
+
+    <link rel="stylesheet" href="controllers/cloudhost/cloudvolume/volume.css">
+
+    <link rel="stylesheet" href="controllers/workorder/operation/personal.css">
+
+    <link rel="stylesheet" href="controllers/api/limitmanage/switch/switch.css">
+
+    <link rel="stylesheet" href="controllers/api/limitmanage/requestcount/apirestrict.css">
+
+    <link rel="stylesheet" href="controllers/customer/detail/tab/report/prepaiddetail.css">
+
+    <!-- endinject -->
+    <!--endbuild-->
+</head>
+<body ng-app="eayun.ecmc">
+<eayun-loading></eayun-loading>
+<div ui-view></div>
+<!--build:js scripts/vendor.js-->
+<!-- bower:js -->
+<script src="../bower_components/jquery/dist/jquery.js"></script>
+<script src="../bower_components/angular/angular.js"></script>
+<script src="../bower_components/angular-cookies/angular-cookies.js"></script>
+<script src="../bower_components/angular-sanitize/angular-sanitize.js"></script>
+<script src="../bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+<script src="../bower_components/bootstrap/dist/js/bootstrap.js"></script>
+<script src="../bower_components/angular-animate/angular-animate.js"></script>
+<script src="../bower_components/echarts/dist/echarts.common.js"></script>
+<script src="../bower_components/ng-file-upload/ng-file-upload.js"></script>
+<script src="../bower_components/trumbowyg/dist/trumbowyg.js"></script>
+<script src="../bower_components/trumbowyg/dist/langs/zh_cn.min.js"></script>
+<!-- endbower -->
+<!--endbuild-->
+
+<!--build:appjs scripts/app.js-->
+<!-- inject:js -->
+
+<script src="controllers/safe/safe.js"></script>
+
+<script src="controllers/safe/firewall/rule/rulesq/rulesq.js"></script>
+
+<script src="controllers/safe/firewall/rule/detail/detail.js"></script>
+
+<script src="controllers/safe/firewall/rule/edit/edit.js"></script>
+
+<script src="controllers/safe/firewall/rule/add/add.js"></script>
+
+<script src="controllers/warning/index.js"></script>
+
+<script src="controllers/warning/detail/add/contact/add.js"></script>
+
+<script src="controllers/warning/detail/add/object/add.js"></script>
+
+<script src="controllers/safe/firewall/policy/edit/edit.js"></script>
+
+<script src="controllers/safe/firewall/policy/manage/mange.js"></script>
+
+<script src="controllers/safe/firewall/policy/detail/detail.js"></script>
+
+<script src="controllers/safe/firewall/policy/add/add.js"></script>
+
+<script src="controllers/net/net.js"></script>
+
+<script src="controllers/net/balance/pool/add/add.js"></script>
+
+<script src="controllers/net/balance/pool/edit/edit.js"></script>
+
+<script src="controllers/net/balance/pool/detail/detail.js"></script>
+
+<script src="controllers/net/balance/pool/detechlbmonitor/detechlbmonitor.js"></script>
+
+<script src="controllers/net/balance/pool/bindlbmonitor/bindlbmonitor.js"></script>
+
+<script src="controllers/net/balance/pool/bindfloatip/bindfloatip.js"></script>
+
+<script src="controllers/net/balance/member/edit/edit.js"></script>
+
+<script src="controllers/net/balance/member/add/add.js"></script>
+
+<script src="controllers/net/balance/loadbalancer/edit/edit.js"></script>
+
+<script src="controllers/net/balance/loadbalancer/editmember/editmember.js"></script>
+
+<script src="controllers/net/balance/loadbalancer/bindhealthmonitor/bind.js"></script>
+
+<script src="controllers/net/balance/loadbalancer/bindfloatip/bind.js"></script>
+
+<script src="controllers/net/balance/loadbalancer/addmember/addmember.js"></script>
+
+<script src="controllers/net/balance/loadbalancer/add/add.js"></script>
+
+<script src="controllers/customer/index.js"></script>
+
+<script src="controllers/customer/detail/tab/report/prepaiddetail.js"></script>
+
+<script src="controllers/customer/detail/tab/report/prepaid.js"></script>
+
+<script src="controllers/customer/detail/tab/report/postpaiddetail.js"></script>
+
+<script src="controllers/customer/detail/tab/report/postpaid.js"></script>
+
+<script src="lib/angular-ui-bootstrap/src/tooltip/tooltip.js"></script>
+
+<script src="lib/angular-ui-bootstrap/src/tooltip/bindHtml.js"></script>
+
+<script src="lib/angular-ui-bootstrap/src/modal/modal.js"></script>
+
+<script src="lib/angular-ui-bootstrap/src/datepicker/position.js"></script>
+
+<script src="lib/angular-ui-bootstrap/src/datepicker/datepicker.js"></script>
+
+<script src="lib/angular-ui-bootstrap/src/datepicker/dateparser.js"></script>
+
+<script src="controllers/safe/firewall/rule/rule.js"></script>
+
+<script src="controllers/warning/rule/edit/edit.js"></script>
+
+<script src="controllers/warning/rule/add/add.js"></script>
+
+<script src="controllers/safe/group/edit/editgroup.js"></script>
+
+<script src="controllers/safe/firewall/service/firewallService.js"></script>
+
+<script src="controllers/contacts/index.js"></script>
+
+<script src="controllers/contacts/group/add/add.js"></script>
+
+<script src="controllers/safe/firewall/policy/policy.js"></script>
+
+<script src="controllers/safe/firewall/detail/detail.js"></script>
+
+<script src="controllers/price/index.js"></script>
+
+<script src="controllers/price/imageprice/public/public.js"></script>
+
+<script src="controllers/price/imageprice/market/market.js"></script>
+
+<script src="controllers/obs/obs.js"></script>
+
+<script src="controllers/obs/cusDetail/set/setQuota.js"></script>
+
+<script src="controllers/obs/obsOverview/set/setThreshold.js"></script>
+
+<script src="controllers/net/float/bind/bind.js"></script>
+
+<script src="controllers/net/float/prjip/prjip.js"></script>
+
+<script src="controllers/net/external/add/add.js"></script>
+
+<script src="controllers/net/external/edit/edit.js"></script>
+
+<script src="controllers/net/balance/vip/vipService.js"></script>
+
+<script src="controllers/net/balance/vip/vip.js"></script>
+
+<script src="controllers/net/balance/vip/save.js"></script>
+
+<script src="controllers/net/balance/pool/poolService.js"></script>
+
+<script src="controllers/net/balance/pool/pool.js"></script>
+
+<script src="controllers/net/balance/member/memberService.js"></script>
+
+<script src="controllers/net/balance/member/member.js"></script>
+
+<script src="controllers/net/balance/loadbalancer/loadBalancerService.js"></script>
+
+<script src="controllers/net/balance/loadbalancer/load.js"></script>
+
+<script src="controllers/net/balance/loadbalancer/detail.js"></script>
+
+<script src="controllers/net/balance/health/monitor.js"></script>
+
+<script src="controllers/net/balance/health/healthMonitorService.js"></script>
+
+<script src="controllers/net/balance/health/edit.js"></script>
+
+<script src="controllers/customer/statistic/gram/gram.js"></script>
+
+<script src="controllers/customer/manage/edit/edit.js"></script>
+
+<script src="controllers/customer/manage/adjustmoney/adjustmoney.js"></script>
+
+<script src="controllers/customer/manage/add/add.js"></script>
+
+<script src="controllers/customer/detail/tab/cusreport.js"></script>
+
+<script src="controllers/customer/detail/tab/cusrecords.js"></script>
+
+<script src="controllers/customer/detail/tab/cusandprojects.js"></script>
+
+<script src="controllers/customer/detail/creditlines/modifycreditlines.js"></script>
+
+<script src="controllers/contacts/person/edit/edit.js"></script>
+
+<script src="controllers/contacts/person/add/add.js"></script>
+
+<script src="controllers/contacts/group/edit/edit.js"></script>
+
+<script src="controllers/api/api.js"></script>
+
+<script src="controllers/api/limitmanage/switch/switch.js"></script>
+
+<script src="controllers/api/limitmanage/requestcount/cusapirestrictdefault.js"></script>
+
+<script src="controllers/workorder/index.js"></script>
+
+<script src="controllers/workorder/unfinished/unfinished.js"></script>
+
+<script src="controllers/workorder/transfer/transfer.js"></script>
+
+<script src="controllers/workorder/service/workorderService.js"></script>
+
+<script src="controllers/workorder/operation/personal.js"></script>
+
+<script src="controllers/workorder/operation/operation.js"></script>
+
+<script src="controllers/workorder/finished/finished.js"></script>
+
+<script src="controllers/workorder/edit/edit.js"></script>
+
+<script src="controllers/workorder/add/add.js"></script>
+
+<script src="controllers/workorder/detail/registerDetail.js"></script>
+
+<script src="controllers/workorder/detail/detail.js"></script>
+
+<script src="controllers/warning/service/warningService.js"></script>
+
+<script src="controllers/warning/rule/rule.js"></script>
+
+<script src="controllers/warning/message/message.js"></script>
+
+<script src="controllers/warning/detail/ruleDetail.js"></script>
+
+<script src="controllers/unit/Unit.js"></script>
+
+<script src="controllers/unit/unitImg/yinye.js"></script>
+
+<script src="controllers/unit/unitImg/weburl.js"></script>
+
+<script src="controllers/unit/unitImg/webfzr.js"></script>
+
+<script src="controllers/unit/unitImg/unitfzr.js"></script>
+
+<script src="controllers/unit/unitImg/qianzhi.js"></script>
+
+<script src="controllers/unit/service/UnitService.js"></script>
+
+<script src="controllers/unit/guanjureturn/guanjureturn.js"></script>
+
+<script src="controllers/unit/fushen/fushendetail.js"></script>
+
+<script src="controllers/unit/detail/unitDetail.js"></script>
+
+<script src="controllers/unit/chushendetail/unitDetail.js"></script>
+
+<script src="controllers/sysdatatree/index.js"></script>
+
+<script src="controllers/sysdatatree/sort/sort.js"></script>
+
+<script src="controllers/sysdatatree/edit/edit.js"></script>
+
+<script src="controllers/sysdatatree/detail/detail.js"></script>
+
+<script src="controllers/sysdatatree/add/add.js"></script>
+
+<script src="controllers/task/Task.js"></script>
+
+<script src="controllers/task/Statistics/data.js"></script>
+
+<script src="controllers/task/Statistics/Chart.js"></script>
+
+<script src="controllers/task/service/TaskService.js"></script>
+
+<script src="controllers/task/schedule_lost/schedule_lost.js"></script>
+
+<script src="controllers/center/center.js"></script>
+
+<script src="controllers/task/edit/taskedit.js"></script>
+
+<script src="controllers/task/history/history.js"></script>
+
+<script src="controllers/task/add/taskAdd.js"></script>
+
+<script src="controllers/task/detail/taskdetail.js"></script>
+
+<script src="controllers/switch/switch.js"></script>
+
+<script src="controllers/switch/service/physicalSwitchService.js"></script>
+
+<script src="controllers/switch/detail/detail.js"></script>
+
+<script src="controllers/switch/edit/editSwitch.js"></script>
+
+<script src="controllers/switch/add/addSwitch.js"></script>
+
+<script src="controllers/storage/storage.js"></script>
+
+<script src="controllers/storage/service/physicalStorageService.js"></script>
+
+<script src="controllers/storage/edit/editStorage.js"></script>
+
+<script src="controllers/storage/add/addStorage.js"></script>
+
+<script src="controllers/server/detail/detail.js"></script>
+
+<script src="controllers/storage/detail/detail.js"></script>
+
+<script src="controllers/server/server.js"></script>
+
+<script src="controllers/server/service/physicalServerService.js"></script>
+
+<script src="controllers/server/edit/editServer.js"></script>
+
+<script src="controllers/server/add/addServer.js"></script>
+
+<script src="controllers/recycle/recycle.js"></script>
+
+<script src="controllers/recycle/host/recyclehost.js"></script>
+
+<script src="controllers/cloudhost/cloudhost.js"></script>
+
+<script src="controllers/recycle/host/detail.js"></script>
+
+<script src="controllers/safe/group/mange.js"></script>
+
+<script src="controllers/safe/group/list.js"></script>
+
+<script src="controllers/safe/group/groupservice.js"></script>
+
+<script src="controllers/safe/group/edit.js"></script>
+
+<script src="controllers/safe/group/detail.js"></script>
+
+<script src="controllers/safe/group/addRule.js"></script>
+
+<script src="controllers/role/role.js"></script>
+
+<script src="controllers/role/edit/edit.js"></script>
+
+<script src="controllers/safe/firewall/list.js"></script>
+
+<script src="controllers/safe/firewall/edit.js"></script>
+
+<script src="controllers/safe/firewall/add.js"></script>
+
+<script src="controllers/role/auth/view.js"></script>
+
+<script src="controllers/role/add/add.js"></script>
+
+<script src="controllers/recycle/cloudsnapshot/recyclesnapshot.js"></script>
+
+<script src="controllers/recycle/cloudsnapshot/detail.js"></script>
+
+<script src="controllers/price/config/config.js"></script>
+
+<script src="controllers/recycle/cloudvolume/recyclevolume.js"></script>
+
+<script src="controllers/recycle/cloudvolume/detail.js"></script>
+
+<script src="controllers/price/imageprice/imageconfig.js"></script>
+
+<script src="controllers/order/index.js"></script>
+
+<script src="controllers/order/service/orderservice.js"></script>
+
+<script src="controllers/order/detail/resource.js"></script>
+
+<script src="controllers/order/detail/detail.js"></script>
+
+<script src="controllers/notice/index.js"></script>
+
+<script src="controllers/notice/service/noticeService.js"></script>
+
+<script src="controllers/notice/edit/edit.js"></script>
+
+<script src="controllers/notice/detail/detail.js"></script>
+
+<script src="controllers/obs/cusDetail/obsCusOverview.js"></script>
+
+<script src="controllers/obs/service/obsService.js"></script>
+
+<script src="controllers/notice/add/add.js"></script>
+
+<script src="controllers/obs/obsOverview/obsoverview.js"></script>
+
+<script src="controllers/obs/cdn/cdnService.js"></script>
+
+<script src="controllers/obs/cdn/cdn.js"></script>
+
+<script src="controllers/monitor/index.js"></script>
+
+<script src="controllers/monitor/cloudhost/cloudhost.js"></script>
+
+<script src="controllers/net/private/subEdit.js"></script>
+
+<script src="controllers/net/private/subAdd.js"></script>
+
+<script src="controllers/net/private/service.js"></script>
+
+<script src="controllers/net/private/router.js"></script>
+
+<script src="controllers/net/private/pmEdit.js"></script>
+
+<script src="controllers/net/private/pmAdd.js"></script>
+
+<script src="controllers/net/private/list.js"></script>
+
+<script src="controllers/net/private/gateWay.js"></script>
+
+<script src="controllers/net/private/editRoute.js"></script>
+
+<script src="controllers/net/private/edit.js"></script>
+
+<script src="controllers/net/private/detailRouter.js"></script>
+
+<script src="controllers/net/private/detail.js"></script>
+
+<script src="controllers/net/private/connectNet.js"></script>
+
+<script src="controllers/net/vpn/vpnService.js"></script>
+
+<script src="controllers/net/vpn/vpn.js"></script>
+
+<script src="controllers/net/vpn/edit.js"></script>
+
+<script src="controllers/net/vpn/detail.js"></script>
+
+<script src="controllers/net/float/list.js"></script>
+
+<script src="controllers/net/float/floatService.js"></script>
+
+<script src="controllers/overview/overview.js"></script>
+
+<script src="controllers/net/external/service.js"></script>
+
+<script src="controllers/net/external/list.js"></script>
+
+<script src="controllers/net/external/editOutNet.js"></script>
+
+<script src="controllers/net/external/detail.js"></script>
+
+<script src="controllers/monitor/service/monitorService.js"></script>
+
+<script src="controllers/monitor/detail/cloudhostDetail.js"></script>
+
+<script src="controllers/model/model.js"></script>
+
+<script src="controllers/model/service/physicalModelService.js"></script>
+
+<script src="controllers/model/detail/detail.js"></script>
+
+<script src="controllers/monitor/apiservice/apiserviceService.js"></script>
+
+<script src="controllers/monitor/apiservice/apiservice.js"></script>
+
+<script src="controllers/model/edit/editModel.js"></script>
+
+<script src="controllers/message/index.js"></script>
+
+<script src="controllers/message/service/messageService.js"></script>
+
+<script src="controllers/model/add/addModel.js"></script>
+
+<script src="controllers/message/detail/detail.js"></script>
+
+<script src="controllers/message/edit/edit.js"></script>
+
+<script src="controllers/message/edit/addcusList.js"></script>
+
+<script src="controllers/message/add/addcusList.js"></script>
+
+<script src="controllers/message/add/add.js"></script>
+
+<script src="controllers/ip/ip.js"></script>
+
+<script src="controllers/ip/service/physicalIpService.js"></script>
+
+<script src="controllers/ip/detail/detail.js"></script>
+
+<script src="controllers/images/image.js"></script>
+
+<script src="controllers/images/unclassifiedimage/unclassifiedimageService.js"></script>
+
+<script src="controllers/images/unclassifiedimage/edit.js"></script>
+
+<script src="controllers/images/unclassifiedimage/detail.js"></script>
+
+<script src="controllers/images/marketimage/marketimageService.js"></script>
+
+<script src="controllers/images/marketimage/editdesc.js"></script>
+
+<script src="controllers/images/marketimage/edit.js"></script>
+
+<script src="controllers/images/marketimage/detail.js"></script>
+
+<script src="controllers/images/marketimage/createmarket.js"></script>
+
+<script src="controllers/images/globalimage/edit.js"></script>
+
+<script src="controllers/images/globalimage/detail.js"></script>
+
+<script src="controllers/firewall/firewall.js"></script>
+
+<script src="controllers/firewall/service/physicalFirewallService.js"></script>
+
+<script src="controllers/images/customimage/edit.js"></script>
+
+<script src="controllers/images/customimage/detail.js"></script>
+
+<script src="controllers/images/customimage/customimageService.js"></script>
+
+<script src="controllers/firewall/edit/editFirewall.js"></script>
+
+<script src="controllers/firewall/add/addFirewall.js"></script>
+
+<script src="controllers/firewall/detail/detail.js"></script>
+
+<script src="controllers/customer/uncreated/list.js"></script>
+
+<script src="controllers/customer/statistic/statistic.js"></script>
+
+<script src="controllers/customer/service/customerService.js"></script>
+
+<script src="controllers/customer/pool/pool.js"></script>
+
+<script src="controllers/customer/project/project.js"></script>
+
+<script src="controllers/customer/manage/manage.js"></script>
+
+<script src="controllers/customer/detail/detail.js"></script>
+
+<script src="controllers/customer/api/cusapirestrict.js"></script>
+
+<script src="controllers/cloudhost/cloudvolume/volumedetail.js"></script>
+
+<script src="controllers/cloudhost/cloudvolume/volume.js"></script>
+
+<script src="controllers/cloudhost/cloudvolume/service.js"></script>
+
+<script src="controllers/cloudhost/cloudvolume/deletevolume.js"></script>
+
+<script src="controllers/cloudhost/cloudvolume/deletesnapshot.js"></script>
+
+<script src="controllers/cloudhost/cloudvolume/bindvolume.js"></script>
+
+<script src="controllers/cloudhost/cloudvolume/backvolume.js"></script>
+
+<script src="controllers/cloudhost/cloudvolume/addvolume.js"></script>
+
+<script src="controllers/cloudhost/cloudvolume/addsnapshot.js"></script>
+
+<script src="controllers/cloudhost/cloudsnapshot/snapshotdetail.js"></script>
+
+<script src="controllers/cloudhost/cloudsnapshot/snapshot.js"></script>
+
+<script src="controllers/cloudhost/cloudsnapshot/service.js"></script>
+
+<script src="controllers/cloudhost/cloudsnapshot/editsnapshot.js"></script>
+
+<script src="controllers/cloudhost/cloudsnapshot/addvolume.js"></script>
+
+<script src="controllers/contacts/service/contactsService.js"></script>
+
+<script src="controllers/contacts/person/person.js"></script>
+
+<script src="controllers/contacts/group/group.js"></script>
+
+<script src="controllers/center/service/dataCenterService.js"></script>
+
+<script src="controllers/center/edit/editCenter.js"></script>
+
+<script src="controllers/center/detail/detail.js"></script>
+
+<script src="controllers/center/add/addCenter.js"></script>
+
+<script src="controllers/cabinet/cabinet.js"></script>
+
+<script src="controllers/cabinet/service/physicalCabinetService.js"></script>
+
+<script src="controllers/cabinet/edit/editCabinet.js"></script>
+
+<script src="controllers/cabinet/detail/detail.js"></script>
+
+<script src="controllers/cabinet/add/addCabinet.js"></script>
+
+<script src="controllers/api/overview/overview.js"></script>
+
+<script src="controllers/api/overview/apioverviewService.js"></script>
+
+<script src="controllers/api/limitmanage/service.js"></script>
+
+<script src="controllers/api/limitmanage/limitmanage.js"></script>
+
+<script src="controllers/api/limitmanage/addblack.js"></script>
+
+<script src="controllers/api/apimanage/manage.js"></script>
+
+<script src="controllers/api/apimanage/editPhone.js"></script>
+
+<script src="controllers/api/apimanage/checkPhone.js"></script>
+
+<script src="controllers/api/apimanage/apimanageService.js"></script>
+
+<script src="app.js"></script>
+
+<script src="services/utils/utils.js"></script>
+
+<script src="services/interceptors/LoadingHandler.js"></script>
+
+<script src="services/interceptors/CodeHandler.js"></script>
+
+<script src="services/interceptors/AuthHandler.js"></script>
+
+<script src="services/interceptors/ApiHandler.js"></script>
+
+<script src="controllers/workorder/workorder.js"></script>
+
+<script src="controllers/workorder/directive.js"></script>
+
+<script src="controllers/user/index.js"></script>
+
+<script src="controllers/user/userService.js"></script>
+
+<script src="controllers/user/user.js"></script>
+
+<script src="controllers/user/list.js"></script>
+
+<script src="controllers/user/edit.js"></script>
+
+<script src="controllers/warning/warningTab.js"></script>
+
+<script src="controllers/unit/unitIndex.js"></script>
+
+<script src="controllers/sysdatatree/sysdatatreeService.js"></script>
+
+<script src="controllers/sysdatatree/sysdatatree.js"></script>
+
+<script src="controllers/sysdatatree/syncService.js"></script>
+
+<script src="controllers/sysdatatree/sync.js"></script>
+
+<script src="controllers/task/TaskIndex.js"></script>
+
+<script src="controllers/switch/physicalSwitch.js"></script>
+
+<script src="controllers/storage/physicalStorage.js"></script>
+
+<script src="controllers/mail/index.js"></script>
+
+<script src="controllers/sms/sms.js"></script>
+
+<script src="controllers/sms/service.js"></script>
+
+<script src="controllers/sms/create.js"></script>
+
+<script src="controllers/server/physicalServer.js"></script>
+
+<script src="controllers/role/set.js"></script>
+
+<script src="controllers/role/roleService.js"></script>
+
+<script src="controllers/role/list.js"></script>
+
+<script src="controllers/role/edit.js"></script>
+
+<script src="controllers/recycle/service.js"></script>
+
+<script src="controllers/quota/index.js"></script>
+
+<script src="controllers/quota/template.js"></script>
+
+<script src="controllers/quota/quotaTemplateService.js"></script>
+
+<script src="controllers/quota/detail.js"></script>
+
+<script src="controllers/overview/service.js"></script>
+
+<script src="controllers/overview/res.js"></script>
+
+<script src="controllers/overview/project.js"></script>
+
+<script src="controllers/overview/histogram.js"></script>
+
+<script src="controllers/overview/customer.js"></script>
+
+<script src="controllers/price/priceService.js"></script>
+
+<script src="controllers/price/price.js"></script>
+
+<script src="controllers/order/list.js"></script>
+
+<script src="controllers/notice/notice.js"></script>
+
+<script src="controllers/net/deletetwo.js"></script>
+
+<script src="controllers/net/deletethree.js"></script>
+
+<script src="controllers/net/deleteone.js"></script>
+
+<script src="controllers/monitor/monitorTab.js"></script>
+
+<script src="controllers/model/physicalModel.js"></script>
+
+<script src="controllers/message/message.js"></script>
+
+<script src="controllers/menu/menu.js"></script>
+
+<script src="controllers/menu/menuService.js"></script>
+
+<script src="controllers/menu/list.js"></script>
+
+<script src="controllers/menu/index.js"></script>
+
+<script src="controllers/menu/edit.js"></script>
+
+<script src="controllers/mail/service.js"></script>
+
+<script src="controllers/mail/mailsmsTab.js"></script>
+
+<script src="controllers/mail/mail.js"></script>
+
+<script src="controllers/ip/physicalIp.js"></script>
+
+<script src="controllers/log/log.js"></script>
+
+<script src="controllers/log/logService.js"></script>
+
+<script src="controllers/log/ecsc.js"></script>
+
+<script src="controllers/log/ecmcdetail.js"></script>
+
+<script src="controllers/log/ecmc.js"></script>
+
+<script src="controllers/log/apilogservice.js"></script>
+
+<script src="controllers/log/apilog.js"></script>
+
+<script src="controllers/home/password.js"></script>
+
+<script src="controllers/home/login.js"></script>
+
+<script src="controllers/home/home.js"></script>
+
+<script src="controllers/home/authService.js"></script>
+
+<script src="controllers/images/unclassifiedimage.js"></script>
+
+<script src="controllers/images/marketimage.js"></script>
+
+<script src="controllers/images/imageservice.js"></script>
+
+<script src="controllers/images/globalimage.js"></script>
+
+<script src="controllers/images/customimage.js"></script>
+
+<script src="controllers/images/create.js"></script>
+
+<script src="controllers/firewall/physicalFirewall.js"></script>
+
+<script src="controllers/department/department.js"></script>
+
+<script src="controllers/department/list.js"></script>
+
+<script src="controllers/department/index.js"></script>
+
+<script src="controllers/department/edit.js"></script>
+
+<script src="controllers/department/departmentService.js"></script>
+
+<script src="controllers/cusonline/index.js"></script>
+
+<script src="controllers/cusonline/CusonlineService.js"></script>
+
+<script src="controllers/cusonline/cusonline.js"></script>
+
+<script src="controllers/cloudhost/upgrade.js"></script>
+
+<script src="controllers/cloudhost/service.js"></script>
+
+<script src="controllers/cloudhost/securitygroup.js"></script>
+
+<script src="controllers/cloudhost/mountdisk.js"></script>
+
+<script src="controllers/cloudhost/modifysubnet.js"></script>
+
+<script src="controllers/cloudhost/log.js"></script>
+
+<script src="controllers/cloudhost/image.js"></script>
+
+<script src="controllers/cloudhost/host.js"></script>
+
+<script src="controllers/cloudhost/guide.js"></script>
+
+<script src="controllers/cloudhost/detail.js"></script>
+
+<script src="controllers/cloudhost/delete.js"></script>
+
+<script src="controllers/cloudhost/create.js"></script>
+
+<script src="controllers/cloudhost/console.js"></script>
+
+<script src="controllers/cloudhost/bindfloatip.js"></script>
+
+<script src="controllers/contacts/contactsTab.js"></script>
+
+<script src="controllers/center/dataCenter.js"></script>
+
+<script src="controllers/cabinet/physicalCabinet.js"></script>
+
+<script src="controllers/authority/index.js"></script>
+
+<script src="controllers/authority/list.js"></script>
+
+<script src="controllers/authority/edit.js"></script>
+
+<script src="controllers/authority/authorityService.js"></script>
+
+<script src="components/components.js"></script>
+
+<script src="components/echarts/echarts.js"></script>
+
+<script src="components/wysiwyg/wysiwyg.js"></script>
+
+<script src="components/tree/tree.js"></script>
+
+<script src="components/toast/toast.js"></script>
+
+<script src="components/tabs/tabs.js"></script>
+
+<script src="components/table/tableservice.js"></script>
+
+<script src="components/table/table.js"></script>
+
+<script src="components/search/search.js"></script>
+
+<script src="components/search/multiFilter.js"></script>
+
+<script src="components/select/selectTree.js"></script>
+
+<script src="components/select/selectInput.js"></script>
+
+<script src="components/select/select.js"></script>
+
+<script src="components/sameAs/assertSameAs.js"></script>
+
+<script src="components/refresh/refresh.js"></script>
+
+<script src="components/loading/loading.js"></script>
+
+<script src="components/modal/eayunmodal.js"></script>
+
+<script src="components/modal/dialog.js"></script>
+
+<script src="components/inputselect/inputselect.js"></script>
+
+<script src="components/inputcheck/inputcheck.js"></script>
+
+<script src="components/input/inputFilter.js"></script>
+
+<script src="components/hint/hint.js"></script>
+
+<script src="components/expander/expander.js"></script>
+
+<script src="components/datepicker/datetimepicker.js"></script>
+
+<script src="components/ajaxvalid/ajaxvalid.js"></script>
+
+<script src="lib/des.js"></script>
+
+<script src="filter/filter.js"></script>
+
+<script src="filter/ellipsis.js"></script>
+
+<script src="config/run.js"></script>
+
+<script src="config/router.js"></script>
+
+<script src="config/config.js"></script>
+
+<script src="constants/constants.js"></script>
+
+<!-- endinject -->
+<!--endbuild-->
+
+<!-- inject:partials -->
+<script src="templates-7be2c3d97d.js"></script>
+<!-- endinject -->
+</body>
+</html>

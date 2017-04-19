@@ -1,0 +1,103 @@
+<style type="text/css">
+    .apisuccess {
+        color: #00FF00;
+    }
+    .apifailure {
+        color: #FF0000;
+    }
+    .apirunning {
+        color: #0000FF;
+    }
+    pre {outline: 1px solid #ccc; padding: 5px; margin: 5px; }
+    .apistring { color: green; }
+    .apinumber { color: darkorange; }
+    .apiboolean { color: blue; }
+    .apinull { color: magenta; }
+    .apikey { color: red; }
+</style>
+<div class="form-inline" data-ng-if="hasPermission('order_search')">
+    <div class="ey-search-bar">
+        <!--创建时间部分（起始时间和结束时间）-->
+        <label class="control-label" style="margin-left: 10px;padding-left: 10px;">时间范围：</label>
+        <date-time-picker name="startTime" data-ng-model="api.queryObj.createStartTime" style="margin-left:10px;margin-right: 10px;" max-date="api.createEndTime" class="form-group" data-format="yyyy-MM-dd HH:mm:ss" show-time="true"></date-time-picker>
+        <span>至</span>
+        <date-time-picker name="endTime"   data-ng-model="api.queryObj.createEndTime"   style="margin-left:10px;" min-date="api.createStartTime" class="form-group" data-format="yyyy-MM-dd HH:mm:ss" show-time="true"></date-time-picker>
+        <label class="control-label" style="margin-left: 10px;padding-left: 10px;">客户IP：</label>
+        <input class="form-control" data-ng-model="api.queryObj.ip" style="margin: 0px 10px;"/>
+        <button class="btn btn-primary" ng-click="api.doSearch()"><span></span> 查 询</button>
+        <!--<button class="btn btn-danger" ng-click="api.doReset()"><span></span> 重 置</button>-->
+    </div>
+</div>
+<div>
+    <!--<th class ="widthten">-->
+    <eayun-table data-api="api.table.api" data-ajax-source="api.table.source" data-param="api.table.getParams" data-result="api.table.result">
+        <table class="table table-eayun">
+            <thead>
+                <tr>
+                    <th>请求时间</th>
+                    <th class ="widthten">
+                        <eayun-select type="btn" data-ng-model="api.queryObj.resourceType"  data-ng-change="api.queryAPINamesByVersion()">
+                            <eayun-option text="API类型（全部）" value = "''" selected></eayun-option>
+                            <eayun-option value="apiType.nodeId" text="{{::apiType.nodeName}}" ng-repeat="apiType in api.resource.allResourceTypes"></eayun-option>
+                        </eayun-select>
+                    </th>
+                    <th class ="widthten">
+                        <eayun-select  type="btn" data-ng-model="api.queryObj.apiName"  data-ng-change="api.doSearch()">
+                            <eayun-option text="API名称（全部）" value = "''" selected></eayun-option>
+                            <eayun-option value="apiName.nodeId" text="{{::apiName.nodeName}}" ng-repeat="apiName in api.resource.allApiNames"></eayun-option>
+                        </eayun-select>
+                    </th>
+                    <th class ="widthten">
+                        <eayun-select type="btn" data-ng-model="api.queryObj.region"  data-ng-change="api.doSearch()">
+                            <eayun-option value="''"      text="数据中心（全部）" selected></eayun-option>
+                            <eayun-option value="dc.id" text="{{::dc.apiDcCode}}" ng-repeat="dc in api.dcList"></eayun-option>
+                        </eayun-select>
+                    </th>
+                    <th class ="widthten">
+                        <eayun-select type="btn" data-ng-model="api.queryObj.operator"  data-ng-change="api.doSearch()">
+                            <eayun-option value="''"          text="客户名称（全部）" ></eayun-option>
+                            <eayun-option value="cus.cusId" text="{{::cus.cusOrg}}" ng-repeat="cus in api.cusList"></eayun-option>
+                        </eayun-select>
+                    </th>
+                    <th>客户IP</th>
+                    <th>处理时间(ms)</th>
+                    <th class ="widthten" colspan="2">
+                        <eayun-select type="btn" data-ng-model="api.queryObj.status"  data-ng-change="api.doSearch()">
+                            <eayun-option text="执行状态（全部）" value = "''"></eayun-option>
+                            <eayun-option value="st.sValue" text="{{::st.sName}}" ng-repeat="st in api.allStatus"></eayun-option>
+                            <!--<eayun-option text="成功"            value = "成功"></eayun-option>-->
+                            <!--<eayun-option text="执行中"          value = "执行中"></eayun-option>-->
+                            <!--<eayun-option text="失败"            value = "失败"></eayun-option>-->
+                        </eayun-select>
+                    </th>
+                    <!--<th>操作</th>-->
+                </tr>
+            </thead>
+            <tbody>
+                <!--<tr>
+                    <td>2016-12-02 16:34:45</td>
+                    <td>云主机</td>
+                    <td>查询云主机</td>
+                    <td>北京</td>
+                    <td>Jay</td>
+                    <td>192.168.16.58</td>
+                    <td>2016-12-02 16:34:45</td>
+                    <td><span class="click-link" ng-click="api.showDetail()" ng-class="">成功</span></td>
+                </tr>-->
+                <tr ng-repeat="apiLog in api.table.result">
+
+                    <td class="" ng-bind="::apiLog.createTime|date:'yyyy-MM-dd HH:mm:ss'|isNull"></td>
+                    <td class="" ng-bind="::apiLog.resourceType|isNull|addVersion:apiLog.version"></td>
+                    <td class="" ng-bind="::apiLog.apiName|isNull"></td>
+                    <td class="" ng-bind="::apiLog.region|isNull"></td>
+                    <td class="" ng-bind="::apiLog.operator|isNull"></td>
+                    <td class="" ng-bind="::apiLog.ip|isNull|isNull"></td>
+                    <td class="" ng-bind="::apiLog.takeTime|isNull"></td>
+                    <td><span ng-bind="::apiLog.status|isNull|showStatus" ng-class="apiLog.status == 1 ? 'apisuccess':(apiLog.status == 0 ? 'apifailure' : 'apirunning')"></span></td>
+                    <td class=""><span class="click-link"  ng-click="api.showDetail(apiLog.requestBody,apiLog.responseBody,apiLog.version)" >详情</span></td>
+                </tr>
+            </tbody>
+        </table>
+        <eayun-table-page></eayun-table-page>
+    </eayun-table>
+</div>

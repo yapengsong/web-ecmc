@@ -1,0 +1,102 @@
+<form class="form-horizontal" name="add" novalidate>
+
+    <div style="position:relative">
+        <div class="form-group has-feedback">
+            <label class="col-sm-3 control-label"><span class="color-require">*</span>任务名称</label>
+            <div class="col-sm-6 control-label ng-binding" style="text-align: left">
+                {{::model.model.taskName}}
+            </div>
+        </div>
+
+        <div class="form-group has-feedback">
+            <label class="col-sm-3 control-label"><span class="color-require">*</span>Bean名称</label>
+            <div class="col-sm-6"
+                 data-ng-class="((!add.beanName.$error.required&&add.beanName.$error.pattern)||(add.beanName.$dirty && !model.BeanVail&&!add.beanName.$error.required)||(add.beanName.$dirty && add.beanName.$error.required)) ? 'has-error' : ''">
+                <input type="text" class="form-control" placeholder="请输入Bean名称" name="beanName" maxlength="40"
+                       data-ajax-valid="model.checkBean(value)" data-ng-model="model.model.beanName"
+                       data-ng-pattern="/^([a-zA-Z]){0,30}$/" required/>
+                <label class="control-label"
+                       ng-show="add.beanName.$dirty && add.beanName.$error.required">Bean名称不能为空</label>
+                <label class="control-label" ng-if="!add.beanName.$error.required&&!model.BeanVail">没有该Bean</label>
+            </div>
+        </div>
+
+        <div class="form-group has-feedback">
+            <label class="col-sm-3 control-label">
+                <spanv class="color-require">*</spanv>
+                方法名</label>
+            <div class="col-sm-6"
+                 data-ng-class="((!add.taskmethod.$error.required&&add.taskmethod.$error.pattern)||(add.taskmethod.$dirty && !model.validmethod&&!add.taskmethod.$error.required)||(add.taskmethod.$dirty && add.taskmethod.$error.required) ) ? 'has-error' : ''">
+                <input type="text" class="form-control" name="taskmethod" data-ng-model="model.model.methodName"
+                       data-ng-pattern="/^([a-zA-Z]){0,30}$/"
+                       data-ajax-valid="model.checkmethod(value,add.beanName.$viewValue)" required/>
+                <label class="control-label"
+                       ng-show="add.taskmethod.$dirty && add.taskmethod.$error.required">方法名不能为空</label>
+                <label class="control-label"
+                       ng-if="!add.taskmethod.$error.required&&!add.taskmethod.$error.pattern&&!model.validmethod">没有该方法</label>
+                <label class="control-label" ng-if="!add.taskmethod.$error.required&&add.taskmethod.$error.pattern">方法名称输入错误，请输入全英文</label>
+            </div>
+        </div>
+
+        <div class="form-group has-feedback">
+            <label class="col-sm-3 control-label"><span class="color-require">*</span>时间表达式</label>
+            <div class="col-sm-6"
+                 data-ng-class="((add.bddate.$dirty && !model.validdate&&!add.bddate.$error.required)||(add.bddate.$dirty && add.bddate.$error.required)||divlistvalue.error) ? 'has-error' : ''">
+                <input type="text" class="form-control" name="bddate"
+                       data-ng-model="model.model.cronExpression" data-ajax-valid="model.checkdate(value)" required/>
+                <label class="control-label" ng-show="add.bddate.$dirty && add.bddate.$error.required">请输入时间表达式</label>
+                <label class="control-label" ng-if="!add.bddate.$error.required && !model.validdate">时间表达式不合法</label>
+            </div>
+        </div>
+
+        <div class="form-group has-feedback">
+            <label class="col-sm-3 control-label">参数</label>
+            <div class="col-sm-7">
+                <button type="button" class="btn btn-primary" data-ng-click="model.copy()">
+                    <span class="glyphicon glyphicon-plus"></span> 增加
+                </button>
+                <label class="control-label">（参数名称不能为空且不能重复）</label>
+            </div>
+        </div>
+
+        <div class="form-group has-feedback" data-ng-repeat="divlistvalue in model.divlistvalue">
+            <label class="col-sm-3 control-label"></label>
+            <div class="col-sm-3"
+                 data-ng-class="((add.key{{$index}}.$dirty&&add.key{{$index}}.$error.required&&!model.checkKeyFalg)||(add.key{{$index}}.$dirty && add.key{{$index}}.$error.required)||divlistvalue.error ) ? 'has-error' : ''">
+                <input type="text" class="form-control" style="padding-right:12px;" name="key{{$index}}"
+                       data-ng-model="divlistvalue.key"
+                       data-ng-change="model.checkKey(add.key{{$index}}.$viewValue, $index)"
+                       required/>
+                <label class="control-label" ng-show="add.key{{$index}}.$dirty &&add.key{{$index}}.$error.required">参数名称必填</label>
+                <label class="control-label"
+                       ng-show="(divlistvalue.error && add.key{{$index}}.$dirty && !add.key{{$index}}.$error.required)">参数名称不能重复</label>
+            </div>
+            <div class="col-sm-3"
+                 data-ng-class="(add.value{{$index}}.$dirty && add.value{{$index}}.$invalid ) ? 'has-error' : ''">
+                <input type="text" class="form-control" style="padding-right:12px;" name="value{{$index}}"
+                       data-ng-model="divlistvalue.value"/>
+                <label class="control-label"
+                       ng-show="add.value{{$index}}.$dirty && add.value{{$index}}.$error.required">参数值必填</label>
+            </div>
+            <button type="button" class="btn btn-primary" data-ng-click="model.delete($index)"
+                    style="margin-right:15px">
+                <span class="glyphicon glyphicon-remove"></span> 删除
+            </button>
+        </div>
+
+        <div class="form-group has-feedback">
+            <label class="col-sm-3 control-label">描述</label>
+            <div class="col-sm-6" data-ng-class="(add.taskdesc.$dirty&&add.taskdesc.$invalid)?'has-error':''">
+                <textarea class="form-control ng-valid" maxlength="200" name="taskdesc" ng-model="model.model.taskDesc"
+                          style="height:80px;"></textarea>
+            </div>
+        </div>
+    </div>
+</form>
+<div class="modal-footer">
+    <button class="btn btn-primary btn-modal" ng-click="ok(model.submit())"
+            ng-disabled="!model.BeanVail||!model.validmethod||!model.validdate||model.checkKeyFalg||model.isKeyExistsErr"
+            type="button">确 定
+    </button>
+    <button class="btn btn-default btn-modal" ng-click="cancel()" style="margin-left:15px;" type="button">取 消</button>
+</div>

@@ -1,0 +1,35 @@
+<div>
+    <div class="pull-left">
+        <label>全部规则</label>
+
+        <div class="list-group-eayun">
+            <div class="list-group-item" data-ng-repeat="rule in manage.ruleListToSelect">{{rule.fwrName.length>10?rule.fwrName.substring(0,10)+'...':rule.fwrName}}
+                <span class="glyphicon glyphicon-plus color-blue pointer" data-ng-click="manage.addRuleToList(rule)"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="pull-right">
+        <label>已选择的规则</label>
+
+        <div class="list-group-eayun">
+            <div class="list-group-item" data-ng-repeat="rule in manage.ruleListIsSelected">{{rule.fwrName.length>10?rule.fwrName.substring(0,10)+'...':rule.fwrName}}
+                <span class="glyphicon glyphicon-remove color-error pointer" data-ng-click="manage.removeRuleFromList(rule)"></span>
+            </div>
+        </div>
+    </div>
+    <div class="select-list-md">
+        <span class="glyphicon glyphicon-menu-right" style="font-size: 2em"></span>
+    </div>
+
+    <div class="col-sm-12" style="margin:15px;5px;20px;">
+        <p><font class="ec_star">*</font>注 : 若需要编辑规则  , 请前往<font class="click-link" data-ng-click="manage.goFirewallRule()">防火墙规则</font> </p>
+    </div>
+
+    <!-- 按钮区域 -->
+    <div class="modal-footer" >
+        <button type="button" class="btn btn-primary btn-modal" data-ng-click="commit()">确  定</button>
+        <button type="button" class="btn btn-default btn-modal btn-left" data-ng-click="cancel()">取  消</button>
+    </div>
+</div>
+

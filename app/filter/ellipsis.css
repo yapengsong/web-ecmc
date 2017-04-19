@@ -1,0 +1,67 @@
+.ellipsis-span {
+    position: relative;
+    padding-right: 25px;
+}
+
+.ellipsis-span .detail-icon {
+    width: 22px;
+    height: 22px;
+    position: absolute;
+    top: 50%;
+    margin-top: -11px;
+    right: 0;
+}
+
+.detail-icon:hover .ellipsis-tip {
+    display: block;
+}
+
+.ellipsis-tip {
+    position: absolute;
+    top: 35px;
+    background-color: #FFFFFF;
+    color: #555;
+    font-weight: normal;
+    text-align: center;
+    display: none;
+    padding: 5px 10px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
+    word-break: break-all;
+    word-wrap: break-word;
+    z-index: 1000;
+    text-align: left;
+}
+
+.ellipsis-tip > .triangle {
+    width: 0;
+    height: 0;
+    border: 10px solid transparent;
+    border-bottom-color: #FFFFFF;
+    border-width: 0 10px 10px;
+    position: absolute;
+    top: -10px;
+}
+
+.ellipsis-tip.sm {
+    width: 150px;
+    left: -64px;
+}
+.ellipsis-tip.sm > .triangle{
+    left: 64px;
+}
+
+.ellipsis-tip.md {
+    width: 300px;
+    left: -139px;
+}
+.ellipsis-tip.md > .triangle{
+    left: 139px;
+}
+.ellipsis-tip.bg {
+    width: 600px;
+    left: -289px;
+}
+.ellipsis-tip.bg > .triangle{
+    left: 289px;
+}
+

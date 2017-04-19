@@ -1,0 +1,75 @@
+<style type="text/css">
+    .subnet-cidr .ipadress {
+        border-color: #a94442;
+        color: #a94442;
+    }
+</style>
+<div>
+    <form class="form-horizontal" name="myForm" novalidate>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">
+                <input type="radio" name="black" value="blackCus" ng-model="add.model.apiType" ng-change="add.checkType()">限制客户
+            </label>
+            <label class="col-sm-2 control-label">
+                <input type="radio" name="black" value="blackIp" ng-model="add.model.apiType" ng-change="add.checkType()">限制IP
+            </label>
+        </div>
+
+        <!--白名单下拉列表-->
+        <div class="form-group"  ng-show="add.model.apiType == 'blackCus'">
+            <label class="col-sm-3 control-label">选择客户：</label>
+
+            <div class="col-sm-4" data-ng-class="(myForm.cusOrg.$dirty && myForm.cusOrg.$invalid) ? 'has-error' : ''">
+                <eayun-select name="cusOrg" class="form-control"  data-ng-model="add.model.cusOrg" placeholder="请选择客户名称" required>
+                    <eayun-option value="cus.cusOrg" text="{{cus.cusOrg}}" data-ng-repeat="cus in add.cusOrgList"></eayun-option>
+                </eayun-select>
+
+            </div>
+
+
+
+        </div>
+
+        <div class="form-group" ng-show="add.model.apiType == 'blackIp'">
+
+            <label class="col-sm-3 control-label">IP地址：</label>
+            <div class="col-sm-8 subnet-cidr" style="border: 0px;" >
+                <input data-ng-class="add.a1Error ? 'ipadress' : ''" type="text" class="form-control" name="ipPartOne" data-ng-model="add.model.ipPartOne"
+                       maxlength="3" required data-ng-change="add.checkTypeCidr('a1','focus')">
+                <label class="control-label">.</label>
+
+                <input data-ng-class="add.a2Error ? 'ipadress' : ''" type="text" class="form-control" name="ipPartTwo" data-ng-model="add.model.ipPartTwo"
+                       maxlength="3" data-ng-change="add.checkTypeCidr('a2','focus')" required data-ng-change="add.checkTypeCidr('a2','focus')">
+                <label class="control-label">.</label>
+                <input data-ng-class="add.a3Error ? 'ipadress' : ''" type="text" class="form-control" name="ipPartThree" data-ng-model="add.model.ipPartThree"
+                       maxlength="3" required data-ng-change="add.checkTypeCidr('a3','focus')" >
+                <label class="control-label">.</label>
+                <input data-ng-class="add.a4Error ? 'ipadress' : ''" type="text" class="form-control" name="ipPartFour" data-ng-model="add.model.ipPartFour"
+                       maxlength="3" required  data-ng-change="add.checkTypeCidr('a4','focus')" >
+
+                <label class="control-label" data-ng-show="add.cidrError " data-ng-class="add.cidrError ? 'ipadress' : ''" style="text-align: left;" ng-bind="add.sourrange"></label>
+                <label class="control-label" data-ng-show="add.ipCheck" data-ng-class="add.ipCheck ? 'ipadress' : ''" style="text-align: left;" >IP地址已存在！</label>
+            </div>
+
+        </div>
+
+
+
+
+
+    </form>
+</div>
+
+<div class="modal-footer">
+    <!--当选择是客户-->
+    <button type="button" data-ng-if="add.model.apiType == 'blackCus'" class="btn btn-primary btn-modal" data-ng-click="commit()" style="margin-left: 15px;"
+            data-ng-disabled="myForm.cusOrg.$invalid ||add.noCus">确 定
+    </button>
+    <!--当选择是IP-->
+    <button type="button" data-ng-if="add.model.apiType == 'blackIp'" class="btn btn-primary btn-modal" data-ng-click="commit()" style="margin-left: 15px;"
+            data-ng-disabled="myForm.ipPartOne.$invalid||myForm.ipPartTwo.$invalid||myForm.ipPartThree.$invalid||myForm.ipPartFour.$invalid|| add.cidrError || add.ipCheck">确 定
+    </button>
+    <button type="button" class="btn btn-default btn-modal" data-ng-click="cancel()" style="margin-left: 15px;">取 消
+    </button>
+</div>

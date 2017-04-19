@@ -1,0 +1,14 @@
+<div class="eayun-select ng-cloak" ng-cloak>
+    <button type="button" class="btn btn-default dropdown-toggle" style="width: 100%;"
+            data-toggle="dropdown" data-ng-click="open()">
+        <span class="mid" >{{text}}</span>
+        <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
+    </button>
+    <ul class="eayun-select-menu dropdown-menu hide" ng-transclude
+        ng-class="showMenu && (options.length> 1 || (options.length == 1 && options[0].selected == false))?'show':'hide'">
+    </ul>
+    <ul class="eayun-select-menu dropdown-menu hide"
+        ng-class="showMenu && (options.length==0 || (options.length == 1 && options[0].selected == true))?'show':'hide'">
+        <li><a id="nochoice">无可选项</a></li>
+    </ul>
+</div>

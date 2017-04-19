@@ -1,0 +1,197 @@
+<style>
+    <!--
+    .text-left {
+        text-align: left;
+        color: #07C;
+    }
+
+    tr {
+        max-height: 50px;
+    }
+
+    .quota-table {
+        max-height: 360px;
+        overflow: auto;
+        margin: 15px 20px;
+        border-radius: 4px;
+        border: 1px solid #CCC;
+    }
+
+    .quota-table-error {
+        max-height: 360px;
+        overflow: auto;
+        margin: 15px 90px;
+        border-radius: 4px;
+        border: 1px solid #A94442;
+    }
+
+    .quota-table > table > tbody > tr {
+        height: 50px;
+    }
+
+    -->
+</style>
+<div>
+    <form class="form-horizontal" name="editCustomer" novalidate>
+        <div class="form-group">
+            <label class="col-sm-3 control-label"><span class="color-require">*</span>客户名称：</label>
+
+            <div class="col-sm-4 control-label ng-binding" style="text-align: left"
+                 data-ng-class="(editCustomer.cusOrg.$dirty && editCustomer.cusOrg.$error.required) ? 'has-error' : ''">
+
+                {{cus.customer.cusOrg}}
+
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label"><span class="color-require">*</span>客户管理员账号：</label>
+
+            <div class="col-sm-4 control-label ng-binding" style="text-align: left"
+                 data-ng-class="(editCustomer.adminAccount.$dirty && editCustomer.adminAccount.$error.required) ? 'has-error' : ''">
+
+                {{cus.customer.adminAccount}}
+
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label"><span class="color-require">*</span>联系人姓名：</label>
+
+            <div class="col-sm-4"
+                 data-ng-class="(editCustomer.cusName.$dirty && editCustomer.cusName.$invalid) ? 'has-error' : ''">
+                <input type="text" class="form-control" data-ng-model="cus.customer.cusName" name="cusName"
+                       maxlength="20"
+                       data-ng-pattern="/^([\u4e00-\u9fa5_a-zA-Z0-9\s]{1,20})$/"
+                       required/>
+                <label class="control-label hide"
+                       data-ng-class="editCustomer.cusName.$dirty && editCustomer.cusName.$error.required ? 'show' : 'hide'"
+                       style="text-align: left;">联系人姓名不能为空</label>
+                <label class="control-label"
+                       data-ng-class="editCustomer.cusName.$dirty && editCustomer.cusName.$error.pattern ? 'show' : 'hide'"
+                       style="text-align: left;">请输入1-20位字符，支持数字、中英文、下划线、空格</label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label"><span class="color-require">*</span>电子邮箱：</label>
+
+            <div class="col-sm-4"
+                 data-ng-class="(editCustomer.cusEmail.$dirty && editCustomer.cusEmail.$invalid) || cus.checkCusEmailFlag ? 'has-error' : ''">
+                <input type="text" class="form-control" data-ng-model="cus.customer.cusEmail"
+                       maxlength="50"
+                       data-ng-pattern="/^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/"
+                       data-ng-change="cus.checkCusEmail(cus.customer.cusEmail)"
+                       name="cusEmail" required/>
+                <label class="control-label"
+                       data-ng-class="editCustomer.cusEmail.$dirty && editCustomer.cusEmail.$error.required ? 'show' : 'hide'"
+                       style="text-align: left;">电子邮箱不能为空</label>
+                <label class="control-label"
+                       data-ng-class="editCustomer.cusEmail.$dirty && editCustomer.cusEmail.$error.pattern ? 'show' : 'hide'"
+                       style="text-align: left;">请输入正确的邮箱地址</label>
+                <label class="control-label"
+                       data-ng-class="editCustomer.cusEmail.$valid && cus.checkCusEmailFlag ? 'show' : 'hide'"
+                       style="text-align: left;">邮箱地址已注册</label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label"><span class="color-require">*</span>联系电话：</label>
+
+            <div class="col-sm-4"
+                 data-ng-class="(editCustomer.cusPhone.$dirty && editCustomer.cusPhone.$invalid) || cus.checkCusPhoneFlag ? 'has-error' : ''">
+                <input type="text" class="form-control" data-ng-model="cus.customer.cusPhone" name="cusPhone"
+                       data-ng-pattern="/^1[3|5|8|7][0-9]\d{8}$/" maxlength="11" placeholder="请输入联系电话"
+                       data-ng-change="cus.checkCusPhone(cus.customer.cusPhone, add.customer.cusId)"
+                       required/>
+                <label class="control-label"
+                       data-ng-class="editCustomer.cusPhone.$dirty && editCustomer.cusPhone.$error.required ? 'show' : 'hide'"
+                       style="text-align: left;">联系电话不能为空</label>
+                <label class="control-label"
+                       data-ng-class="editCustomer.cusPhone.$dirty && editCustomer.cusPhone.$error.pattern ? 'show' : 'hide'"
+                       style="text-align: left;">请输入正确的联系电话</label>
+                <label class="control-label"
+                       data-ng-class="editCustomer.cusPhone.$valid && cus.checkCusPhoneFlag ? 'show' : 'hide'"
+                       style="text-align: left;">联系电话已注册</label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label"><span class="color-require">*</span>公司中文名：</label>
+
+            <div class="col-sm-4"
+                 data-ng-class="(editCustomer.cusCpname.$dirty && editCustomer.cusCpname.$invalid) || cus.checkCusCpnameFlag ? 'has-error' : ''">
+                <input type="text" class="form-control" data-ng-model="cus.customer.cusCpname" name="cusCpname"
+                       placeholder="请输入公司中文名" data-ng-change="cus.checkCusCpname(cus.customer.cusCpname)"
+                       maxlength="100"
+                       required/>
+                <label class="control-label"
+                       data-ng-class="editCustomer.cusCpname.$dirty && editCustomer.cusCpname.$error.required ? 'show' : 'hide'"
+                       style="text-align: left;">请输入1-100位字符</label>
+                <label class="control-label"
+                       data-ng-class="editCustomer.cusCpname.$valid && cus.checkCusCpnameFlag ? 'show' : 'hide'"
+                       style="text-align: left;">公司中文名已注册</label>
+            </div>
+        </div>
+
+
+        <div  class="form-group">
+            <label class="col-sm-3 control-label"><span class="color-require">*</span>客户类型：</label>
+            <div class="col-sm-4">
+                <eayun-select placeholder="--请选择客户类型--" name="custype" class="form-control" data-ng-model="cus.customer.custypefag"  required>
+                    <eayun-option value="0" text="正式客户"></eayun-option>
+                    <eayun-option value="1" text="合作客户"></eayun-option>
+                    <eayun-option value="2" text="测试用户"></eayun-option>
+                    <eayun-option value="3" text="公司自用客户"></eayun-option>
+                    <eayun-option value="4" text="其他"></eayun-option>
+                </eayun-select>
+            </div>
+        </div>
+
+
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">公司英文名：</label>
+
+            <div class="col-sm-4"
+                 data-ng-class="(editCustomer.cusCpename.$dirty && editCustomer.cusCpename.$error.required) ? 'has-error' : ''">
+                <input type="text" class="form-control" maxlength="100" data-ng-model="cus.customer.cusCpename"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">所属部门：</label>
+
+            <div class="col-sm-4"
+                 data-ng-class="(editCustomer.cusDept.$dirty && editCustomer.cusDept.$error.required) ? 'has-error' : ''">
+                <input type="text" class="form-control" maxlength="20" data-ng-model="cus.customer.cusDept"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">所属职位：</label>
+
+            <div class="col-sm-4"
+                 data-ng-class="(editCustomer.cusPesition.$dirty && editCustomer.cusPesition.$error.required) ? 'has-error' : ''">
+                <input type="text" class="form-control" maxlength="20" data-ng-model="cus.customer.cusPesition"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">公司简介：</label>
+
+            <div class="col-sm-8"
+                 data-ng-class="(editCustomer.cusSynopsis.$dirty && editCustomer.cusSynopsis.$error.required) ? 'has-error' : ''">
+                <textarea type="text" class="form-control" maxlength="2000" data-ng-model="cus.customer.cusSynopsis"></textarea>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">注册原因：</label>
+
+            <div class="col-sm-8"
+                 data-ng-class="(editCustomer.cusDesc.$dirty && editCustomer.cusDesc.$error.required) ? 'has-error' : ''">
+                <textarea type="text" class="form-control" maxlength="2000" data-ng-model="cus.customer.cusDesc"></textarea>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-primary btn-modal" data-ng-click="commit()" style="margin-left: 15px;"
+            data-ng-disabled="editCustomer.$invalid || cus.checkCusEmailFlag || cus.checkCusPhoneFlag || cus.checkCusCpnameFlag">提 交
+    </button>
+    <button type="button" class="btn btn-default btn-modal" data-ng-click="cancel()" style="margin-left: 15px;">取 消
+    </button>
+</div>

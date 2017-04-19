@@ -1,0 +1,66 @@
+<!-- Form表单 -->
+<form class="form-inline">
+    <div class="row">
+        <div class="col-lg-4 form-group">
+            <label class="control-label">时间范围：</label>
+            <date-time-picker  data-init="[0,0,-7]" data-ng-model="ecmc.beginTime" max-date="ecmc.endTime"  show-time = "true"></date-time-picker>
+            <label>-</label>
+            <date-time-picker data-ng-model="ecmc.endTime" min-date="ecmc.beginTime"  show-time = "true"></date-time-picker>
+        </div>
+        <label class="control-label" style="...">操作项：</label>
+        <input class="form-control" data-ng-model="ecmc.actItem" style="..."/>
+        <label class="control-label" style="border-left: 0px solid #CCCCCC;margin-left: 10px;padding-left: 10px;">资源名称：</label>
+        <input class="form-control" data-ng-model="ecmc.resourceName" style="margin: 0px 10px;"/>
+        <label class="control-label" style="border-left: 0px solid #CCCCCC;margin-left: 10px;padding-left: 10px;">IP地址：</label>
+        <input class="form-control" data-ng-model="ecmc.ip" style="margin: 0px 10px;"/>
+        <button class="btn btn-default" ng-click="ecmc.query()">查询</button>
+    </div>
+</form>
+<eayun-table data-api="ecmc.table.api" data-ajax-source="ecmc.table.source" data-param="ecmc.table.getParams"
+             data-result="ecmc.table.result">
+    <table class="table table-eayun">
+        <thead>
+        <tr>
+            <th>操作时间</th>
+            <th>操作项</th>
+            <th>被操作对象ID</th>
+            <th>项目
+                <!--<eayun-select class="form-control form-select" data-ng-model="ecmc.prjId" style="float:right;">
+                    <eayun-option value="''" text="全部项目" selected></eayun-option>
+                    <eayun-option value="prj.projectId" text="{{prj.prjName}}"
+                                  ng-repeat="prj in ecmc.prjList"></eayun-option>
+                </eayun-select>-->
+            </th>
+            <th>资源名称</th>
+            <th>资源类型</th>
+            <th>操作者</th>
+            <th>IP地址</th>
+            <th>访问地址</th>
+            <th>
+                <eayun-select class="eayun-select" type="btn" data-ng-model="ecmc.status"  data-ng-change="ecmc.query()">
+                    <eayun-option text="任务状态（全部）" value = "''" selected></eayun-option>
+                    <eayun-option text="已完成" value = "'1'"></eayun-option>
+                    <eayun-option text="失败" value = "'0'"></eayun-option>
+                </eayun-select>
+            </th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr data-ng-repeat="logModel in ecmc.table.result">
+            <td ng-bind="::logModel.operDate|date:'yyyy-MM-dd HH:mm:ss'"></td>
+            <td ng-bind="::logModel.busiName"></td>
+            <td ng-bind="::((null == logModel.resourceID)||('null' == logModel.resourceID)||('' == logModel.resourceID))?'----':logModel.resourceID"></td>
+            <td ng-bind="::((null == logModel.prjName)||('null' == logModel.prjName)||('' == logModel.prjName))?'----':logModel.prjName"></td>
+            <td ng-bind="::((null == logModel.resourceName)||('' == logModel.resourceName))?'----':logModel.resourceName.length>10?logModel.resourceName.substring(0,10)+'...':logModel.resourceName"  title="{{logModel.resourceName}}" ></td>
+            <td ng-bind="::((null == logModel.resourceType)||('null' == logModel.resourceType)||('' == logModel.resourceType))?'----':logModel.resourceType"></td>
+            <td ng-bind="::logModel.operId"></td>
+            <td ng-bind="::logModel.ipAddr"></td>
+            <td ng-bind="::logModel.temp5"></td>
+            <td data-ng-class="logModel.returnFlag=='1'?'light-font-color':'red-font-color'" ng-bind="::logModel.returnFlag == '1'?'已完成':'失败'"></td>
+            <td><button class="btn btn-tablemng btn-first" data-ng-click="ecmc.detail(logModel)" >查看详情</button></td>
+        </tr>
+        </tbody>
+    </table>
+    <eayun-table-page></eayun-table-page>
+</eayun-table>

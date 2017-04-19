@@ -1,0 +1,43 @@
+<form class="form-horizontal" name="bind" novalidate>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">网络：</label>
+
+        <div class="col-sm-7">
+            <eayun-select class="form-control" ng-model="bindip.netId" ng-change="bindip.dcNetChange()" placeholder="请选择网络" required>
+                <eayun-option value="net.netId" text="{{::net.netName}}" ng-repeat="net in bindip.netList"></eayun-option>
+            </eayun-select>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">受管子网：</label>
+
+        <div class="col-sm-7">
+            <eayun-select class="form-control" ng-model="bindip.subnetId" ng-change = "bindip.dcSubOrTypeChange()" placeholder="请选择子网" required>
+                <eayun-option value="sub.subnetId" text="{{::sub.subnetName}}"
+                              ng-repeat="sub in bindip.subnetList" data-ng-if="sub.subnetType==1"></eayun-option>
+            </eayun-select>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">对象类型：</label>
+
+        <div class="col-sm-7">
+            <label class="control-label"><input name="radio" data-ng-model="bindip.params.resourceType" value="vm" class="control-label" type="radio"
+                   style="" ng-change = "bindip.dcSubOrTypeChange()"/>云主机</label>
+            <label class="control-label"><input name="radio" data-ng-model="bindip.params.resourceType" value="lb" class="control-label" type="radio"
+                   style="margin-left: 30px;" ng-change = "bindip.dcSubOrTypeChange()"/>负载均衡</label>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">选择对象：</label>
+
+        <div class="col-sm-7">
+            <eayun-select class="form-control" ng-model="bindip.resource" placeholder="请选择资源" required show-format="bindip.substrSubnetName(text)">
+                <eayun-option value="vm" text="{{vm.vmName}}({{vm.vmIp}})" ng-if = "bindip.params.resourceType == 'vm'"
+                              ng-repeat="vm in bindip.resourceList"></eayun-option>
+                <eayun-option value="lb" text="{{lb.poolName}}({{lb.vipAddress}})" ng-if = "bindip.params.resourceType == 'lb'"
+                              ng-repeat="lb in bindip.resourceList"></eayun-option>
+            </eayun-select>
+        </div>
+    </div>
+</form>

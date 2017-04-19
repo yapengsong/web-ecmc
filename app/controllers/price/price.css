@@ -1,0 +1,6 @@
+.input-error .form-control {
+    border-color: #ea3200;
+}
+.input-error .control-label {
+    color: #ea3200;
+}

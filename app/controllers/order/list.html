@@ -1,0 +1,91 @@
+<!-- 当前位置下拉列表 -->
+<div class="title-inline">
+    <div class="form-group">
+        <label class="control-label">当前位置：</label>
+        <div class="btn-group" role="group" style="font-size:14px;">订单管理
+        </div>
+    </div>
+</div>
+
+
+<div class="panel panel-default clearfix">
+    <div class="panel-body">
+        <h4>订单管理</h4>
+        <div class="form-inline" data-ng-if="hasPermission('order_search')">
+            <div class="ey-search-bar">
+                <label class="control-label" style="margin-left: 10px;padding-left: 10px;">产品名称：</label>
+                <input class="form-control" data-ng-model="orderMng.prodName" style="margin: 0px 10px;" placeholder="请输入产品名称搜索"/>
+
+                <label class="control-label" style="margin-left: 10px;padding-left: 10px;">客户名称：</label>
+                <input class="form-control" data-ng-model="orderMng.cusName" style="margin: 0px 10px;" placeholder="请输入客户名称"/>
+                <label class="control-label" style="margin-left: 10px;padding-left: 10px;">创建时间：</label>
+                <date-time-picker name="startTime" data-ng-model="orderMng.startTime"
+                                  style="margin-left:10px;margin-right: 10px;" max-date="orderMng.endTime"
+                                  class="form-group" data-format="yyyy-MM-dd" show-time="false"></date-time-picker>
+                <span>—</span>
+                <date-time-picker name="endTime" data-ng-model="orderMng.endTime"
+                                  style="margin-left:10px;" min-date="orderMng.startTime"
+                                  class="form-group" data-format="yyyy-MM-dd" show-time="false"></date-time-picker>
+                <button class="btn btn-default" ng-click="orderMng.query()">
+                    <span></span> 查 询
+                </button>
+            </div>
+        </div>
+
+        <eayun-table data-api="orderMng.orderTable.api"
+                     data-ajax-source="orderMng.orderTable.source"
+                     data-param="orderMng.orderTable.getParams"
+                     data-result="orderMng.orderTable.result">
+            <table class="table table-eayun" data-ng-if="hasPermission('order_info')">
+                <thead>
+                <tr>
+                    <th class="col-sm-1">订单编号</th>
+                    <th class="col-sm-2">产品名称</th>
+                    <th class="col-sm-1">客户名称</th>
+                    <th class="col-sm-1">
+                        <eayun-select type="btn" class="btn-group btn-group-xs" ng-change="orderMng.changeType()"
+                                      data-ng-model="orderMng.orderType">
+                            <eayun-option value="" text="全部类型" selected></eayun-option>
+                            <eayun-option value="orderType.id" text="{{orderType.name}}"
+                                          ng-repeat="orderType in orderMng.orderTypes"></eayun-option>
+                        </eayun-select>
+                    </th>
+                    <th class="col-sm-2">创建时间</th>
+                    <th class="col-sm-1">
+                        <eayun-select type="btn" class="btn-group btn-group-xs" ng-change="orderMng.changeState()"
+                                      data-ng-model="orderMng.orderState">
+                            <eayun-option value="" text="全部状态" selected></eayun-option>
+                            <eayun-option value="orderState.id" text="{{orderState.name}}"
+                                          ng-repeat="orderState in orderMng.stateTypes"></eayun-option>
+                        </eayun-select>
+                    </th>
+                    <th class="col-sm-1">金额</th>
+                    <th class="col-sm-1">操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr data-ng-repeat="order in orderMng.orderTable.result">
+                    <td class="click-link" ng-bind="order.orderNo"
+                        data-ng-click="orderMng.detail(order.orderId)"></td>
+                    <td ng-bind="order.prodName"></td>
+                    <td ng-bind="order.cusName"></td>
+                    <td ng-bind="order.orderTypeName"></td>
+                    <td ng-bind="order.createTime|date:'yyyy-MM-dd HH:mm:ss'"></td>
+                    <td data-ng-class="order.orderState == '1' ?'click-td' : ''"
+                        data-ng-click="order.orderState == '1' ? orderMng.payOneOrder(order.orderId): ''"
+                        ng-bind="order.orderStateName"></td>
+                    <td>￥ {{order.paymentAmount|number:2}}</td>
+                    <td>
+                        <button type="button" class="btn btn-tablemng btn-first"
+                                data-ng-click="orderMng.detail(order.orderId)"
+                                data-ng-disabled="!hasPermission('order_info')">
+                            查看详情
+                        </button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <eayun-table-page data-ng-if="hasPermission('order_info')"></eayun-table-page>
+        </eayun-table>
+    </div>
+</div>

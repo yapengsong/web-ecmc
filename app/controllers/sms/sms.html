@@ -1,0 +1,74 @@
+<h4>短信列表</h4>
+<form class="form-inline">
+    <label class="control-label" style="margin-right: 15px;">发送时间范围：</label>
+    <date-time-picker data-format="yyyy-MM-dd HH:mm:ss" data-ng-model="sms.beginTime"
+                      max-date="sms.endTime" show-time="true"></date-time-picker>
+    <span style="margin: 0px 15px;">—</span>
+    <date-time-picker data-format="yyyy-MM-dd HH:mm:ss" data-ng-model="sms.endTime"
+                      min-date="sms.beginTime" show-time="true"></date-time-picker>
+
+    <label class="control-label" style="margin: 0px 15px;">接收手机号码：</label>
+    <input class="form-control" type="text" data-ng-model="sms.mobile" style="margin: 0px 10px;"/>
+
+    <button class="btn btn-default" style="margin: 0px 15px;" data-ng-click="sms.queryTable()">查 询</button>
+
+    <button class="btn btn-primary" data-ng-click="sms.create()">
+        <span class="glyphicon glyphicon-plus"></span> 创建短信
+    </button>
+</form>
+<eayun-auto-refresh interval="5000" refresh="sms.refresh"></eayun-auto-refresh>
+<eayun-table data-api="sms.table.api" data-ajax-source="sms.table.source" data-param="sms.table.getParams"
+             data-result="sms.table.result">
+    <table class="table table-eayun">
+        <thead>
+        <!--<th>短信ID</th>-->
+        <th>创建时间</th>
+        <th>发送时间</th>
+        <th>
+            <eayun-select type="btn" class="btn-group btn-group-xs" data-ng-model="sms.smsStatus"
+                          data-ng-change="sms.queryTable()">
+                <eayun-option value="" text="短信发送状态（全部）" selected></eayun-option>
+                <eayun-option value="'000'" text="发送中"></eayun-option>
+                <!--<eayun-option value="'100'" text="项目配额不足不发送"></eayun-option>-->
+                <!--<eayun-option value="'101'" text="超配额已发送"></eayun-option>-->
+                <eayun-option value="'1'" text="发送成功"></eayun-option>
+                <eayun-option value="'--'" text="发送失败"></eayun-option>
+            </eayun-select>
+        </th>
+        <th>项目</th>
+        <th>业务来源</th>
+        <th>接收手机号码</th>
+        <th>操作</th>
+        </thead>
+        <tbody>
+        <tr data-ng-repeat="smsModel in sms.table.result">
+            <!--<td data-ng-bind="smsModel.id"></td>-->
+            <td data-ng-bind="smsModel.insertTime | date : 'yyyy-MM-dd HH:mm:ss'"></td>
+            <td data-ng-bind="smsModel.updateTime | date : 'yyyy-MM-dd HH:mm:ss'"></td>
+            <td data-ng-bind="smsModel.status"></td>
+            <td data-ng-bind="smsModel.projectName"></td>
+            <td data-ng-bind="smsModel.biz"></td>
+            <td data-ng-bind="smsModel.mobilesList"></td>
+            <td>
+                <button class="btn btn-tablemng btn-first" data-ng-click="sms.resend(smsModel.id)"
+                        data-ng-disabled="smsModel.status!='服务器拒绝'
+                                        &&smsModel.status!='项目配额不足不发送'
+                                        &&smsModel.status!='帐户格式不正确'
+                                        &&smsModel.status!='服务器拒绝'
+                                        &&smsModel.status!='密钥不正确'
+                                        &&smsModel.status!='密钥已锁定'
+                                        &&smsModel.status!='参数不正确'
+                                        &&smsModel.status!='无此账户'
+                                        &&smsModel.status!='账户已锁定或已过期'
+                                        &&smsModel.status!='账户未开启接口发送'
+                                        &&smsModel.status!='不可使用该通道组'
+                                        &&smsModel.status!='账户余额不足'
+                                        &&smsModel.status!='扣费失败'">
+                    重新发送
+                </button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <eayun-table-page></eayun-table-page>
+</eayun-table>

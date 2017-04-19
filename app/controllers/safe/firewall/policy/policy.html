@@ -1,0 +1,49 @@
+<!-- Form表单 -->
+<form class="form-inline">
+    <div class="form-group">
+        <button class="btn btn-primary" data-ng-click="policy.add()" style="margin-right: 15px;" ng-show="hasPermission('firewall_create')">
+            <span class="glyphicon glyphicon-plus"></span> 创建防火墙策略
+        </button>
+    </div>
+    <div class="form-group">
+        <eayun-search ng-model="policy.search" options="policy.options"></eayun-search>
+    </div>
+</form>
+
+<eayun-table data-api="policy.table.api" data-ajax-source="policy.table.source" data-param="policy.table.getParams"
+             data-result="policy.table.result">
+    <table class="table table-eayun">
+        <thead>
+        <tr>
+            <th class="col-sm-3">策略名称</th>
+            <th class="col-sm-2">规则</th>
+            <th class="col-sm-2">项目</th>
+            <th class="col-sm-1">客户</th>
+            <th class="col-sm-1">
+                <eayun-select type="btn" class="btn-group btn-group-xs" data-ng-model="policy.datacenterId"
+                              data-ng-change="policy.queryTable()">
+                    <eayun-option value="''" text="数据中心（全部）" selected></eayun-option>
+                    <eayun-option value="dcResource.id" text="{{dcResource.name}}"
+                                  ng-repeat="dcResource in policy.dcResourceList"></eayun-option>
+                </eayun-select>
+            </th>
+            <th class="col-sm-3">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr data-ng-repeat="policyModel in policy.table.result">
+            <td class="click-link" data-ng-click="policy.detail(policyModel)" ng-bind="::policyModel.fwpName"></td>
+            <td title="{{policyModel.fwrName}}" data-ng-bind="::policyModel.fwrName.length > 20 ? policyModel.fwrName.substr(0,18) + '...' :policyModel.fwrName"></td>
+            <td ng-bind="::policyModel.prjName"></td>
+            <td ng-bind="::policyModel.cusOrg"></td>
+            <td ng-bind="::policyModel.dcName"></td>
+            <td>
+                <button class="btn btn-tablemng btn-first" data-ng-click="policy.edit(policyModel)" ng-show="hasPermission('firewall_modify')">编辑</button>
+                <button class="btn btn-tablemng" data-ng-click="policy.manage(policyModel)">管理规则</button>
+                <button class="btn btn-tabledel" data-ng-disabled="policyModel.fwId!=''" data-ng-click="policy.delete(policyModel)" ng-show="hasPermission('firewall_delete')">删除</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <eayun-table-page></eayun-table-page>
+</eayun-table>

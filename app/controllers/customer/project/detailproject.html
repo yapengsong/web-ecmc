@@ -1,0 +1,219 @@
+<style>
+    <!--
+    .text-left {
+        text-align: left;
+        color: #07C;
+    }
+
+    tr {
+        max-height: 50px;
+    }
+
+    .quota-table {
+        max-height: 360px;
+        overflow: auto;
+        margin: 15px 20px;
+        border-radius: 4px;
+        border: 1px solid #CCC;
+    }
+
+    .quota-table-error {
+        max-height: 360px;
+        overflow: auto;
+        margin: 15px 20px;
+        border-radius: 4px;
+        border: 1px solid #A94442;
+    }
+
+    .quota-table > table > tbody > tr {
+        height: 50px;
+    }
+
+    -->
+</style>
+<form class="form-horizontal" name="addWork" novalidate>
+    <div class="form-group has-feedback" data-ng-show="showDis">
+        <label class="col-sm-2 control-label">所属数据中心：</label>
+        <div class="col-sm-4 control-label" style="text-align: left;">
+            {{prj.customer.dcName }}
+        </div>
+    </div>
+    <div class="form-group" data-ng-show="!showDis">
+        <label class="col-sm-2 control-label">所属数据中心：</label>
+
+        <div class="col-sm-4 control-label" style="text-align: left;">{{prj.customer.dcName}}</div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">项目名：</label>
+
+        <div class="col-sm-4 control-label" style="text-align: left;">{{prj.customer.prjName}}</div>
+    </div>
+    <div class="form-group">
+
+        <ng-form name="prjQuota">
+            <div class="control-label quota-table"
+                 data-ng-class="prjQuota.$invalid ? 'quota-table-error' : ''"
+                 style="display:block;width:700px;">
+                <table class="table-striped col-sm-12">
+                    <tbody>
+                    <tr>
+                        <td class="col-sm-3 text-left" style="text-align: left;">CPU核数：</td>
+                        <td class="col-sm-3 text-left" style="text-align: left;">已使用{{prj.customer.usedCpuCount}}核</td>
+                        <td class="col-sm-6">
+                           {{prj.customer.cpuCount}}
+                        </td>
+                        <td style="text-align: left">核</td>
+                    </tr>
+                    <tr>
+                        <td class="col-sm-3 text-left" style="text-align: left;">内存大小：</td>
+                        <td class="col-sm-3 text-left" style="text-align: left;">已使用{{prj.customer.usedRam}}GB</td>
+                        <td class="col-sm-6">
+                           {{prj.customer.memory}}
+                        </td>
+                        <td style="text-align: left">GB</td>
+                    </tr>
+                    <tr>
+                        <td class="col-sm-3 text-left" style="text-align: left;">云主机数量：</td>
+                        <td class="col-sm-3 text-left" style="text-align: left;">已使用{{prj.customer.usedVmCount}}台</td>
+                        <td class="col-sm-6">
+                            {{prj.customer.hostCount}}
+                        </td>
+                        <td style="text-align: left">台</td>
+                    </tr>
+                    <tr>
+                        <td class="col-sm-3 text-left" style="text-align: left;">云硬盘数量：</td>
+                        <td class="col-sm-3 text-left" style="text-align: left;">已使用{{prj.customer.diskCountUse}}块</td>
+                        <td class="col-sm-6">
+                           {{prj.customer.diskCount}}
+                        </td>
+                        <td style="text-align: left">块</td>
+                    </tr>
+                    <tr>
+                        <td class="col-sm-3 text-left" style="text-align: left;">云硬盘快照数量：</td>
+                        <td class="col-sm-3 text-left" style="text-align: left;">已使用{{prj.customer.diskSnapshotUse}}块</td>
+                        <td class="col-sm-6">
+                            {{prj.customer.diskSnapshot}}
+                        </td>
+                        <td style="text-align: left">块</td>
+                    </tr>
+                    <!--<tr>
+                        <td class="col-sm-3 text-left" style="text-align: left;">云硬盘和快照大小：</td>
+                        <td class="col-sm-3 text-left" style="text-align: left;">已使用{{prj.customer.usedDataCapacity}}GB</td>
+                        <td class="col-sm-6">
+                           {{prj.customer.diskCapacity}}
+                        </td>
+                        <td style="text-align: left">GB</td>
+                    </tr>-->
+                    <tr>
+                        <td class="col-sm-3 text-left" style="text-align: left;">云硬盘容量：</td>
+                        <td class="col-sm-3 text-left" style="text-align: left;">已使用{{prj.customer.usedDiskCapacity}}GB</td>
+                        <td class="col-sm-6">
+                            {{prj.customer.diskCapacity}}
+                        </td>
+                        <td style="text-align: left">GB</td>
+                    </tr>
+                    <tr>
+                        <td class="col-sm-3 text-left" style="text-align: left;">云硬盘快照容量：</td>
+                        <td class="col-sm-3 text-left" style="text-align: left;">已使用{{prj.customer.usedSnapshotCapacity}}GB</td>
+                        <td class="col-sm-6">
+                            {{prj.customer.snapshotSize}}
+                        </td>
+                        <td style="text-align: left">GB</td>
+                    </tr>
+                    <tr>
+                        <td class="col-sm-3 text-left" style="text-align: left;">带宽大小：</td>
+                        <td class="col-sm-3 text-left" style="text-align: left;">已使用{{prj.customer.countBandUse}}Mbps</td>
+                        <td class="col-sm-6">
+                            {{prj.customer.countBand}}
+                        </td>
+                        <td style="text-align: left">Mbps</td>
+                    </tr>
+                    <tr>
+                        <td class="col-sm-3 text-left" style="text-align: left;">网络数量：</td>
+                        <td class="col-sm-3 text-left" style="text-align: left;">已使用{{prj.customer.netWorkUse}}个</td>
+                        <td class="col-sm-6">
+                           {{prj.customer.netWork}}
+                        </td>
+                        <td style="text-align: left">个</td>
+                    </tr>
+                    <tr>
+                        <td class="col-sm-3 text-left" style="text-align: left;">子网数量：</td>
+                        <td class="col-sm-3 text-left" style="text-align: left;">已使用{{prj.customer.subnetCountUse}}个</td>
+                        <td class="col-sm-6">
+                            {{prj.customer.subnetCount}}
+                        </td>
+                        <td style="text-align: left">个</td>
+                    </tr>
+                    <tr>
+                        <td class="col-sm-3 text-left" style="text-align: left;">公网IP数量：</td>
+                        <td class="col-sm-3 text-left" style="text-align: left;">已使用{{prj.customer.outerIPUse}}个</td>
+                        <td class="col-sm-6">
+                           {{prj.customer.outerIP}}
+                        </td>
+                        <td style="text-align: left">个</td>
+                    </tr>
+                    <tr>
+                        <td class="col-sm-3 text-left" style="text-align: left;">安全组数量：</td>
+                        <td class="col-sm-3 text-left" style="text-align: left;">已使用{{prj.customer.safeGroupUse}}个</td>
+                        <td class="col-sm-6">
+                            {{prj.customer.safeGroup}}
+                        </td>
+                        <td style="text-align: left">个</td>
+                    </tr>
+                    <tr>
+                        <td class="col-sm-3 text-left" style="text-align: left;">负载均衡数量：</td>
+                        <td class="col-sm-3 text-left" style="text-align: left;">已使用{{prj.customer.usedPool}}个</td>
+                        <td class="col-sm-6">
+                            {{prj.customer.quotaPool}}
+                        </td>
+                        <td style="text-align: left">个</td>
+                    </tr>
+                    <tr>
+                        <td class="col-sm-3 text-left" style="text-align: left;">报警短信数量：</td>
+                        <td class="col-sm-3 text-left" style="text-align: left;">已发送{{prj.customer.usedSmsCount}}条</td>
+                        <td class="col-sm-6">
+                           {{prj.customer.smsCount}}
+                        </td>
+                        <td style="text-align: left">条</td>
+                    </tr>
+                    <tr>
+                        <td class="col-sm-3 text-left" style="text-align: left;">VPN数量：</td>
+                        <td class="col-sm-3 text-left" style="text-align: left;">已使用{{prj.customer.countVpnUse}}个</td>
+                        <td class="col-sm-6">
+                            {{prj.customer.countVpn}}
+                        </td>
+                        <td style="text-align: left">个</td>
+                    </tr>
+                    <tr>
+                        <td class="col-sm-3 text-left" style="text-align: left;">端口映射数量：</td>
+                        <td class="col-sm-3 text-left" style="text-align: left;">已使用{{prj.customer.portMappingUse}}个</td>
+                        <td class="col-sm-6">
+                            {{prj.customer.portMappingCount}}
+                        </td>
+                        <td style="text-align: left">个</td>
+                    </tr>
+                    <tr>
+                        <td class="col-sm-3 text-left" style="text-align: left;">自定义镜像数量：</td>
+                        <td class="col-sm-3 text-left" style="text-align: left;">已使用{{prj.customer.imageCountUse}}个</td>
+                        <td class="col-sm-6">
+                            {{prj.customer.imageCount}}
+                        </td>
+                        <td style="text-align: left">个</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </ng-form>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label" style="text-align: left;margin-left: 10px;">项目描述：</label>
+
+        <div class="col-sm-8 has-feedback control-label" style="text-align: left;word-wrap:break-word;">
+           {{prj.customer.projectDesc}}
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default btn-modal" data-ng-click="cancel()" style="margin-left: 15px;">关闭
+        </button>
+    </div>
+</form>

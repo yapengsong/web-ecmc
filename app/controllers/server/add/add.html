@@ -1,0 +1,142 @@
+
+    <form class="form-horizontal" name="add" novalidate>
+        <div class="form-group has-feedback" >
+            <label class="col-sm-3 control-label"><span class="color-require">*</span>所属数据中心</label>
+
+            <div class="col-sm-8" data-ng-class="(add.dcName.$invalid&&add.dcName.$dirty) ? 'has-error' : ''">
+                <eayun-select placeholder="--请选择数据中心--" class="form-control form-select"  ng-model="model.model.datacenterId" name="dcName" ng-change="model.changeDc(model.model.datacenterId)" required>
+                    <eayun-option value="dc.id" text="{{dc.name}}"
+                                  ng-repeat="dc in model.dcList"></eayun-option>
+                </eayun-select>
+                <label class="control-label" ng-show="add.dcName.$dirty && add.dcName.$error.required">请选择数据中心</label>
+            </div>
+        </div>
+        <div class="form-group has-feedback" >
+            <label class="col-sm-3 control-label"><span class="color-require">*</span>所属机柜</label>
+
+            <div class="col-sm-8" data-ng-class="(add.cabinetName.$invalid&&add.cabinetName.$dirty) ? 'has-error' : ''">
+                <eayun-select placeholder="--请选择机柜--" class="form-control form-select"  ng-model="model.model.cabinetId" name="cabinetName" ng-change="model.changeCabinet()" required>
+                    <eayun-option value="cn.id" text="{{cn.name}}"
+                                  ng-repeat="cn in model.cnList"></eayun-option>
+                </eayun-select>
+
+            </div>
+        </div>
+        <div class="form-group has-feedback" >
+            <label class="col-sm-3 control-label"><span class="color-require">*</span>服务器名称</label>
+
+            <div class="col-sm-8" data-ng-class="((!add.name.$error.required&&!model.validName)||(add.name.$dirty && !model.validName&&!add.name.$error.required)||(add.name.$dirty && add.name.$error.required)) ? 'has-error' : ''">
+                <input type="text" class="form-control" name="name" data-ng-model="model.model.name" maxlength="30" data-ajax-valid="model.checkName(value)" ng-disabled="model.model.isComputenode=='0'" required/>
+                <label class="control-label" ng-show="!model.validName&&!add.name.$error.required">存在相同的服务器名称</label>
+                <label class="control-label" ng-show="add.name.$dirty && add.name.$error.required">服务器名称必填</label>
+            </div>
+        </div>
+        <div class="form-group has-feedback" >
+            <label class="col-sm-3 control-label"><span class="color-require">*</span>IP地址</label>
+
+            <div class="col-sm-8" data-ng-class="(  add.serverInnetIp.$invalid&&add.serverInnetIp.$dirty)? 'has-error' : ''">
+                <input type="text" class="form-control" name="serverInnetIp" ng-model="model.model.serverInnetIp" data-ng-pattern="/^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[0-9]{1,2})(\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[0-9]{1,2})){3}$/" required/>
+                <label class="control-label" ng-show="add.serverInnetIp.$dirty && add.serverInnetIp.$error.required">IP地址必填</label>
+                    <label class="control-label" ng-if="add.serverInnetIp.$dirty && add.serverInnetIp.$error.pattern">请输入正确的IP地址</label>
+            </div>
+        </div>
+        <div class="form-group has-feedback" data-ng-show="add.dcName.$dirty&&add.cabinetName.$dirty">
+            <label class="col-sm-3 control-label"><span class="color-require">*</span>服务器型号 </label>
+
+            <div class="col-sm-8" data-ng-class="(add.dcName.$invalid&&add.dcName.$dirty) ? 'has-error' : ''">
+                <eayun-select placeholder="--请选择服务器型号--" class="form-control form-select"  ng-model="model.model.serverModelId" name="serverModelId" ng-change="model.changeModel(model.model.serverModelId)" required>
+                    <eayun-option value="ml.id" text="{{ml.name}}"
+                                  ng-repeat="ml in model.modelList" ></eayun-option>
+                </eayun-select>
+
+            </div>
+        </div>
+        <div class="form-group has-feedback" >
+            <div class="row">
+                <div class="col-md-7 form-group">
+                    <label for="" class="control-label col-md-5">CPU</label>
+                    <input type="hidden" class="form-control" ng-model="model.model.memory">
+                    <div class="control-label col-md-4 ectj_lb">
+                        {{model.model.cpu}} 核
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-7 form-group">
+                    <label for="" class="control-label col-md-5">内存</label>
+                    <div class="control-label col-md-4 ectj_lb">
+                        <input type="hidden" class="form-control" ng-model="model.model.memory">
+                        {{model.model.memory}} GB
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-7 form-group">
+                    <label for="" class="control-label col-md-5">磁盘</label>
+                    <div class="control-label col-md-4 ectj_lb">
+                        <input type="hidden" class="form-control" ng-model="model.model.disk">
+                        {{model.model.disk}} TB
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-7 form-group">
+                    <label for="" class="control-label col-md-5">规格</label>
+                    <div class="control-label col-md-4 ectj_lb">
+                        <input type="hidden" class="form-control" ng-model="model.model.spec" id="spec">
+                        {{model.model.spec}} U
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group has-feedback" >
+            <label class="col-sm-3 control-label"><span class="color-require">*</span>所属机柜位置</label>
+
+            <div class="col-sm-8" data-ng-class="((add.state.$dirty && add.state.$error.required&&model.stateflag)||!model.stateFlag) ? 'has-error' : ''">
+                <eayun-select placeholder="--请选择机柜位置--" class="form-control form-select"  ng-model="model.model.state" name="state" required>
+                    <eayun-option value="st.state" text="{{st.state}}"
+                                  ng-repeat="st in model.stateList"></eayun-option>
+                </eayun-select>
+
+                <label class="control-label" ng-show="!add.spec.$error.required&&!model.stateFlag">该机柜下没有可用位置</label>
+            </div>
+        </div>
+        <div class="form-group has-feedback" >
+            <label class="col-sm-3 control-label">用途说明</label>
+
+            <div class="col-sm-8" >
+                <textarea class="form-control ng-valid" maxlength="200" ng-model="model.model.memo" style="height:80px;"></textarea>
+            </div>
+        </div>
+        <div class="form-group has-feedback" >
+            <label class="col-sm-3 control-label">责任人</label>
+
+            <div class="col-sm-8" data-ng-class="(add.checkresponPerson.$dirty&&add.checkresponPerson.$invalid?'show':'hide'&&model.model.responPerson.lenth>0) ? 'has-error' : ''">
+                <input type="text" class="form-control"  name="checkresponPerson" data-ng-model="model.model.responPerson" data-ng-pattern="/^[\u4e00-\u9fa5a-zA-Z0-9_]{0,20}$/" />
+                <label class="control-label" ng-if="add.checkresponPerson.$dirty&&add.checkresponPerson.$error.pattern?'show':'hide'&&model.model.responPerson.lenth>0
+">请输入1-20位字符,支持数字、中英文、下划线
+                </label>
+
+            </div>
+        </div>
+        <div class="form-group has-feedback" >
+            <label class="col-sm-3 control-label">联系电话</label>
+
+            <div class="col-sm-8" data-ng-class="(add.responPersonMobile.$invalid&&add.responPersonMobile.$dirty) ? 'has-error' : ''">
+                <input type="text" class="form-control" name="responPersonMobile" ng-model="model.model.responPersonMobile" data-ng-pattern="/^1[3|5|8|7][0-9]\d{8}$/"/>
+                <label class="control-label" ng-if="add.responPersonMobile.$dirty &&add.responPersonMobile.$error.pattern">请输入正确的联系电话</label>
+            </div>
+        </div>
+        <div class="form-group has-feedback" >
+            <label class="col-sm-3 control-label">启用监控</label>
+            
+            <div class="col-sm-2">
+                <input type="checkbox" style="margin-top: 10px;" data-ng-model="model.model.isMonitor" name="isMonitor" class="ng-pristine ng-untouched ng-valid ng-empty">
+                <span> 启用</span>
+            </div>
+        </div>
+    </form>
+    <div class="modal-footer">
+        <button class="btn btn-primary btn-modal" ng-click="ok(model.model)" ng-disabled="add.$invalid" type = "button">确  定</button>
+        <button class="btn btn-default btn-modal" ng-click="cancel()" style = "margin-left:15px;" type = "button">取  消</button>
+    </div>

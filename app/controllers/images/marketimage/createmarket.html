@@ -1,0 +1,251 @@
+
+<div id="loadingBar"
+     style="border:1px;width:100%; height:125%; background:rgba(0,0,0,0.5); position:absolute;z-index:999999;display:none;margin-top: -73px;margin-left: -20px;">
+    <div style="position:relative; height:100%;">
+        <img src="images/loadingbar.gif" style="position:absolute; top:35%; left:44%; z-index:1000;"/>
+    </div>
+</div>
+<form class="form-horizontal" name="createmarketImage" novalidate>
+    <div class="form-group">
+        <label class="col-sm-2 control-label"><span  class="color-require">*</span >所属数据中心：</label>
+
+        <div class="col-sm-3">
+            <eayun-select disabled="{{}}" class="form-control" ng-model="createmarket.imageItem.dcId" placeholder="请选择数据中心"  required>
+                <eayun-option value="dc.id" text="{{::dc.name}}" ng-repeat="dc in createmarket.dcList"></eayun-option>
+            </eayun-select>
+        </div>
+
+
+        <label class="col-sm-2 control-label"><span  class="color-require">*</span >镜像名称：</label>
+
+        <div class="col-md-5"
+             data-ng-class="(createmarketImage.imName.$dirty && createmarketImage.imName.$invalid)?'has-error' : ''">
+            <input type="text" class="form-control"  maxlength="100" data-ng-model="createmarket.imageItem.imageName" placeholder="请输入镜像名称" name="imName" required>
+            <label class="control-label hide"
+                   data-ng-class="createmarketImage.imName.$dirty && createmarketImage.imName.$error.required ? 'show' : 'hide'"
+                   style="text-align: left;"> 请输入镜像名称，长度限定为100位</label>
+        </div>
+    </div>
+
+
+
+    <div class="form-group">
+        <label class="col-sm-2 control-label"><span  class="color-require">*</span >提供商：</label>
+
+        <div class="col-sm-3" data-ng-class="createmarketImage.provider.$dirty &&(createmarketImage.provider.$invalid ) ? 'has-error' : ''">
+            <input type="text" class="form-control" data-ng-model="createmarket.imageItem.provider" maxlength="100" placeholder="请输入提供商名称"
+                   name="provider"  required/>
+            <label class="control-label hide"
+                   data-ng-class="createmarketImage.provider.$dirty && createmarketImage.provider.$error.required ? 'show' : 'hide'"
+                   style="text-align: left;">请输入提供商名称，长度限定为100位</label>
+            <label class="control-label" ng-show="createmarketImage.provider.$error.pattern">只能由数字、中英文、下划线、空格、和英文句号组成</label>
+        </div>
+
+        <label class="col-sm-2 control-label"><span  class="color-require">*</span >业务类别：</label>
+
+        <div class="col-sm-3">
+            <eayun-select class="form-control" ng-model="createmarket.imageItem.professionType" placeholder="请选择业务类别"
+                          required>
+                <eayun-option value="os.nodeId" text="{{::os.nodeName}}" ng-repeat="os in createmarket.marketTypeList"></eayun-option>
+            </eayun-select>
+        </div>
+    </div>
+
+
+    <div class="form-group">
+        <label class="col-sm-2 control-label"><span  class="color-require">*</span >集成软件：</label>
+        <div class="col-md-10">
+            <textarea class="form-control" rows="3" name="integratedSoftware" placeholder="请输入镜像集成的软件" data-ng-model="createmarket.imageItem.integratedSoftware" maxlength="500" required></textarea>
+        </div>
+    </div>
+
+
+
+    <div class="form-group">
+
+        <label class="col-sm-2 control-label"><span  class="color-require">*</span >系统类型：</label>
+        <div class="col-sm-3">
+            <eayun-select class="form-control" ng-model="createmarket.sysType"  placeholder="请选择系统类型" required ng-change="createmarket.dcSysChange(createmarket.sysType)">
+                <eayun-option value="dc" text="{{::dc.nodeName}}" ng-repeat="dc in createmarket.sysList"></eayun-option>
+            </eayun-select>
+        </div>
+
+
+        <label class="col-sm-2 control-label"><span  class="color-require">*</span >系统详情：</label>
+        <div class="col-md-5"
+             data-ng-class="(createmarketImage.sysDetail.$dirty && createmarketImage.sysDetail.$invalid)?'has-error' : ''">
+            <input type="text" class="form-control"  maxlength="100"
+                   data-ng-model="createmarket.imageItem.sysDetail" name="sysDetail" required    placeholder="请输入系统详情">
+            <label class="control-label hide"
+                   data-ng-class="createmarketImage.sysDetail.$dirty && createmarketImage.sysDetail.$error.required ? 'show' : 'hide'"
+                   style="text-align: left;"> 请输入系统详情，长度限定为100位</label>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-2 control-label"><span  class="color-require">*</span >镜像格式：</label>
+
+        <div class="col-sm-3">
+            <eayun-select class="form-control" ng-model="createmarket.imageItem.diskFormat"  placeholder="请选择镜像格式" ng-change="createmarket.dcChange()" required>
+                <eayun-option value="dc.nodeNameEn" text="{{::dc.nodeName.toLowerCase()}}" ng-repeat="dc in createmarket.imList"></eayun-option>
+            </eayun-select>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-2 control-label"><span  class="color-require">*</span >上传方式：</label>
+        <div class="col-sm-7">
+            <label class="control-label radio-inline small-size" name="createType">
+                <input type="radio" ng-model="createmarket.imageItem.createType" value="1"> 镜像文件
+            </label>
+            <label class="control-label radio-inline small-size" name="createType">
+                <input type="radio" ng-model="createmarket.imageItem.createType" value="2"> 镜像地址
+            </label>
+        </div>
+    </div>
+
+    <div class="form-group" ng-if = "createmarket.imageItem.createType == '1'">
+        <label class="col-sm-2 control-label"></label>
+        <input type="text" style = "display: none"ng-model="createmarket.fileName" class="form-control" required>
+        <div class="col-sm-7">
+            <span class="upload-btn" ng-disabled="createmarket.imageItem.file.length != 0" data-ng-class="createmarket.imageItem.file.length == 0 ? '' : 'has-file'" ngf-select="createmarket.uploadFiles($file)" ngf-pattern="'.'+createmarket.fileTypes.join(',.')" accept="{{'.'+createmarket.fileTypes.join(',.')}}">
+                <span class="glyphicon glyphicon-paperclip"></span>
+                <span style="border-left: 2px solid #dcdcdc;margin: 10px;vertical-align: middle;"></span>
+                <span data-ng-if="createmarket.imageItem.file.length != 0" data-ng-repeat="file in createmarket.imageItem.file">
+                   <span>{{file.name.length>20?file.name.substring(0,19)+"...":file.name}}</span>
+                   <!--<span data-ng-bind="file.name"></span>-->
+                </span>
+                <span data-ng-if="createmarket.imageItem.file.length == 0">上传文件</span>
+            </span>
+
+
+            <span data-ng-repeat="file in createmarket.imageItem.file">
+                <span style="cursor: pointer; color: #07c; margin: 10px;"    ngf-select="createmarket.refushWorkFile($file,file)" ngf-pattern="'.'+createmarket.fileTypes.join(',.')" accept="{{'.'+createmarket.fileTypes.join(',.')}}">重新上传</span>
+                <span  style="cursor: pointer; color: #EA3200;" data-ng-click="createmarket.deleteWorkFile(file)">删除</span>
+            </span>
+
+         </div>
+    </div>
+
+    <div class="form-group" ng-if = "createmarket.imageItem.createType == '2'">
+        <label class="col-sm-2 control-label"></label>
+        <div class="col-md-7"
+             data-ng-class="(createmarketImage.imageUrl.$dirty && createmarketImage.imageUrl.$invalid)?'has-error' : ''">
+            <div class="has-feedback">
+                <input type="text" class="form-control" placeholder="请输入镜像地址"
+                       data-ng-model="createmarket.imageItem.imageUrl" name="imageUrl" required
+                       data-ng-pattern='/(http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&:/~\+#]*[\w\-\@?^=%&/~\+#])?/'>
+                <label class="control-label hide"
+                       data-ng-class="createmarketImage.imageUrl.$dirty && createmarketImage.imageUrl.$error.pattern ? 'show' : 'hide'"
+                       style="text-align: left;">请输入正确的URL地址</label>
+                <label class="control-label hide"
+                       data-ng-class="createmarketImage.imageUrl.$dirty && createmarketImage.imageUrl.$error.required ? 'show' : 'hide'"
+                       style="text-align: left;">请输入URL地址</label>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label"><span  class="color-require">*</span >最小CPU：</label>
+        <div class="col-md-3"
+             data-ng-class="(createmarketImage.imCpu.$dirty && (createmarketImage.imCpu.$invalid||createmarket.minCpuError))?'has-error' : ''">
+            <div class="has-feedback">
+                <input type="text" class="form-control" placeholder="请输入最小CPU"
+                       data-ng-model="createmarket.imageItem.minCpu" name="imCpu" required
+                       data-ng-pattern='/^(1|\+?[1-9][0-9]*)$/' maxlength="2" data-ng-change="createmarket.checkCPU('min')">
+                <span class="ey-suffix">核</span>
+                <label class="control-label hide"
+                       data-ng-class="createmarketImage.imCpu.$dirty && (createmarketImage.imCpu.$invalid || createmarketImage.imCpu.$error.required) ? 'show' : 'hide'"
+                       style="text-align: left;">请输入大于等于1的整数</label>
+                <label class="control-label hide"
+                       data-ng-class="createmarketImage.imCpu.$dirty && (!createmarketImage.imCpu.$invalid && createmarket.minCpuError) ? 'show' : 'hide'"
+                       style="text-align: left;">必须小于最大CPU</label>
+
+            </div>
+
+        </div>
+
+        <label class="col-sm-2 control-label"><span  class="color-require">*</span >最小内存：</label>
+        <div class="col-md-3"
+             data-ng-class="(createmarketImage.imRam.$dirty && (createmarketImage.imRam.$invalid||createmarket.minRamError))?'has-error' : ''">
+            <div class="has-feedback">
+                <input type="text" class="form-control" placeholder="请输入最小内存"
+                       data-ng-model="createmarket.imageItem.minRam" name="imRam" required
+                       data-ng-pattern='/^(1|\+?[1-9][0-9]*)$/' maxlength="3" data-ng-change="createmarket.checkRAM('min')">
+                <span class="ey-suffix">GB</span>
+                <label class="control-label hide"
+                       data-ng-class="createmarketImage.imRam.$dirty && (createmarketImage.imRam.$invalid || createmarketImage.imRam.$error.required) ? 'show' : 'hide'"
+                       style="text-align: left;">请输入大于等于1的整数</label>
+                <label class="control-label hide"
+                       data-ng-class="createmarketImage.imRam.$dirty && (!createmarketImage.imRam.$invalid && createmarket.minRamError) ? 'show' : 'hide'"
+                       style="text-align: left;">必须小于最大内存</label>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-2 control-label"><span  class="color-require">*</span >最小硬盘：</label>
+        <div class="col-md-3"
+             data-ng-class="(createmarketImage.imDisk.$dirty && createmarketImage.imDisk.$invalid )?'has-error' : ''">
+            <div class="has-feedback">
+                <input type="text" class="form-control" placeholder="请输入最小硬盘"
+                       data-ng-model="createmarket.imageItem.minDisk" name="imDisk" required
+                       data-ng-pattern='/^(1|\+?[1-9][0-9]*)$/'>
+                <span class="ey-suffix">GB</span>
+                <label class="control-label" style="text-align: left;" ng-show="createmarketImage.imDisk.$dirty &&createmarketImage.imDisk.$error.required">请输入镜像最低磁盘要求，必须≥镜像大小</label>
+                <label class="control-label" style="text-align: left;" ng-show="createmarketImage.imDisk.$dirty && createmarketImage.imDisk.$error.pattern">请输入镜像最低磁盘要求，必须≥镜像大小</label>
+            </div>
+        </div>
+
+
+        <label class="col-sm-2 control-label"><span  class="color-require">*</span >系统盘大小：</label>
+        <div class="col-md-3"
+             data-ng-class="((createmarketImage.sysdiskSize.$dirty && createmarketImage.sysdiskSize.$invalid)||(1*createmarket.imageItem.sysdiskSize < 1*createmarket.imageItem.minDisk)||(1*createmarket.imageItem.sysdiskSize >2000))?'has-error' : ''">
+            <div class="has-feedback">
+                <input type="text" class="form-control" placeholder="请输入系统盘大小"
+                       data-ng-model="createmarket.imageItem.sysdiskSize" name="sysdiskSize" required
+                       data-ng-pattern='/^[1-9][0-9]*$/'>
+                <span class="ey-suffix">GB</span>
+                <label class="control-label" ng-show="createmarketImage.sysdiskSize.$dirty &&createmarketImage.sysdiskSize.$error.required">请输入≥最小硬盘的整数</label>
+                <label class="control-label" ng-show="(createmarketImage.sysdiskSize.$dirty && createmarketImage.sysdiskSize.$error.pattern)">请输入≥最小硬盘的整数</label>
+                <label class="control-label" ng-show="1*createmarket.imageItem.sysdiskSize < 1*createmarket.imageItem.minDisk">请输入≥最小硬盘的整数</label>
+                <label class="control-label" ng-show="1*createmarket.imageItem.sysdiskSize >2000">请输入≤2000的整数</label>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-2 control-label">最大CPU：</label>
+        <div class="col-md-3"
+             data-ng-class="createmarketImage.maxCpuName.$dirty && (createmarketImage.maxCpuName.$invalid||createmarket.maxCpuError)?'has-error' : ''">
+            <div class="has-feedback">
+                <input type="text" class="form-control" placeholder="请输入最大CPU"
+                       data-ng-model="createmarket.imageItem.maxCpu" name="maxCpuName" data-ng-pattern='/^[1-9]\d{0,4}$/' maxlength="5" data-ng-change="createmarket.checkCPU('max')">
+                <span class="ey-suffix">核</span>
+                <label class="control-label" ng-show="createmarketImage.maxCpuName.$dirty && createmarketImage.maxCpuName.$invalid">请输入不超过5位的正整数</label>
+                <label class="control-label hide"
+                       data-ng-class="createmarketImage.maxCpuName.$dirty && (!createmarketImage.maxCpuName.$invalid && createmarket.maxCpuError) ? 'show' : 'hide'"
+                       style="text-align: left;">必须大于最小CPU</label>
+            </div>
+        </div>
+
+        <label class="col-sm-2 control-label">最大内存：</label>
+        <div class="col-md-3"
+             data-ng-class="createmarketImage.maxRamName.$dirty && (createmarketImage.maxRamName.$invalid||createmarket.maxRamError)?'has-error' : ''">
+            <div class="has-feedback">
+                <input type="text" class="form-control" placeholder="请输入最大内存"
+                       data-ng-model="createmarket.imageItem.maxRam" name="maxRamName" data-ng-pattern='/^[1-9]\d{0,5}$/' maxlength="6" data-ng-change="createmarket.checkRAM('max')">
+                <span class="ey-suffix">GB</span>
+                <label class="control-label" ng-show="createmarketImage.maxRamName.$dirty && createmarketImage.maxRamName.$invalid">请输入不超过6位的正整数</label>
+                <label class="control-label hide"
+                       data-ng-class="createmarketImage.maxRamName.$dirty && (!createmarketImage.maxRamName.$invalid && createmarket.maxRamError) ? 'show' : 'hide'"
+                       style="text-align: left;">必须大于最小内存</label>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal-footer" >
+        <button type="button" class="btn btn-primary btn-modal" data-ng-click="commit()"  data-ng-disabled="!createmarketImage.$valid ||createmarket.minRamError||createmarket.maxRamError|| createmarket.minCpuError||createmarket.maxCpuError||(1*createmarket.imageItem.sysdiskSize < 1*createmarket.imageItem.minDisk)||(1*createmarket.imageItem.sysdiskSize>2000)">确  定</button>
+        <button type="button" class="btn btn-default btn-modal" data-ng-click="cancel()">取  消</button>
+    </div>
+</form>

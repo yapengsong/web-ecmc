@@ -1,0 +1,72 @@
+<!-- Form表单 -->
+<form class="form-inline">
+    <div class="form-group">
+        <eayun-search ng-model="vpn.search" options="vpn.options"></eayun-search>
+    </div>
+</form>
+
+<eayun-table data-api="vpn.table.api" data-ajax-source="vpn.table.source" data-param="vpn.table.getParams"
+             data-result="vpn.table.result">
+    <table class="table table-eayun">
+        <thead>
+        <tr>
+            <th>名称</th>
+            <th style="width: 100px;">状态</th>
+            <th>本端网络</th>
+            <th>对端网关</th>
+            <th>客户</th>
+            <th>项目</th>
+            <th>
+                <eayun-select type="btn" class="btn-group btn-group-xs" ng-change="vpn.queryVpnTable()"
+                              data-ng-model="vpn.datacenterId">
+                    <eayun-option value="" text="数据中心（全部）" selected></eayun-option>
+                    <eayun-option value="dc.id" text="{{dc.name}}"
+                                  ng-repeat="dc in vpn.dcList"></eayun-option>
+                </eayun-select>
+            </th>
+            <th class="net-table-cloumn-charge">计费状态</th>
+            <th class="net-table-cloumn-date">创建时间</th>
+            <th style="width: 200px">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr data-ng-repeat="item in vpn.table.result">
+            <td data-ng-bind="item.vpnName.length > 15 ? item.vpnName.substring(0, 14) + '...':item.vpnName"
+                class="click-link"
+                title="{{item.vpnName}}"
+                data-ng-click="vpn.getVpnInfo(item.vpnId)"></td>
+            <td>
+                <span class="state-block"
+                      data-ng-class="vpn.vpnStatusClass[$index] != '' ? vpn.vpnStatusClass[$index] : ''"
+                      ng-init="vpn.vpnStatusClass[$index] = vpn.checkVpnStatus(item,$index)"></span>
+                <span data-ng-bind="::item.vpnStatusStr"></span>
+            </td>
+            <td data-ng-bind="::item.networkName+'('+item.gatewayIp+')'"></td>
+            <td data-ng-bind="::item.peerAddress"></td>
+            <td data-ng-bind="::item.cusName"></td>
+            <td data-ng-bind="::item.prjName"></td>
+            <td data-ng-bind="::item.dcName"></td>
+            <!--<td data-ng-bind="::item.payTypeStr"></td>-->
+            <td class="net-table-charge">
+                <span data-ng-bind="::item.payTypeStr"></span><br>
+                <span data-ng-if="item.payType == 1">
+                    到期时间：<span data-ng-bind="item.endTime|date:'yyyy-MM-dd HH:mm:ss'"></span>
+                </span>
+            </td>
+            <td data-ng-bind="::item.createTime|date:'yyyy-MM-dd HH:mm:ss'"></td>
+            <td>
+                <button class="btn btn-tablemng btn-first"
+                        data-ng-click="vpn.editVpn(item)"
+                        data-ng-disabled="item.chargeState != '0'"
+                        data-ng-if="hasPermission('vir_vpn_update')">编辑
+                </button>
+                <button class="btn btn-tablemng btn-first"
+                        data-ng-click="vpn.delete(item)"
+                        data-ng-if="hasPermission('vir_vpn_delete')">删除
+                </button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <eayun-table-page></eayun-table-page>
+</eayun-table>

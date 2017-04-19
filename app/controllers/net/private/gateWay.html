@@ -1,0 +1,27 @@
+<form class="form-horizontal" name="editGateway" novalidate>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">外部网络：</label>
+
+        <div class="col-sm-8">
+            <eayun-select class="form-control" ng-model="gateway.router.netId" name="netId" required>
+                <eayun-option value="''" text="请选择外部网络" selected></eayun-option>
+                <eayun-option value="external.netId" text="{{::external.netName}}"
+                              ng-repeat="external in gateway.selectList"></eayun-option>
+            </eayun-select>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">路由名称：</label>
+
+        <div class="col-sm-8">
+            <label class="control-label" ng-bind="::gateway.router.routeName"></label>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">路由ID：</label>
+
+        <div class="col-sm-8">
+            <label class="control-label" ng-bind="::gateway.router.routeId"></label>
+        </div>
+    </div>
+</form>

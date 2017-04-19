@@ -1,0 +1,47 @@
+<!-- 当前位置下拉列表 -->
+<div class="title-inline">
+    <div class="form-group">
+        <label class="control-label">当前位置：</label>
+
+        <div class="btn-group" role="group" style="font-size:14px;">角色管理
+        </div>
+    </div>
+</div>
+<div class="panel panel-default clearfix" ng-if="hasPermission('sys_role_query')">
+    <div class="panel-body">
+        <h4>角色管理</h4>
+
+        <form class="form-inline">
+            <button class="btn btn-primary" data-ng-click="role.add()" ng-if="hasPermission('sys_role_create')" style="margin-right: 15px;">
+                <span class="glyphicon glyphicon-plus"></span> 创建角色
+            </button>
+
+        </form>
+
+        <table class="table table-eayun">
+            <thead>
+            <tr>
+                <th>名称</th>
+                <th>描述</th>
+                <th>创建时间</th>
+                <th>是否启用</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="item in role.list | orderBy:'protect':true" ng-if="item.hide != '1'">
+                <td ng-bind="::item.name"></td>
+                <td ng-bind-html="(item.description == null ? '' : item.description) | ellipsis:10"></td>
+                <td ng-bind="::item.createTime | date:'yyyy-MM-dd HH:mm:ss'"></td>
+                <td ng-bind="::item.enableFlag?'已启用':'未启用'"></td>
+                <td>
+                    <button class="btn btn-tablemng btn-first" ng-click="role.edit(item)" ng-if="hasPermission('sys_role_modify')">编辑</button>
+                    <button class="btn btn-tablemng" data-ng-click="role.viewAuthority(item)" ng-if="hasPermission('sys_role_viewAuth')">查看权限</button>
+                    <button class="btn btn-tablemng" data-ng-click="role.setAuthority(item)" ng-if="hasPermission('sys_role_distributeAuth') && item.protect != '1'">配置权限</button>
+                    <button class="btn btn-tabledel" data-ng-click="role.delete(item.id)" ng-if="hasPermission('sys_role_delete')  && item.protect != '1'">删除</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

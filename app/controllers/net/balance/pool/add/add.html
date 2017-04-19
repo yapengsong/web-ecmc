@@ -1,0 +1,105 @@
+<form class="form-horizontal" name="addPool">
+    <!--数据中心-->
+    <div class="form-group">
+
+        <label class="col-sm-3 control-label">数据中心：</label>
+
+        <div class="col-sm-8" data-ng-class="(addPool.dcName.$dirty && addPool.dcName.$invalid) ? 'has-error' : ''">
+            <eayun-select name="dcName" class="form-control"  data-ng-model="add.resourcePool.dcId" placeholder="--请选择数据中心--"
+                          ng-change="add.getProjectListByDcId(add.resourcePool.dcId)" required>
+                <eayun-option value="dc.id" text="{{dc.name}}" data-ng-repeat="dc in add.dcList"></eayun-option>
+            </eayun-select>
+
+            <!--<label class="control-label hide"
+                   data-ng-class="addPool.dcName.$dirty && addPool.dcName.$error.required ? 'show' : 'hide'"
+                   style="text-align: left;">数据中心不能为空</label>-->
+        </div>
+    </div>
+    <!--所属项目-->
+    <div class="form-group" >
+        <label class="col-sm-3 control-label">所属项目：</label>
+        <div class="col-sm-8" data-ng-class="(addPool.prjName.$dirty && addPool.prjName.$invalid) ? 'has-error' : ''">
+            <eayun-select name="prjName" class="form-control"  data-ng-model="add.resourcePool.prjId"  data-ng-change="add.getSubNetListByPrjId(add.resourcePool.prjId)"  placeholder="--请选择项目--" required>
+                <eayun-option value="prj.projectId" text="{{prj.prjName}}" data-ng-repeat="prj in add.prjList"></eayun-option>
+            </eayun-select>
+
+            <!--<label class="control-label hide"
+                   data-ng-class="addPool.prjName.$dirty && addPool.prjName.$error.required ? 'show' : 'hide'"
+                   style="text-align: left;">项目不能为空</label>-->
+        </div>
+    </div>
+
+    <div class="form-group has-feedback" >
+        <label class="col-sm-3 control-label">名称：</label>
+        <div class="col-sm-8" data-ng-class="(addPool.name.$dirty && (addPool.name.$invalid ||add.checkName)) ? 'has-error' : ''">
+            <input type="text" class="form-control" name="name" maxlength="20" data-ng-model="add.resourcePool.poolName" placeholder="请输入名称"
+                   ng-change="add.checkPoolName(add.resourcePool)"  ng-pattern='/^[\u4e00-\u9fa5a-zA-Z0-9]([\u4e00-\u9fa5_a-zA-Z0-9\s]{0,18}[\u4e00-\u9fa5a-zA-Z0-9]){0,1}$/' required>
+            <label class="control-label" ng-show="addPool.name.$dirty && addPool.name.$valid  && add.checkName">资源池名称已存在</label>
+            <label class="control-label" ng-if="addPool.name.$dirty && addPool.name.$invalid">请输入1-20位字符,支持数字、中英文、下划线、空格</label>
+        </div>
+    </div>
+    <!--提供者-->
+    <div class="form-group">
+        <label class="col-sm-3 control-label">提供者：</label>
+        <div class="col-sm-8" data-ng-class="(addPool.poolProvider.$dirty && addPool.poolProvider.$invalid) ? 'has-error' : ''">
+            <eayun-select name="poolProvider" class="form-control" data-ng-model="add.resourcePool.poolProvider" placeholder="--请选择提供者--" required>
+                <eayun-option value="'haproxy'" text="haproxy(默认值)"></eayun-option>
+            </eayun-select>
+
+            <label class="control-label hide"
+                   data-ng-class="addPool.poolProvider.$dirty && addPool.poolProvider.$error.required ? 'show' : 'hide'"
+                   style="text-align: left;">提供者不能为空</label>
+        </div>
+    </div>
+
+    <!--子网-->
+    <div class="form-group">
+        <label class="col-sm-3 control-label">子网：</label>
+        <div class="col-sm-8" data-ng-class="(addPool.subnetId.$dirty && addPool.subnetId.$invalid) ? 'has-error' : ''">
+            <eayun-select name="subnetId" class="form-control"  data-ng-model="add.resourcePool.subnetId" placeholder="--请选择子网--" required>
+                <eayun-option value="sub.subnetId" text="{{sub.subnetName}}" data-ng-repeat="sub in add.subList"></eayun-option>
+            </eayun-select>
+
+            <!--<label class="control-label hide"
+                   data-ng-class="addPool.subnetId.$dirty && addPool.subnetId.$error.required ? 'show' : 'hide'"
+                   style="text-align: left;">子网不能为空</label>-->
+        </div>
+    </div>
+    <!--协议-->
+    <div class="form-group">
+        <label class="col-sm-3 control-label">协议：</label>
+        <div class="col-sm-8" data-ng-class="(addPool.poolProtocol.$dirty && addPool.poolProtocol.$invalid) ? 'has-error' : ''">
+            <eayun-select name="poolProtocol" class="form-control"  data-ng-model="add.resourcePool.poolProtocol" placeholder="--请选择一个协议--" required>
+                <eayun-option value="'HTTP'" text="HTTP"></eayun-option>
+                <eayun-option value="'HTTPS'" text="HTTPS"></eayun-option>
+                <eayun-option value="'TCP'" text="TCP"></eayun-option>
+            </eayun-select>
+
+            <!--<label class="control-label hide"
+                   data-ng-class="addPool.poolProtocol.$dirty && addPool.poolProtocol.$error.required ? 'show' : 'hide'"
+                   style="text-align: left;">协议不能为空</label>-->
+        </div>
+    </div>
+    <!--负载均衡方式-->
+    <div class="form-group">
+        <label class="col-sm-3 control-label">负载均衡方式：</label>
+        <div class="col-sm-8" data-ng-class="(addPool.lbMethod.$dirty && addPool.lbMethod.$invalid) ? 'has-error' : ''">
+            <eayun-select name="lbMethod" class="form-control"  data-ng-model="add.resourcePool.lbMethod" placeholder="--请选择一个负载均衡方式--" required>
+                <eayun-option value="'ROUND_ROBIN'" text="轮询"></eayun-option>
+                <eayun-option value="'LEAST_CONNECTIONS'" text="最小连接数"></eayun-option>
+                <eayun-option value="'SOURCE_IP'" text="源地址"></eayun-option>
+            </eayun-select>
+
+           <!-- <label class="control-label hide" data-ng-class="addPool.lbMethod.$dirty && addPool.lbMethod.$error.required ? 'show' : 'hide'"
+                   style="text-align: left;">负载均衡方式不能为空</label>-->
+        </div>
+    </div>
+</form>
+
+<!--
+<div class="modal-footer">
+    <button type="button" class="btn btn-primary btn-modal" data-ng-click="commit()" style="margin-left: 15px;"
+            data-ng-disabled="addPool.$invalid">提 交
+    </button>
+    <button type="button" class="btn btn-default btn-modal" data-ng-click="cancel()" style="margin-left: 15px;">取 消</button>
+</div>-->

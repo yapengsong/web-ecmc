@@ -1,0 +1,16 @@
+<!-- 当前位置下拉列表 -->
+<div class="title-inline">
+    <div class="form-group">
+        <label class="control-label">当前位置：</label>
+        <div class="btn-group" role="group" style="font-size:14px;">对象存储
+        </div>
+    </div>
+</div>
+<!-- 导航页签 -->
+<tabs class="nav-tabs-underline">
+    <tab-underline ui-sref-active="active" data-ui-sref="app.obs.obsoverview">对象存储总览</tab-underline>
+    <tab-underline ui-sref-active="active" data-ui-sref="app.obs.obscusoverview">客户详情</tab-underline>
+    <tab-underline ui-sref-active="active" data-ui-sref="app.obs.cdn">CDN服务</tab-underline>
+</tabs>
+<!-- 子页面展示区 -->
+<div ui-view=""></div>

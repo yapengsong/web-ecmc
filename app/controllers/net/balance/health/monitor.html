@@ -1,0 +1,60 @@
+<form class="form-inline">
+    <div class="form-group">
+        <button class="btn btn-primary"
+                data-ng-click="monitor.createHealthMonitor()"
+                style="margin-right: 15px;"
+                ng-if="hasPermission('vir_loadbalance_hm_c')">
+            <span class="glyphicon glyphicon-plus"></span> 创建健康检查
+        </button>
+    </div>
+    <div class="form-group">
+        <eayun-search ng-model="monitor.search" options="monitor.options"></eayun-search>
+    </div>
+</form>
+
+<eayun-table data-api="monitor.table.api" data-ajax-source="monitor.table.source" data-param="monitor.table.getParams"
+             data-result="monitor.table.result"
+             ng-if="hasPermission('vir_loadbalance_hm_r')">
+    <table class="table table-eayun">
+        <thead>
+        <tr>
+            <th class="col-sm-1">名称</th>
+            <th class="col-sm-3">参数</th>
+            <th class="col-sm-1">URL</th>
+            <th >监控负载均衡器数量</th>
+            <th class="col-sm-1">客户</th>
+            <th class="col-sm-1">所属项目</th>
+            <th class="col-sm-1">
+                <eayun-select type="btn" class="btn-group btn-group-xs" data-ng-model="monitor.dcId"
+                              data-ng-change="monitor.refreshTable()">
+                    <eayun-option value="''" text="数据中心（全部）" selected></eayun-option>
+                    <eayun-option value="dc.id" text="{{dc.name}}"
+                                  ng-repeat="dc in monitor.dcList"></eayun-option>
+                </eayun-select></th>
+            <th class="col-sm-3" style="white-space: nowrap">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr data-ng-repeat="mnt in monitor.table.result">
+            <!--<td data-ng-bind="::mnt.ldmId"></td>-->
+            <td data-ng-bind="::mnt.ldmName"
+                data-ng-click="monitor.showDetail(mnt)"
+                class="color-info pointer" ></td>
+            <td data-ng-bind="::(mnt.ldmType + '间隔：' + mnt.ldmDelay + '秒      重试：'+ mnt.maxRetries + '次     超时：' + mnt.ldmTimeout + '秒      ')"></td>
+            <td title={{mnt.urlPath}} data-ng-bind="::(!mnt.urlPath?'----':(mnt.urlPath.length>50?mnt.urlPath.substr(0,30)+'...':mnt.urlPath))"></td>
+            <td data-ng-bind="::mnt.poolNum"></td>
+            <td data-ng-bind="::mnt.cusOrg"></td>
+            <td data-ng-bind="::mnt.prjName"></td>
+            <td data-ng-bind="::mnt.dcName"></td>
+            <td>
+                <button class="btn btn-tablemng btn-first"
+                        data-ng-click="monitor.editHealthMonitor(mnt)"
+                        ng-if="hasPermission('vir_loadbalance_hm_u')">编辑</button>
+                <button class="btn btn-tabledel" data-ng-click="monitor.deleteHealthMonitor(mnt)"
+                        ng-if="hasPermission('vir_loadbalance_hm_d')">删除</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <eayun-table-page></eayun-table-page>
+</eayun-table>

@@ -1,0 +1,74 @@
+<div class="form-inline">
+    <!--<button type="button" class="btn btn-primary" data-ng-click="volume.create()" style="margin-right: 15px;"  data-ng-if="hasPermission('vir_volume_create')">
+        <span class="glyphicon glyphicon-plus"></span> 创建云硬盘
+    </button>-->
+
+    <eayun-search data-ng-model="volume.search" options="volume.options"></eayun-search>
+</div>
+<eayun-auto-refresh interval="5000" refresh="volume.refresh"></eayun-auto-refresh>
+<eayun-table data-api="volume.table.api" data-ajax-source="volume.table.source" data-param="volume.table.getParams"
+             data-result="volume.table.result">
+    <table class="table table-eayun">
+        <thead>
+        <tr>
+            <th>云硬盘名称</th>
+            <th style="width: 100px;">状态</th>
+            <th>硬盘属性</th>
+            <th>容量</th>
+            <th>挂载的云主机</th>
+            <th>
+                <eayun-select type="btn" class="btn-group btn-group-xs" data-ng-model="volume.dcId" data-ng-change="volume.query()">
+                    <eayun-option value="" text="数据中心（全部）" selected></eayun-option>
+                    <eayun-option value="dc.id" text="{{dc.name}}" data-ng-repeat="dc in volume.dcList"></eayun-option>
+                </eayun-select>
+            </th>
+            <th>项目</th>
+            <th>客户</th>
+            <th class="vm-table-cloumn-charge">计费状态</th>
+            <th class="vm-table-cloumn-date">创建时间</th>
+            <th style="width: 200px;">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr data-ng-repeat="disk in volume.table.result">
+            <td class="click-link" data-ng-bind="disk.volName.length>20?disk.volName.substring(0,19)+'...':disk.volName"  title="{{disk.volName}}" data-ui-sref="app.cloudhost.volumedetail({volId: disk.volId})"></td>
+            <td>
+                <span class="state-block"
+                      data-ng-class="volume.volumeStatusClass[$index] != '' ? volume.volumeStatusClass[$index] : ''"
+                      ng-init="volume.volumeStatusClass[$index] = volume.checkVolStatus(disk,$index)"></span>{{disk.statusForDis}}
+                <!--{{disk.volStatus | statusWatch:volume.watchStatus | statusCn}}-->
+            </td>
+            <td>{{'1'==disk.volBootable?'系统盘':'数据盘'}}</td>
+            <td>{{disk.volSize}}GB</td>
+            <td class="click-link" data-ng-click="volume.goToVm(disk.vmId)">
+                {{'null'!=disk.vmName?(disk.vmName.length>10?disk.vmName.substring(0,10)+'...':disk.vmName):''}}
+            </td>
+            <td data-ng-bind="disk.dcName"></td>
+            <td>{{(null!=disk.prjName&&'null'!=disk.prjName)?disk.prjName:''}}</td>
+            <td>{{'null'!=disk.cusOrg?disk.cusOrg:''}}</td>
+            <td  ng-if="disk.payType=='1'" class="vm-table-charge">
+                {{disk.payType=='1'?'包年包月':''}}<br>
+                {{disk.payType=='1'?'到期时间：'+(disk.endTime|date:'yyyy-MM-dd HH:mm:ss'):''}}
+            </td>
+            <td  ng-if="disk.payType!='1'" class="vm-table-charge">
+                {{disk.payType!='1'?'按需付费':''}}
+            </td>
+            <td data-ng-bind="disk.createTime|date:'yyyy-MM-dd HH:mm:ss':''"></td>
+            <td ng-if="(hasPermission('vir_volume_cresnap')||hasPermission('vir_volume_bind')||hasPermission('vir_volume_debind')||hasPermission('vir_volume_delete'))&&'1'!=disk.volBootable">
+                <button class="btn btn-tablemng btn-first"
+                        data-ng-click="volume.bindVolume(disk)"
+                        data-ng-if="disk.volStatus != 'IN-USE' && hasPermission('vir_volume_bind')"
+                        data-ng-disabled="disk.volStatus != 'AVAILABLE' || disk.chargeState!='0'">挂载</button>
+                <button class="btn btn-tablemng btn-first"
+                        data-ng-click="volume.debindVolume(disk)"
+                        data-ng-if="disk.volStatus == 'IN-USE' && hasPermission('vir_volume_debind')">解绑</button>
+                <button class="btn btn-tabledel"
+                        data-ng-click="volume.deleteVolume(disk)" data-ng-disabled="disk.volStatus == 'CREATING'"
+                        data-ng-if="hasPermission('vir_volume_delete')">删除</button>
+            </td>
+            <td  ng-if="(!hasPermission('vir_volume_cresnap')&&!hasPermission('vir_volume_bind')&&!hasPermission('vir_volume_debind')&&!hasPermission('vir_volume_delete'))||'1'==disk.volBootable">----</td>
+        </tr>
+        </tbody>
+    </table>
+    <eayun-table-page></eayun-table-page>
+</eayun-table>

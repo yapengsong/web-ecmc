@@ -1,0 +1,25 @@
+.payables .form-group>span:first-child{
+    font-size:16px;
+    display: inline-block;
+    width: 100px;
+    padding-right:10px;
+    text-align: right;
+}
+
+.payables .form-group>span:nth-child(2){
+    display: inline-block;
+    width: 150px;
+    text-align: left;
+}
+
+.actual-payments span{
+    font-weight: bold;
+}
+
+.actual-payments span:last-child {
+    font-size: 20px;
+}
+
+.actual-payments span:last-child span {
+    font-size: 30px;
+}

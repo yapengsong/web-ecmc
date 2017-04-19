@@ -1,0 +1,41 @@
+<form class="form-inline">
+    <a class="btn btn-primary" data-ng-click="rule.add()" style="margin-right: 15px;" ng-if="hasPermission('mon_alarm_create')">
+        <span class="glyphicon glyphicon-plus"></span> 创建报警规则
+    </a>
+
+    <eayun-search ng-model="rule.search" options="rule.options"></eayun-search>
+</form>
+<eayun-table data-api="rule.ruleTable.api" data-ajax-source="rule.ruleTable.source" data-param="rule.ruleTable.getParams"
+             data-result="rule.ruleTable.result">
+    <table class="table table-eayun">
+        <thead>
+        <tr>
+            <th>名称</th>
+            <th>触发条件</th>
+            <th class="col-sm-1">
+                <eayun-select type="btn" class="btn-group btn-group-xs" data-ng-model="rule.query.cpu" ng-change="rule.queryTable()">
+                    <eayun-option value="''" text="监控项（全部）" selected></eayun-option>
+                    <eayun-option value="monitorItem.nodeId" text="{{monitorItem.name}}" ng-repeat="monitorItem in rule.monitorItemList"></eayun-option>
+                </eayun-select>
+            </th>
+            <th class="col-sm-1">报警对象数量</th>
+            <th>最后修改时间</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr data-ng-repeat="warningRule in rule.ruleTable.result">
+            <td data-ng-class="hasPermission('mon_alarm')?'click-link':''" data-ng-click="rule.detail(warningRule.id)" ng-bind="::warningRule.name"></td>
+            <td ng-bind-html="::warningRule.triggerCondition  | ellipsis:50"></td>
+            <td ng-bind="::warningRule.monitorItemName"></td>
+            <td ng-bind="::(warningRule.monitorItemName == 'API'?'N':warningRule.alarmObjectNumber)"></td>
+            <td ng-bind="::warningRule.modifyTime|date:'yyyy-MM-dd HH:mm:ss'"></td>
+            <td>
+                <button class="btn btn-tablemng btn-first" data-ng-click="rule.copy(warningRule)" ng-if="hasPermission('mon_alarm_create')">复制</button>
+                <button class="btn btn-tabledel" data-ng-click="rule.delete(warningRule)" ng-if="hasPermission('mon_alarm_delete')">删除</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <eayun-table-page></eayun-table-page>
+</eayun-table>

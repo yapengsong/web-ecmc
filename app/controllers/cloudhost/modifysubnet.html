@@ -1,0 +1,61 @@
+<form class="form-horizontal" name="myForm" novalidate>
+    <div class="form-group has-feedback">
+        <label class="col-sm-3 control-label">所在私有网络：</label>
+
+        <div class="col-sm-6">
+            <label class="control-label" data-ng-bind="::modifySub.vmModel.netName"></label>
+        </div>
+    </div>
+
+    <div class="form-group has-feedback">
+        <label class="col-sm-3 control-label">受管子网：</label>
+        <div class="col-sm-6">
+            <eayun-select class="form-control" name="subnetId" data-ng-model="modifySub.vmModel.subnetId"
+                          data-ng-change="modifySub.changeSubnet()" required show-format="modifySub.substrSubnetName(text)">
+                <eayun-option data-ng-repeat="subnet in modifySub.subnetList"
+                              value="subnet.subnetId" text="{{subnet.subnetName+'('+subnet.cidr+')'}}">
+                </eayun-option>
+                <eayun-option value="-1" text = "不加入"></eayun-option>
+            </eayun-select>
+        </div>
+        <div class="form-group  cancel-padding" data-ng-class="modifySub.canChangeVmIpFlag ? 'has-error' : ''" >
+            <div class="label-tip-error">
+                <label class="control-label" data-ng-if="modifySub.canChangeVmIpFlag">资源已被占用，云主机需要解绑公网IP，以及解除同负载均衡和端口映射的关联关系</label>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group has-feedback">
+        <label class="col-sm-3 control-label">自管子网：</label>
+
+        <div class="col-sm-6">
+            <eayun-select class="form-control" name="selfSubnetId" data-ng-model="modifySub.vmModel.selfSubnetId" required show-format="modifySub.substrSubnetName(text)">
+                <eayun-option data-ng-repeat="subnet in modifySub.selfSubnetList"
+                              value="subnet.subnetId" text="{{subnet.subnetName+'('+subnet.cidr+')'}}">
+                </eayun-option>
+                <eayun-option value="-1" text = "不加入"></eayun-option>
+            </eayun-select>
+        </div>
+        <div class="form-group  cancel-padding" data-ng-class="(modifySub.vmModel.subnetId =='-1' && modifySub.vmModel.selfSubnetId =='-1') ? 'has-error':''" >
+            <div class="label-tip-error">
+                <label class="control-label">受管子网与自管子网至少加入一个</label><br>
+            </div>
+        </div>
+    </div>
+    <div class="form-group has-feedback">
+        <span style="margin: -10px 20px 0px 20px;">注意：受管子网用于各子网间通信以及与公网通信，自管子网仅用于子网内各主机内部通信。云主机同时加入</span><br>
+        <span style="margin: -10px 20px 0px 20px;">受管和自管子网后，若无法正常上网或IP地址无法自动获取展示，<span class="click-link"><a href="http://175.25.23.126/document/faq/ech.html" target="_blank">点击此处查看解决办法</a></span>。</span><br>
+    </div>
+
+    <!-- 按钮区域 -->
+    <div class="modal-footer">
+        <button type="button" class="btn btn-primary btn-modal" data-ng-click="modifySub.commit()"
+                data-ng-disabled="!myForm.$valid
+                               ||(modifySub.vmModel.subnetId =='-1' && modifySub.vmModel.selfSubnetId == '-1')
+                               ||modifySub.canChangeVmIpFlag || modifySub.checkBtn">
+            确 定
+        </button>
+        <button type="button" class="btn btn-default btn-modal" data-ng-click="cancel()">取 消</button>
+    </div>
+
+</form>

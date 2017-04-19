@@ -1,0 +1,59 @@
+<form class="form-inline">
+    <div class="form-group">
+        <button class="btn btn-primary" style="margin-right: 15px;"  data-ng-click="member.createMember()">
+            <span class="glyphicon glyphicon-plus"></span> 创建成员
+        </button>
+    </div>
+    <div class="form-group">
+        <eayun-search ng-model="member.search" options="member.options"></eayun-search>
+    </div>
+</form>
+
+<eayun-table data-api="member.table.api" data-ajax-source="member.table.source" data-param="member.table.getParams"
+             data-result="member.table.result">
+    <table class="table table-eayun">
+        <thead>
+        <tr>
+            <th class="col-sm-1">名称</th>
+            <th class="col-sm-1">状态</th>
+            <th class="col-sm-1">IP地址</th>
+            <th class="col-sm-1">协议端口</th>
+            <th class="col-sm-1">资源池</th>
+            <th class="col-sm-1">权重</th>
+            <th class="col-sm-1">客户</th>
+            <th class="col-sm-1">项目</th>
+            <th >
+                <eayun-select type="btn" class="btn-group btn-group-xs" data-ng-model="member.dcId"
+                              data-ng-change="member.refreshTable()">
+                    <eayun-option value="''" text="数据中心（全部）" selected></eayun-option>
+                    <eayun-option value="dcResource.id" text="{{dcResource.name}}"
+                                  ng-repeat="dcResource in member.dcResourceList"></eayun-option>
+                </eayun-select>
+            </th>
+            <th class="col-sm-3">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr data-ng-repeat="memberResult in member.table.result">
+            <td  ng-bind="::memberResult.vmName" style="word-break:break-all; word-wrap:break-all;"></td>
+            <td>
+                <span class="state-block"
+                      data-ng-class="member.memberStatusClass[$index] != '' ? member.memberStatusClass[$index] : ''"
+                      ng-init="member.memberStatusClass[$index] = member.getMemberStatus(memberResult,$index)"></span>{{memberResult.memberStatus}}
+            </td>
+            <td ng-bind="::memberResult.memberAddress"></td>
+            <td ng-bind="::memberResult.protocolPort"></td>
+            <td ng-bind="::memberResult.poolName=='null'?'':memberResult.poolName"></td>
+            <td ng-bind="::memberResult.memberWeight"></td>
+            <td ng-bind="::memberResult.cusOrg=='null'?'':memberResult.cusOrg"></td>
+            <td ng-bind="::memberResult.projectName=='null'?'':memberResult.projectName"></td>
+            <td ng-bind="::memberResult.dcName=='null'?'':memberResult.dcName"></td>
+            <td>
+                <button class="btn btn-tablemng btn-first" data-ng-click="member.editMember(memberResult)">编辑</button>
+                <button class="btn btn-tabledel" data-ng-click="member.deleteMember(memberResult)">删除</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <eayun-table-page></eayun-table-page>
+</eayun-table>

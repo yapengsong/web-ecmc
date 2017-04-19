@@ -1,0 +1,64 @@
+<h4>服务器</h4>
+<form class="form-inline"ng-submit="physicalServer.doSearch()">
+
+    <button type="button" class="btn btn-primary"  ng-click="physicalServer.addServer()" style="margin-right:15px"data-ng-disabled="!hasPermission('phy_server_create')">
+        <span class="glyphicon glyphicon-plus"></span> 添加服务器
+    </button>
+
+    <div class="input-group has-feedback search-group">
+        <eayun-select type="btn" class="input-group-btn" data-ng-model="physicalServer.type">
+            <eayun-option value="1" text="名称" selected></eayun-option>
+            <eayun-option value="2" text="型号"></eayun-option>
+            <eayun-option value="3" text="机柜"></eayun-option>
+        </eayun-select>
+        <input type="text" class="form-control" ng-model="physicalServer.serverName">
+        <span class="form-control-feedback pointer search"  ng-click="physicalServer.doSearch()"></span>
+    </div>
+</form>
+
+<form class="form-inline form-count">
+
+    <eayun-table data-api="physicalServer.myTable.api" data-ajax-source="physicalServer.myTable.source" data-param="physicalServer.myTable.getParams"
+                 data-result="physicalServer.myTable.result">
+        <table class="table table-eayun" >
+            <thead>
+            <tr>
+
+                <th >服务器名称</th>
+
+                <th >运行云主机数量</th>
+                <th >IP</th>
+                <th >型号</th>
+                <th >所属机柜</th>
+                <th  >
+                <eayun-select type="btn" class="btn-group btn-group-xs" data-ng-model="physicalServer.dcId"
+                              data-ng-change="physicalServer.doSearch()">
+                    <eayun-option value="''" text="数据中心（全部）" selected></eayun-option>
+                    <eayun-option value="dcList.id" text="{{dcList.name}}"
+                                  ng-repeat="dcList in physicalServer.dcList"></eayun-option>
+                </eayun-select>
+                </th>
+                <th >操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="ps in physicalServer.myTable.result" data-ng-if="hasPermission('phy_server_query')">
+            <!--<tr>-->
+                <td class="click-link" ng-click="physicalServer.detail(ps.id)" ng-bind-html="ps.name.length>45?ps.name.substring(0,15)+'...':ps.name"title="{{ps.name}}"></td>
+
+                <td ng-bind="ps.isComputenode=='0'?ps.vmNumber:'----'"></td>
+                <td ng-bind="ps.serverInnetIp"></td>
+                <td ng-bind-html="ps.dcServerModelName |ellipsis:7"></td>
+                <td ng-bind="ps.cabinetName"></td>
+                <td ng-bind="ps.datacenterName"></td>
+                <td>
+                    <button class="btn btn-tablemng" ng-click="physicalServer.editServer(ps.id)"data-ng-show="hasPermission('phy_server_modify')">编辑</button>
+                    <button class="btn btn-tabledel" ng-click="physicalServer.deleteServer(ps.id)" data-ng-show="ps.isComputenode!='0'" data-ng-disabled="!hasPermission('phy_server_delete')">删除</button>
+                    <button class="btn btn-tabledel" ng-click="physicalServer.deleteServer(ps.id)" data-ng-show="ps.isComputenode=='0'" data-ng-disabled="true">删除</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <eayun-table-page></eayun-table-page>
+    </eayun-table>
+</form>

@@ -1,0 +1,18 @@
+<div>
+    <ng-form name="editVolumeNameTable" novalidate>
+        <div class="col-md-10" data-ng-class="detail.volNameEditable&&(editVolumeNameTable.volName.$dirty && editVolumeNameTable.volName.$invalid) ? 'has-error' : ''" style="padding-left: 0px;">
+            <input class="form-control" name="volName" type="text" maxlength="20" placeholder="请输入名称" data-ng-model="detail.volEditModel.sgName" ng-pattern='/^[\u4e00-\u9fa5a-zA-Z0-9]([\u4e00-\u9fa5_a-zA-Z0-9\s]{0,18}[\u4e00-\u9fa5a-zA-Z0-9]){0,1}$/'  required data-ng-change= "detail.checkVolumeName(value)">
+            <label class="control-label" ng-show="editVolumeNameTable.volName.$dirty && editVolumeNameTable.volName.$valid && detail.checkName">安全组名称已存在</label>
+            <label class="control-label" ng-if="editVolumeNameTable.volName.$dirty && editVolumeNameTable.volName.$invalid">请输入1-20位字符,支持数字、中英文、下划线、空格</label>
+
+        </div>
+	<span class="badge hide" style="margin-left:10px;background-color:green;color:#ffffff;" data-ng-class="detail.volNameEditable&&(editVolumeNameTable.volName.$dirty&&(editVolumeNameTable.volName.$valid))?'show':'hide'" data-ng-click="detail.saveEdit('volName')">
+      	<span class="glyphicon glyphicon-ok">
+     	</span>
+    </span>
+	<span class="badge" data-ng-click="detail.cancleEdit('volName')">
+      	<span class="glyphicon glyphicon-remove">
+      	</span>
+    </span>
+    </ng-form>
+</div>

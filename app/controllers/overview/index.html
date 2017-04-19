@@ -1,0 +1,13 @@
+<!-- 导航页签 -->
+<tabs class="nav-tabs-underline">
+    <tab-underline ui-sref-active="active" ng-show="hasPermission('ecmc_overview_dcList')" data-ui-sref="app.overview.res">资源总览</tab-underline>
+    <tab-underline ui-sref-active="active" ng-show="hasPermission('ecmc_overview_prjList')" data-ui-sref="app.overview.project">项目概况</tab-underline>
+    <tab-underline ui-sref-active="active" ng-show="hasPermission('ecmc_overview_cus')" data-ui-sref="app.overview.customer">客户统计</tab-underline>
+</tabs>
+
+<!-- 子页面展示区 -->
+<div class="panel panel-default clearfix">
+    <div class="panel-body">
+        <div ui-view=""></div>
+    </div>
+</div>

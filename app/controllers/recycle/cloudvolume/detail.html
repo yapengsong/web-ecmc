@@ -1,0 +1,96 @@
+<div class="details" style="font-size: 12px;">
+    <form class="row" name="myForm">
+        <div class="col-lg-12">
+
+            <div class="details-group">
+                <div class="details-name">所属数据中心：</div>
+                <div class="details-value">
+                    {{volumedetail.vmModel.dcName}}
+                </div>
+            </div>
+
+            <div class="details-group">
+                <div class="details-name">所属项目：</div>
+                <div class="details-value">
+                    {{volumedetail.vmModel.prjName}}
+                </div>
+            </div>
+
+            <div class="details-group">
+                <div class="details-name">所属客户：</div>
+                <div class="details-value">
+                    {{volumedetail.vmModel.cusOrg}}
+                </div>
+            </div>
+
+            <div class="details-group">
+                <div class="details-name">云硬盘ID：</div>
+                <div class="details-value">
+                    <span >{{volumedetail.vmModel.volId}}</span>
+                </div>
+            </div>
+
+            <div class="details-group">
+                <div class="details-name">云硬盘名称：</div>
+                <div class="details-value" title="{{volumedetail.vmModel.volName}}">
+                    {{volumedetail.vmModel.volName.length > 20 ? volumedetail.vmModel.volName.substring(0, 19) + '...' : volumedetail.vmModel.volName}}
+                </div>
+            </div>
+
+            <div class="details-group">
+                <div class="details-name">状态：</div>
+
+                <div class="details-value" data-ng-if="volumedetail.vmModel.isVolume == '1' || volumedetail.vmModel.isDeleted == '2'">
+                    <span class="state-block" data-ng-class="volumedetail.volStatusClass != '' ? volumedetail.volStatusClass : ''"></span>
+                    {{(volumedetail.vmModel.volStatus== 'DELETING' && '2' == volumedetail.vmModel.isDeleted) ? '删除中' : '已删除'}}
+                </div>
+                <div class="details-value" data-ng-if="volumedetail.vmModel.isVolume == '0' && volumedetail.vmModel.isDeleted != '2'">
+                    <span class="state-block" data-ng-class="volumedetail.volStatusClass1 != '' ? volumedetail.volStatusClass1 : ''"></span>
+                    {{volumedetail.vmModel.statusForDis}}
+                </div>
+            </div>
+
+
+            <div class="details-group">
+                <div class="details-name">云硬盘属性：</div>
+                <div class="details-value">
+                    {{volumedetail.vmModel.volBootable=='1'?'系统盘':'数据盘'}}
+                </div>
+            </div>
+
+            <div class="details-group">
+                <div class="details-name">容量：</div>
+                <div class="details-value" >
+                    {{volumedetail.vmModel.volSize}}GB
+                </div>
+            </div>
+
+            <div class="details-group">
+                <div class="details-name">挂载的云主机：</div>
+                <div class="details-value" >
+                    {{volumedetail.vmModel.vmName == 'null'?'--':volumedetail.vmModel.vmName}}
+                </div>
+            </div>
+
+
+
+            <div class="details-group">
+                <div class="details-name">创建时间：</div>
+                <div class="details-value">
+                    {{volumedetail.vmModel.createTime|date:'yyyy-MM-dd HH:mm:ss'}}
+                </div>
+            </div>
+
+            <div class="details-group">
+                <div class="details-name">删除时间：</div>
+                <div class="details-value">
+                    {{volumedetail.vmModel.deleteTime|date:'yyyy-MM-dd HH:mm:ss'}}
+                </div>
+            </div>
+
+        </div>
+    </form>
+</div>
+<div class="modal-footer" >
+    <button class="btn btn-default btn-modal" ng-click="cancel()">关闭</button>
+</div>

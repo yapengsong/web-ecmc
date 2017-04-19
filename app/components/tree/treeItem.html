@@ -1,0 +1,8 @@
+<i ng-click="itemExpended(item, $event);" class="pointer" ng-class="getItemIcon(item)"></i>
+<input type="checkbox" ng-model="item.$$isChecked" class="check-box" ng-if="canChecked"
+       ng-change="warpCallback('itemCheckedChanged', item, $event)">
+<span class='pointer' ng-click="warpCallback('itemClicked', item, $event);" ng-bind="item[textField]"></span>
+<ul ng-if="!isLeaf(item)" ng-show="item.$$isExpend">
+    <li ng-repeat="item in item.children" ng-include="itemTemplateUrl || 'components/tree/treeItem.html'">
+    </li>
+</ul>

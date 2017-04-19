@@ -1,0 +1,104 @@
+<form class="form-horizontal" name="myForm">
+    <div class="form-group">
+
+        <label class="col-sm-3 control-label">数据中心：</label>
+
+        <div class="col-sm-8" data-ng-class="(myForm.dcName.$dirty && myForm.dcName.$invalid) ? 'has-error' : ''">
+            <eayun-select name="dcName" class="form-control" data-ng-model="add.vip.dcId" placeholder="请选择数据中心"
+                          ng-change="add.getProjectListByDcId(add.vip.dcId)" required>
+                <eayun-option value="dc.id" text="{{dc.name}}" data-ng-repeat="dc in add.dcList"></eayun-option>
+            </eayun-select>
+
+            <label class="control-label hide"
+                   data-ng-class="myForm.dcName.$dirty && myForm.dcName.$error.required ? 'show' : 'hide'"
+                   style="text-align: left;">数据中心不能为空</label>
+        </div>
+    </div>
+
+    <div class="form-group" >
+        <label class="col-sm-3 control-label">所属项目：</label>
+
+        <div class="col-sm-8" data-ng-class="(myForm.prjName.$dirty && myForm.prjName.$invalid) ? 'has-error' : ''">
+            <eayun-select name="prjName" class="form-control" data-ng-model="add.vip.prjId" placeholder="请选择所属项目"
+                          data-ng-change="add.getPoolListByPrjId(add.vip.dcId, add.vip.prjId)" required>
+                <eayun-option value="prj.projectId" text="{{prj.prjName}}"
+                              data-ng-repeat="prj in add.prjList"></eayun-option>
+            </eayun-select>
+
+            <!-- js验证项目选择是否为空 -->
+            <label class="control-label"
+                   ng-show="myForm.prjName.$dirty && myForm.prjName.$error.required">项目不能为空</label>
+        </div>
+    </div>
+
+    <!-- 超时重复次数(1-10) -->
+    <div class="form-group has-feedback">
+        <label class="col-sm-3 control-label">资源池：</label>
+
+        <div class="col-sm-8" data-ng-class="(myForm.poolName.$dirty && myForm.poolName.$invalid) ? 'has-error' : ''">
+            <eayun-select name="poolName" class="form-control" data-ng-model="add.vip.poolName"
+                          placeholder="请选择资源池"
+                          data-ng-change="add.setSubnetId(add.poolList)"
+                          required>
+                <eayun-option value="pool.poolId" text="{{pool.poolName}}"
+                              data-ng-repeat="pool in add.poolList"></eayun-option>
+            </eayun-select>
+            <label class="control-label"
+                   ng-show="myForm.poolName.$dirty && myForm.poolName.$error.required">资源池不能为空</label>
+        </div>
+    </div>
+
+    <!--名称 -->
+    <div class="form-group">
+        <label class="col-sm-3 control-label">名称：</label>
+
+        <div class="col-sm-8"
+             data-ng-class="(myForm.name.$dirty && (myForm.name.$invalid||add.checkName)) ? 'has-error' : ''">
+            <input type="text" class="form-control" maxlength="20" name="name" data-ng-model="add.vip.vipName"
+                   ng-pattern='/^[\u4e00-\u9fa5a-zA-Z0-9]([\u4e00-\u9fa5_a-zA-Z0-9\s]{0,18}[\u4e00-\u9fa5a-zA-Z0-9]){0,1}$/'
+                   ng-change="add.checkNameExist()" placeholder="请输入VIP名称" required>
+            <label class="control-label"
+                   ng-show="myForm.name.$dirty && myForm.name.$invalid">请输入1-20位字符,支持数字、中英文、下划线、空格</label>
+            <label class="control-label"
+                   ng-show="myForm.name.$dirty && myForm.name.$valid && add.checkName">名称已存在</label>
+        </div>
+    </div>
+
+    <!--类型 -->
+    <div class="form-group">
+        <label class="col-sm-3 control-label">协议端口：</label>
+
+        <div class="col-sm-8"
+             data-ng-class="(myForm.protocalPort.$dirty && myForm.protocalPort.$invalid) ? 'has-error' : ''">
+            <input type="text" class="form-control" maxlength="5"
+                   id="protocalPort" name="protocalPort"
+                   ng-pattern="/^(^[1-9]\d{0,3}$)|(^[1-5]\d{4}$)|(^6[0-4]\d{3}$)|(^65[0-4]\d{2}$)|(^655[0-2]\d$)|(^6553[0-5]$)$/"
+                   data-ng-model="add.vip.protocolPort"
+                   placeholder="请输入1到65535的整数" required>
+            <label class="control-label"
+                   ng-show="myForm.protocalPort.$dirty && myForm.protocalPort.$invalid">请输入1到65535的整数</label>
+        </div>
+    </div>
+
+    <!-- 超时 -->
+    <div class="form-group has-feedback">
+        <label class="col-sm-3 control-label">连接限制数：</label>
+
+        <div class="col-sm-4" data-ng-class="(myForm.connectionLimit.$dirty && myForm.connectionLimit.$invalid) ? 'has-error' : ''">
+            <input type="text" class="form-control" maxlength="5" ng-pattern="/^[0-9]*[1-9][0-9]*$/"
+                   name="connectionLimit" data-ng-model="add.vip.connectionLimit" placeholder="请输入大于0的整数" required>
+        </div>
+        <div class="col-sm-4" data-ng-class="(myForm.connectionLimit.$dirty && myForm.connectionLimit.$invalid) ? 'has-error' : ''">
+            <label class="control-label">请输入大于0的整数</label>
+        </div>
+    </div>
+
+
+    <!-- 按钮区域 -->
+    <!--<div class="modal-footer" >-->
+    <!--<button type="button" class="btn btn-primary btn-modal" ng-click="add.commit()"  ng-disabled="!myForm.$valid||add.checkName||checkBtn">确  定</button>-->
+    <!--<button type="button" class="btn btn-default btn-modal" style="margin-left:15px;" ng-click="cancel()">取  消</button>-->
+    <!--</div>-->
+
+
+</form>

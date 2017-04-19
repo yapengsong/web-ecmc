@@ -1,0 +1,10 @@
+<!-- 导航页签 -->
+<tabs class="nav-tabs-online">
+    <tab-underline ui-sref-active="active" data-ui-sref="app.cloudhost.tab.image.globalimage" ng-if="hasPermission('image_publicimage')">公共镜像</tab-underline>
+    <tab-underline ui-sref-active="active" data-ui-sref="app.cloudhost.tab.image.customimage"  ng-if="hasPermission('image_customimage')">自定义镜像</tab-underline>
+    <tab-underline ui-sref-active="active" data-ui-sref="app.cloudhost.tab.image.marketimage"  ng-if="hasPermission('image_marketimage')">市场镜像</tab-underline>
+    <tab-underline ui-sref-active="active" data-ui-sref="app.cloudhost.tab.image.unclassifiedimage"  ng-if="hasPermission('image_unclassifiedimage')">未分类镜像</tab-underline>
+</tabs>
+
+<!-- 子页面展示区 -->
+<div ui-view=""></div>

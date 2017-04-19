@@ -1,0 +1,55 @@
+<form class="form-horizontal" name="myForm" novalidate>
+    <input type="hidden" data-ng-model="model.from">
+
+    <div class="form-group has-feedback">
+        <label class="col-sm-3 control-label">所属数据中心：</label>
+
+        <div class="col-sm-8">
+            <eayun-select name="prjName" class="form-control" data-ng-model="policyEdit.policyModel.dcId"
+                          data-ng-click="policyEdit.getAllProjectListByDcId(policyEdit.policyModel.dcId)"
+                          placeholder="请选择数据中心"ng-disabled="true" required>
+                <eayun-option value="dcResource.id" text="{{dcResource.name}}"
+                              data-ng-repeat="dcResource in policyEdit.allDcResourceList" ></eayun-option>
+            </eayun-select>
+        </div>
+    </div>
+
+    <div class="form-group has-feedback">
+        <label class="col-sm-3 control-label">所属项目：</label>
+
+        <div class="col-sm-8">
+            <eayun-select name="prjName" class="form-control" data-ng-model="policyEdit.policyModel.prjId"
+                          placeholder="请选择项目" ng-disabled="true" required>
+                <eayun-option value="project.projectId" text="{{project.prjName}}"
+                              data-ng-repeat="project in policyEdit.allProjectList"></eayun-option>
+            </eayun-select>
+        </div>
+    </div>
+
+    <div class="form-group has-feedback">
+        <label class="col-sm-3 control-label">防火墙策略名称：</label>
+
+        <div class="col-sm-8" data-ng-class="(myForm.name.$dirty && (myForm.name.$invalid || policyEdit.fwPolicyNameIsExist)) ? 'has-error' : ''">
+            <input type="text" class="form-control" name="name" data-ng-model="policyEdit.policyModel.fwpName"
+                   data-ng-pattern="/^[\u4e00-\u9fa5a-zA-Z0-9]([\u4e00-\u9fa5_a-zA-Z0-9\s]{0,18}[\u4e00-\u9fa5a-zA-Z0-9]){0,1}$/"
+                   placeholder="请输入防火墙策略名称"
+                   maxlength="20" required data-ng-change="policyEdit.checkFwpName()">
+            <label class="control-label hide"
+                   data-ng-class="(myForm.name.$dirty && myForm.name.$error.required) ? 'show' : 'hide'"
+                   style="text-align: left;">策略名称不能为空</label>
+            <label class="control-label hide"
+                   data-ng-class="(myForm.name.$dirty && policyEdit.fwPolicyNameIsExist) ? 'show' : 'hide'"
+                   style="text-align: left;">策略名称已存在</label>
+            <label class="control-label hide"
+                   data-ng-class="(myForm.name.$dirty && myForm.name.$error.pattern) ? 'show' : 'hide'"
+                   style="text-align: left;">请输入1-20位字符,支持数字、中英文、下划线、空格</label>
+        </div>
+    </div>
+
+
+    <!-- 按钮区域 -->
+     <div class="modal-footer" >
+      <button type="button" class="btn btn-primary btn-modal" ng-click="commit()"  ng-disabled="!myForm.$valid || policyEdit.fwPolicyNameIsExist">确  定</button>
+      <button type="button" class="btn btn-default btn-modal" ng-click="cancel()">取  消</button>
+    </div>
+</form>

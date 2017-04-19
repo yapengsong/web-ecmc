@@ -1,0 +1,68 @@
+<style type="text/css">
+    .cidr-div{
+        border: 1px solid #ccc;
+        border-radius:4px;
+    }
+    .cidr-error{
+        border: 1px solid #A94442;
+        border-radius:4px;
+    }
+    .cidr-show{
+        text-align: left!important;
+        height: 20px;
+    }
+    .cidr-show-error{
+        text-align: left!important;
+        height: 20px;
+        color: #A94442;
+    }
+</style>
+<form class="form-horizontal" name="myForm" novalidate>
+    <div class="form-group">
+        <label class="col-sm-12 control-label" style="text-align: left;">子网名称：{{addMember.subnet.subnetName}}({{addMember.subnet.cidr}})</label>
+        <label class="col-sm-8 control-label" style="font-weight: bold;text-align: left; " ng-show="!addMember.members||addMember.members.length==0">该子网下暂无主机!</label>
+        <div class="col-sm-12" style="padding-top: 20px" ng-show="addMember.members.length!=0">
+            <div class="col-sm-12" data-ng-class="addMember.isTabErr?'cidr-error':'cidr-div'" style="max-height: 400px; overflow-y:auto;">
+                <table style="width: 100%">
+                    <tbody>
+                    <tr class="control-label" style="padding-top: 10px;height: 40px" data-ng-repeat="member in addMember.members">
+                        <td>
+                            <input type="checkbox" style="width: 16px;height: 16px;" data-ng-model="member.isCheck" data-ng-click="addMember.changeCheckMember(member)">
+                        </td>
+                        <td style="width: 15px;"></td>
+                        <td style="width: 150px;text-align: left" title="{{member.vmName}}">
+                            {{member.vmName.length>8?member.vmName.substr(0,8)+'...':member.vmName}}
+                        </td>
+                        <td style="width: 15px;"></td>
+                        <td style="text-align: left;">
+                            内网IP: {{member.memberAddress}}
+                        </td>
+                        <td style="width: 15px;"></td>
+                        <td>监听端口：</td>
+                        <td style="width: 70px;" data-ng-class="(member.isPortError||member.isPortExsit)?'has-error':''">
+                            <input type="text" class="form-control" style="height: 30px;" data-ng-model="member.protocolPort"
+                                   maxlength="5" data-ng-disabled="!member.isEdit" data-ng-change="addMember.checkPort(member)" data-ng-focus="addMember.checkPort(member)">
+                        </td>
+                        <td style="width: 15px;"></td>
+                        <td>权重：</td>
+                        <td style="width: 50px;" data-ng-class="member.isWeightError?'has-error':''">
+                            <input type="text" name="weight" class="form-control" style="height: 30px;" data-ng-model="member.memberWeight"
+                                   maxlength="3" data-ng-disabled="!member.isEdit" data-ng-change="addMember.checkWeight(member)" data-ng-focus="addMember.checkWeight(member)">
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <label class="col-sm-6 control-label" data-ng-class="addMember.isErr?'cidr-show-error':'cidr-show'" ng-show="addMember.isTabErr">{{addMember.showErrMsg}}</label>
+        </div>
+    </div>
+
+
+    <!-- 按钮区域 -->
+    <div class="modal-footer" >
+        <button class="btn btn-primary btn-modal" ng-click="commit()"
+                data-ng-disabled="!addMember.members||addMember.members.length==0||addMember.isTabErr||addMember.checkBtn||!addMember.isSelected">确  定</button>
+        <button class="btn btn-default btn-modal" style="margin-left:13px;" ng-click="cancel()">取  消</button>
+    </div>
+
+</form>

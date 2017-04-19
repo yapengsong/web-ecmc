@@ -1,0 +1,144 @@
+<style>
+    <!--
+    .text-left {
+        text-align: left;
+        color: #07C;
+    }
+
+    tr {
+        max-height: 50px;
+    }
+
+    .quota-table {
+        height: 220px;
+        overflow: auto;
+        margin: 15px;
+        border-radius: 4px;
+        border: 1px solid #CCC;
+    }
+
+    .quota-table > table > tbody > tr {
+        height: 50px;
+    }
+
+    .quota-table > table > tbody > tr > td {
+        padding-left: 0px;
+        padding-right: 10px;
+    }
+
+    -->
+</style>
+<form class="form-horizontal" name="addRule" novalidate>
+    <div class="form-group has-feedback">
+        <label class="col-sm-3 control-label">规则名称：</label>
+
+        <div class="col-sm-7" data-ng-class="(addRule.name.$dirty && addRule.name.$invalid) ? 'has-error' : ''">
+            <input type="text" class="form-control" placeholder="请输入规则名称" name="name" data-ng-pattern="/^[\u4e00-\u9fa5a-zA-Z0-9]([\u4e00-\u9fa5_a-zA-Z0-9\s]{0,18}[\u4e00-\u9fa5a-zA-Z0-9]){0,1}$/"
+                   data-ng-model="alarmRuleModel.name" required
+                   maxlength=20/>
+            <label class="control-label" ng-show="addRule.name.$dirty && addRule.name.$error.required">规则名称不能为空</label>
+            <!--<label class="control-label" ng-show="addRule.name.$dirty && addRule.name.$error.ajaxValid && !nameFlag">规则名称已存在</label>-->
+            <label class="control-label" ng-if="addRule.name.$dirty && addRule.name.$error.pattern">请输入1-20位字符，支持数字、中英文、下划线、空格</label>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">监控项：</label>
+
+        <div class="col-sm-5">
+            <eayun-select name="monitorItem" class="form-control" data-ng-model="monitorItem" ng-disabled="true"
+                          placeholder="请选择监控项" required ng-change="getQuotaListByItem(monitorItem)">
+                <eayun-option value="monitor.nodeId" text="{{monitor.name}}"
+                              data-ng-repeat="monitor in monitorItemList"></eayun-option>
+            </eayun-select>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">
+            报警触发条件：<br>
+            <label class="color-blue" role="button" data-ng-click="addAlarmTrigger()" ng-if="triggerArray.length<=14">
+                <h5><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>&nbsp;增加触发条件</h5>
+            </label>
+            <label ng-if="triggerArray.length>=15" style="color:#e8e8e8">
+                <h5><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>&nbsp;增加触发条件</h5>
+            </label>
+        </label>
+
+        <div class="col-sm-11 control-label quota-table" style="margin-left: 28px;margin-top: 0px;">
+            <table class="table-striped">
+                <tbody>
+                <tr data-ng-repeat="trigger in triggerArray">
+                    <td>
+                        <div style="width:150px;padding-left:10px;">
+                            <eayun-select name="zb" class="form-control" data-ng-model="trigger.zb"
+                                          placeholder="监控指标"
+                                          required ng-change="getQuotaUnit(trigger,trigger.zb)">
+                                <eayun-option value="quota.nodeId" text="{{quota.name}}"
+                                              data-ng-repeat="quota in monitorQuotaList"></eayun-option>
+                            </eayun-select>
+                        </div>
+                    </td>
+                    <td>
+                        <div style="width:110px;padding-left:10px;">
+                            <eayun-select name="operator" class="form-control" data-ng-model="trigger.operator"
+                                          placeholder="操作符" ng-change="show(trigger)" required>
+                                <eayun-option value="operation.name" text="{{operation.name}}"
+                                              data-ng-repeat="operation in triggerOperatorList"></eayun-option>
+                            </eayun-select>
+                        </div>
+                    </td>
+                    <td style="white-space:nowrap;width:175px;padding-left:10px;">
+                        <div ng-if="trigger.unit=='%'"
+                             data-ng-class="(addRule.threshold{{$index}}.$dirty && addRule.threshold{{$index}}.$invalid) ? 'has-error' : ''">
+                            <div style="width:110px;float:left;">
+                                <input type="text" class="form-control" placeholder="阈值（非负）" name="threshold{{$index}}"
+                                       data-ng-model="trigger.threshold" maxlength=3 required
+                                       onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^0-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"
+                                       onpaste="return false"
+                                       ng-pattern="/^(?:0|[1-9][0-9]?|100)$/"
+                                />
+                            </div>
+                            <div style="float:left;padding-top: 6px;padding-left: 6px;">
+                                {{trigger.unit}}
+                            </div>
+                        </div>
+                        <div ng-if="trigger.unit!='%'"
+                             data-ng-class="(addRule.threshold{{$index}}.$dirty && addRule.threshold{{$index}}.$invalid) ? 'has-error' : ''">
+                            <div style="width:110px;float:left;">
+                                <input type="text" class="form-control" placeholder="阈值（非负）" name="threshold{{$index}}"
+                                       data-ng-model="trigger.threshold" maxlength=5 required
+                                       onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^0-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"
+                                       onpaste="return false"
+                                />
+                            </div>
+                            <div style="float:left;padding-top: 6px;padding-left: 6px;">
+                                {{trigger.unit}}
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div style="width:130px;">
+                            <eayun-select name="lastTime" class="form-control" data-ng-model="trigger.lastTime"
+                                          placeholder="持续时间" required>
+                                <eayun-option value="time.nameEN" text="{{time.name}}"
+                                              data-ng-repeat="time in triggerTimeList"></eayun-option>
+                            </eayun-select>
+                        </div>
+                    </td>
+                    <td>
+                        <div style="padding-left:10px;">
+                            <label class="color-error" role="button" data-ng-click="delAlarmTrigger($index)">
+                                <h5>移除</h5>
+                            </label>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <button class="btn btn-primary btn-modal" ng-click="commit()" ng-disabled="addRule.$invalid">确  定</button>
+        <button class="btn btn-default btn-modal" type="button" ng-click="cancel()">取消</button>
+    </div>
+</form>

@@ -1,0 +1,431 @@
+<style>
+    <!--
+    .text-left {
+        text-align: left;
+        color: #07C;
+    }
+
+    tr {
+        max-height: 50px;
+    }
+
+    .quota-table {
+        max-height: 360px;
+        overflow: auto;
+        margin: 15px 20px;
+        border-radius: 4px;
+        border: 1px solid #CCC;
+    }
+
+    .quota-table-error {
+        max-height: 360px;
+        overflow: auto;
+        margin: 15px 20px;
+        border-radius: 4px;
+        border: 1px solid #A94442;
+    }
+
+    .quota-table > table > tbody > tr {
+        height: 50px;
+    }
+
+    -->
+</style>
+<form class="form-horizontal" name="addWork" novalidate>
+    <div class="form-group has-feedback" data-ng-show="showDis">
+
+        <label class="col-sm-2 control-label" style="padding-right: 0px;"><span class="color-require">*</span>所属数据中心：</label>
+
+        <div class="col-sm-4" style="text-align: left;">
+            <eayun-select name="" class="form-control "
+                          ng-change="prj.checkPrjInDc(prj.customer.dcId, prj.customer.cusId)"
+                          data-ng-model="prj.customer.dcId"
+                          placeholder="请选择数据中心" required>
+                <eayun-option value="dataDc.id" data-ng-repeat="dataDc in prj.dcList"
+                              text="{{dataDc.name}}"></eayun-option>
+            </eayun-select>
+        </div>
+
+        <div class="col-sm-6" data-ng-class="prj.dcCanBeUsed ? '':'has-error'">
+            <label class="control-label" data-ng-show="prj.customer.dcId && !prj.dcCanBeUsed">该客户在该数据中心下存在项目</label>
+        </div>
+
+    </div>
+    <div class="form-group" data-ng-show="!showDis">
+        <label class="col-sm-2 control-label" style="padding-right: 0px;">所属数据中心：</label>
+
+        <div class="col-sm-4 control-label" style="text-align: left;">{{prj.customer.dcName}}</div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label" style="padding-right: 0px;">项目名：</label>
+
+        <div class="col-sm-4 control-label" style="text-align: left;">{{prj.customer.prjName}}</div>
+    </div>
+    <div class="form-group" style="margin-bottom: 10px">
+        <label class="col-sm-2 control-label" style="text-align: left;margin-left: 10px;">配额：</label>
+    </div>
+
+    <div class="form-group has-feedback" style="margin-bottom: 10px;">
+        <div class="col-sm-2" style="text-align : right;padding-right: 0px;">
+        <input type="checkbox" data-ng-click="prj.refreshTemplate();" class="control-label" data-ng-model="prj.showTemSelector">
+        <label class="control-label">调用模板：</label>
+        </div>
+        <div class="col-sm-4" style="text-align: left;" data-ng-if="prj.showTemSelector">
+            <eayun-select class="form-control form-select" class="form-control"
+                          ng-change="prj.selectQtTemplate()"
+                          data-ng-model = "prj.qtTemplateId"
+                          data-ng-disabled = "prj.disableQtSelector"
+                          placeholder= "{{prj.disableQtSelector ? '当前暂无模板' : '请选择配额模板'}}" required>
+                <eayun-option value="template.qtId" data-ng-repeat="template in prj.qtTemplateList"
+                              text="{{template.qtName}}"></eayun-option>
+            </eayun-select>
+        </div>
+    </div>
+    <div class="form-group">
+
+
+        <ng-form name="prjQuota" style="width: auto">
+            <div class="control-label quota-table" style="display:block;width:700px;">
+
+
+                <table class="table-striped col-sm-12">
+                    <tbody>
+                    <tr>
+                        <td class="col-sm-4 text-left" style="text-align: left;padding-right: 0px"><span
+                                class="color-require">*</span>CPU核数：
+                        </td>
+                        <td class="col-sm-3 text-left" style="text-align: left;" data-ng-show="!showDis">
+                            已使用{{prj.customer.usedCpuCount}}核
+                        </td>
+                        <td class="col-sm-5"
+                            data-ng-class="(prjQuota.cpuCount.$dirty && prjQuota.cpuCount.$invalid)
+                            || (prj.prjCpuErr = (prj.customer.cpuCount < prj.customer.usedCpuCount)) ? 'has-error':''">
+                            <input type="text" name="cpuCount" data-ng-model="prj.customer.cpuCount"
+                                   placeholder="请输入CPU核数"
+                                   data-ng-pattern="/^\+?(0|[1-9][0-9]*)$/" class="form-control" maxlength="9"
+                                   required/>
+                        </td>
+                        <td style="text-align: left">核</td>
+                    </tr>
+                    <tr>
+                        <td class="col-sm-4 text-left" style="text-align: left;padding-right: 0px"><span
+                                class="color-require">*</span>内存大小：
+                        </td>
+                        <td class="col-sm-3 text-left" style="text-align: left;" data-ng-show="!showDis">
+                            已使用{{prj.customer.usedRam}}GB
+                        </td>
+                        <td class="col-sm-5"
+                            data-ng-class="(prjQuota.memory.$dirty && prjQuota.memory.$invalid)
+                            || (prj.prjMemErr = (prj.customer.memory < prj.customer.usedRam)) ? 'has-error':''">
+                            <input type="text" name="memory" data-ng-model="prj.customer.memory"
+                                   placeholder="请输入内存大小"
+                                   data-ng-pattern="/^\+?(0|[1-9][0-9]*)$/" class="form-control" maxlength="6"
+                                   required/>
+                        </td>
+                        <td style="text-align: left">GB</td>
+
+                    </tr>
+                    <tr>
+                        <td class="col-sm-4 text-left" style="text-align: left;padding-right: 0px"><span
+                                class="color-require">*</span>云主机数量：
+                        </td>
+                        <td class="col-sm-3 text-left" style="text-align: left;" data-ng-show="!showDis">
+                            已使用{{prj.customer.usedVmCount}}台
+                        </td>
+                        <td class="col-sm-5"
+                            data-ng-class="(prjQuota.hostCount.$dirty && prjQuota.hostCount.$invalid)
+                            || (prj.prjHostErr = (prj.customer.hostCount < prj.customer.usedVmCount)) ? 'has-error':''">
+                            <input type="text" name="hostCount" data-ng-model="prj.customer.hostCount"
+                                   placeholder="请输入云主机数量"
+                                   data-ng-pattern="/^\+?(0|[1-9][0-9]*)$/" class="form-control" maxlength="9"
+                                   required/>
+                        </td>
+                        <td style="text-align: left">台</td>
+                    </tr>
+                    <tr>
+                        <td class="col-sm-4 text-left" style="text-align: left;padding-right: 0px"><span
+                                class="color-require">*</span>云硬盘数量：
+                        </td>
+                        <td class="col-sm-3 text-left" style="text-align: left;" data-ng-show="!showDis">
+                            已使用{{prj.customer.diskCountUse}}块
+                        </td>
+                        <td class="col-sm-5"
+                            data-ng-class="(prjQuota.diskCount.$dirty && prjQuota.diskCount.$invalid)
+                            || (prj.prjDiskErr = (prj.customer.diskCount < prj.customer.diskCountUse)) ? 'has-error':''">
+                            <input type="text" name="diskCount" data-ng-model="prj.customer.diskCount"
+                                   placeholder="请输入云硬盘数量"
+                                   data-ng-pattern="/^\+?(0|[1-9][0-9]*)$/" class="form-control" maxlength="9"
+                                   required/>
+                        </td>
+                        <td style="text-align: left">块</td>
+                    </tr>
+                    <tr>
+                        <td class="col-sm-4 text-left" style="text-align: left;padding-right: 0px"><span
+                                class="color-require">*</span>云硬盘快照数量：
+                        </td>
+                        <td class="col-sm-3 text-left" style="text-align: left;" data-ng-show="!showDis">
+                            已使用{{prj.customer.diskSnapshotUse}}块
+                        </td>
+                        <td class="col-sm-5"
+                            data-ng-class="(prjQuota.diskSnapshot.$dirty && prjQuota.diskSnapshot.$invalid)
+                            || (prj.prjSnapshotErr = (prj.customer.diskSnapshot < prj.customer.diskSnapshotUse)) ? 'has-error':''">
+                            <input type="text" name="diskSnapshot" data-ng-model="prj.customer.diskSnapshot"
+                                   placeholder="请输入云硬盘快照数量"
+                                   data-ng-pattern="/^\+?(0|[1-9][0-9]*)$/" class="form-control" maxlength="9"
+                                   required/>
+                        </td>
+                        <td style="text-align: left">块</td>
+                    </tr>
+                    <tr>
+                        <td class="col-sm-4 text-left" style="text-align: left;padding-right: 0px"><span
+                                class="color-require">*</span>云硬盘容量：
+                        </td>
+                        <td class="col-sm-3 text-left" style="text-align: left;" data-ng-show="!showDis">
+                            已使用{{prj.customer.usedDiskCapacity}}GB
+                        </td>
+                        <td class="col-sm-5"
+                            data-ng-class="(prjQuota.diskCapacity.$dirty && prjQuota.diskCapacity.$invalid)
+                            || (prj.prjDiskCapacityErr = (prj.customer.diskCapacity < prj.customer.usedDiskCapacity)) ? 'has-error':''">
+                            <input type="text" name="diskCapacity" data-ng-model="prj.customer.diskCapacity"
+                                   placeholder="请输入云硬盘容量"
+                                   data-ng-pattern="/^\+?(0|[1-9][0-9]*)$/" class="form-control" maxlength="9"
+                                   required/>
+                        </td>
+                        <td style="text-align: left">GB</td>
+                    </tr>
+                    <tr>
+                        <td class="col-sm-4 text-left" style="text-align: left;padding-right: 0px"><span
+                                class="color-require">*</span>云硬盘快照容量：
+                        </td>
+                        <td class="col-sm-3 text-left" style="text-align: left;" data-ng-show="!showDis">
+                            已使用{{prj.customer.usedSnapshotCapacity}}GB
+                        </td>
+                        <td class="col-sm-5"
+                            data-ng-class="(prjQuota.snapshotSize.$dirty && prjQuota.snapshotSize.$invalid)
+                            || (prj.prjSnapshotSizeErr = (prj.customer.snapshotSize < prj.customer.usedSnapshotCapacity)) ? 'has-error':''">
+                            <input type="text" name="snapshotSize" data-ng-model="prj.customer.snapshotSize"
+                                   placeholder="请输入云硬盘快照容量"
+                                   data-ng-pattern="/^\+?(0|[1-9][0-9]*)$/" class="form-control" maxlength="9"
+                                   required/>
+                        </td>
+                        <td style="text-align: left">GB</td>
+                    </tr>
+                    <tr>
+                        <td class="col-sm-4 text-left" style="text-align: left;padding-right: 0px"><span
+                                class="color-require">*</span>带宽大小：
+                        </td>
+                        <td class="col-sm-3 text-left" style="text-align: left;" data-ng-show="!showDis">
+                            已使用{{prj.customer.countBandUse}}Mbps
+                        </td>
+                        <td class="col-sm-5"
+                            data-ng-class="(prjQuota.countBand.$dirty && prjQuota.countBand.$invalid)
+                            || (prj.prjBandErr = (prj.customer.countBand < prj.customer.countBandUse)) ? 'has-error':''">
+                            <input type="text" name="countBand" data-ng-model="prj.customer.countBand"
+                                   placeholder="请输入带宽大小（0-999）"
+                                   data-ng-pattern="/^(0|([1-9]\d{0,2}))$/" class="form-control" maxlength="3"
+                                   required/>
+                        </td>
+                        <td style="text-align: left">Mbps</td>
+                    </tr>
+                    <tr>
+                        <td class="col-sm-4 text-left" style="text-align: left;padding-right: 0px"><span
+                                class="color-require">*</span>网络数量：
+                        </td>
+                        <td class="col-sm-3 text-left" style="text-align: left;" data-ng-show="!showDis">
+                            已使用{{prj.customer.netWorkUse}}个
+                        </td>
+                        <td class="col-sm-5"
+                            data-ng-class="(prjQuota.netWork.$dirty && prjQuota.netWork.$invalid)
+                            || (prj.prjNetWorkErr = (prj.customer.netWork < prj.customer.netWorkUse)) ? 'has-error':''">
+                            <input type="text" name="netWork" data-ng-model="prj.customer.netWork"
+                                   data-ng-change="add.changeNetCount();" placeholder="请输入网络数量"
+                                   data-ng-pattern="/^\+?(0|[1-9][0-9]*)$/" class="form-control" maxlength="9"
+                                   required/>
+                        </td>
+                        <td style="text-align: left">个</td>
+                    </tr>
+                    <tr>
+                        <td class="col-sm-4 text-left" style="text-align: left;padding-right: 0px"><span
+                                class="color-require">*</span>子网数量：
+                        </td>
+                        <td class="col-sm-3 text-left" style="text-align: left;" data-ng-show="!showDis">
+                            已使用{{prj.customer.subnetCountUse}}个
+                        </td>
+                        <td class="col-sm-5"
+                            data-ng-class="(prjQuota.subnetCount.$dirty && prjQuota.subnetCount.$invalid)
+                            || (prj.prjSubnetErr = (prj.customer.subnetCount < prj.customer.subnetCountUse)) ? 'has-error':''">
+                            <input type="text" name="subnetCount" data-ng-model="prj.customer.subnetCount"
+                                   placeholder="请输入子网数量"
+                                   data-ng-pattern="/^\+?(0|[1-9][0-9]*)$/" class="form-control" maxlength="9"
+                                   required/>
+                        </td>
+                        <td style="text-align: left">个</td>
+                    </tr>
+                    <tr>
+                        <td class="col-sm-4 text-left" style="text-align: left;padding-right: 0px"><span
+                                class="color-require">*</span>公网IP数量：
+                        </td>
+                        <td class="col-sm-3 text-left" style="text-align: left;" data-ng-show="!showDis">
+                            已使用{{prj.customer.outerIPUse}}个
+                        </td>
+                        <td class="col-sm-5"
+                            data-ng-class="(prjQuota.outerIP.$dirty && prjQuota.outerIP.$invalid)
+                            || (prj.prjOuterIpErr = (prj.customer.outerIP < prj.customer.outerIPUse)) ? 'has-error':''">
+                            <input type="text" name="outerIP" data-ng-model="prj.customer.outerIP"
+                                   placeholder="请输入公网IP数量"
+                                   data-ng-pattern="/^\+?(0|[1-9][0-9]*)$/" class="form-control" maxlength="9"
+                                   required/>
+                        </td>
+                        <td style="text-align: left">个</td>
+                    </tr>
+                    <tr>
+                        <td class="col-sm-4 text-left" style="text-align: left;padding-right: 0px"><span
+                                class="color-require">*</span>安全组数量：
+                        </td>
+                        <td class="col-sm-3 text-left" style="text-align: left;" data-ng-show="!showDis">
+                            已使用{{prj.customer.safeGroupUse}}个
+                        </td>
+                        <td class="col-sm-5"
+                            data-ng-class="(prjQuota.safeGroup.$dirty && prjQuota.safeGroup.$invalid)
+                            || (prj.prjSafeGroupErr = (prj.customer.safeGroup < prj.customer.safeGroupUse)) ? 'has-error':''">
+                            <input type="text" name="safeGroup" data-ng-model="prj.customer.safeGroup"
+                                   placeholder="请输入安全组数量" data-ng-blur="prj.checkSGNum()"
+                                   data-ng-pattern="/^\+?(0|[1-9][0-9]*)$/" maxlength="9" class="form-control"
+                                   required/>
+                        </td>
+                        <td style="text-align: left">个</td>
+                    </tr>
+                    <tr>
+                        <td class="col-sm-4 text-left" style="text-align: left;padding-right: 0px"><span
+                                class="color-require">*</span>负载均衡数量：
+                        </td>
+                        <td class="col-sm-3 text-left" style="text-align: left;" data-ng-show="!showDis">
+                            已使用{{prj.customer.usedPool}}个
+                        </td>
+                        <td class="col-sm-5"
+                            data-ng-class="(prjQuota.quotaPool.$dirty && prjQuota.quotaPool.$invalid)
+                            || (prj.prjPoolErr = (prj.customer.quotaPool < prj.customer.usedPool)) ? 'has-error':''">
+                            <input type="text" name="quotaPool" data-ng-model="prj.customer.quotaPool"
+                                   placeholder="请输入负载均衡数量"
+                                   data-ng-pattern="/^\+?(0|[1-9][0-9]*)$/" class="form-control" maxlength="9"
+                                   required/>
+                        </td>
+                        <td style="text-align: left">个</td>
+                    </tr>
+                    <tr>
+                        <td class="col-sm-4 text-left" style="text-align: left;padding-right: 0px"><span
+                                class="color-require">*</span>报警短信数量：
+                        </td>
+                        <td class="col-sm-3 text-left" style="text-align: left;" data-ng-show="!showDis">
+                            已发送{{prj.customer.usedSmsCount}}条
+                        </td>
+                        <td class="col-sm-5"
+                            data-ng-class="(prjQuota.smsCount.$dirty && prjQuota.smsCount.$invalid)
+                            || (prj.prjSmsErr = (prj.customer.smsCount < prj.customer.usedSmsCount)) ? 'has-error':''">
+                            <input type="text" name="smsCount" data-ng-model="prj.customer.smsCount"
+                                   placeholder="请输入报警短信数量"
+                                   data-ng-pattern="/^\+?(0|[1-9][0-9]*)$/" class="form-control" maxlength="9"
+                                   required/>
+                        </td>
+                        <td style="text-align: left">条</td>
+                    </tr>
+                    <tr>
+                        <td class="col-sm-4 text-left" style="text-align: left;padding-right: 0px"><span
+                                class="color-require">*</span>VPN数量：
+                        </td>
+                        <td class="col-sm-3 text-left" style="text-align: left;" data-ng-show="!showDis">
+                            已使用{{prj.customer.countVpnUse}}个
+                        </td>
+                        <td class="col-sm-5"
+                            data-ng-class="(prjQuota.countVpn.$dirty && prjQuota.countVpn.$invalid)
+                            || (prj.prjVPNErr = (prj.customer.countVpn < prj.customer.countVpnUse)) ? 'has-error':''">
+                            <input type="text" name="countVpn" data-ng-model="prj.customer.countVpn"
+                                   placeholder="请输入VPN数量"
+                                   data-ng-pattern="/^\+?(0|[1-9][0-9]*)$/" class="form-control" maxlength="9"
+                                   required/>
+                        </td>
+                        <td style="text-align: left">个</td>
+                    </tr>
+                    <tr>
+                        <td class="col-sm-4 text-left" style="text-align: left;padding-right: 0px"><span
+                                class="color-require">*</span>端口映射数量：
+                        </td>
+                        <td class="col-sm-3 text-left" style="text-align: left;" data-ng-show="!showDis">
+                            已使用{{prj.customer.portMappingUse}}个
+                        </td>
+                        <td class="col-sm-5"
+                            data-ng-class="(prjQuota.portMappingCount.$dirty && prjQuota.portMappingCount.$invalid)
+                            || (prj.prjPortMappingErr = (prj.customer.portMappingCount < prj.customer.portMappingUse)) ? 'has-error':''">
+                            <input type="text" name="portMappingCount" data-ng-model="prj.customer.portMappingCount"
+                                   placeholder="请输入端口映射数量"
+                                   data-ng-pattern="/^\+?(0|[1-9][0-9]*)$/" class="form-control" maxlength="9"
+                                   required/>
+                        </td>
+                        <td style="text-align: left">个</td>
+                    </tr>
+                    <tr>
+                        <td class="col-sm-4 text-left" style="text-align: left;padding-right: 0px"><span
+                                class="color-require">*</span>自定义镜像数量：
+                        </td>
+                        <td class="col-sm-3 text-left" style="text-align: left;" data-ng-show="!showDis">
+                            已使用{{prj.customer.imageCountUse}}个
+                        </td>
+                        <td class="col-sm-5"
+                            data-ng-class="(prjQuota.imageCount.$dirty && prjQuota.imageCount.$invalid)
+                            || (prj.prjImageErr = (prj.customer.imageCount < prj.customer.imageCountUse)) ? 'has-error':''">
+                            <input type="text" name="imageCount" data-ng-model="prj.customer.imageCount"
+                                   data-ng-blur="imageFocus = false" data-ng-focus="imageFocus = true"
+                                   placeholder="请输入自定义镜像数量"
+                                   data-ng-pattern="/^\+?(0|[1-9][0-9]*)$/" class="form-control" maxlength="9"
+                                   required/>
+                        </td>
+                        <td style="text-align: left">个</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-sm-6" data-ng-class="(prj.prjQuotaErr = (prjQuota.cpuCount.$dirty && prjQuota.cpuCount.$invalid)
+                || (prjQuota.memory.$dirty && prjQuota.memory.$invalid)
+                || (prjQuota.hostCount.$dirty && prjQuota.hostCount.$invalid)
+                || (prjQuota.diskCount.$dirty && prjQuota.diskCount.$invalid)
+                || (prjQuota.diskSnapshot.$dirty && prjQuota.diskSnapshot.$invalid)
+                || (prjQuota.diskCapacity.$dirty && prjQuota.diskCapacity.$invalid)
+                || (prjQuota.snapshotSize.$dirty && prjQuota.snapshotSize.$invalid)
+                || (prjQuota.countBand.$dirty && prjQuota.countBand.$invalid)
+                || (prjQuota.netWork.$dirty && prjQuota.netWork.$invalid)
+                || (prjQuota.subnetCount.$dirty && prjQuota.subnetCount.$invalid)
+                || (prjQuota.outerIP.$dirty && prjQuota.outerIP.$invalid)
+                || (prjQuota.safeGroup.$dirty && prjQuota.safeGroup.$invalid)
+                || (prjQuota.quotaPool.$dirty && prjQuota.quotaPool.$invalid)
+                || (prjQuota.smsCount.$dirty && prjQuota.smsCount.$invalid)
+                || (prjQuota.countVpn.$dirty && prjQuota.countVpn.$invalid)
+                || (prjQuota.portMappingCount.$dirty && prjQuota.portMappingCount.$invalid)
+                || (prjQuota.imageCount.$dirty && prjQuota.imageCount.$invalid))
+                || (prj.countError = (prj.prjCpuErr || prj.prjMemErr || prj.prjHostErr
+                || prj.prjNetWorkErr || prj.prjSubnetErr || prj.prjOuterIpErr
+                || prj.prjSafeGroupErr || prj.prjPoolErr || prj.prjSmsErr || prj.prjDiskErr
+                || prj.prjSnapshotErr || prj.prjVPNErr || prj.prjSnapshotSizeErr || prj.prjDiskCapacityErr
+                || prj.prjBandErr || prj.prjPortMappingErr || prj.prjImageErr))
+                ? 'has-error':''">
+                <label class="control-label" data-ng-show="prj.prjQuotaErr || prj.countError">{{showDis?'请输入不小于0的整数':'请输入大于当前使用量的整数'}}</label>
+            </div>
+        </ng-form>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label" style="text-align: left;margin-left: 10px;">项目描述：</label>
+        <div class="col-sm-7 has-feedback">
+            <textarea class="form-control" data-ng-model="prj.customer.projectDesc" name="projectDesc"
+                      placeholder="请输入项目描述"
+                      maxlength="200"></textarea>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-primary btn-modal" data-ng-click="commit()"
+                data-ng-disabled="prjQuota.$invalid || (showDis && !prj.dcCanBeUsed)
+                || (!showDis && prj.countError)">提 交
+        </button>
+        <button type="button" class="btn btn-default btn-modal" data-ng-click="cancel()" style="margin-left: 15px;">取
+            消
+        </button>
+    </div>
+</form>

@@ -1,0 +1,43 @@
+
+<form class="form-horizontal data-center" >
+    <div class="col-lg-6">
+        <div class="details-group">
+            <div class="details-name">服务器型号名称：</div>
+            <div class="details-value"><span ng-bind-html="::detail.model.name |ellipsis:20"></span></div>
+        </div>
+        <div class="details-group">
+            <div class="details-name">服务器型号ID：</div>
+            <div class="details-value"><span ng-bind="::detail.model.id ||ellipsis:20 "></span>U</div>
+        </div>
+        <div class="details-group">
+            <div class="details-name">处理器：</div>
+            <div class="details-value"><span ng-bind-html="::detail.model.processor |ellipsis:20"></span></div>
+        </div>
+        <div class="details-group">
+            <div class="details-name">CPU(核)：</div>
+            <div class="details-value"><span ng-bind-html="::detail.model.cpu "></span></div>
+        </div>
+
+    </div>
+    <div class="col-lg-6">
+        <div class="details-group">
+            <div class="details-name">内存(GB)：</div>
+            <div class="details-value"><span ng-bind="::detail.model.memory"></span></div>
+        </div>
+        <div class="details-group">
+            <div class="details-name">硬盘(TB)：</div>
+            <div class="details-value"><span ng-bind="::detail.model.disk"></span></div>
+        </div>
+        <div class="details-group">
+            <div class="details-name">规格(U)：</div>
+            <div class="details-value"><span ng-bind="::detail.model.spec"></span></div>
+        </div>
+
+
+    </div>
+</form>
+<div class="modal-footer gd_footer">
+    <div class="col-md-12 text-center">
+        <button class="btn button-orange" type="button" ng-click="cancel()">关闭</button>
+    </div>
+</div>

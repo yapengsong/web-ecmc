@@ -1,0 +1,47 @@
+<h4>型号维护</h4>
+<form class="form-inline"ng-submit="physicalModel.doSearch()">
+
+    <button type="button" class="btn btn-primary" ng-click="physicalModel.add()" style="margin-right: 15px;"data-ng-disabled="!hasPermission('phy_servermodel_create')">
+        <span class="glyphicon glyphicon-plus"></span> 添加型号
+    </button>
+
+    <div class="input-group has-feedback search-group">
+        <input type="text" class="form-control" placeholder="请输入型号名称搜索" ng-model="physicalModel.serverName" data-ng-disabled="!hasPermission('phy_servermodel_query')">
+        <span class="form-control-feedback pointer search"  ng-click="physicalModel.doSearch()"></span>
+    </div>
+</form>
+<form class="form-inline form-count">
+
+    <eayun-table data-api="physicalModel.myTable.api" data-ajax-source="physicalModel.myTable.source" data-param="physicalModel.myTable.getParams"
+                 data-result="physicalModel.myTable.result">
+        <table class="table table-eayun" >
+            <thead>
+            <tr>
+                <th width="25%">服务器型号</th>
+                <th>CPU</th>
+                <th>内存</th>
+                <th>硬盘</th>
+                <th>规格</th>
+                <th>处理器</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="pm in physicalModel.myTable.result" data-ng-if="hasPermission('phy_servermodel_query')">
+            <!--<tr>-->
+                <td class="click-link"  ng-bind-html="::pm.name.length>45?pm.name.substring(0,20)+'...':pm.name"title="{{pm.name}}" data-ng-click=" physicalModel.detail(pm.id)" ></td>
+                <td ng-bind="::pm.cpu+'核'"></td>
+                <td ng-bind="::pm.memory+'GB'"></td>
+                <td ng-bind="::pm.disk+'TB'"></td>
+                <td ng-bind="::pm.spec+'U'"></td>
+                <td ng-bind="::pm.processor"></td>
+                <td>
+                    <button class="btn btn-tablemng" ng-click="physicalModel.editModel(pm.id)"data-ng-show="hasPermission('phy_servermodel_modify')">编辑</button>
+                    <button class="btn btn-tabledel" ng-click="physicalModel.deleteModel(pm.id)" data-ng-show="hasPermission('phy_servermodel_delete')">删除</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <eayun-table-page></eayun-table-page>
+    </eayun-table>
+</form>

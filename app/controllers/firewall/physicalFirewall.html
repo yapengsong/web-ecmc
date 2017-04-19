@@ -1,0 +1,53 @@
+<h4>防火墙</h4>
+<form class="form-inline" ng-submit="physicalFirewall.doSearch()" novalidate>
+
+    <button type="button" class="btn btn-primary" ng-click="physicalFirewall.add()" style="margin-right: 15px;"data-ng-disabled="!hasPermission('phy_firewall_create')">
+        <span class="glyphicon glyphicon-plus"></span> 添加防火墙
+    </button>
+
+    <div class="input-group has-feedback search-group">
+        <input type="text" class="form-control" placeholder="请输入防火墙名称搜索" ng-model="physicalFirewall.firewallName" data-ng-disabled="!hasPermission('phy_firewall_query')">
+        <span class="form-control-feedback pointer search"  ng-click="physicalFirewall.doSearch()"></span>
+    </div>
+</form>
+<form class="form-inline form-count">
+
+    <eayun-table data-api="physicalFirewall.myTable.api" data-ajax-source="physicalFirewall.myTable.source" data-param="physicalFirewall.myTable.getParams"
+                 data-result="physicalFirewall.myTable.result">
+        <table class="table table-eayun" >
+            <thead>
+            <tr>
+                <th width="10%">防火墙名称</th>
+                <th width="10%">型号</th>
+                <th width="10%">IP地址</th>
+                <th width="10%">网络吞吐量</th>
+                <th width="10%" >
+                    <eayun-select type="btn" class="btn-group btn-group-xs" data-ng-model="physicalFirewall.dcId"
+                                  data-ng-change="physicalFirewall.doSearch()">
+                        <eayun-option value="''" text="数据中心（全部）" selected></eayun-option>
+                        <eayun-option value="dcList.id" text="{{dcList.name}}"
+                                      ng-repeat="dcList in physicalFirewall.dcList"></eayun-option>
+                    </eayun-select>
+                </th>
+                <th width="10%">所属机柜</th>
+                <th width="10%">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="pf in physicalFirewall.myTable.result" data-ng-if="hasPermission('phy_firewall_query')">
+                <td class="click-link" ng-click="physicalFirewall.detail(pf.id)" ng-bind-html="::pf.name .length>15?pf.name.substring(0,13)+'...':pf.name"title="{{pf.name}}"class="click-link"></td>
+                <td ng-bind-html="::pf.firewallModel .length>15?pf.firewallModel.substring(0,13)+'...':pf.firewallModel"title="{{pf.firewallModel}}"></td>
+                <td ng-bind="::pf.ipAddress"></td>
+                <td ng-bind="::pf.netThroughput+'Mbps'"></td>
+                <td ng-bind="::pf.dataCenterName"></td>
+                <td ng-bind="::pf.cabinetName"></td>
+                <td>
+                    <button class="btn btn-tablemng" ng-click="physicalFirewall.editFirewall(pf.id)" data-ng-show="hasPermission('phy_firewall_modify')">编辑</button>
+                    <button class="btn btn-tabledel" ng-click="physicalFirewall.deleteFirewall(pf.id)"data-ng-show="hasPermission('phy_firewall_delete')">删除</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <eayun-table-page></eayun-table-page>
+    </eayun-table>
+</form>

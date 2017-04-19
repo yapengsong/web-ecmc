@@ -1,0 +1,19 @@
+ul {
+    list-style: none;
+    padding-left: 1em;
+    margin-bottom: 2px;
+}
+
+.check-box {
+    width: 24px;
+    height: 18px;
+    border-radius: 8px;
+}
+
+ul li {
+    line-height: 20px;
+}
+
+.tree-view .active {
+    color: #0077cc;
+}

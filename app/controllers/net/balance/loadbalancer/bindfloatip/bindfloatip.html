@@ -1,0 +1,22 @@
+<form class="form-horizontal" name="myForm" novalidate>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">IP地址：</label>
+        <div class="col-sm-8" data-ng-class="(myForm.floatIp.$dirty && myForm.floatIp.$invalid) ? 'has-error' : ''">
+            <eayun-select name="floatIp" class="form-control" data-ng-model="bindFloatIp.floatIp"
+                           required placeholder="请选择IP">
+                <eayun-option value="float" text="{{float.floIp}}" data-ng-repeat="float in bindFloatIp.floatIps"></eayun-option>
+            </eayun-select>
+
+            <label class="control-label" ng-show="myForm.floatIp.$dirty && myForm.floatIp.$error.required">IP不能为空</label>
+        </div>
+    </div>
+
+    <!-- 按钮区域 -->
+    <div class="modal-footer" >
+        <button type="button" class="btn btn-primary btn-modal" ng-click="commit()"  ng-disabled="!myForm.$valid || btnDis">确  定</button>
+        <button type="button" class="btn btn-default btn-modal" style="margin-left:15px;" ng-click="cancel()">取  消</button>
+    </div>
+
+
+
+</form>

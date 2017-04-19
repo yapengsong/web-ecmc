@@ -1,0 +1,208 @@
+<!-- 当前位置下拉列表 -->
+<div class="title-inline">
+    <div class="form-group">
+        <label class="control-label">当前位置：
+            <a style="cursor: pointer;" data-ui-sref="app.workorder">工单管理</a>&nbsp;>
+            <span> 工单详情</span>
+        </label>
+    </div>
+</div>
+<div class="panel panel-default clearfix">
+    <div class="panel-body">
+        <div class="col-lg-5" style="padding-left: 0px;">
+            <h4>工单详情</h4>
+
+            <div ng-if="detail.isShow">
+                <button type="button" class="btn btn-primary"
+                        ng-if="detail.workorder.workFalg=='0' &&  !detail.isOpen && hasPermission('workorder_accept')"
+                        data-ng-click="detail.accept(detail.workorder)">受理工单
+                </button>
+                <button type="button" class="btn btn-primary" ng-if="!detail.isOpen && '2'!=detail.workorder.workCreRole && '2'!=detail.workorder.workFalg &&
+                    hasPermission('workorder_editworklevel') && (detail.workorder.workCreUser == detail.user.id || hasPermission('workorder_update'))"
+                        data-ng-click="detail.changeLevel()">更改级别
+                </button>
+                <button type="button" class="btn btn-primary" ng-if="detail.isOpen"
+                        data-ng-click="detail.submitLevel(detail.workorder)">确定
+                </button>
+                <div ng-if="detail.workorder.workType=='0007001003001'">
+                    <button type="button" class="btn btn-primary"
+                            ng-if="'1'==detail.workorder.workFalg && hasPermission('workorder_audit') && ('0'==detail.workorder.workState || null==detail.workorder.workState)"
+                            data-ng-click="detail.auditPassWork(detail.workorder)">审核通过
+                    </button>
+                    <button type="button" class="btn btn-primary"
+                            ng-if="'1'==detail.workorder.workFalg && hasPermission('workorder_audit') &&('0'==detail.workorder.workState||null==detail.workorder.workState)"
+                            data-ng-click="detail.auditNotPassWork(detail.workorder)">审核不通过
+                    </button>
+                    <button type="button" class="btn btn-primary"
+                            data-ng-click="detail.changeQuota(detail.workorder)"
+                            ng-if="'1'==detail.workorder.workState && hasPermission('workorder_editprj') && detail.workorder.workFalg!='2'  ">
+                        修改项目配额
+                    </button>
+                </div>
+            </div>
+            <div class="workorder-msg"
+                 ng-if="detail.workorder.workFalg!='0' && detail.workorder.workType!='0007001003001'">
+                <span>受理响应时长：
+                    <order-timer ng-if="detail.showTime" order-model="detail.workorder" type="responseTime">--:--
+                    </order-timer>
+                </span>
+            </div>
+            <div class="details workorder">
+                <form class="row" novalidate>
+                    <div class="col-lg-6">
+                        <div class="details-group">
+                            <div class="details-name workorder">工单编号：</div>
+                            <div class="details-value workorder" ng-bind="detail.workorder.workNum"></div>
+                        </div>
+                        <div class="details-group">
+                            <div class="details-name workorder">状态：</div>
+                            <div class="details-value workorder" ng-bind="detail.workorder.workFalgName"></div>
+                        </div>
+                        <div class="details-group">
+                            <div class="details-name workorder">指派工程师：</div>
+                            <div class="details-value workorder"
+                                 ng-bind="detail.workorder.workHeadUserName.length>10?detail.workorder.workHeadUserName.substring(0,10)+'...':detail.workorder.workHeadUserName"></div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="details-group">
+                            <div class="details-name workorder">创建时间：</div>
+                            <div class="details-value workorder"
+                                 ng-bind="::detail.workorder.workCreTime|date:'yyyy-MM-dd HH:mm:ss'"></div>
+                        </div>
+                        <div class="details-group">
+                            <div class="details-name workorder">计时：</div>
+                            <div class="details-value workorder" style="color: #0077CC;">
+                                <span ng-if="detail.workorder.workFalg=='0'">
+                                    --:--
+                                </span>
+                                <span ng-if="detail.workorder.workFalg!='0'">
+                                    <order-timer ng-if="detail.showTime" order-model="detail.workorder">--:--
+                                    </order-timer>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="details-group" style="border-bottom-width: 0px;"
+                             ng-if="hasPermission('workorder_trun') && detail.workorder.workType!='0007001003001'&& detail.workorder.workFalg=='1'">
+                            <button class="btn btn-xs btn-primary" ng-if="detail.workorder.workHeadUser==detail.user.id || hasPermission('workorder_update')"
+                                    data-ng-click="detail.turnToOtherUser(detail.workorder)"
+                                    style="margin-top: 5px;">求助其他工程师
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="details workorder">
+                <div class="details-group">
+                    <div class="details-name workorder">提交人：</div>
+                    <div class="details-value workorder" ng-bind="detail.workorder.workCreUserName"></div>
+                </div>
+                <div class="details-group">
+                    <div class="details-name workorder">事件标题：</div>
+                    <div class="details-value workorder" ng-bind="detail.workorder.workTitle" style="width: 74%;"></div>
+                </div>
+                <div class="details-group">
+                    <div class="details-name workorder">事件类别：</div>
+                    <div class="details-value workorder" ng-bind="detail.workorder.workTypeName"></div>
+                </div>
+                <div class="details-group">
+                    <div class="details-name workorder">事件级别：</div>
+                    <div class="details-value workorder" ng-if="!detail.isOpen"
+                         ng-bind="detail.workorder.workLevelName"></div>
+                    <div class="details-value workorder" ng-if="detail.isOpen">
+                        <eayun-select ng-model="detail.workorder.workLevel" type="btn">
+                            <eayun-option value="workorderType.nodeId" text="{{workorderType.nodeName}}"
+                                          ng-if="workorderType.nodeId!='0007001001005'"
+                                          ng-repeat="workorderType in detail.queryWorkorderList.workLevelList"></eayun-option>
+                        </eayun-select>
+                    </div>
+                </div>
+            </div>
+            <div class="details workorder">
+                <div class="details-group">
+                    <div class="details-name workorder">申请人账号：</div>
+                    <div class="details-value workorder" ng-bind="detail.workorder.workApplyUserName"></div>
+                </div>
+                <div class="details-group">
+                    <div class="details-name workorder">客户名称：</div>
+                    <div class="details-value workorder" ng-bind="detail.workorder.workCusName"></div>
+                </div>
+                <div class="details-group workorder">
+                    <div class="details-name">联系手机：</div>
+                    <div class="details-value workorder" ng-bind="detail.workorder.workPhone"></div>
+                </div>
+                <div class="details-group workorder">
+                    <div class="details-name">联系邮箱：</div>
+                    <div class="details-value workorder" ng-bind="detail.workorder.workEmail"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-7" style="border-left: 1px solid #DDDDDD;padding-left:30px;">
+            <h4>发送留言</h4>
+            <!-- -->
+            <form class="form-inline" ng-if="detail.showSelect" novalidate>
+                <label class="control-label">更新工单状态：</label>
+                <eayun-select class="form-control form-select" show-length="5" data-ng-model="detail.workOrderStatus" data-ng-change="detail.changeShowReply()">
+                    <eayun-option value="workorderType.nodeId" text="{{workorderType.nodeName}}"
+                                  ng-repeat="workorderType in detail.queryWorkorderList.workFalgList"></eayun-option>
+                </eayun-select>
+            </form>
+            <div class="form-group">
+                <textarea class="form-control" rows="4" data-ng-model="detail.workorder.opinionContent"
+                          placeholder="输入内容后可回复" maxlength="2000"
+                          ng-disabled="detail.showReply"></textarea>
+            </div>
+
+            <button class="btn btn-primary btn-lg" rows="4" data-ng-click="detail.replyWorkorder(detail.workorder)"
+                    ng-disabled="detail.workorder.opinionContent==null ||detail.workorder.opinionContent==''">
+                回&nbsp;&nbsp;复
+            </button>
+
+            <div class="divider"></div>
+
+            <h4>最新回复</h4>
+
+            <div class="pre-scrollable" style="overflow-y: scroll;">
+
+                <div class="details details-group workorder" ng-repeat="opinion in detail.WorkOpinions">
+                    <label>{{opinion.creUserName}}{{(opinion.replyUser!=null && opinion.creUserName!=opinion.replyUserName)?("@"+opinion.replyUserName):""}}：</label>
+
+                    <div class="workorder-dialog-flag">状态：{{opinion.flagName}}</div>
+                    <div class="workorder-dialog-date">{{opinion.opinionTime|date:'yyyy-MM-dd HH:mm:ss'}}&nbsp;&nbsp;&nbsp;&nbsp;</div>
+                    <div style="word-break:break-all; word-wrap:break-word;">{{opinion.opinionContent}}
+                        <div ng-if="opinion.workQuota!=null">
+                            <div>
+                                <span data-ng-show="opinion.workQuota.quotaBalance!=0">负载均衡（个）:{{detail.prj.quotaPool}}扩大至{{opinion.workQuota.quotaBalance}}</span>
+                                <span data-ng-show="opinion.workQuota.quotaBand!=0">带宽（Mbps）:{{detail.prj.countBand}}扩大至{{opinion.workQuota.quotaBand}}</span>
+                                <span data-ng-show="opinion.workQuota.quotaCpu!=0">CPU（核）:{{detail.prj.cpuCount}}扩大至{{opinion.workQuota.quotaCpu}}</span>
+                                <span data-ng-show="opinion.workQuota.quotaDisk!=0">云硬盘（块）:{{detail.prj.diskCount}}扩大至{{opinion.workQuota.quotaDisk}}</span>
+                               <!-- <span data-ng-show="opinion.workQuota.quotaDiskshot!=0">云硬盘和快照（GB）:{{detail.prj.diskCapacity}}扩大至{{opinion.workQuota.quotaDiskshot}}</span>-->
+                                <span data-ng-show="opinion.workQuota.quotaDiskSize!=0">云硬盘（GB）:{{detail.prj.diskCapacity}}扩大至{{opinion.workQuota.quotaDiskSize}}</span>
+                                <span data-ng-show="opinion.workQuota.quotaFloatIp!=0">公网IP（个）:{{detail.prj.outerIP}}扩大至{{opinion.workQuota.quotaFloatIp}}</span>
+                                <span data-ng-show="opinion.workQuota.quotaMemory!=0">内存（GB）:{{detail.prj.memory}}扩大至{{opinion.workQuota.quotaMemory}}</span>
+                                <span data-ng-show="opinion.workQuota.quotaNet!=0">网络（个）:{{detail.prj.netWork}}扩大至{{opinion.workQuota.quotaNet}}</span>
+                                <span data-ng-show="opinion.workQuota.quotaPortMapping !=0">端口映射（个）:{{detail.prj.portMappingCount}}扩大至{{opinion.workQuota.quotaPortMapping}}</span>
+                                <span data-ng-show="opinion.workQuota.quotaSecGroup!=0">安全组（个）:{{detail.prj.safeGroup}}扩大至{{opinion.workQuota.quotaSecGroup}}</span>
+                                <span data-ng-show="opinion.workQuota.quotaShotSize!=0">云硬盘快照（GB）:{{detail.prj.snapshotSize}}扩大至{{opinion.workQuota.quotaShotSize}}</span>
+                                <span data-ng-show="opinion.workQuota.quotaSms!=0">报警短信条数（条）:{{detail.prj.smsCount}}扩大至{{opinion.workQuota.quotaSms}}</span>
+                                <span data-ng-show="opinion.workQuota.quotaSnapshot!=0">云硬盘快照（个）:{{detail.prj.diskSnapshot}}扩大至{{opinion.workQuota.quotaSnapshot}}</span>
+                                <span data-ng-show="opinion.workQuota.quotaSubnet!=0">子网（个）:{{detail.prj.subnetCount}}扩大至{{opinion.workQuota.quotaSubnet}}</span>
+                                <span data-ng-show="opinion.workQuota.quotaVm!=0">云主机（台）:{{detail.prj.hostCount}}扩大至{{opinion.workQuota.quotaVm}}</span>
+                                <span data-ng-show="opinion.workQuota.quotaVpn!=0">VPN（个）:{{detail.prj.countVpn}}扩大至{{opinion.workQuota.quotaVpn}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="file-group" data-ng-repeat="workFile in opinion.workFile" style="padding-top: 5px;">
+                        <div class="file-icon"><span class="glyphicon glyphicon-paperclip"
+                                                     data-ng-click="detail.down(workFile.eayunFile.eayunFileId)"
+                                                     style="cursor: pointer;"></span></div>
+                        <p>{{detail.shortName(workFile.eayunFile.fileName)}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div style="display: none;">
+    <iframe ng-src="{{detail.downSrc}}"></iframe>
+</div>

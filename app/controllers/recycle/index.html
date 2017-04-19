@@ -1,0 +1,12 @@
+<!-- 导航页签 -->
+<tabs class="nav-tabs-underline">
+    <tab-underline ui-sref-active="active" data-ng-if="hasPermission('recycle_host_list')" data-ui-sref="app.recycle.host">云主机</tab-underline>
+    <tab-underline ui-sref-active="active" data-ng-if="hasPermission('recycle_volume_list')" data-ui-sref="app.recycle.volume">云硬盘</tab-underline>
+    <tab-underline ui-sref-active="active" data-ng-if="hasPermission('recycle_snapshot_list')" data-ui-sref="app.recycle.snapshot">云硬盘快照</tab-underline>
+</tabs>
+<!-- 子页面展示区 -->
+<div class="panel panel-default clearfix">
+    <div class="panel-body">
+        <div ui-view=""></div>
+    </div>
+</div>

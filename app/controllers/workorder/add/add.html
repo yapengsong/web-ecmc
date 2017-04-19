@@ -1,0 +1,161 @@
+<style>
+    .font_style{
+        color: red;
+    }
+</style>
+<!-- 当前位置下拉列表 -->
+<div class="title-inline">
+    <div class="form-group">
+        <label class="control-label">当前位置：
+            <a style="cursor: pointer;" data-ui-sref="app.workorder">工单管理</a>&nbsp;>
+            <span> 创建工单</span>
+        </label>
+    </div>
+</div>
+<div class="panel panel-default clearfix">
+    <div class="panel-body">
+        <h4>创建工单</h4>
+
+        <form class="form-horizontal row" name="addWork" novalidate>
+            <div class="form-group">
+                <label class="col-sm-1 control-label"><strong>系统信息</strong></label>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">提交人：</label>
+                <label class="col-sm-1 control-label" style="text-align: left;">{{add.user.name}}</label>
+                <label class="col-sm-1 control-label">流程状态：</label>
+                <label class="col-sm-1 control-label" style="text-align: left;">待处理</label>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-1 control-label"><strong>客户信息</strong></label>
+            </div>
+            <div class="form-group">
+                <label class="col-lg-2 control-label"><span class="color-require">*</span>客户名称：</label>
+
+                <div class="col-sm-3 has-feedback"
+                     data-ng-class="(addWork.cusName.$dirty && addWork.cusName.$invalid) ? 'has-error' : ''">
+                    <eayun-input-filter ng-model="add.workorder.applyCustomer" filter-data="add.allCustomerList"
+                                        text-field="cusOrg" name="cusName"
+                                        maxlength="9"
+                                        placeholder="请输入客户名称"
+                                        data-ng-pattern="/^[0-9a-zA-Z_\u4e00-\u9fa5\s]{1,9}$/"
+                                        data-ng-change="add.changeCusOrg(add.workorder.applyCustomer)" required>
+                    </eayun-input-filter>
+                    <label class="control-label" data-ng-show="addWork.cusName.$dirty && addWork.cusName.$invalid">请输入1—9位字符，支持数字、中英文、下划线、空格</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-lg-2 control-label"><span class="color-require">*</span>申请人账号：</label>
+
+                <div class="col-sm-3 has-feedback"
+                     data-ng-class="(addWork.userAccount.$dirty && addWork.userAccount.$invalid) ? 'has-error' : ''">
+                    <eayun-input-filter ng-model="add.workorder.workApplyUser" filter-data="add.allUsers"
+                                        name="userAccount"
+                                        maxlength="20"
+                                        text-field="userAccount"
+                                        placeholder="请输入申请人账号"
+                                        data-ng-pattern="/^[_0-9a-zA-Z\s]{1,20}$/"
+                                        data-ng-change="add.changeUserMessage(add.workorder.workApplyUser)" required>
+                    </eayun-input-filter>
+                    <label class="control-label"
+                           data-ng-show="addWork.userAccount.$dirty && addWork.userAccount.$invalid">请输入1—20位字符，支持数字、英文、下划线、空格</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-lg-2 control-label"><span class="color-require">*</span>联系手机：</label>
+
+                <div class="col-sm-3 has-feedback"
+                     data-ng-class="(addWork.phone.$dirty && addWork.phone.$invalid) ? 'has-error' : ''">
+                    <input type="text" name="phone" class="form-control" data-ng-model="add.workorder.workPhone" maxlength="50"
+                           placeholder="请输入联系手机" data-ng-pattern="/^1[3|5|8|7][0-9]\d{8}$/" maxlength="11" required>
+
+                    <label class="control-label"
+                           data-ng-class="addWork.phone.$dirty && addWork.phone.$error.pattern ? 'show' : 'hide'"
+                           style="text-align: left;" >请输入正确的联系手机</label>
+                    <label class="control-label"
+                           data-ng-show="addWork.phone.$dirty && addWork.phone.$error.required">请输入联系手机</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-lg-2 control-label"><span class="color-require">*</span>联系邮箱：</label>
+
+                <div class="col-sm-3 has-feedback"
+                     data-ng-class="(addWork.email.$dirty && addWork.email.$invalid) ? 'has-error' : ''" >
+                    <input type="text" name="email"  class="form-control" data-ng-model="add.workorder.workEmail" maxlength="50"
+                           placeholder="请输入联系邮箱" data-ng-pattern="/^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/" required>
+                    <label class="control-label"
+                           data-ng-class="addWork.email.$dirty && addWork.email.$error.pattern ? 'show' : 'hide'"
+                    style="text-align: left;" >请输入正确的邮箱地址</label>
+                    <label class="control-label"
+                           data-ng-show="addWork.email.$dirty && addWork.email.$error.required">请输入联系邮箱</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-1 control-label"><strong>工单信息</strong></label>
+            </div>
+            <div class="form-group">
+                <label class="col-lg-2 control-label"><span class="color-require">*</span>事件类别：</label>
+
+                <div class="col-sm-2 has-feedback"
+                     data-ng-class="(addWork.workType.$dirty && addWork.workType.$invalid) ? 'has-error' : ''">
+                    <eayun-select name="workType" class="form-control" data-ng-model="add.workorder.workType"
+                                  placeholder="请选择事件类别" required>
+                        <!-- <eayun-option value="" selected text="请选择问题类别"></eayun-option> -->
+                        <eayun-option value="workType.nodeId" ng-if="workType.nodeId!='0007001003001'&&workType.nodeId!='0007001003002'"   data-ng-repeat="workType in add.queryWorkorderList.workTypeList"
+                                      text="{{workType.nodeName}}"></eayun-option>
+                    </eayun-select>
+                    <label class="control-label"
+                           data-ng-show="addWork.workType.$dirty && addWork.workType.$error.required">请选择事件类别</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-lg-2 control-label"><span class="color-require">*</span>事件标题：</label>
+
+                <div class="col-sm-3 has-feedback"
+                     data-ng-class="(addWork.workTitle.$dirty && addWork.workTitle.$invalid) ? 'has-error' : ''">
+                    <input type="text" name="workTitle" class="form-control" data-ng-model="add.workorder.workTitle" maxlength="45"
+                           placeholder="请输入事件标题"required>
+                    <label class="control-label"
+                           data-ng-show="addWork.workTitle.$dirty && addWork.workTitle.$error.required">请输入事件标题</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-lg-2 control-label"><span class="color-require">*</span>事件描述：</label>
+
+                <div class="col-sm-3 has-feedback"
+                     data-ng-class="(addWork.workContent.$dirty && addWork.workContent.$invalid) ? 'has-error' : ''">
+                    <textarea type="text" name="workContent" class="form-control" data-ng-model="add.workorder.workContent" maxlength="2000"
+                              placeholder="请输入事件描述" required></textarea>
+                    <label class="control-label"
+                           data-ng-show="addWork.workContent.$dirty && addWork.workContent.$error.required">请输入事件描述</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-lg-2 control-label"><span class="color-require">*</span>事件级别：</label>
+
+                <div class="col-sm-2 has-feedback"
+                     data-ng-class="(addWork.workLevel.$dirty && addWork.workLevel.$invalid) ? 'has-error' : ''">
+                    <eayun-select name="workLevel" class="form-control" data-ng-model="add.workorder.workLevel"
+                                  placeholder="请选择事件级别" required>
+                        <!-- <eayun-option value="" selected text="请选择问题类别"></eayun-option> -->
+                        <eayun-option value="workLevel.nodeId" ng-if="workLevel.nodeId!='0007001001005'" data-ng-repeat="workLevel in add.queryWorkorderList.workLevelList"
+                                      text="{{workLevel.nodeName}}"></eayun-option>
+                    </eayun-select>
+                    <label class="control-label"
+                           data-ng-show="addWork.workLevel.$dirty && addWork.workLevel.$error.required">请选择事件级别</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-lg-2 control-label"></label>
+
+                <div class="col-lg-4 form-group">
+                    <button type="button" class="btn btn-primary btn-lg" ng-disabled="addWork.$invalid" data-ng-click="add.addWorkOrder(add.workorder)"
+                            style="margin: 0px 15px;">提交
+                    </button>
+                    <button type="button" class="btn btn-default btn-lg" data-ui-sref="app.workorder">取消
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,20 @@
+<div class="modal-body" id="gd_change">
+    <form id="editForm" class="form-horizontal gd_con">
+        <div class="" id="viewandloding" style="position:relative;">
+            <div class="traditional csspinner  request-loading" id="loadingbar"></div>
+            <div class="row">
+                <div class="form-group col-md-12">
+                    <label class="col-sm-2 col-md-2 col-xs-2  control-label">日志内容：</label>
+
+                    <div class="col-sm-9 col-md-9 col-xs-9" style="max-height: 600px;min-height:100px;overflow-y: auto;border:1px solid #dcdcdc;border-radius:4px;padding: 10px 0;">
+                        <div class="col-md-12 log_yun" ng-bind-html="log.logInfo"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="invalid-form-error-message"></div>
+        </div>
+    </form>
+</div>
+<div class="modal-footer gd_footer">
+    <button class="btn btn-default" data-ng-click="cancel()" id="subBtn">取消</button>
+</div>

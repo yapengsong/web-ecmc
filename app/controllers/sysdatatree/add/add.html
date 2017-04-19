@@ -1,0 +1,57 @@
+<form class="form-horizontal" name="addData" novalidate>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">节点名称：</label>
+
+        <div class="col-sm-7" data-ng-class="(addData.name.$dirty && addData.name.$error.required) ? 'has-error' : ''">
+            <input type="text" class="form-control" data-ng-model="add.datatree.nodeName" name="name" maxlength="200" required/>
+            <label class="control-label hide"
+                   data-ng-class="addData.name.$dirty && addData.name.$error.required ? 'show' : 'hide'"
+                   style="text-align: left;">请输入节点名称</label>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">节点英文名称：</label>
+
+        <div class="col-sm-7">
+            <input type="text" class="form-control" maxlength="200" name="nodeNameEn" data-ng-model="add.datatree.nodeNameEn">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">节点ICON：</label>
+
+        <div class="col-sm-7">
+            <input type="text" class="form-control" maxlength="50" data-ng-model="add.datatree.icon"/>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">是否为根节点：</label>
+
+        <div class="col-sm-7 small-size">
+            是<input name="radio" data-ng-model="add.datatree.isRoot" value="1" class="control-label" type="radio"
+                    style="margin-left: 15px;margin-right:30px;"/>
+            否<input name="radio" data-ng-model="add.datatree.isRoot" value="0" class="control-label" type="radio"
+                   style="margin-left: 15px;" checked="true"/>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">编程参数1：</label>
+
+        <div class="col-sm-7">
+            <input type="text" class="form-control" maxlength="200" data-ng-model="add.datatree.para1"/>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">编程参数2：</label>
+
+        <div class="col-sm-7">
+            <input type="text" class="form-control" maxlength="200" data-ng-model="add.datatree.para2"/>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">备注：</label>
+
+        <div class="col-sm-7 has-feedback">
+            <textarea class="form-control" data-ng-model="add.datatree.memo" maxlength="2000" placeholder="请输入备注"></textarea>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,16 @@
+<table class="table table-eayun">
+    <tbody>
+    <tr ng-repeat=" treeitem in sorttree.childrenList">
+        <td ng-bind="::treeitem.nodeName.length>15?treeitem.nodeName.substring(0,15)+'...':treeitem.nodeName" title="{{treeitem.nodeName}}" style = "width:80%"></td>
+        <td>
+            <button class="btn btn-tablemng btn-first" ng-click="sorttree.upSort($index)" style = "width:10%">上移</button>
+        </td>
+        <td>
+            <button class="btn btn-tablemng btn-first" ng-click="sorttree.downSort($index)" style = "width:10%">下移</button>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<div class="modal-footer">
+    <button class="btn btn-primary btn-modal" data-ng-click="commit()">关 闭</button>
+</div>

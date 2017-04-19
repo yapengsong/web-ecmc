@@ -1,0 +1,18 @@
+<form class="form-horizontal" name="myForm">
+
+    <!--浮动ip-->
+    <div class="form-group" >
+        <label class="col-sm-3 control-label">IP地址：</label>
+        <div class="col-sm-8" data-ng-class="(myForm.floatIp.$dirty && myForm.floatIp.$invalid) ? 'has-error' : ''">
+            <eayun-select name="floatIp" class="form-control"  data-ng-model="bindFloatIp.float.floId"  placeholder="--请选择IP--" required>
+                <eayun-option value="float.floId" text="{{float.floIp}}" data-ng-repeat="float in bindFloatIp.unBindFloatList"></eayun-option>
+            </eayun-select>
+
+            <!--<label class="control-label hide"
+                   data-ng-class="bindIp.prjName.$dirty && bindIp.prjName.$error.required ? 'show' : 'hide'"
+                   style="text-align: left;">项目不能为空</label>-->
+        </div>
+    </div>
+
+</form>
+

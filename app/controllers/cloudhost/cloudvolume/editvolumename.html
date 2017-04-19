@@ -1,0 +1,26 @@
+<div>
+	<ng-form name="editVolumeNameTable" novalidate>
+	<div class="col-md-10" data-ng-class="volumeDetail.volNameEditable&&(editVolumeNameTable.volName.$dirty && editVolumeNameTable.volName.$invalid) ? 'has-error' : ''" style="padding-left: 0px;">
+		<input class="form-control" name="volName" type="text" maxlength="63" placeholder="请输入云硬盘名称" data-ng-model="volumeDetail.volEditModel.volName" data-ng-pattern="/^[\u4e00-\u9fa5a-zA-Z0-9]([\u4e00-\u9fa5_a-zA-Z0-9\s]{0,61}[\u4e00-\u9fa5a-zA-Z0-9]){0,1}$/"  required ajax-valid="volumeDetail.checkVolumeName(value)">
+		<label class="control-label" style="padding-top:17px;" ng-class="editVolumeNameTable.volName.$dirty && editVolumeNameTable.volName.$error.required?'':'hide'">
+			<span>请输入1-63位字符,支持数字、中英文、下划线、空格</span>
+		</label>
+		<label class="control-label" style="padding-top:17px;" ng-class="editVolumeNameTable.volName.$dirty && editVolumeNameTable.volName.$error.ajaxValid?'':'hide'">
+			<span>云硬盘名称已存在</span>
+		</label>
+		<label class="control-label" style="padding-top:17px;" ng-class="editVolumeNameTable.volName.$dirty && editVolumeNameTable.volName.$error.pattern?'':'hide'">
+			<span>请输入1-63位字符,支持数字、中英文、下划线、空格</span>
+		</label>
+		
+	</div>
+	<span class="badge hide" style="margin-left:10px;background-color:green;color:#ffffff;" data-ng-class="volumeDetail.volNameEditable&&(editVolumeNameTable.volName.$dirty&&(editVolumeNameTable.volName.$valid))?'show':'hide'" data-ng-click="volumeDetail.saveEdit('volName')">
+      	<span class="glyphicon glyphicon-ok">
+     	</span> 
+    </span>
+	<span class="badge" data-ng-click="volumeDetail.cancleEdit('volName')">
+      	<span class="glyphicon glyphicon-remove">
+      	</span> 
+    </span>
+    </ng-form>
+</div>
+	

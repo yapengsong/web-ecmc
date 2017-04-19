@@ -1,0 +1,228 @@
+
+    <form class="form-horizontal ectjfuw_lb" name="dataCenterForm" novalidate>
+        <div class="diyi" >
+            <!--------------------------------   数据中心基本信息   配置      ------------------------------------>
+            <ng-form name="formOne" ng-show="dataCenter.pagenumber!=2&&dataCenter.pagenumber!=3">
+                <!-- 数据中心名称 -->
+                <div class="form-group has-feedback" >
+                    <label class="col-sm-4 control-label"><span class="color-require">*</span>数据中心名称</label>
+
+                    <div class="col-sm-6" data-ng-class="(formOne.name.$dirty && formOne.name.$invalid) ? 'has-error' : ''">
+                        <input type="text" class="form-control" placeholder="请填写数据中心名称" name="name" data-ng-pattern="/^[\u4e00-\u9fa5a-zA-Z0-9_]{0,7}$/" ajax-valid="dataCenter.checkDcName(value)" maxlength="6" data-ng-model="dataCenter.model.name" required/>
+                        <label class="control-label hide"
+                               data-ng-class="formOne.name.$dirty && formOne.name.$error.required ? 'show' : 'hide'"
+                               style="text-align: left;">请填写数据中心名称</label>
+                        <label class="control-label hide"
+                               data-ng-class="(formOne.name.$dirty && formOne.name.$error.ajaxValid) ? 'show' : 'hide'"
+                               style="text-align: left;">存在相同的数据中心名称</label>
+                        <label class="control-label hide"
+                               data-ng-class="formOne.name.$dirty && formOne.name.$error.pattern ? 'show' : 'hide'"
+                               style="text-align: left;">请输入1-6位字符,支持数字、英文、下划线</label>
+                    </div>
+                </div>
+                <div class="form-group has-feedback" >
+                    <label class="col-sm-4 control-label"><span class="color-require">*</span>该数据中心下机柜容量</label>
+
+                    <div class="col-sm-6" data-ng-class="(formOne.cabinetCapacity.$dirty && formOne.cabinetCapacity.$invalid ) ? 'has-error' : ''">
+                        <input type="text" class="form-control"  name="cabinetCapacity" data-ng-model="dataCenter.model.cabinetCapacity"maxlength="10" data-ng-pattern="/^([1-9]\d{0,8}|9)?$/"  required/>
+                        <label class="control-label" ng-show="formOne.cabinetCapacity.$dirty && formOne.cabinetCapacity.$error.required">请填写机柜容量</label>
+                        <label class="control-label" ng-if="formOne.cabinetCapacity.$error.pattern&& formOne.cabinetCapacity.$dirty">请输入1到999999999的整数</label>
+                    </div>
+                </div>
+                <div class="form-group has-feedback" >
+                    <label class="col-sm-4 control-label"><span  class="color-require">*</span >Region标识</label>
+
+                    <div class="col-sm-6" data-ng-class="(formOne.apiDcCode.$dirty && formOne.apiDcCode.$invalid ) ? 'has-error' : ''">
+                        <input type="text" class="form-control"  name="apiDcCode" data-ng-model="dataCenter.model.apiDcCode" data-ng-pattern="/^[a-z0-9]([a-z0-9\-]+[a-z0-9]+|[a-z0-9]+)?$/"
+                               ajax-valid="dataCenter.checkApiDcCode(value)" maxlength="20" required/>
+                        <label class="control-label" ng-show="formOne.apiDcCode.$dirty && formOne.apiDcCode.$error.required">请输入1-20字符，支持英文小写、数字、横线</label>
+                        <label class="control-label hide"
+                               data-ng-class="(formOne.apiDcCode.$dirty && formOne.apiDcCode.$error.ajaxValid) ? 'show' : 'hide'"
+                               style="text-align: left;">存在相同的Region标识</label>
+                        <label class="control-label hide"
+                               data-ng-class="formOne.apiDcCode.$dirty && formOne.apiDcCode.$error.pattern ? 'show' : 'hide'"
+                               style="text-align: left;">请输入1-20字符，支持英文小写、数字、横线</label>
+                    </div>
+                </div>
+                <div class="form-group has-feedback" >
+                    <label class="col-sm-4 control-label">数据中心描述</label>
+
+                    <div class="col-sm-6" >
+                        <textarea class="form-control ng-valid" maxlength="200" ng-model="dataCenter.model.dcDesc" style="height:80px;"></textarea>
+                    </div>
+                </div>
+            </ng-form>
+
+
+            <!--------------------------------    EayunStack   配置               ------------------------------------>
+            <ng-form name="formTwo" ng-show="dataCenter.pagenumber==2">
+                <div class="form-group has-feedback" >
+                    <label class="col-sm-5 control-label"><span class="color-require">*</span>EayunStack管理节点内网IP</label>
+
+                    <div class="col-sm-6" data-ng-class="(formTwo.dcAddress.$dirty && formTwo.dcAddress.$invalid ) ? 'has-error' : ''">
+                        <input type="text" class="form-control" name="dcAddress" data-ajax-valid="dataCenter.checkAddress(value)" data-ng-model="dataCenter.model.dcAddress" required disabled/>
+                        <label class="control-label" ng-show="formTwo.dcAddress.$dirty && formTwo.dcAddress.$error.required">请填写EayunStack管理节点内网IP</label>
+                        <label class="control-label" ng-if="!formTwo.dcAddress.$error.required&&!dataCenter.addressFlag">格式错误</label>
+                    </div>
+                </div>
+                <!-- 数据中心登陆用户名 -->
+                <div class="form-group has-feedback" >
+                    <label class="col-sm-5 control-label"><span class="color-require">*</span>EayunStack管理节点内网登陆用户名</label>
+
+                    <div class="col-sm-6" data-ng-class="(formTwo.vcUserName.$dirty && formTwo.vcUserName.$invalid ) ? 'has-error' : ''">
+                        <input type="text" class="form-control"name="vcUserName" data-ng-model="dataCenter.model.vcenterUsername" required />
+                        <label class="control-label" ng-show="formTwo.vcUserName.$dirty && formTwo.vcUserName.$error.required">请填写EayunStack管理节点内网登陆用户名</label>
+                    </div>
+                </div>
+                <!-- 数据中心登陆密码 -->
+                <div class="form-group has-feedback" >
+                    <label class="col-sm-5 control-label"><span class="color-require">*</span>EayunStack管理节点内网登陆密码</label>
+
+                    <div class="col-sm-6" data-ng-class="(formTwo.vCenterPassword.$dirty && formTwo.vCenterPassword.$invalid ) ? 'has-error' : ''">
+                        <input type="password" class="form-control" name="vCenterPassword" data-ng-model="dataCenter.model.vcenterPassword" maxlength="20" required/>
+                        <label class="control-label" ng-show="formTwo.vCenterPassword.$dirty && formTwo.vCenterPassword.$error.required">密码必填</label>
+                    </div>
+                </div>
+                <!-- EayunStack 管理节点外网 IP -->
+                <div class="form-group has-feedback" >
+                    <label class="col-sm-5 control-label"><span class="color-require">*</span>EayunStack管理节点外网IP</label>
+
+                    <div class="col-sm-6" data-ng-class="(formTwo.ecManagenodeOutnetip.$dirty && formTwo.ecManagenodeOutnetip.$invalid ) ? 'has-error' : ''">
+                        <input type="text" class="form-control" name="ecManagenodeOutnetip" ng-model="dataCenter.model.ecManagenodeOutnetip" data-ajax-valid="dataCenter.checkOutnetip(value)" disabled required/>
+                        <label class="control-label" ng-show="formTwo.ecManagenodeOutnetip.$dirty && formTwo.ecManagenodeOutnetip.$error.required">请填写管理节点外网 IP</label>
+                        <label class="control-label" ng-if="!formTwo.ecManagenodeOutnetip.$error.required&&!dataCenter.outnetipFlag">IP格式错误</label>
+                    </div>
+                </div>
+                <!-- EayunStack 管理节点 鉴权信息 -->
+                <div class="form-group has-feedback" >
+                    <label class="col-sm-5 control-label"><span class="color-require">*</span>EayunStack管理节点外网鉴权</label>
+
+                    <div class="col-sm-6" data-ng-class="(formTwo.ecManagenodeAuth.$dirty && formTwo.ecManagenodeAuth.$invalid ) ? 'has-error' : ''">
+                        <input type="text" class="form-control" maxlength="50" name="ecManagenodeAuth" ng-model="dataCenter.model.ecManagenodeAuth" required/>
+                        <label class="control-label" ng-show="formTwo.ecManagenodeAuth.$dirty && formTwo.ecManagenodeAuth.$error.required">请填写鉴权信息</label>
+                    </div>
+                </div>
+                <!-- EayunStack管理项目的ID -->
+                <div class="form-group has-feedback" >
+                    <label class="col-sm-5 control-label"><span class="color-require">*</span>EayunStack管理项目ID</label>
+
+                    <div class="col-sm-6" data-ng-class="(formTwo.osAdminProjectId.$dirty && formTwo.osAdminProjectId.$invalid ) ? 'has-error' : ''">
+                        <input type="text" class="form-control" name="osAdminProjectId" maxlength="100" data-ng-model="dataCenter.model.osAdminProjectId" required/>
+                        <label class="control-label" ng-show="formTwo.osAdminProjectId.$dirty && formTwo.osAdminProjectId.$error.required">请填写EayunStack管理项目的ID</label>
+                    </div>
+                </div>
+                <!-- EayunStack的keystoneRegion -->
+                <div class="form-group has-feedback" >
+                    <label class="col-sm-5 control-label"><span class="color-require">*</span>EayunStack的keystoneRegion</label>
+
+                    <div class="col-sm-6" data-ng-class="(formTwo.osKeystoneRegion.$dirty && formTwo.osKeystoneRegion.$invalid ) ? 'has-error' : ''">
+                        <input type="text" class="form-control" name="osKeystoneRegion" maxlength="20" data-ng-model="dataCenter.model.osKeystoneRegion"required/>
+                        <label class="control-label" ng-show="formTwo.osKeystoneRegion.$dirty && formTwo.osKeystoneRegion.$error.required">请填写EayunStack的KeystoneRegion</label>
+                    </div>
+                </div>
+                <!-- EayunStack的commonRegion -->
+                <div class="form-group has-feedback" >
+                    <label class="col-sm-5 control-label"><span class="color-require">*</span>EayunStack的commonRegion</label>
+
+                    <div class="col-sm-6" data-ng-class="(formTwo.osCommonRegion.$dirty && formTwo.osCommonRegion.$invalid ) ? 'has-error' : ''">
+                        <input type="text" class="form-control" name="osCommonRegion" maxlength="20" ng-model="dataCenter.model.osCommonRegion" required/>
+                        <label class="control-label" ng-show="formTwo.osCommonRegion.$dirty && formTwo.osCommonRegion.$error.required">请填写EayunStack的CommonRegion</label>
+                    </div>
+                </div>
+                <!-- quotaCpu -->
+                <div class="form-group has-feedback" >
+                    <label class="col-sm-5 control-label"><span class="color-require">*</span>EayunStack的Cpu超配比</label>
+
+                    <div class="col-sm-6" data-ng-class="(formTwo.cpuAllocationRatio.$dirty && formTwo.cpuAllocationRatio.$invalid ) ? 'has-error' : ''">
+                        <input type="text" class="form-control" name="cpuAllocationRatio" maxlength="5" data-ng-model="dataCenter.model.cpuAllocationRatio" data-ajax-valid="dataCenter.checkcpuRatio(value)" required/>
+                        <label class="control-label" ng-show="formTwo.cpuAllocationRatio.$dirty && formTwo.cpuAllocationRatio.$error.required">请输入不小于1的正整数</label>
+                        <label class="control-label" ng-if="!formTwo.cpuAllocationRatio.$error.required&&!dataCenter.cpuRatioFlag">请填写EayunStack底层的Cpu超配比，例如16或8等</label>
+                    </div>
+                </div>
+                <!-- quotaMemory -->
+                <div class="form-group has-feedback" >
+                    <label class="col-sm-5 control-label"><span class="color-require">*</span>EayunStack的Memory超配比</label>
+
+                    <div class="col-sm-6" data-ng-class="(formTwo.ramAllocationRatio.$dirty && formTwo.ramAllocationRatio.$invalid ) ? 'has-error' : ''">
+                        <input type="text" class="form-control" name="ramAllocationRatio" maxlength="5" data-ng-model="dataCenter.model.ramAllocationRatio" data-ajax-valid="dataCenter.checkramRatio(value)" required/>
+                        <label class="control-label" ng-show="formTwo.ramAllocationRatio.$dirty && formTwo.ramAllocationRatio.$error.required">请输入不小于1的数字</label>
+                        <label class="control-label" ng-if="!formTwo.ramAllocationRatio.$error.required&&!dataCenter.ramRatioFlag">请填写EayunStack底层的Memory超配比，例如1.5或1等</label>
+                    </div>
+                </div>
+                <!-- quotaDisk -->
+                <div class="form-group has-feedback" >
+                    <label class="col-sm-5 control-label"><span class="color-require">*</span>EayunStack的Disk超配比</label>
+
+                    <div class="col-sm-6" data-ng-class="(formTwo.ramAllocationRatio.$dirty && formTwo.ramAllocationRatio.$invalid ) ? 'has-error' : ''">
+                        <input type="text" class="form-control" name="diskAllocationRatio" maxlength="5" data-ng-model="dataCenter.model.diskAllocationRatio" data-ajax-valid="dataCenter.checkdiskRatio(value)" required/>
+                        <label class="control-label" ng-show="formTwo.diskAllocationRatio.$dirty && formTwo.diskAllocationRatio.$error.required">请输入不小于1的数字</label>
+                        <label class="control-label" ng-if="!formTwo.diskAllocationRatio.$error.required&&!dataCenter.diskRatioFlag">请填写EayunStack底层的Disk超配比，例如1.5或1等</label>
+                    </div>
+                </div>
+                <!-- quotaNatwork -->
+                <div class="form-group has-feedback" >
+                    <label class="col-sm-5 control-label"><span class="color-require">*</span>EayunStack的Network配额</label>
+
+                    <div class="col-sm-6" data-ng-class="(formTwo.quotaNatwork.$dirty && formTwo.quotaNatwork.$invalid ) ? 'has-error' : ''">
+                        <input type="text" class="form-control" name="quotaNatwork" maxlength="5" data-ng-model="dataCenter.model.quotaNatwork" data-ajax-valid="dataCenter.checkNatwork(value)" required/>
+                        <label class="control-label" ng-show="formTwo.quotaNatwork.$dirty && formTwo.quotaNatwork.$error.required">请输入不小于1的正整数</label>
+                        <label class="control-label" ng-if="!formTwo.quotaNatwork.$error.required&&!dataCenter.natworkFlag">请填写EayunStack底层的Network配额，例如1000等</label>
+                    </div>
+                </div>
+                <!-- DNS -->
+                <div class="form-group has-feedback" >
+                    <label class="col-sm-5 control-label"><span  class="color-require">*</span >DNS配置</label>
+
+                    <div class="col-sm-6" data-ng-class="(formTwo.dns.$dirty && formTwo.dns.$invalid ) ? 'has-error' : ''">
+                        <input type="text" class="form-control" name="dns"  data-ng-model="dataCenter.model.dcDns" data-ng-pattern="/^(25[0-5]|2[0-4]\d|[0-1]\d{2}|[1-9]?\d)\.(25[0-5]|2[0-4]\d|[0-1]\d{2}|[1-9]?\d)\.(25[0-5]|2[0-4]\d|[0-1]\d{2}|[1-9]?\d)\.(25[0-5]|2[0-4]\d|[0-1]\d{2}|[1-9]?\d)$/" required/>
+                        <label class="control-label" ng-show="formTwo.dns.$dirty && formTwo.dns.$error.required">请填写DNS</label>
+                        <label class="control-label" ng-if="formTwo.dns.$dirty &&formTwo.dns.$error.pattern ">请输入正确DNS地址</label>
+                    </div>
+                </div>
+            </ng-form>
+
+            <!--------------------------------   Nagios   配置      ------------------------------------>
+            <ng-form name="formThree" ng-show="dataCenter.pagenumber==3">
+                <!-- nagiosIp -->
+                <div class="form-group has-feedback" >
+                    <label class="col-sm-4 control-label"><span class="color-require">*</span>NagiosIp</label>
+
+                    <div class="col-sm-6" data-ng-class="(formThree.nagiosIp.$dirty && formThree.nagiosIp.$invalid ) ? 'has-error' : ''">
+                        <input type="text" class="form-control" name="nagiosIp" maxlength="50" data-ng-model="dataCenter.model.nagiosIp" data-ajax-valid="dataCenter.checkNagiosIp(value)" required/>
+                        <label class="control-label" ng-show="formThree.nagiosIp.$dirty && formThree.nagiosIp.$error.required">请填写NagiosIp</label>
+                        <label class="control-label" ng-if="!formThree.nagiosIp.$error.required&&!dataCenter.nagiosIpFlag">请输入正确的IP地址</label>
+                    </div>
+                </div>
+                <!-- nagiosUser -->
+                <div class="form-group has-feedback" >
+                    <label class="col-sm-4 control-label"><span class="color-require">*</span>Nagios用户名</label>
+
+                    <div class="col-sm-6" data-ng-class="(formThree.nagiosUser.$dirty && formThree.nagiosUser.$invalid ) ? 'has-error' : ''">
+                        <input type="text" class="form-control" name="nagiosUser" maxlength="20" data-ng-model="dataCenter.model.nagiosUser"required/>
+                        <label class="control-label" ng-show="formThree.nagiosUser.$dirty && formThree.nagiosUser.$error.required">请填写Nagios用户名</label>
+                    </div>
+                </div>
+                <!-- nagiosPassword -->
+                <div class="form-group has-feedback" >
+                    <label class="col-sm-4 control-label"><span class="color-require">*</span>Nagios密码</label>
+
+                    <div class="col-sm-6"  data-ng-class="(formThree.nagiosPassword.$dirty && formThree.nagiosPassword.$invalid ) ? 'has-error' : ''">
+                        <input type="password" class="form-control" name="nagiosPassword" maxlength="20" data-ng-model="dataCenter.model.nagiosPassword" required/>
+                        <label class="control-label" ng-show="formThree.nagiosPassword.$dirty && formThree.nagiosPassword.$error.required">请填写Nagios密码</label>
+                    </div>
+                </div>
+            </ng-form>
+
+        </div>
+    </form>
+
+
+
+<div class="modal-footer gd_footer">
+    <div class="col-md-12 text-right">
+        <button id="btnUp" class="btn btn-primary btn-modal" type="button" ng-show="dataCenter.pagenumber>1" ng-click="dataCenter.goUp();">上一步</button>
+        <button id="btnDown" class="btn btn-primary btn-modal" type="button" ng-show="dataCenter.pagenumber<3" data-ng-click="dataCenter.goDown();">下一步</button>
+        <button class="btn btn-primary btn-modal" id="submitBtn" type="submit"  ng-click="dataCenter.ok(dataCenter.model)" ng-disabled="!dataCenterForm.$valid">确定</button>
+        <button class="btn btn-default btn-modal" type="button" ng-click="cancel()">取消</button>
+    </div>
+</div>

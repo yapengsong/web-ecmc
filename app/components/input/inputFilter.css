@@ -1,0 +1,21 @@
+.ey-select-input{
+    position:relative;
+    min-width: 220px;
+}
+
+.ey-select-input>.magement{
+    position:absolute;
+    left:0px;
+    top: -1px;
+    border-right:0;
+    border-left:0;
+    min-width: 218px;
+}
+
+.ey-select-input>.client{
+    top: 32px;
+    min-height:30px;
+    max-height:127px;
+    overflow-y: auto;
+    font-size:12px;
+}

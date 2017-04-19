@@ -1,0 +1,59 @@
+<div class="second-menu-page">
+    <div class="second-menu">
+        <expander class="second-menu-target expander" ui-sref-active="active" style="margin-top:7px;"
+                  data-target="#second-menu-resouce-first" data-expander-show="true">
+            <span class="icon toggle" style="margin-left:-10px;margin-right:2px"></span>
+            <span><font style="font-weight:bold">主机监控</font></span>
+        </expander>
+        <div class="second-menu-group" id="second-menu-resouce-first">
+            <div class="second-menu-item" data-ng-class="cloudhostDetail.type == 'monitorCPU' ? 'active' : ''"
+                 data-ng-click="cloudhostDetail.changeType('monitorCPU')">CPU
+            </div>
+            <div class="second-menu-item" data-ng-class="cloudhostDetail.type == 'monitorRam' ? 'active' : ''"
+                 data-ng-click="cloudhostDetail.changeType('monitorRam')">内存
+            </div>
+            <div class="second-menu-item" data-ng-class="cloudhostDetail.type == 'monitorDisk' ? 'active' : ''"
+                 data-ng-click="cloudhostDetail.changeType('monitorDisk')">磁盘
+            </div>
+            <div class="second-menu-item" data-ng-class="cloudhostDetail.type == 'monitorNet' ? 'active' : ''"
+                 data-ng-click="cloudhostDetail.changeType('monitorNet')">网络
+            </div>
+        </div>
+    </div>
+    <div class="second-menu-right">
+        <div class="panel panel-default clearfix">
+            <div class="panel-body">
+                <form class="form-inline form-count">
+                    <div class="row" style="margin-bottom:20px;">
+                        <div class="form-group">
+                            <div class="col-sm-12">
+                                <label class="control-label" style="margin-left:20px;font-weight:bold;">主机名称：</label>
+                                <label class="control-label">{{cloudhostDetail.monitorModel.vmName}}</label>
+                                <label class="control-label" style="margin-left:20px;font-weight:bold;">操作系统：</label>
+                                <label class="control-label" ng-bind="::cloudhostDetail.monitorModel.osType=='null'?'':cloudhostDetail.monitorModel.osType"></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-bottom:0px;">
+                        <div class="form-group">
+                            <div class="col-sm-12">
+                                <label class="control-label" style="margin-left:20px;">截止时间：</label>
+                                <date-time-picker data-init="[]" name="endDate" data-ng-model="cloudhostDetail.endDate"
+                                                  class="form-group" data-ng-change="cloudhostDetail.refreshCharts(cloudhostDetail.type)"
+                                                  show-time="true" max-date="today" required></date-time-picker>
+                                <span style="margin-left:15px;"></span>
+                                <eayun-select class="form-control form-select" data-ng-model="cloudhostDetail.interval"
+                                              data-ng-change="cloudhostDetail.refreshCharts(cloudhostDetail.type)">
+                                    <eayun-option value="queryInterval.nameEN" text="{{queryInterval.name}}"
+                                                  data-ng-repeat="queryInterval in cloudhostDetail.queryInterval"></eayun-option>
+                                </eayun-select>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                <div style="height:400px;margin-left:20px;" echarts="cloudhostDetail.myChart"></div>
+            </div>
+        </div>
+    </div>
+</div>

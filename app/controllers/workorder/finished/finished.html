@@ -1,0 +1,96 @@
+<form class="form-inline" xmlns="http://www.w3.org/1999/html">
+    <div>
+        <label class="control-label" style="margin-left: 10px;padding-left: 10px;">工单编号：</label>
+        <input class="form-control" data-ng-model="finished.workNum" style="margin: 0px 10px;" placeholder="请输入工单编号"/>
+
+        <label class="control-label" style="margin-left: 10px;padding-left: 10px;">事件标题：</label>
+        <input class="form-control" data-ng-model="finished.workTitle" style="margin: 0px 10px;" placeholder="请输入事件标题"/>
+        <label class="control-label" style="margin-left: 10px;padding-left: 10px;">事件类别：</label>
+        <eayun-select class="form-control form-select" data-ng-model="finished.workType" style="margin-left: 10px;min-width: 160px !important;">
+            <eayun-option value="" text="事件类别（全部）" selected></eayun-option>
+            <eayun-option value="workorderType.nodeId" text="{{workorderType.nodeName}}"
+                          ng-repeat="workorderType in finished.workTypeList"></eayun-option>
+        </eayun-select>
+        <label class="control-label" style="margin-left: 70px;padding-right: 10px;">时间：</label>
+        <date-time-picker class="form-group" data-format="yyyy-MM-dd HH:mm:ss" show-time="true"
+                          data-ng-model="finished.beginTime" max-date="finished.endTime"></date-time-picker>
+        <span style="margin-left: 5px;padding-right: 20px;">—</span>
+        <date-time-picker class="form-group" data-format="yyyy-MM-dd HH:mm:ss" show-time="true"
+                          data-ng-model="finished.endTime" min-date="finished.beginTime"></date-time-picker>
+    </div>
+    <div style="margin-top: 10px;">
+        <label class="control-label" style="margin-left: 10px;padding-left: 10px;">客户名称：</label>
+        <input style="margin: 0px 10px;" class="form-control" ng-model="finished.applyCustomer" placeholder="请输入客户名称"></input>
+
+        <label class="control-label" style="margin-left: 10px;padding-left: 10px;">联系电话：</label>
+        <input class="form-control" data-ng-model="finished.workPhone" style="margin: 0px 10px;" placeholder="请输入联系电话"/>
+
+        <label class="control-label" style="margin-left: 10px;padding-left: 10px;">联系邮箱：</label>
+        <input class="form-control" data-ng-model="finished.workEmail" style="margin: 0px 10px;" placeholder="请输入联系邮箱"/>
+
+        <label class="control-label" style="margin-left: 10px;padding-left: 10px;">联系人姓名：</label>
+        <input class="form-control" data-ng-model="finished.workCusName" style="margin: 0px 10px;" placeholder="请输入联系人姓名"/>
+
+        <label class="control-label" style="margin-left: 10px;padding-left: 10px;">公司中文名称：</label>
+        <input style="margin: 0px 10px;" class="form-control" data-ng-model="finished.cusCpname" style="margin: 0px 10px;" placeholder="请输入公司中文名称"/>
+        <button class="btn btn-default" ng-click="finished.queryWorkorderTable()" style="margin-left: 20px;">
+            <span></span> 查 询
+        </button>
+    </div>
+</form>
+<eayun-table data-api="finished.workorderTable.api" data-ajax-source="finished.workorderTable.source"
+             data-param="finished.workorderTable.getParams"
+             data-result="finished.workorderTable.result">
+    <table class="table table-striped striped-text-middle">
+        <thead>
+        <tr>
+            <th>工单编号</th>
+            <th>事件标题</th>
+            <th>事件类别</th>
+            <th>
+                <eayun-select type="btn" class="btn-group btn-group-xs" ng-change="finished.queryWorkorderTable()"
+                              data-ng-model="finished.workLevel">
+                    <eayun-option value="" text="事件级别（全部）" selected></eayun-option>
+                    <eayun-option value="workorderType.nodeId" text="{{workorderType.nodeName}}"
+                                  ng-repeat="workorderType in finished.workLevelList"></eayun-option>
+                </eayun-select>
+            </th>
+            <th>客户名称</th>
+            <th>创建时间</th>
+            <th>
+                <eayun-select type="btn" class="btn-group btn-group-xs" ng-change="finished.queryWorkorderTable()"
+                              data-ng-model="finished.workHeadUser">
+                    <eayun-option value="" text="负责人（全部）" selected></eayun-option>
+                    <eayun-option value="workorderType.id" text="{{workorderType.name}}"
+                                  ng-repeat="workorderType in finished.workHeadUserList"></eayun-option>
+                </eayun-select>
+            </th>
+            <th>
+                <eayun-select type="btn" class="btn-group btn-group-xs" ng-change="finished.queryWorkorderTable()"
+                              data-ng-model="finished.workFalg">
+                    <eayun-option value="" text="状态（全部）" selected></eayun-option>
+                    <eayun-option value="workorderType.nodeId" text="{{workorderType.nodeName}}"
+                                  ng-repeat="workorderType in finished.workFalgList"></eayun-option>
+                </eayun-select>
+            </th>
+
+        </tr>
+        </thead>
+        <tbody>
+        <tr data-ng-repeat="workorder in finished.workorderTable.result">
+            <td class="click-link" data-ng-click="finished.detail(workorder)"
+                ng-bind="::workorder.workNum"></td>
+            <td class="click-link" data-ng-click="finished.detail(workorder)" title="{{workorder.workTitle}}"
+                ng-bind="::workorder.workTitle.length>20?workorder.workTitle.substring(0,10)+'...':workorder.workTitle"></td>
+            <td ng-bind="::workorder.workTypeName"></td>
+            <td ng-bind="::workorder.workLevelName"></td>
+            <td ng-bind="::workorder.workCusName"></td>
+            <td ng-bind="::workorder.workCreTime|date:'yyyy-MM-dd HH:mm:ss'"></td>
+            <td ng-bind="::workorder.workHeadUserName"></td>
+            <td ng-bind="::workorder.workFalgName"></td>
+
+        </tr>
+        </tbody>
+    </table>
+    <eayun-table-page></eayun-table-page>
+</eayun-table>

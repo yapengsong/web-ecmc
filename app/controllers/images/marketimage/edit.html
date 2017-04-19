@@ -1,0 +1,222 @@
+<form class="form-horizontal" name="edit" novalidate>
+
+
+
+    <div class="form-group" ng-if="marketedit.item.isUse!='0'">
+        <label class="col-sm-2 control-label">类型：</label>
+        <span class="col-sm-2" style="padding-top: 7px;">{{marketedit.item.imageIspublic=='3'?'市场镜像':'公共镜像'}}</span>
+    </div>
+
+    <div class="form-group" ng-if="marketedit.item.isUse=='0'">
+        <label class="col-sm-2 control-label"><span  class="color-require">*</span >类型：</label>
+
+        <div class="col-sm-3">
+            <eayun-select disabled="{{}}" class="form-control" ng-model="marketedit.item.imageIspublic" data-ng-change="marketedit.checkName(marketedit.item.imageName)" placeholder="请选择类型"  required>
+                <eayun-option value="'1'" text="公共镜像" ></eayun-option>
+                <eayun-option value="'3'" text="市场镜像" ></eayun-option>
+            </eayun-select>
+        </div>
+
+    </div>
+
+
+
+
+    <div class="form-group">
+        <label class="col-sm-2 control-label"><span  class="color-require">*</span >镜像名称：</label>
+
+        <div class="col-sm-8" data-ng-class="(edit.name.$invalid ) ? 'has-error' : ''">
+            <input type="text" class="form-control" data-ng-model="marketedit.item.imageName" maxlength="100"  name="name" placeholder="请输入镜像名称"  required/>
+            <label class="control-label hide"
+                   data-ng-class="edit.name.$dirty && edit.name.$error.required ? 'show' : 'hide'"
+                   style="text-align: left;">请输入镜像名称，长度限定为100位</label>
+        </div>
+    </div>
+
+
+
+    <div class="form-group" ng-if="marketedit.item.imageIspublic=='3'">
+        <label class="col-sm-2 control-label"><span  class="color-require">*</span >提供商：</label>
+
+        <div class="col-sm-3" data-ng-class="(edit.provider.$invalid ) ? 'has-error' : ''">
+            <input type="text" class="form-control" data-ng-model="marketedit.item.provider" maxlength="100"
+                   name="provider" placeholder="请输入提供商名称"  required/>
+            <label class="control-label hide"
+                   data-ng-class="edit.provider.$dirty && edit.provider.$error.required ? 'show' : 'hide'"
+                   style="text-align: left;">请输入提供商名称，长度限定为100位</label>
+            <label class="control-label" ng-show="edit.provider.$error.pattern">只能由数字、中英文、下划线、空格、和英文句号组成</label>
+        </div>
+
+        <label class="col-sm-2 control-label"><span  class="color-require">*</span >业务类别：</label>
+
+        <div class="col-sm-3">
+            <eayun-select class="form-control" ng-model="marketedit.item.professionType" placeholder="请选择业务类别"
+                          required>
+                <eayun-option value="os.nodeId" text="{{::os.nodeName}}" ng-repeat="os in marketedit.marketTypeList"></eayun-option>
+            </eayun-select>
+        </div>
+
+
+    </div>
+
+
+
+    <div class="form-group">
+        <label class="col-sm-2 control-label"><span  class="color-require">*</span >系统类型：</label>
+
+        <div class="col-sm-3">
+            <eayun-select class="form-control" ng-model="marketedit.item.sysType"   placeholder="请选择系统类型"   data-ng-change="marketedit.dcSysChange(marketedit.item.sysType)" required>
+                <eayun-option value="sys.nodeId" text="{{::sys.nodeName}}" ng-repeat="sys in marketedit.sysList"></eayun-option>
+            </eayun-select>
+        </div>
+    </div>
+
+
+
+    <div class="form-group">
+        <label class="col-sm-2 control-label"><span  class="color-require">*</span >系统详情：</label>
+
+        <div class="col-sm-8" data-ng-class="(edit.sysDetail.$invalid ) ? 'has-error' : ''">
+            <input type="text" class="form-control" data-ng-model="marketedit.item.sysDetail" maxlength="100"  name="sysDetail"  placeholder="请输入系统详情"   required/>
+            <label class="control-label hide"
+                   data-ng-class="edit.sysDetail.$dirty && edit.sysDetail.$error.required ? 'show' : 'hide'"
+                   style="text-align: left;">请输入系统详情，长度限定为100位</label>
+            <label class="control-label" ng-show="edit.sysDetail.$error.pattern">只能由数字、中英文、下划线、空格、和英文句号组成</label>
+        </div>
+    </div>
+
+
+    <div class="form-group" ng-if="marketedit.item.imageIspublic=='3'">
+        <label class="col-sm-2 control-label"><span  class="color-require">*</span >集成软件：</label>
+        <div class="col-md-8">
+            <textarea class="form-control" rows="3" name="integratedSoftware" placeholder="请输入镜像集成的软件" data-ng-model="marketedit.item.integratedSoftware" maxlength="500" required></textarea>
+        </div>
+    </div>
+
+
+    <div class="form-group">
+        <label class="col-sm-2 control-label"><span  class="color-require">*</span >最小CPU：</label>
+        <div class="col-md-3"
+             data-ng-class="(edit.imCpu.$dirty && (edit.imCpu.$invalid||marketedit.minCpuError))?'has-error' : ''">
+            <div class="has-feedback">
+                <input type="text" class="form-control"
+                       data-ng-model="marketedit.item.minCpu" name="imCpu"  placeholder="请输入最小CPU" required
+                       data-ng-pattern='/^(1|\+?[1-9][0-9]*)$/' maxlength="2" data-ng-change="marketedit.checkCPU('min')">
+                <span class="ey-suffix">核</span>
+                <label class="control-label hide"
+                       data-ng-class="edit.imCpu.$dirty && (edit.imCpu.$invalid || edit.imCpu.$error.required) ? 'show' : 'hide'"
+                       style="text-align: left;">请输入大于等于1的整数</label>
+                <label class="control-label hide"
+                       data-ng-class="edit.imCpu.$dirty && (!edit.imCpu.$invalid && marketedit.minCpuError) ? 'show' : 'hide'"
+                       style="text-align: left;">必须小于最大CPU</label>
+            </div>
+        </div>
+
+
+        <label class="col-sm-2 control-label"><span  class="color-require">*</span >最小内存：</label>
+        <div class="col-md-3"
+             data-ng-class="(edit.imRam.$dirty && (edit.imRam.$invalid||marketedit.minRamError))?'has-error' : ''">
+            <div class="has-feedback">
+                <input type="text" class="form-control"
+                       data-ng-model="marketedit.item.minRam" name="imRam"  placeholder="请输入最小内存" required
+                       data-ng-pattern='/^(1|\+?[1-9][0-9]*)$/' maxlength="3" data-ng-change="marketedit.checkRAM('min')">
+                <span class="ey-suffix">GB</span>
+                <label class="control-label hide"
+                       data-ng-class="edit.imRam.$dirty && (edit.imRam.$invalid || edit.imRam.$error.required) ? 'show' : 'hide'"
+                       style="text-align: left;">请输入大于等于1的整数</label>
+                <label class="control-label hide"
+                       data-ng-class="edit.imRam.$dirty && (!edit.imRam.$invalid && marketedit.minRamError) ? 'show' : 'hide'"
+                       style="text-align: left;">必须小于最大内存</label>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-2 control-label" ng-if="marketedit.item.imageIspublic=='1'"><span  class="color-require">*</span >最小硬盘：</label>
+        <div class="col-md-3"
+             data-ng-class="((edit.imDisk.$dirty && edit.imDisk.$invalid)||(marketedit.item.minDisk > marketedit.minDisk))?'has-error' : ''" ng-if="marketedit.item.imageIspublic=='1'">
+            <div class="has-feedback">
+                <input type="text" class="form-control"
+                       data-ng-model="marketedit.item.minDisk" name="imDisk" placeholder="请输入最小硬盘" required
+                       data-ng-pattern='/^(1|\+?[1-9][0-9]*)$/'>
+                <span class="ey-suffix">GB</span>
+                <label class="control-label" style="text-align: left;" ng-show="edit.imDisk.$dirty &&edit.imDisk.$error.required">请输入镜像最低磁盘要求，必须≥镜像大小</label>
+                <label class="control-label" ng-show="(marketedit.item.minDisk>marketedit.minDisk)">请输入≤{{marketedit.minDisk}}的正整数</label>
+                <label class="control-label" ng-show="edit.imDisk.$dirty && edit.imDisk.$error.pattern">请输入≤{{marketedit.minDisk}}的正整数</label>
+            </div>
+        </div>
+
+
+        <label class="col-sm-2 control-label" ng-if="marketedit.item.imageIspublic=='3'" ><span  class="color-require">*</span >最小硬盘：</label>
+        <div class="col-md-3"
+             data-ng-class="(edit.imDisk.$dirty && edit.imDisk.$invalid )?'has-error' : ''"  ng-if="marketedit.item.imageIspublic=='3'">
+            <div class="has-feedback">
+                <input type="text" class="form-control" placeholder="请输入最小硬盘"
+                       data-ng-model="marketedit.item.minDisk" name="imDisk" required
+                       data-ng-pattern='/^(1|\+?[1-9][0-9]*)$/'>
+                <span class="ey-suffix">GB</span>
+                <label class="control-label" style="text-align: left;" ng-show="edit.imDisk.$dirty &&edit.imDisk.$error.required">请输入镜像最低磁盘要求，必须≥镜像大小</label>
+                <label class="control-label" style="text-align: left;" ng-show="edit.imDisk.$dirty && edit.imDisk.$error.pattern">请输入镜像最低磁盘要求，必须≥镜像大小</label>
+            </div>
+        </div>
+
+
+        <label class="col-sm-2 control-label" ng-if="marketedit.item.imageIspublic=='3'"><span  class="color-require">*</span >系统盘大小：</label>
+        <div class="col-md-3"
+             data-ng-class="((edit.sysdiskSize.$dirty && edit.sysdiskSize.$invalid )||(1*marketedit.item.sysdiskSize < 1*marketedit.item.minDisk)||(1*marketedit.item.sysdiskSize >2000))?'has-error' : ''" ng-if="marketedit.item.imageIspublic=='3'">
+            <div class="has-feedback">
+                <input type="text" class="form-control"
+                       data-ng-model="marketedit.item.sysdiskSize" name="sysdiskSize"  placeholder="请输入系统盘大小" required
+                       data-ng-pattern='/^(1|\+?[1-9][0-9]*)$/'>
+                <span class="ey-suffix">GB</span>
+                <label class="control-label"  ng-show="edit.sysdiskSize.$dirty &&edit.sysdiskSize.$error.required">请输入≥最小硬盘的整数</label>
+                <label class="control-label" ng-show="edit.sysdiskSize.$dirty && edit.sysdiskSize.$error.pattern">请输入≥最小硬盘的整数</label>
+                <label class="control-label" ng-show="1*marketedit.item.sysdiskSize < 1*marketedit.item.minDisk">请输入≥最小硬盘的整数</label>
+                <label class="control-label" ng-show="1*marketedit.item.sysdiskSize >2000">请输入≤2000的整数</label>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-2 control-label">最大CPU：</label>
+        <div class="col-md-3"
+             data-ng-class="edit.maxCpuName.$dirty && (edit.maxCpuName.$invalid||marketedit.maxCpuError)?'has-error' : ''">
+            <div class="has-feedback">
+                <input type="text" class="form-control"
+                       data-ng-model="marketedit.item.maxCpu" name="maxCpuName" data-ng-pattern='/^[1-9]\d{0,4}$/' maxlength="5" data-ng-change="marketedit.checkCPU('max')" placeholder="请输入最大CPU">
+                <span class="ey-suffix">核</span>
+                <label class="control-label" ng-show="edit.maxCpuName.$dirty && edit.maxCpuName.$invalid">请输入不超过5位的正整数</label>
+                <label class="control-label hide"
+                       data-ng-class="edit.maxCpuName.$dirty && (!edit.maxCpuName.$invalid && marketedit.maxCpuError) ? 'show' : 'hide'"
+                       style="text-align: left;">必须大于最小CPU</label>
+            </div>
+        </div>
+
+        <label class="col-sm-2 control-label">最大内存：</label>
+        <div class="col-md-3"
+             data-ng-class="edit.maxRamName.$dirty && (edit.maxRamName.$invalid||marketedit.maxRamError)?'has-error' : ''">
+            <div class="has-feedback">
+                <input type="text" class="form-control"
+                       data-ng-model="marketedit.item.maxRam" name="maxRamName" data-ng-pattern='/^[1-9]\d{0,5}$/' maxlength="6" data-ng-change="marketedit.checkRAM('max')" placeholder="请输入最大内存">
+                <span class="ey-suffix">GB</span>
+                <label class="control-label" ng-show="edit.maxRamName.$dirty && edit.maxRamName.$invalid">请输入不超过6位的正整数</label>
+                <label class="control-label hide"
+                       data-ng-class="edit.maxRamName.$dirty && (!edit.maxRamName.$invalid && marketedit.maxRamError) ? 'show' : 'hide'"
+                       style="text-align: left;">必须大于最小内存</label>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group" ng-if="marketedit.item.imageIspublic!='3'">
+        <label class="col-sm-2 control-label">描述：</label>
+        <div class="col-md-8">
+            <textarea class="form-control" rows="3" name="desc" placeholder="请输入镜像描述" data-ng-model="marketedit.item.imageDescription" maxlength="200"></textarea>
+        </div>
+    </div>
+
+    <div class="modal-footer" >
+        <button type="button" class="btn btn-primary btn-modal" data-ng-click="commit()"  data-ng-disabled="!edit.$valid ||marketedit.minCpuError||marketedit.maxCpuError||marketedit.minRamError||marketedit.maxRamError||(marketedit.item.imageIspublic=='3'&&((1*marketedit.item.sysdiskSize < 1*marketedit.item.minDisk)||(1*marketedit.item.sysdiskSize >2000)))||(marketedit.item.imageIspublic=='1'&&(marketedit.item.minDisk > marketedit.minDisk))">确  定</button>
+        <button type="button" class="btn btn-default btn-modal" data-ng-click="cancel()">取  消</button>
+    </div>
+</form>

@@ -1,0 +1,18 @@
+.ey-select-input{
+}
+.ey-select-input:focus{
+    border: 1px solid #FF0;
+}
+.ey-select-input .eayun-select-menu {
+    max-height: 126px;
+    min-height: 38px;
+    overflow: auto;
+}
+
+.ey-select-input:hover .eayun-select-menu{
+    display: block;
+}
+
+.form-control,.eayun-select>input{
+    font-size:12px !important;
+}

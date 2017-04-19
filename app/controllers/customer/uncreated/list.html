@@ -1,0 +1,52 @@
+<!-- 当前位置下拉列表 -->
+<div class="title-inline">
+    <div class="title-inline">
+        <div class="form-group">
+            <label class="control-label">当前位置：
+                <a style="cursor: pointer;" data-ui-sref="app.customer">客户管理</a>&nbsp;>
+                <span> 待创建客户</span>
+            </label>
+        </div>
+    </div>
+    <div class="panel panel-default clearfix" data-ng-if="hasPermission('customer_uncreated')">
+        <div class="panel-body">
+
+            <h4>待创建客户</h4>
+            <h5 class="color-require">注：此处仅显示工单已经关闭，但是尚未创建的客户</h5>
+            <eayun-table data-api="uncreatedCusMng.cusTable.api" data-ajax-source="uncreatedCusMng.cusTable.source"
+                         data-param="uncreatedCusMng.cusTable.getParams"
+                         ng-if="hasPermission('customer_query')"
+                         data-result="uncreatedCusMng.cusTable.result">
+                <table class="table table-eayun">
+                    <thead>
+                    <tr>
+                        <th>工单编号</th>
+                        <th>创建时间</th>
+                        <th>联系人姓名</th>
+                        <th>手机号码</th>
+                        <th>电子邮箱</th>
+                        <th class="col-lg-3">公司名称</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr data-ng-repeat="customer in uncreatedCusMng.cusTable.result">
+                        <td ng-bind="::customer.workorderNo"></td>
+                        <td ng-bind="::customer.workorderCreateTime|date:'yyyy-MM-dd HH:mm:ss'"></td>
+                        <td ng-bind-html="::customer.cusName  | ellipsis:15"></td>
+                        <td ng-bind="::customer.cusPhone"></td>
+                        <td ng-bind-html="::customer.cusEmail | ellipsis:20"></td>
+                        <td ng-bind-html="::customer.cusCpname | ellipsis:13"></td>
+                        <td>
+                            <button type="button" class="btn btn-tablemng btn-first" data-ng-click="uncreatedCusMng.createCusAndPrj(customer.cusId)">
+                                创建客户及项目
+                            </button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <eayun-table-page></eayun-table-page>
+            </eayun-table>
+        </div>
+    </div>
+</div>

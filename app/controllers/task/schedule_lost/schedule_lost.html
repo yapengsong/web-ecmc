@@ -1,0 +1,82 @@
+<div class="title-inline">
+    <div class="form-group">
+        <label class="control-label">当前位置：
+            <span> 任务管理</span>
+        </label>
+    </div>
+</div>
+<div class="panel panel-default clearfix">
+    <div class="panel-body">
+        <h4>任务管理</h4>
+        <!-- 导航页签 -->
+        <tabs class="nav-tabs-online">
+            <tab ui-sref-active="active" data-ui-sref="app.task.tasklist">任务列表</tab>
+            <tab ui-sref-active="active" data-ui-sref="app.task.log">日志</tab>
+            <tab ui-sref-active="active" data-ui-sref="app.task.schedulelost">计划任务漏跑统计</tab>
+        </tabs>
+
+        <!--操作区域表单-->
+        <form class="form-inline">
+            <div style="text-align: right;">
+                <form class="form-inline">
+                    <!--计划任务名称-->
+                    <label class="control-label" style="margin-left: 10px;padding-left: 10px;">计划任务名称：</label>
+                    <input class="form-control" data-ng-model="scheduleLost.jname" style="margin: 0px 10px;"/>
+                    <!--漏跑时间范围-->
+                    <label class="control-label" style="margin-left: 5px;">漏跑时间范围：</label>
+                    <date-time-picker class="form-group" style="margin-left:5px;" data-format="yyyy-MM-dd HH:mm:ss"
+                                      show-time="true"
+                                      data-ng-model="scheduleLost.beginTime" max-date="scheduleLost.endTime"></date-time-picker>
+                    <span style="margin-left:0px;">—</span>
+                    <date-time-picker class="form-group" style="margin-left:5px;" data-format="yyyy-MM-dd HH:mm:ss"
+                                      show-time="true"
+                                      data-ng-model="scheduleLost.endTime" min-date="scheduleLost.beginTime"></date-time-picker>
+                    <!--状态查询-->
+                    <!--<eayun-select class="form-control form-select" data-ng-model="history.distribution">-->
+                    <!--<eayun-option value="" text="全部" selected></eayun-option>-->
+                    <!--<eayun-option value="0" text="失败"></eayun-option>-->
+                    <!--<eayun-option value="1" text="成功"></eayun-option>-->
+                    <!--<eayun-option value="2" text="哑火"></eayun-option>-->
+                    <!--</eayun-select>-->
+                    <button class="btn btn-default" ng-click="scheduleLost.doSearch()" style="marin-top: 15px;">
+                        <span></span> 查 询
+                    </button>
+                </form>
+            </div>
+        </form>
+
+        <form class="form-inline form-count">
+            <eayun-table data-api="scheduleLost.myTable.api"
+                         data-ajax-source="scheduleLost.myTable.source"
+                         data-param="scheduleLost.myTable.getParams"
+                         data-result="scheduleLost.myTable.result">
+                <table class="table table-eayun">
+                    <thead>
+                    <tr>
+                        <th>计划任务名称</th>
+                        <th>Cron表达式(整点执行)</th>
+                        <th>任务循环间隔</th>
+                        <th>最后一次检查时间点</th>
+                        <th>首次漏跑时间点</th>
+                        <th>最后一次漏跑时间点</th>
+                        <th>当前任务漏跑次数</th>
+                        <!--<th>操作</th>-->
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="taskdata in scheduleLost.myTable.result">
+                        <td class="" ng-bind="::taskdata.jobName"></td>
+                        <td class="" ng-bind="::taskdata.cron"></td>
+                        <td class="color-error" ng-bind="::taskdata.cycleTime|timeShowType:taskdata.cron"></td>
+                        <td class="" ng-bind="::taskdata.jobDate|date:'yyyy-MM-dd HH:mm:ss'"></td>
+                        <td class="" ng-bind="::taskdata.firstTime"></td>
+                        <td class="" ng-bind="::taskdata.endTime"></td>
+                        <td class="col-md-1" ng-bind="::taskdata.number"></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <eayun-table-page></eayun-table-page>
+            </eayun-table>
+        </form>
+    </div>
+</div>

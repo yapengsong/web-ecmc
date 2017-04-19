@@ -1,0 +1,28 @@
+.api-restrict-text-left {
+    text-align: left;
+    color: #07C;
+}
+
+tr {
+    max-height: 50px;
+}
+
+.api-restrict-table {
+    max-height: 360px;
+    overflow: auto;
+    margin: 15px 20px;
+    border-radius: 4px;
+    border: 1px solid #CCC;
+}
+
+.api-restrict-table-error {
+    max-height: 360px;
+    overflow: auto;
+    margin: 15px 20px;
+    border-radius: 4px;
+    border: 1px solid #A94442;
+}
+
+.api-restrict-table > table > tbody > tr {
+    height: 50px;
+}

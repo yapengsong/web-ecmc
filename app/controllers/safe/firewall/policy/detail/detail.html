@@ -1,0 +1,43 @@
+<div class="policyDetails" style="font-size: 12px;">
+    <form class="row" name="myForm">
+        <div class="col-lg-12">
+
+
+            <div class="details-group">
+                <div class="details-name">所属数据中心：</div>
+                <div class="details-value">
+                    <span ng-bind="::policyDetail.policyModel.dcName"></span>
+                </div>
+            </div>
+
+            <div class="details-group">
+                <div class="details-name">所属项目：</div>
+                <div class="details-value">
+                    <span ng-bind="::policyDetail.policyModel.prjName"></span>
+                </div>
+            </div>
+            <div class="details-group">
+                <div class="details-name">客户：</div>
+                <div class="details-value">
+                    <span ng-bind="::policyDetail.policyModel.cusOrg"></span>
+                </div>
+            </div>
+            <div class="details-group">
+                <div class="details-name">防火墙策略名称：</div>
+                <div class="details-value">
+                    <span ng-bind="::policyDetail.policyModel.fwpName" title="{{policyDetail.policyModel.fwpName}}"></span>
+                </div>
+            </div>
+            <div class="details-group">
+                <div class="details-name">规则：</div>
+                <div class="details-value">
+                    <span class="details-value" ng-bind-html="::policyDetail.policyModel.fwrName | ellipsis:30"></span>
+                </div>
+            </div>
+
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-default btn-modal" ng-click="cancel()">关闭</button>
+</div>

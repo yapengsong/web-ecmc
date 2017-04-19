@@ -1,0 +1,113 @@
+<div class="form-inline">
+    <button type="button" class="btn btn-primary" data-ng-click="market.create()" style="margin-right: 15px;" ng-if="hasPermission('marketimage_add')">
+        <span class="glyphicon glyphicon-plus"></span> 创建镜像
+    </button>
+    <eayun-search ng-model="market.search" options="market.options"></eayun-search>
+</div>
+
+<eayun-auto-refresh interval="5000" refresh="market.refresh"></eayun-auto-refresh>
+<eayun-table data-api="market.table.api" data-ajax-source="market.table.source" data-param="market.table.getParams"
+             data-result="market.table.result" >
+    <table class="table table-eayun">
+        <thead>
+        <tr>
+            <th>镜像名称</th>
+            <th>
+                <eayun-select type="btn" class="btn-group btn-group-xs" data-ng-model="market.isUse" data-ng-change="market.query()">
+                    <eayun-option value="" text="状态（全部）" selected></eayun-option>
+                    <eayun-option value="0" text="未启用" ></eayun-option>
+                    <eayun-option value="1" text="正常" ></eayun-option>
+                    <eayun-option value="2" text="已停用" ></eayun-option>
+                </eayun-select>
+            </th>
+
+           <!-- <th>状态</th>-->
+            <th>
+                <eayun-select type="btn" class="btn-group btn-group-xs" data-ng-model="market.professionType" data-ng-change="market.query()">
+                    <eayun-option value="" text="业务类别（全部）" selected></eayun-option>
+                    <eayun-option value="dc.nodeId" text="{{dc.nodeName}}" data-ng-repeat="dc in market.marketTypeList"></eayun-option>
+                </eayun-select>
+            </th>
+            <th>最低配置</th>
+           <!-- <th>镜像格式</th>-->
+            <th>
+                <eayun-select type="btn" class="btn-group btn-group-xs" data-ng-model="market.dcId" data-ng-change="market.query()">
+                    <eayun-option value="" text="数据中心（全部）" selected></eayun-option>
+                    <eayun-option value="dc.id" text="{{dc.name}}" data-ng-repeat="dc in market.dcList"></eayun-option>
+                </eayun-select>
+            </th>
+            <th>创建云主机数</th>
+            <th>创建时间</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr data-ng-repeat="image in market.table.result">
+            <td class="click-link" data-ng-bind="image.imageName.length>20?image.imageName.substring(0,19)+'...':image.imageName"  title="{{image.imageName}}" data-ui-sref="app.cloudhost.marketimagedetail({imageId: image.imageId})"></td>
+            <td><span class="state-block" data-ng-class="market.imageStatusClass[$index] != '' ? market.imageStatusClass[$index] : ''"
+                      ng-init="market.imageStatusClass[$index] = market.checkImageStatus(image,$index)"></span>
+                {{image.statusForDis}}
+            </td>
+            <td data-ng-bind="::image.professionName"></td>
+            <td>{{image.minCpu}}核/{{image.minRam}}GB/{{image.minDisk}}GB</td>
+            <!--<td data-ng-bind="::image.diskFormat"></td>-->
+            <td data-ng-bind="::image.dcName"></td>
+            <td data-ng-bind="::image.vmNum"></td>
+            <td data-ng-bind="::image.createdTime|date:'yyyy-MM-dd HH:mm:ss'"></td>
+            <td>
+               <!-- <button class="btn btn-tablemng btn-first" data-ng-click="market.edit(image)" ng-if="hasPermission('marketimage_edit')"   data-ng-disabled="image.imageStatus == 'SAVING'|| image.imageStatus == 'DELETING'||image.imageStatus=='QUEUED'">编辑</button>
+                <button class="btn btn-tablemng btn-first" data-ng-click="market.updateMarketImageDesc(image)" ng-if="hasPermission('marketimage_edit')"   data-ng-disabled="image.imageStatus == 'SAVING'|| image.imageStatus == 'DELETING'||image.imageStatus=='QUEUED'">编辑描述</button>
+                <button class="btn btn-tablemng" data-ng-click="market.openImage(image)" ng-if="hasPermission('marketimage_open')&&('0'==image.isUse||'2'==image.isUse)" data-ng-disabled="image.imageStatus == 'SAVING'|| image.imageStatus == 'DELETING'||image.imageStatus=='QUEUED'">启用</button>
+                <button class="btn btn-tablemng" data-ng-click="market.closeImage(image)" ng-if="hasPermission('marketimage_close')&&'1'==image.isUse" data-ng-disabled="image.imageStatus == 'SAVING'|| image.imageStatus == 'DELETING'||image.imageStatus=='QUEUED'">停用</button>
+                <button class="btn btn-tabledel" data-ng-click="market.delete(image)"  ng-if="hasPermission('marketimage_delete')" data-ng-disabled="image.imageStatus == 'SAVING'|| image.imageStatus == 'DELETING'||image.imageStatus=='QUEUED'">删除</button>-->
+
+
+                <button class="btn btn-tablemng btn-first" data-ng-click="market.edit(image)"
+                        ng-if="hasPermission('marketimage_edit')"
+                        data-ng-disabled="image.imageStatus == 'SAVING'|| image.imageStatus == 'DELETING'||image.imageStatus=='QUEUED'">
+                        编辑基本信息
+                </button>
+                <div class="btn-group btn-left" >
+                    <button  class="btn btn-tablemng dropdown-toggle" data-toggle="dropdown">更多操作
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu"style = "min-width : 80px;width : 100px;">
+                        <li><a role="button"
+                               class="btn"
+                               data-ng-click="market.updateMarketImageDesc(image)" ng-if="hasPermission('marketimage_edit')"
+                               data-ng-disabled="image.imageStatus == 'SAVING'|| image.imageStatus == 'DELETING'||image.imageStatus=='QUEUED'">
+                               编辑描述
+                            </a>
+                        </li>
+                        <li><a role="button"
+                               class="btn"
+                               data-ng-click="market.openImage(image)" ng-if="hasPermission('marketimage_open')&&('0'==image.isUse||'2'==image.isUse)"
+                               data-ng-disabled="image.imageStatus == 'SAVING'|| image.imageStatus == 'DELETING'||image.imageStatus=='QUEUED'">
+                               启用
+                             </a>
+                        </li>
+                        <li><a role="button"
+                               class="btn"
+                               data-ng-click="market.closeImage(image)" ng-if="hasPermission('marketimage_close')&&'1'==image.isUse"
+                               data-ng-disabled="image.imageStatus == 'SAVING'|| image.imageStatus == 'DELETING'||image.imageStatus=='QUEUED'">
+                            停用
+                            </a>
+                        </li>
+                        <li><a role="button"
+                               class="btn"
+                               style = "color : #EA3200;"
+                               data-ng-click="market.delete(image)"
+                               ng-if="hasPermission('marketimage_delete')"
+                               data-ng-disabled="image.imageStatus == 'SAVING'|| image.imageStatus == 'DELETING'||image.imageStatus=='QUEUED'">
+                            删除
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <eayun-table-page></eayun-table-page>
+</eayun-table>

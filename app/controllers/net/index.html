@@ -1,0 +1,15 @@
+<!-- 导航页签 -->
+<tabs class="nav-tabs-underline">
+    <tab-underline ui-sref-active="active" data-ui-sref="app.net.tabs.private">私有网络</tab-underline>
+    <tab-underline ui-sref-active="active" data-ui-sref="app.net.tabs.external">外部网络</tab-underline>
+    <tab-underline ui-sref-active="active" data-ui-sref="app.net.tabs.float">弹性公网IP</tab-underline>
+    <tab-underline ui-sref-active="active" data-ui-sref="app.net.tabs.balance" ng-if="hasPermission('vir_loadbalance')">负载均衡</tab-underline>
+    <tab-underline ui-sref-active="active" data-ui-sref="app.net.tabs.vpn">VPN</tab-underline>
+</tabs>
+
+<!-- 子页面展示区 -->
+<div class="panel panel-default clearfix">
+    <div class="panel-body">
+        <div ui-view=""></div>
+    </div>
+</div>

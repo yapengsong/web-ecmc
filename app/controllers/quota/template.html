@@ -1,0 +1,293 @@
+<style>
+    <!--
+    .text-left {
+        text-align: left;
+        color: #07C;
+    }
+
+    tr {
+        max-height: 50px;
+    }
+
+    .quota-table {
+        max-height: 360px;
+        overflow: auto;
+        margin: 15px 20px;
+        border-radius: 4px;
+        border: 1px solid #CCC;
+    }
+
+    .quota-table-error {
+        max-height: 360px;
+        overflow: auto;
+        margin: 15px 20px;
+        border-radius: 4px;
+        border: 1px solid #A94442;
+    }
+
+    .quota-table > table > tbody > tr {
+        height: 50px;
+    }
+
+    -->
+</style>
+<form class="form-horizontal" name="addWork" novalidate>
+    <div class="form-group">
+        <label class="col-sm-2 control-label"  style="text-align: left;margin-left: 10px;">模板名称：</label>
+
+        <div class="col-sm-4 has-feedback" data-ng-class="(addWork.qtName.$dirty
+            && (addWork.qtName.$error.ajaxValid || addWork.qtName.$error.pattern || addWork.qtName.$error.required))
+            ? 'has-error' : ''" style="text-align: left;">
+            <input type="text" name="qtName" data-ng-model="save.template.qtName"
+                   placeholder="请输入配额模板名称" class="form-control"  data-ng-pattern="/^[\u4e00-\u9fa5a-zA-Z0-9 ]([\u4e00-\u9fa5a-zA-Z0-9_ ]{0,18}[\u4e00-\u9fa5a-zA-Z0-9 ]){0,1}$/"
+                   maxlength="20" ajax-valid="save.checkName(save.template.qtId,value)" required/>
+            <label class="control-label hide"
+                   data-ng-class="(addWork.qtName.$dirty && addWork.qtName.$error.ajaxValid) ? 'show' : 'hide'" style="text-align: left;">
+                配额模板名称已存在
+            </label>
+            <label class="control-label hide" data-ng-class="(addWork.qtName.$dirty &&
+                (addWork.qtName.$error.pattern || addWork.qtName.$error.required)) ? 'show' : 'hide'" style="text-align: left;">
+                请输入1-20位字符,支持数字、中英文、下划线、空格
+            </label>
+        </div>
+
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label" style="text-align: left;margin-left: 10px;">配额：</label><br/>
+
+        <ng-form name="prjQuota" style="width: auto">
+            <div class="control-label quota-table" style="display:block;width:700px;">
+                <table class="table-striped col-sm-12">
+                    <tbody>
+                    <tr>
+                        <td class="col-sm-4 text-left" style="text-align: left;padding-right: 0px"><span class="color-require">*</span>CPU核数：</td>
+                        <td class="col-sm-5"
+                            data-ng-class="(prjQuota.cpuCount.$dirty && prjQuota.cpuCount.$invalid) ? 'has-error':''">
+                            <input type="text" name="cpuCount" data-ng-model="save.template.cpuCount"
+                                   placeholder="请输入CPU核数"
+                                   data-ng-pattern="/^\+?(0|[1-9][0-9]*)$/" class="form-control" maxlength="9"
+                                   required/>
+                        </td>
+                        <td style="text-align: left">核</td>
+                    </tr>
+                    <tr>
+                        <td class="col-sm-4 text-left" style="text-align: left;padding-right: 0px"><span class="color-require">*</span>内存大小：</td>
+                        <td class="col-sm-5"
+                            data-ng-class="(prjQuota.memory.$dirty && prjQuota.memory.$invalid) ? 'has-error':''">
+                            <input type="text" name="memory" data-ng-model="save.template.memory"
+                                   placeholder="请输入内存大小"
+                                   data-ng-pattern="/^\+?(0|[1-9][0-9]*)$/" class="form-control" maxlength="6"
+                                   required/>
+                        </td>
+                        <td style="text-align: left">GB</td>
+
+                    </tr>
+                    <tr>
+                        <td class="col-sm-4 text-left" style="text-align: left;padding-right: 0px"><span class="color-require">*</span>云主机数量：</td>
+                        <td class="col-sm-5"
+                            data-ng-class="(prjQuota.hostCount.$dirty && prjQuota.hostCount.$invalid) ? 'has-error':''">
+                            <input type="text" name="hostCount" data-ng-model="save.template.hostCount"
+                                   placeholder="请输入云主机数量"
+                                   data-ng-pattern="/^\+?(0|[1-9][0-9]*)$/" class="form-control" maxlength="9"
+                                   required/>
+                        </td>
+                        <td style="text-align: left">台</td>
+                    </tr>
+                    <tr>
+                        <td class="col-sm-4 text-left" style="text-align: left;padding-right: 0px"><span class="color-require">*</span>云硬盘数量：</td>
+                        <td class="col-sm-5"
+                            data-ng-class="(prjQuota.diskCount.$dirty && prjQuota.diskCount.$invalid)
+                            || (prj.prjDiskErr = (save.template.diskCount < save.template.diskCountUse)) ? 'has-error':''">
+                            <input type="text" name="diskCount" data-ng-model="save.template.diskCount"
+                                   placeholder="请输入云硬盘数量"
+                                   data-ng-pattern="/^\+?(0|[1-9][0-9]*)$/" class="form-control" maxlength="9"
+                                   required/>
+                        </td>
+                        <td style="text-align: left">块</td>
+                    </tr>
+                    <tr>
+                        <td class="col-sm-4 text-left" style="text-align: left;padding-right: 0px"><span class="color-require">*</span>云硬盘快照数量：</td>
+                        <td class="col-sm-5"
+                            data-ng-class="(prjQuota.diskSnapshot.$dirty && prjQuota.diskSnapshot.$invalid)
+                            || (prj.prjSnapshotErr = (save.template.diskSnapshot < save.template.diskSnapshotUse)) ? 'has-error':''">
+                            <input type="text" name="diskSnapshot" data-ng-model="save.template.diskSnapshot"
+                                   placeholder="请输入云硬盘快照数量"
+                                   data-ng-pattern="/^\+?(0|[1-9][0-9]*)$/" class="form-control" maxlength="9"
+                                   required/>
+                        </td>
+                        <td style="text-align: left">块</td>
+                    </tr>
+                    <tr>
+                        <td class="col-sm-4 text-left" style="text-align: left;padding-right: 0px"><span class="color-require">*</span>云硬盘容量：</td>
+                        <td class="col-sm-5"
+                            data-ng-class="(prjQuota.diskCapacity.$dirty && prjQuota.diskCapacity.$invalid) ? 'has-error':''">
+                            <input type="text" name="diskCapacity" data-ng-model="save.template.diskCapacity"
+                                   placeholder="请输入云硬盘容量"
+                                   data-ng-pattern="/^\+?(0|[1-9][0-9]*)$/" class="form-control" maxlength="9"
+                                   required/>
+                        </td>
+                        <td style="text-align: left">GB</td>
+                    </tr>
+                    <tr>
+                        <td class="col-sm-4 text-left" style="text-align: left;padding-right: 0px"><span class="color-require">*</span>云硬盘快照容量：</td>
+                        <td class="col-sm-5"
+                            data-ng-class="(prjQuota.snapshotSize.$dirty && prjQuota.snapshotSize.$invalid) ? 'has-error':''">
+                            <input type="text" name="snapshotSize" data-ng-model="save.template.snapshotSize"
+                                   placeholder="请输入云硬盘快照容量"
+                                   data-ng-pattern="/^\+?(0|[1-9][0-9]*)$/" class="form-control" maxlength="9"
+                                   required/>
+                        </td>
+                        <td style="text-align: left">GB</td>
+                    </tr>
+                    <tr>
+                        <td class="col-sm-4 text-left" style="text-align: left;padding-right: 0px"><span class="color-require">*</span>带宽大小：</td>
+                        <td class="col-sm-5"
+                            data-ng-class="(prjQuota.countBand.$dirty && prjQuota.countBand.$invalid) ? 'has-error':''">
+                            <input type="text" name="countBand" data-ng-model="save.template.countBand"
+                                   placeholder="请输入带宽大小（0-999）"
+                                   data-ng-pattern="/^(0|([1-9]\d{0,2}))$/" class="form-control" maxlength="3"
+                                   required/>
+                        </td>
+                        <td style="text-align: left">Mbps</td>
+                    </tr>
+                    <tr>
+                        <td class="col-sm-4 text-left" style="text-align: left;padding-right: 0px"><span class="color-require">*</span>网络数量：</td>
+                        <td class="col-sm-5"
+                            data-ng-class="(prjQuota.netWork.$dirty && prjQuota.netWork.$invalid) ? 'has-error':''">
+                            <input type="text" name="netWork" data-ng-model="save.template.netWork"
+                                   data-ng-change="add.changeNetCount();" placeholder="请输入网络数量"
+                                   data-ng-pattern="/^\+?(0|[1-9][0-9]*)$/" class="form-control" maxlength="9"
+                                   required/>
+                        </td>
+                        <td style="text-align: left">个</td>
+                    </tr>
+                    <tr>
+                        <td class="col-sm-4 text-left" style="text-align: left;padding-right: 0px"><span class="color-require">*</span>子网数量：</td>
+                        <td class="col-sm-5"
+                            data-ng-class="(prjQuota.subnetCount.$dirty && prjQuota.subnetCount.$invalid) ? 'has-error':''">
+                            <input type="text" name="subnetCount" data-ng-model="save.template.subnetCount"
+                                   placeholder="请输入子网数量"
+                                   data-ng-pattern="/^\+?(0|[1-9][0-9]*)$/" class="form-control" maxlength="9"
+                                   required/>
+                        </td>
+                        <td style="text-align: left">个</td>
+                    </tr>
+                    <tr>
+                        <td class="col-sm-4 text-left" style="text-align: left;padding-right: 0px"><span class="color-require">*</span>公网IP数量：</td>
+                        <td class="col-sm-5"
+                            data-ng-class="(prjQuota.outerIP.$dirty && prjQuota.outerIP.$invalid) ? 'has-error':''">
+                            <input type="text" name="outerIP" data-ng-model="save.template.outerIP"
+                                   placeholder="请输入公网IP数量"
+                                   data-ng-pattern="/^\+?(0|[1-9][0-9]*)$/" class="form-control" maxlength="9"
+                                   required/>
+                        </td>
+                        <td style="text-align: left">个</td>
+                    </tr>
+                    <tr>
+                        <td class="col-sm-4 text-left" style="text-align: left;padding-right: 0px"><span class="color-require">*</span>安全组数量：</td>
+                        <td class="col-sm-5"
+                            data-ng-class="(prjQuota.safeGroup.$dirty && prjQuota.safeGroup.$invalid) ? 'has-error':''">
+                            <input type="text" name="safeGroup" data-ng-model="save.template.safeGroup"
+                                   data-ng-blur="save.checkSGNum()"
+                                   placeholder="请输入安全组数量"
+                                   data-ng-pattern="/^\+?(0|[1-9][0-9]*)$/" maxlength="9" class="form-control"
+                                   required/>
+                        </td>
+                        <td style="text-align: left">个</td>
+                    </tr>
+                    <tr>
+                        <td class="col-sm-6 text-left" style="text-align: left;padding-right: 0px"><span class="color-require">*</span>负载均衡数量：</td>
+                        <td class="col-sm-5"
+                            data-ng-class="(prjQuota.quotaPool.$dirty && prjQuota.quotaPool.$invalid) ? 'has-error':''">
+                            <input type="text" name="quotaPool" data-ng-model="save.template.quotaPool"
+                                   placeholder="请输入负载均衡数量"
+                                   data-ng-pattern="/^\+?(0|[1-9][0-9]*)$/" class="form-control" maxlength="9"
+                                   required/>
+                        </td>
+                        <td style="text-align: left">个</td>
+                    </tr>
+                    <tr>
+                        <td class="col-sm-4 text-left" style="text-align: left;padding-right: 0px"><span class="color-require">*</span>报警短信数量：</td>
+                        <td class="col-sm-5"
+                            data-ng-class="(prjQuota.smsCount.$dirty && prjQuota.smsCount.$invalid) ? 'has-error':''">
+                            <input type="text" name="smsCount" data-ng-model="save.template.smsCount"
+                                   placeholder="请输入报警短信数量"
+                                   data-ng-pattern="/^\+?(0|[1-9][0-9]*)$/" class="form-control" maxlength="9"
+                                   required/>
+                        </td>
+                        <td style="text-align: left">条</td>
+                    </tr>
+                    <tr>
+                        <td class="col-sm-4 text-left" style="text-align: left;padding-right: 0px"><span class="color-require">*</span>VPN数量：</td>
+                        <td class="col-sm-5"
+                            data-ng-class="(prjQuota.countVpn.$dirty && prjQuota.countVpn.$invalid) ? 'has-error':''">
+                            <input type="text" name="countVpn" data-ng-model="save.template.countVpn"
+                                   placeholder="请输入VPN数量"
+                                   data-ng-pattern="/^\+?(0|[1-9][0-9]*)$/" class="form-control" maxlength="9"
+                                   required/>
+                        </td>
+                        <td style="text-align: left">个</td>
+                    </tr>
+                    <tr>
+                        <td class="col-sm-4 text-left" style="text-align: left;padding-right: 0px"><span class="color-require">*</span>端口映射数量：</td>
+                        <td class="col-sm-5"
+                            data-ng-class="(prjQuota.portMappingCount.$dirty && prjQuota.portMappingCount.$invalid) ? 'has-error':''">
+                            <input type="text" name="portMappingCount" data-ng-model="save.template.portMappingCount"
+                                   placeholder="请输入端口映射数量"
+                                   data-ng-pattern="/^\+?(0|[1-9][0-9]*)$/" class="form-control" maxlength="9"
+                                   required/>
+                        </td>
+                        <td style="text-align: left">个</td>
+                    </tr>
+                    <tr>
+                        <td class="col-sm-4 text-left" style="text-align: left;padding-right: 0px"><span class="color-require">*</span>自定义镜像数量：</td>
+                        <td class="col-sm-5"
+                            data-ng-class="(prjQuota.imageCount.$dirty && prjQuota.imageCount.$invalid)  ? 'has-error':''">
+                            <input type="text" name="imageCount" data-ng-model="save.template.imageCount" data-ng-blur="imageFocus = false" data-ng-focus="imageFocus = true"
+                                   placeholder="请输入自定义镜像数量"
+                                   data-ng-pattern="/^\+?(0|[1-9][0-9]*)$/" class="form-control" maxlength="9"
+                                   required/>
+                        </td>
+                        <td style="text-align: left">个</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-sm-6" data-ng-class="(prj.prjQuotaErr = (prjQuota.cpuCount.$dirty && prjQuota.cpuCount.$invalid)
+                || (prjQuota.memory.$dirty && prjQuota.memory.$invalid)
+                || (prjQuota.hostCount.$dirty && prjQuota.hostCount.$invalid)
+                || (prjQuota.diskCount.$dirty && prjQuota.diskCount.$invalid)
+                || (prjQuota.diskSnapshot.$dirty && prjQuota.diskSnapshot.$invalid)
+                || (prjQuota.diskSnapshot.$dirty && prjQuota.diskSnapshot.$invalid)
+                || (prjQuota.diskCapacity.$dirty && prjQuota.diskCapacity.$invalid)
+                || (prjQuota.snapshotSize.$dirty && prjQuota.snapshotSize.$invalid)
+                || (prjQuota.countBand.$dirty && prjQuota.countBand.$invalid)
+                || (prjQuota.netWork.$dirty && prjQuota.netWork.$invalid)
+                || (prjQuota.subnetCount.$dirty && prjQuota.subnetCount.$invalid)
+                || (prjQuota.outerIP.$dirty && prjQuota.outerIP.$invalid)
+                || (prjQuota.safeGroup.$dirty && prjQuota.safeGroup.$invalid)
+                || (prjQuota.quotaPool.$dirty && prjQuota.quotaPool.$invalid)
+                || (prjQuota.smsCount.$dirty && prjQuota.smsCount.$invalid)
+                || (prjQuota.countVpn.$dirty && prjQuota.countVpn.$invalid)
+                || (prjQuota.portMappingCount.$dirty && prjQuota.portMappingCount.$invalid)
+                || (prjQuota.imageCount.$dirty && prjQuota.imageCount.$invalid))
+                ? 'has-error':''">
+                <label class="control-label" data-ng-show="prj.prjQuotaErr || prj.countError">请输入不小于0的整数</label>
+            </div>
+        </ng-form>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label" style="text-align: left;margin-left: 10px;">描述：</label>
+        <div class="col-sm-7 has-feedback">
+            <textarea class="form-control" data-ng-model="save.template.qtDesc" name="qtDesc" maxlength="200"></textarea>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-primary btn-modal" data-ng-click="commit()"
+                data-ng-disabled="prjQuota.$invalid || addWork.$invalid">提 交
+        </button>
+        <button type="button" class="btn btn-default btn-modal" data-ng-click="cancel()" style="margin-left: 15px;">取
+            消
+        </button>
+    </div>
+</form>

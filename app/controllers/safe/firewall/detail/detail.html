@@ -1,0 +1,47 @@
+<div class="details" style="font-size: 12px;">
+    <form class="row" name="myForm">
+        <div class="col-lg-12">
+            <div class="details-group">
+                <div class="details-name">所属数据中心：</div>
+                <div class="details-value">
+                    <span ng-bind="::detail.fwModel.dcName"></span>
+                </div>
+            </div>
+            <div class="details-group">
+                <div class="details-name">所属项目：</div>
+                <div class="details-value">
+                    <span ng-bind="::detail.fwModel.prjName"></span>
+                </div>
+            </div><div class="details-group">
+            <div class="details-name">客户：</div>
+            <div class="details-value">
+                <span ng-bind="::detail.fwModel.cusOrg"></span>
+            </div>
+        </div>
+            <div class="details-group">
+                <div class="details-name">防火墙名称：</div>
+                <div class="details-value">
+                    <span ng-bind="::detail.fwModel.fwName" title="{{detail.fwModel.fwName}}"></span>
+                </div>
+            </div>
+
+            <div class="details-group">
+                <div class="details-name">状态：</div>
+                <div class="details-value">
+                    <span class="state-block" ng-class="detail.fwModel.fwStatus | statusClass"></span>{{detail.fwModel.fwStatus  | statusCn }}
+                </div>
+            </div>
+
+            <div class="details-group">
+                <div class="details-name">策略：</div>
+                <div class="details-value">
+                    <span ng-bind="::detail.fwModel.fwpName"></span>
+                </div>
+            </div>
+
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-default btn-modal" ng-click="cancel()">关闭</button>
+</div>

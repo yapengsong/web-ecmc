@@ -1,0 +1,101 @@
+<form class="form-horizontal" name="addMessage" novalidate>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">消息标题：</label>
+
+        <div class="col-sm-8"
+             data-ng-class="(addMessage.newst.$dirty && addMessage.newst.$error.required) ? 'has-error' : ''">
+            <input type="text" class="form-control" data-ng-model="add.message.newsTitle" name="newst"
+                   placeholder="请输入1-64字消息标题" maxlength="64" required />
+
+            <label class="control-label hide"
+                   data-ng-class="addMessage.newst.$dirty && addMessage.newst.$error.required ? 'show' : 'hide'"
+                   style="text-align: left;">消息标题不能为空</label>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">消息内容：</label>
+
+        <div class="col-sm-8"
+             data-ng-class="(addMessage.memo.$dirty && addMessage.memo.$error.required) ? 'has-error' : ''">
+            <textarea type="text" class="form-control" data-ng-model="add.message.memo" name="memo" maxlength="4096"
+                      placeholder="消息内容请输入1-4096个字" required></textarea>
+            <label class="control-label hide"
+                   data-ng-class="addMessage.memo.$dirty && addMessage.memo.$error.required ? 'show' : 'hide'"
+                   style="text-align: left;">消息内容不能为空</label>
+        </div>
+    </div>
+    <div class="form-group form-inline">
+        <label class="col-sm-3 control-label">生效时间：</label>
+
+        <div class="col-sm-8"
+             data-ng-class="(addMessage.sendDate.$dirty && (addMessage.sendDate.$error.required || !add.hasNotSended)) ? 'has-error' : ''">
+            <date-time-picker type="text" data-ng-model="add.message.sendDate" name="sendDate" min-date="add.now" show-time="true"
+                              data-ng-change="add.checkSendDate();add.getEndDate()" required></date-time-picker>
+            <label class="control-label hide"
+                   data-ng-class="addMessage.sendDate.$dirty && addMessage.sendDate.$error.required ? 'show' : 'hide'"
+                   style="text-align: left;">生效时间不能为空</label>
+            <label class="control-label hide"
+                   data-ng-class="addMessage.sendDate.$dirty && !addMessage.sendDate.$error.required && !add.hasNotSended ? 'show' : 'hide'"
+                   style="text-align: left;">生效时间不能早于当前时间</label>
+        </div>
+    </div>
+    <div class="form-group form-inline">
+        <label class="col-sm-3 control-label">截止时间：</label>
+
+        <div class="col-sm-8">
+            <label class="control-label" data-ng-bind="add.endDate|date:'yyyy-MM-dd HH:mm:ss'"></label>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">收件公司：</label>
+
+        <div class="col-sm-8"
+             data-ng-class="(addMessage.recCompany.$dirty && addMessage.recCompany.$error.required) ? 'has-error' : ''">
+            <input type="text" class="form-control" data-ng-model="add.message.cusLists" name="newsTitle"
+                   placeholder="请点击选择" required  ng-click="add.cusList(add.customerList)"/>
+            <!--<button class="btn btn-primary btn-modal" ng-click="add.cusList()">选择收件公司</button>-->
+            <label class="control-label hide"
+                   data-ng-class="addMessage.recCompany.$dirty && addMessage.recCompany.$error.required ? 'show' : 'hide'"
+                   style="text-align: left;">请在下拉框中选择收件公司</label>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">账号类型：</label>
+
+        <div class="col-sm-8"
+             data-ng-class="(addMessage.recType.$dirty && addMessage.recType.$error.required) ? 'has-error' : ''">
+            <eayun-select class="form-control form-select" data-ng-model="add.message.recType" name="recType" required>
+                <eayun-option data-ng-if="add.message.cusId == 'ALL'" value="'1'" text="所有人"></eayun-option>
+                <eayun-option data-ng-if="add.message.cusId != 'ALL'" value="'1'" text="指定客户下的所有人"></eayun-option>
+                <eayun-option data-ng-if="add.message.cusId == 'ALL'" value="'2'" text="所有超级管理员"></eayun-option>
+                <eayun-option data-ng-if="add.message.cusId != 'ALL'" value="'2'" text="指定客户下的超级管理员"></eayun-option>
+            </eayun-select>
+            <label class="control-label hide"
+                   data-ng-class="addMessage.recType.$dirty && addMessage.recType.$error.required ? 'show' : 'hide'"
+                   style="text-align: left;">账号类型不能为空</label>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">发件方：</label>
+
+        <div class="col-sm-8"
+             data-ng-class="(addMessage.sendPerson.$dirty && addMessage.sendPerson.$error.required) ? 'has-error' : ''">
+            <!--<eayun-select-input options-data="add.sendPersonList" text-field="sendPerson" value-field="sendPerson"
+                                data-ng-model="add.message.sendPerson" name="sendPerson" placeholder="请输入或选择发件方"
+                                maxlength="20" required>
+            </eayun-select-input>-->
+            <eayun-input-filter filter-data="add.sendPersonList" text-field="sendPerson" maxlength="20"
+                                data-ng-model="add.message.sendPerson" name="sendPerson" placeholder="请输入或选择发件方"
+                                required>
+            </eayun-input-filter>
+            <label class="control-label hide"
+                   data-ng-class="addMessage.sendPerson.$dirty && addMessage.sendPerson.$error.required ? 'show' : 'hide'"
+                   style="text-align: left;">发件方不能为空</label>
+        </div>
+    </div>
+</form>
+
+<div class="modal-footer">
+    <button class="btn btn-primary btn-modal" ng-click="commit()" ng-disabled="!addMessage.$valid || !add.hasNotSended">确 定</button>
+    <button class="btn btn-default btn-modal" ng-click="cancel()" style="margin-left:15px;">取 消</button>
+</div>

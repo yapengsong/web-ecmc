@@ -1,0 +1,67 @@
+<div class="form-inline">
+    <label>计费时间：</label>
+    <date-time-picker name="beginTime" data-ng-model="prepaid.beginTime" style="margin-left:10px;"
+                      max-date="prepaid.endTime"
+                      class="form-group" data-format="yyyy-MM-dd" show-time="false"></date-time-picker>
+    <label style="margin-left:5px;">—</label>
+    <date-time-picker class="form-group" data-value="prepaid.endTime" data-ng-model="prepaid.endTime"
+                      style="margin-left:5px;"
+                      min-date="prepaid.beginTime" data-format="yyyy-MM-dd"></date-time-picker>
+    <label>产品名称：</label>
+    <input class="form-control" type="text" style="margin-left:10px;" placeholder="请输入产品名称"
+           ng-model="prepaid.productName">
+    <button class="btn btn-default btn-sm" style="margin-left:15px;" type="button"
+            data-ng-click="prepaid.queryReport()">
+        <strong>查&nbsp;&nbsp;&nbsp;询</strong></button>
+    <button class="btn btn-primary" style="float:right;margin-left: 15px;" ng-click="prepaid.createExcel()">
+        <span class="eayunfont ef-center"></span>
+        <span>导出</span>
+    </button>
+    <div style="display: none;">
+        <iframe id="report-export-iframe" frameborder="0"></iframe>
+    </div>
+</div>
+<!-- 表格 -->
+<div class="panel panel-default" style="margin-bottom:5px;margin-top:10px;" data-ng-show="true">
+    <div class="form-inline" style="margin-bottom: 10px;margin-top: 10px;">
+        <span style="margin-left: 15px;" ng-bind="prepaid.begin|date:'yyyy-MM-dd'"></span>
+        <span>至</span>
+        <span ng-bind="prepaid.end|date:'yyyy-MM-dd'"></span>
+        <span>预付费资源消费总计:</span>
+        <span class="color-blue" style="font-weight:bold;">￥ <span class="color-blue" ng-bind="prepaid.totalCost"></span></span>
+    </div>
+    <div class="panel-body" style="padding:5px;padding-top: 0px;">
+        <eayun-table data-api="prepaid.myTable.api" data-ajax-source="prepaid.myTable.source"
+                     data-param="prepaid.myTable.getParams"
+                     data-result="prepaid.myTable.result">
+            <table class="table table-eayun">
+                <thead>
+                <tr>
+                    <th>计费时间</th>
+                    <th>产品名称</th>
+                    <th>订单号</th>
+                    <th>付款方式</th>
+                    <th>应付金额</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr data-ng-repeat="model in prepaid.myTable.result" data-ng-show="true" style="height:45px;">
+                    <td>{{model.monTime|date:"yyyy-MM-dd HH:mm:ss"}}</td>
+                    <td>{{model.productName}}</td>
+                    <td>{{model.orderNo}}</td>
+                    <td>{{model.payType=='1'?'预付费':'后付费'}}</td>
+                    <td><span class="color-blue">￥ {{model.prepaymentMoney|number:2}}</span></td>
+                    <td>
+                        <button type="button" class="btn btn-tablemng btn-first" data-ng-click="prepaid.detail(model.orderNo)">查看详情</button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <eayun-table-page></eayun-table-page>
+        </eayun-table>
+    </div>
+</div>
+
+

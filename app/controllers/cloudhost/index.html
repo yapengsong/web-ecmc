@@ -1,0 +1,13 @@
+<!-- 导航页签 -->
+<tabs class="nav-tabs-underline">
+    <tab-underline ui-sref-active="active" data-ui-sref="app.cloudhost.tab.host">云主机</tab-underline>
+    <tab-underline ui-sref-active="active" data-ui-sref="app.cloudhost.tab.volume">云硬盘</tab-underline>
+    <tab-underline ui-sref-active="active" data-ui-sref="app.cloudhost.tab.image">镜像</tab-underline>
+</tabs>
+
+<!-- 子页面展示区 -->
+<div class="panel panel-default clearfix">
+    <div class="panel-body">
+        <div ui-view=""></div>
+    </div>
+</div>

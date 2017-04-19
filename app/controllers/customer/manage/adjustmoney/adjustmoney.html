@@ -1,0 +1,111 @@
+
+<div>
+    <form class="form-horizontal" name="myForm" novalidate>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">账户余额：</label>
+
+            <div class="col-sm-4 control-label ng-binding" style="text-align: left">
+                ￥{{adjust.monMoney | number :2}}
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">收支类型：</label>
+
+            <div class="col-sm-4">
+                <eayun-select  class="form-control" data-ng-model="adjust.RecordBean.inout"  required>
+                    <eayun-option value="'income'" text="收入" selected></eayun-option>
+                    <eayun-option value="'expend'" text="支出" ></eayun-option>
+                </eayun-select>
+            </div>
+        </div>
+        <div class="form-group" ng-if="adjust.RecordBean.inout == 'income'">
+            <label class="col-sm-3 control-label">调整原因：</label>
+
+            <div class="col-sm-6">
+                <eayun-select class="form-control"  data-ng-model="adjust.RecordBean.rechargeType" required >
+                    <eayun-option value="'recharge'" text="实际充值" selected></eayun-option>
+                    <eayun-option value="'throwin'" text="额外赠送" ></eayun-option>
+                    <eayun-option value="'others'" text="其它" ></eayun-option>
+                </eayun-select>
+            </div>
+        </div>
+        <div class="form-group" ng-if="adjust.RecordBean.inout=='income'">
+            <label class="col-sm-3 control-label" class="color-require">
+                <span class="color-require">*</span>
+                增加金额：
+            </label>
+<!-- 原版正则 ng-pattern='/^(?!0+(?:\.0+)?$)(?:[1-9]\d*|0)(?:\.\d{1,2})?$/'-->
+            <!--zengbo  /^(?!0+(?:\.0+)?$)([1-9]\d{0,6}|\d)(\.\d\d|\.\d)?$/-->
+            <div class="col-sm-5" data-ng-class="(myForm.exchangeMoney.$dirty && myForm.exchangeMoney.$invalid) ? 'has-error' : ''">
+                <div class="input-group" >
+                    <span class="input-group-addon">￥</span>
+                    <input type="text" name="exchangeMoney" class="form-control"  data-ng-model="adjust.RecordBean.exchangeMoney"
+                           ng-pattern='/^(?!0+(?:\.0+)?$)([1-9]\d{0,6}|\d)(\.\d\d|\.\d)?$/' maxlength="10" required/>
+                </div>
+
+                <label class="control-label" data-ng-class="myForm.exchangeMoney.$dirty && myForm.exchangeMoney.$invalid ? 'show' : 'hide'"
+                       style="text-align: left;">请输入大于0小于10,000,000的金额</label>
+            </div>
+            <div class="col-sm-4 help-block" style="margin-top: 10px;">精确到分，如￥1.00</div>
+        </div>
+
+        <!--从这开始是扣钱的代码-->
+
+        <div class="form-group" ng-if="adjust.RecordBean.inout=='expend'">
+           <label class="col-sm-3 control-label"><span class="color-require">*</span>减少金额：</label>
+
+            <div class="col-sm-5" data-ng-class="(myForm.exchangeMoney.$dirty && myForm.exchangeMoney.$invalid) ? 'has-error' : ''">
+                <div class="input-group">
+                    <span class="input-group-addon">￥</span>
+                    <input type="text" name="exchangeMoney" class="form-control"  data-ng-model="adjust.RecordBean.exchangeMoney"
+                           ng-pattern='/^(?!0+(?:\.0+)?$)([1-9]\d{0,6}|\d)(\.\d\d|\.\d)?$/'maxlength="10" required/>
+                </div>
+                <label class="control-label" data-ng-class="myForm.exchangeMoney.$dirty && myForm.exchangeMoney.$invalid ? 'show' : 'hide'"
+                       style="text-align: left;">请输入大于0小于10,000,000的金额</label>
+            </div>
+            <div class="col-sm-4 help-block" style="margin-top: 10px;">精确到分，如￥1.00</div>
+        </div>
+        <div class="form-group" ng-if="adjust.RecordBean.rechargeType=='others'||adjust.RecordBean.inout=='expend'">
+            <label class="col-sm-3 control-label"><span class="color-require">*</span>输入原因：</label>
+            <div class="col-sm-8"
+                 data-ng-class="(myForm.inputCause.$dirty && myForm.inputCause.$invalid) ? 'has-error' : ''">
+                <textarea type="text" class="form-control" maxlength="20" placeholder="字数限制在1-20位" data-ng-model="adjust.RecordBean.inputCause"
+                     name="inputCause" required></textarea>
+                <label class="control-label"
+                       data-ng-class="myForm.inputCause.$dirty && myForm.inputCause.$invalid ? 'show' : 'hide'"
+                       style="text-align: left;">请输入1-20位字符</label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">
+                关联合同：
+            </label>
+            <div class="checkbox col-sm-8">
+                <label>
+                    <input type="checkbox" name="isCheck" data-ng-click="adjust.changeCheckContract(adjust.RecordBean)" data-ng-model="adjust.RecordBean.isCheck">
+                </label>
+            </div>
+
+        </div>
+        <div class="form-group" ng-show="adjust.RecordBean.isCheck == true">
+            <label class="col-sm-3 control-label"><span class="color-require">*</span>合同编号：</label>
+
+            <div class="col-sm-8"
+                 data-ng-class="!adjust.isflag && adjust.formValid ? 'has-error' : ''">
+                <input type="text" name="monContract" class="form-control" maxlength="20" placeholder="请输入1-20位，支持大小写字母、数字、下划线"
+                       data-ng-keyup="adjust.checkContract(adjust.RecordBean)" data-ng-model="adjust.RecordBean.monContract" />
+                <label class="control-label" ng-if="!adjust.isflag && adjust.formValid"
+                       style="text-align: left;">请输入1-20位，支持大小写字母、数字、下划线</label>
+            </div>
+        </div>
+
+    </form>
+</div>
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-primary btn-modal" data-ng-click="commit()" style="margin-left: 15px;"
+            data-ng-disabled="myForm.$invalid ||!adjust.isflag">提 交
+    </button>
+    <button type="button" class="btn btn-default btn-modal" data-ng-click="cancel()" style="margin-left: 15px;">取 消
+    </button>
+</div>

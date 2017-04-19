@@ -1,0 +1,202 @@
+<h4>资源总览</h4>
+
+<!-- Form表单 -->
+<form class="form-inline">
+    <div class="form-group">
+        <eayun-select class="form-control form-select" ng-model="res.resourceType" ng-change="res.query()">
+            <eayun-option value="type.nodeNameEn" text="{{type.nodeName}}"
+                          ng-repeat="type in res.resourceTypeList"></eayun-option>
+        </eayun-select>
+    </div>
+    <div class="form-group">
+        <label class="control-label">排序：</label>
+        <eayun-select class="form-control form-select" ng-model="res.sortType" ng-change="res.query()">
+            <eayun-option value="'down'" text="由多到少"></eayun-option>
+            <eayun-option value="'up'" text="由少到多"></eayun-option>
+        </eayun-select>
+    </div>
+    <div class="form-group">
+        <label class="help-block">上一次更新时间：<span
+                ng-bind="res.time | date:'yyyy-MM-dd HH:mm:ss'"></span></label>
+
+    </div>
+    <div class="form-group">
+        <button class="btn btn-primary" ng-click="res.query()">
+            立即刷新
+        </button>
+    </div>
+</form>
+
+<div class="panel panel-default" ng-repeat="dc in res.dcList">
+    <div class="panel-heading">
+        <div class="row">
+            <div class="col-lg-2"><label class="color-blue" ng-bind="::dc.name"></a></div>
+            <div class="col-lg-3"><label>项目：<span ng-bind="::dc.prjCount"></span>个</label></div>
+            <div class="col-lg-3"><label>计算节点：<span ng-bind="::dc.serverCount"></span>个</label></div>
+            <div class="col-lg-3"><label>云主机：<span ng-bind="::dc.vmCountQuato"></span>台</label></div>
+            <div class="col-lg-1 text-right">
+            	<div ng-if="$index==0">
+                <expander data-target="#overview_dclist_{{$index}}" data-expander-show="{{$index==0}}"><label
+                        class="pointer color-blue" ng-click="dc.$$active = !dc.$$active"
+                        ng-init="(dc.$$active=true)" ng-bind="dc.$$active?'收起详情':'展开详情'"></label>
+                </expander>
+                </div>
+                <div ng-if="$index!=0">
+                <expander data-target="#overview_dclist_{{$index}}"><label
+                        class="pointer color-blue" ng-click="dc.$$active = !dc.$$active"
+                        ng-init="(dc.$$active=false)" ng-bind="dc.$$active?'收起详情':'展开详情'"></label>
+                </expander>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="collapse" id="overview_dclist_{{$index}}" ng-class="$index==0 ? 'in':''">
+        <div class="panel-body">
+            <h4 style="padding-top: 15px;">物理资源</h4>
+
+            <div class="details">
+                <form class="row">
+                    <div class="col-lg-4">
+                        <div class="details-group">
+                            <div class="details-name">计算节点：</div>
+                            <div class="details-value"><span ng-bind="::dc.serverCount"></span>个</div>
+                        </div>
+                        <div class="details-group">
+                            <div class="details-name">存储：</div>
+                            <div class="details-value">
+                                <span ng-bind="::dc.dataCapacityQuato*1024"></span>G
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="details-group">
+                            <div class="details-name">CPU：</div>
+                            <div class="details-value">
+                                <span ng-bind="::dc.cpuQuato"></span>核
+                            </div>
+                        </div>
+                        <div class="details-group">
+                            <div class="details-name">网络带宽：</div>
+                            <div class="details-value"><span ng-bind="::dc.bandWidthQuato"></span>Mbps</div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="details-group">
+                            <div class="details-name">内存：</div>
+                            <div class="details-value">
+                                <span ng-bind="::dc.memoryQuato"></span>G
+                            </div>
+                        </div>
+                        <div class="details-group">
+                            <div class="details-name">公网IP：</div>
+                            <div class="details-value">
+                                <span ng-bind="::dc.floatIpCountQuato"></span>个
+                                <!-- <span class="color-blue">已分配</span>
+                                <span ng-bind="::dc.allotFloatIpCount+'个'" class="color-blue"></span>
+                                <span class="color-blue">已使用</span>
+                                <span ng-bind="::dc.usedFloatIpCount+'个'" class="color-blue"></span> -->
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <h4 style="padding-top: 15px;">云资源</h4>
+
+            <div class="details">
+                <form class="row">
+                    <div class="col-lg-4">
+                        <div class="details-group">
+                            <div class="details-name">云主机：</div>
+                            <div class="details-value"><span ng-bind="::dc.vmCountQuato"></span>台</div>
+                        </div>
+                        <div class="details-group">
+                            <div class="details-name">云硬盘：</div>
+                            <div class="details-value"><span ng-bind="::dc.volumeCountQuato"></span>个</div>
+                        </div>
+                        <div class="details-group">
+                            <div class="details-name">子网：</div>
+                            <div class="details-value"><span ng-bind="::dc.subnetCountQuato"></span>个</div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="details-group">
+                            <div class="details-name">快照：</div>
+                            <div class="details-value"><span ng-bind="::dc.volSnapshotCountQuato"></span>个</div>
+                        </div>
+                        <div class="details-group">
+                            <div class="details-name">负载均衡：</div>
+                            <div class="details-value"><span ng-bind="::dc.poolCountQuato"></span>个</div>
+                        </div>
+                        <div class="details-group">
+                            <div class="details-name">安全组：</div>
+                            <div class="details-value"><span ng-bind="::dc.safeGroupCountQuato"></span>个</div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="details-group">
+                            <div class="details-name">自定义镜像：</div>
+                            <div class="details-value"><span ng-bind="::dc.imageCount"></span>个</div>
+                        </div>
+                        <div class="details-group">
+                            <div class="details-name">私有网络：</div>
+                            <div class="details-value"><span ng-bind="::dc.networkCountQuato"></span>个</div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            
+            <h4 style="padding-top: 15px;">云资源使用率</h4>
+            <div class="details">
+            	<div style="float: right;width: 100px;height: 30px;margin-top: -50px;">
+            		<button class="btn btn-primary" ng-click="res.histogram(dc)">柱状图</button>
+            	</div>
+                <form class="row">
+                	<div class="col-lg-4">
+                		<div class="details-group">
+                            <div class="details-name">CPU：</div>
+                            <div class="details-value"><span ng-bind="::dc.usedCpuCount+'核'"></span>/<span ng-bind="::dc.cpuQuato+'核'"></span>
+                            (<span ng-bind="::(dc.usedCpuCount/dc.cpuQuato*100)| number : 2"></span>%)
+                            </div>
+                        </div>
+                    </div>
+                	<div class="col-lg-4">
+                		<div class="details-group">
+                            <div class="details-name">内存：</div>
+                            <div class="details-value"><span ng-bind="::(dc.usedMemoryCount/1024)+'G'"></span>/<span ng-bind="::dc.memoryQuato+'G'"></span>
+                            (<span ng-bind="::(dc.usedMemoryCount/1024/dc.memoryQuato*100)| number : 2"></span>%)
+                            </div>
+                        </div>
+                	</div>
+                	<div class="col-lg-4">
+                		<div class="details-group">
+                            <div class="details-name">存储：</div>
+                            <div class="details-value"><span ng-bind="::(dc.usedVolumeCapacity+dc.usedVolSnapshotSum)+'G'"></span>/<span ng-bind="::dc.dataCapacityQuato*1024+'G'"></span>
+                            (<span ng-bind="::((dc.usedVolumeCapacity+dc.usedVolSnapshotSum)/(dc.dataCapacityQuato*1024)*100)| number : 2"></span>%)
+                            </div>
+                        </div>
+                	</div>
+                	<div class="col-lg-4">                    
+                        <div class="details-group">
+                            <div class="details-name">网络带宽：</div>
+                            <div class="details-value"><span ng-bind="::dc.usedRouteCount+'Mbps'"></span>/<span ng-bind="::dc.bandWidthQuato+'Mbps'"></span>
+                            (<span ng-bind="::(dc.usedRouteCount/dc.bandWidthQuato*100)| number : 2"></span>%)
+                            </div>
+                        </div>
+                        
+                	</div>
+                    <div class="col-lg-8">	
+                        <div class="details-group">
+                            <div class="details-name">公网IP：</div>
+                            <div class="details-value"><span ng-bind="::(dc.allotFloatIpCount+dc.usedRoute+dc.usedDHCP)+'个'"></span>/<span ng-bind="::dc.floatIpCountQuato+'个'"></span>
+                            (<span ng-bind="::((dc.allotFloatIpCount+dc.usedRoute+dc.usedDHCP)/dc.floatIpCountQuato*100)| number : 2"></span>%)
+                            	已分配<span ng-bind="::(dc.allotFloatIpCount+dc.usedRoute+dc.usedDHCP)+'个'"></span> 已使用<span ng-bind="::dc.usedFloatIpCount+'个'"></span>
+                            	网关占用<span ng-bind="::(dc.usedRoute+dc.usedDHCP)+'个'"></span> <!-- DHCP占用<span ng-bind="::dc.usedDHCP+'个'"></span> -->
+                            </div>
+                        </div>
+                	</div>
+                	
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,252 @@
+<form class="form-horizontal" name="edit" novalidate>
+    <span class="ey-font-size-big ey-font-bold">基本配置</span>
+
+    <div class="vpn">
+        <div class="form-group">
+            <label class="col-sm-2  control-label"><span class="color-require">*</span>名称：</label>
+
+            <div class="col-sm-4" data-ng-class="edit.vpnName.$dirty && (edit.vpnName.$invalid || editVpn.isNameExist) ? 'has-error' : ''">
+                <input type="text" class="form-control" name="vpnName" data-ng-model="editVpn.vpnModel.vpnName"
+                       data-ng-pattern='/^[\u4e00-\u9fa5a-zA-Z0-9]([\u4e00-\u9fa5_a-zA-Z0-9\s]{0,18}[\u4e00-\u9fa5a-zA-Z0-9]){0,1}$/'
+                       data-ng-change="editVpn.checkVpnNameExist()"
+                       placeholder="请输入名称"
+                       maxlength="20"
+                       required/>
+                <label class="control-label hide"
+                       data-ng-class="edit.vpnName.$dirty && edit.vpnName.$error.required ? 'show' : 'hide'"
+                       style="text-align: left;">名称不能为空</label>
+                <label class="control-label hide"
+                       data-ng-class="edit.vpnName.$dirty && edit.vpnName.$error.pattern ? 'show' : 'hide'"
+                       style="text-align: left;">请输入1-20位字符,支持数字、中英文、下划线、空格</label>
+                <label class="control-label hide"
+                       data-ng-class="edit.vpnName.$dirty && edit.vpnName.$valid && editVpn.isNameExist ? 'show' : 'hide'"
+                       style="text-align: left;">名称已存在</label>
+            </div>
+        </div>
+        <!--<div class="form-group has-feedback">
+            <label class="col-sm-2 control-label"><span class="color-require">*</span>对端网关：</label>
+
+            <div class="col-sm-6" data-ng-class="edit.peerAddress.$dirty && edit.peerAddress.$invalid ? 'has-error' : ''">
+                <input type="text" class="form-control" name="peerAddress"
+                       data-ng-model="editVpn.vpnModel.peerAddress"
+                       data-ng-pattern="/^(((\d{1,2})|(1\d{2})|(2[0-4]\d)|(25[0-5]))\.){3}((\d{1,2})|(1\d{2})|(2[0-4]\d)|(25[0-5]))$/"
+                       required/>
+                <label class="control-label hide"
+                       data-ng-class="edit.peerAddress.$dirty && edit.peerAddress.$error.required ? 'show' : 'hide'"
+                       style="text-align: left;">对端网关不能为空</label>
+                <label class="control-label hide"
+                       data-ng-class="edit.peerAddress.$dirty && edit.peerAddress.$error.pattern ? 'show' : 'hide'"
+                       style="text-align: left;">请输入正确的格式</label>
+            </div>
+        </div>-->
+        <div class="form-group has-feedback">
+            <label class="col-sm-2 control-label"><span class="color-require">*</span>对端网关：</label>
+
+            <div class="col-sm-6 subnet-cidr" style="border: 0px;">
+                <input data-ng-class="edit.peerAddress1.$dirty && (edit.peerAddress1.$error.required || edit.peerAddress1.$error.pattern) ? 'ipadress' : ''"
+                       type="text"
+                       class="form-control-ip1"
+                       name="peerAddress1"
+                       data-ng-model="editVpn.vpnModel.$$peerAddress1"
+                       maxlength="3"
+                       data-ng-pattern="/^([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])$/"
+                       required >
+                <label class="control-label">.</label>
+                <input data-ng-class="edit.peerAddress2.$dirty && (edit.peerAddress2.$error.required || edit.peerAddress2.$error.pattern) ? 'ipadress' : ''"
+                       type="text" class="form-control-ip1"
+                       name="peerAddress2"
+                       data-ng-model="editVpn.vpnModel.$$peerAddress2"
+                       maxlength="3"
+                       data-ng-pattern="/^([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])$/"
+                       required >
+                <label class="control-label">.</label>
+                <input data-ng-class="edit.peerAddress3.$dirty && (edit.peerAddress3.$error.required || edit.peerAddress3.$error.pattern) ? 'ipadress' : ''"
+                       type="text"
+                       class="form-control-ip1"
+                       name="peerAddress3"
+                       data-ng-model="editVpn.vpnModel.$$peerAddress3"
+                       maxlength="3"
+                       data-ng-pattern="/^([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])$/"
+                       required>
+                <label class="control-label">.</label>
+                <input data-ng-class="edit.peerAddress4.$dirty && (edit.peerAddress4.$error.required || edit.peerAddress4.$error.pattern) ? 'ipadress' : ''"
+                       type="text"
+                       class="form-control-ip1"
+                       name="peerAddress4"
+                       data-ng-model="editVpn.vpnModel.$$peerAddress4"
+                       maxlength="3"
+                       data-ng-pattern="/^([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])$/"
+                       required>
+
+                <label class="control-label" data-ng-show="(edit.peerAddress1.$dirty && (edit.peerAddress1.$error.required || edit.peerAddress1.$error.pattern))
+                                                            || (edit.peerAddress2.$dirty && (edit.peerAddress2.$error.required || edit.peerAddress2.$error.pattern))
+                                                            || (edit.peerAddress3.$dirty && (edit.peerAddress3.$error.required || edit.peerAddress3.$error.pattern))
+                                                            || (edit.peerAddress4.$dirty && (edit.peerAddress4.$error.required || edit.peerAddress4.$error.pattern))"
+                       style="border-color: #a94442;color: #a94442;">请输入0-255的整数</label>
+            </div>
+        </div>
+        <div class="form-group has-feedback">
+            <label class="col-sm-2 control-label"><span class="color-require">*</span>对端路由ID：</label>
+
+            <div class="col-sm-6" data-ng-class="edit.peerId.$dirty && edit.peerId.$error.required ? 'has-error' : ''">
+                <input type="text"
+                       class="form-control"
+                       name="peerId"
+                       data-ng-model="editVpn.vpnModel.peerId"
+                       placeholder="可填入IP地址、e-mail、键ID或者FQDN."
+                       required/>
+                <label class="control-label hide"
+                       data-ng-class="edit.peerId.$dirty && edit.peerId.$error.required ? 'show' : 'hide'"
+                       style="text-align: left;">路由ID不能为空</label>
+            </div>
+        </div>
+        <div class="form-group has-feedback">
+            <label class="col-sm-2 control-label"><span class="color-require">*</span>对端子网：</label>
+
+            <div class="col-sm-6" data-ng-class="edit.peerCidrs.$dirty && (edit.peerCidrs.$invalid || !editVpn.checkPeerCidrsFlag) ? 'has-error' : ''">
+                <textarea type="text" class="form-control" data-ng-model="editVpn.vpnModel.peerCidrs" name="peerCidrs"
+                          maxlength="2000"
+                          data-ng-change="editVpn.checkPeerCidrs()"
+                          placeholder="带有子网掩码的CIDR格式，多个子网时用英文逗号分隔，例如：20.1.0.0/24,21.1.0.0/24。" required></textarea>
+                <label class="control-label hide"
+                       data-ng-class="edit.peerCidrs.$dirty && edit.peerCidrs.$error.required ? 'show' : 'hide'"
+                       style="text-align: left;">对端子网不能为空</label>
+                <label class="control-label hide"
+                       data-ng-class="edit.peerCidrs.$dirty && edit.peerCidrs.$valid && !editVpn.checkPeerCidrsFlag ? 'show' : 'hide'"
+                       style="text-align: left;">子网格式错误。请检查是否有重复子网，以及符号是否正确。</label>
+            </div>
+        </div>
+        <div class="form-group has-feedback">
+            <label class="col-sm-2 control-label"><span class="color-require">*</span>预共享密钥：</label>
+
+            <div class="col-sm-6" data-ng-class="edit.pskKey.$dirty && edit.pskKey.$invalid ? 'has-error' : ''">
+                <input type="text"
+                       class="form-control"
+                       name="pskKey"
+                       data-ng-model="editVpn.vpnModel.pskKey"
+                       maxlength="80"
+                       placeholder="请输入预共享密钥"
+                       required/>
+                <label class="control-label hide"
+                       data-ng-class="edit.pskKey.$dirty && edit.pskKey.$error.required ? 'show' : 'hide'"
+                       style="text-align: left;">预共享密钥不能为空</label>
+            </div>
+        </div>
+    </div>
+    <span class="ey-font-size-big ey-font-bold">可选参数</span>
+
+    <div class="vpn">
+        <div class="form-group has-feedback">
+            <label class="col-sm-2 control-label"><span class="color-require">*</span>最大输出单元：</label>
+
+            <div class="col-sm-4" data-ng-class="edit.mtu.$dirty && (edit.mtu.$invalid || !editVpn.mtuSixtyEight) ? 'has-error' : ''">
+                <input type="text"
+                       class="form-control"
+                       name="mtu"
+                       data-ng-model="editVpn.vpnModel.mtu"
+                       placeholder="请输入68到999999999的整数"
+                       data-ng-pattern="/^[1-9][0-9]\d*$/"
+                       maxlength="9"
+                       data-ng-change="editVpn.checkMtu()"
+                       required/>
+                <label class="control-label hide"
+                       data-ng-class="edit.mtu.$dirty && edit.mtu.$error.required ? 'show' : 'hide'"
+                       style="text-align: left;">最大输出单元不能为空</label>
+                <label class="control-label hide"
+                       data-ng-class="edit.mtu.$dirty && (edit.mtu.$error.pattern || (edit.mtu.$valid && !editVpn.mtuSixtyEight)) ? 'show' : 'hide'"
+                       style="text-align: left;">请输入68到999999999的整数</label>
+            </div>
+            <label class="col-sm-2 control-label">失效处理：</label>
+
+            <div class="col-sm-4">
+                <eayun-select class="form-control form-select"
+                              data-ng-model="editVpn.vpnModel.dpdAction" name="dpdAction" required>
+                    <eayun-option value="'hold'" text="保留"></eayun-option>
+                    <eayun-option value="'clear'" text="清除"></eayun-option>
+                    <eayun-option value="'restart'" text="重启"></eayun-option>
+                </eayun-select>
+            </div>
+        </div>
+
+        <div class="form-group has-feedback">
+            <label class="col-sm-2 control-label"><span class="color-require">*</span>检测间隔（秒）：</label>
+
+            <div class="col-sm-4" data-ng-class="edit.dpdInterval.$dirty && edit.dpdInterval.$invalid ? 'has-error' : ''">
+                <input type="text"
+                       class="form-control"
+                       name="dpdInterval"
+                       data-ng-model="editVpn.vpnModel.dpdInterval"
+                       placeholder="请输入1到999999999的整数"
+                       data-ng-pattern="/^[1-9][0-9]{0,8}$/"
+                       maxlength="9"
+                       data-ng-change="editVpn.checkInterval()"
+                       required />
+                <label class="control-label hide"
+                       data-ng-class="edit.dpdInterval.$dirty && edit.dpdInterval.$error.required ? 'show' : 'hide'"
+                       style="text-align: left;">检测间隔不能为空</label>
+                <label class="control-label hide"
+                       data-ng-class="edit.dpdInterval.$dirty && edit.dpdInterval.$error.pattern ? 'show' : 'hide'"
+                       style="text-align: left;">请输入不大于999999999的正整数</label>
+            </div>
+            <label class="col-sm-2 control-label"><span class="color-require">*</span>超时（秒）：</label>
+
+            <div class="col-sm-4" data-ng-class="edit.dpdTimeout.$invalid || !editVpn.checkTimeout ? 'has-error' : ''">
+                <input type="text" class="form-control" name="dpdTimeout" data-ng-model="editVpn.vpnModel.dpdTimeout"
+                       placeholder="请输入1到999999999的整数"
+                       maxlength="9"
+                       data-ng-change="editVpn.checkInterval()"
+                       ng-pattern="/^[1-9][0-9]{0,8}$/"
+                       required/>
+                <label class="control-label hide"
+                       data-ng-class="edit.dpdTimeout.$dirty && edit.dpdTimeout.$error.required ? 'show' : 'hide'"
+                       style="text-align: left;">超时不能为空</label>
+                <label class="control-label hide"
+                       data-ng-class="edit.dpdTimeout.$dirty && edit.dpdTimeout.$error.pattern ? 'show' : 'hide'"
+                       style="text-align: left;">请输入不大于999999999的正整数</label>
+                <label class="control-label hide"
+                       data-ng-class="edit.dpdTimeout.$valid && !editVpn.checkTimeout ? 'show' : 'hide'"
+                       style="text-align: left;">超时应大于检测间隔</label>
+            </div>
+        </div>
+
+        <div class="form-group has-feedback">
+            <label class="col-sm-2 control-label">发起状态：</label>
+
+            <div class="col-sm-4">
+                <eayun-select class="form-control form-select" ng-model="editVpn.vpnModel.initiator" required>
+                    <eayun-option value="'response-only'" text="只应答"></eayun-option>
+                    <eayun-option value="'bi-directional'" text="双向"></eayun-option>
+                </eayun-select>
+
+            </div>
+        </div>
+    </div>
+</form>
+
+<div class="modal-footer">
+    <button class="btn btn-primary btn-modal" data-ng-click="commit(editVpn.vpnModel)" type="button"
+            data-ng-disabled="edit.$invalid || editVpn.isNameExist
+                                || !editVpn.checkPeerCidrsFlag || !editVpn.mtuSixtyEight
+                                || !editVpn.checkTimeout">确 定
+    </button>
+    <button class="btn btn-default btn-modal" data-ng-click="cancel()" style="margin-left:15px;" type="button">取 消
+    </button>
+</div>
+<style>
+    .subnet-cidr .form-control-ip1 {
+        width: 60px;
+        font-size: 12px !important;
+        height: 34px;
+        padding: 6px 12px;
+        color: #555;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+        transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+        display: inline-block;
+    }
+    .subnet-cidr .ipadress {
+        border-color: #a94442;
+        color: #a94442;
+    }
+</style>

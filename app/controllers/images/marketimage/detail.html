@@ -1,0 +1,179 @@
+<!-- 当前位置下拉列表 -->
+<div class="title-inline">
+    <div class="form-group">
+        <label class="control-label">当前位置：<a style="cursor: pointer;" data-ui-sref="app.cloudhost.tab.image">镜像</a><span> ></span>
+            <a style="cursor: pointer;" data-ui-sref="app.cloudhost.tab.image.marketimage">市场镜像</a><span> > 镜像详情</span></label>
+    </div>
+</div>
+
+<!-- 子页面展示区 -->
+
+<div class="panel panel-default clearfix">
+    <div class="panel-body">
+        <h4>基本信息</h4>
+        <!-- Form表单 -->
+        <!-- 详情 -->
+        <eayun-auto-refresh interval="5000" refresh="marketImageDetail.item.flushVolInfo"></eayun-auto-refresh>
+        <div class="details">
+            <form class="row" name="editForm">
+                <div class="col-lg-6">
+
+                    <div class="details-group">
+                        <div class="details-name">镜像名称：</div>
+                        <div class="details-value">
+                            <span  data-ng-bind-html="marketImageDetail.item.imageName | ellipsis:20" ></span>
+                        </div>
+                    </div>
+
+
+                    <div class="details-group">
+                        <div class="details-name">镜像ID：</div>
+                        <div class="details-value" data-ng-bind="::marketImageDetail.item.imageId"></div>
+                    </div>
+
+                    <div class="details-group">
+                        <div class="details-name">状态：</div>
+                        <div class="details-value">
+                            <span class="state-block" data-ng-class="marketImageDetail.imageStatusClass != '' ? marketImageDetail.imageStatusClass : ''"></span>
+                            {{marketImageDetail.item.statusForDis}}
+                        </div>
+                    </div>
+
+                    <div class="details-group">
+                        <div class="details-name">提供商：</div>
+                        <div class="details-value">
+                            <span data-ng-bind-html="marketImageDetail.item.provider | ellipsis:50"></span>
+                        </div>
+                    </div>
+
+                    <div class="details-group">
+                        <div class="details-name">业务类别：</div>
+                        <div class="details-value" data-ng-bind="::marketImageDetail.item.professionName"></div>
+                    </div>
+
+                    <div class="details-group">
+                        <div class="details-name">系统类型：</div>
+                        <div class="details-value">
+                            {{'null'!=marketImageDetail.item.sysTypeName?marketImageDetail.item.sysTypeName:''}}
+                        </div>
+                    </div>
+
+                    <div class="details-group">
+                        <div class="details-name">系统详情：</div>
+                        <div class="details-value">
+                            <span data-ng-bind-html="marketImageDetail.item.sysDetail | ellipsis:50"></span>
+                            <!--{{marketImageDetail.item.sysDetail=='null'?'':marketImageDetail.item.sysDetail}}-->
+                        </div>
+                    </div>
+
+                    <div class="details-group">
+                        <div class="details-name">集成软件：</div>
+                        <div class="details-value">
+                            <span data-ng-bind-html="marketImageDetail.item.integratedSoftware | ellipsis:50"></span>
+                            <!--{{marketImageDetail.item.integratedSoftware=='null'?'':marketImageDetail.item.integratedSoftware}}-->
+                        </div>
+                    </div>
+
+
+
+                    <div class="details-group">
+                       <div class="details-name">创建云主机数量：</div>
+                       <div class="details-value">
+                           {{(marketImageDetail.item.vmNum != null && marketImageDetail.item.vmNum != 'null') ? marketImageDetail.item.vmNum:'0'}}台
+                       </div>
+                   </div>
+                </div>
+
+
+                <div class="col-lg-6">
+
+                    <div class="details-group">
+                        <div class="details-name">所属数据中心：</div>
+                        <div class="details-value">
+                            {{marketImageDetail.item.dcName}}
+                        </div>
+                    </div>
+
+
+                    <div class="details-group">
+                        <div class="details-name">镜像格式：</div>
+                        <div class="details-value">{{marketImageDetail.item.diskFormat}}</div>
+                    </div>
+
+                    <div class="details-group">
+                       <div class="details-name">创建时间：</div>
+                       <div class="details-value"
+                            data-ng-bind="::marketImageDetail.item.createdTime | date:'yyyy-MM-dd HH:mm:ss'"></div>
+                    </div>
+
+
+                    <div class="details-group">
+                        <div class="details-name">最小CPU：</div>
+                        <div class="details-value">
+                            {{marketImageDetail.item.minCpu}}核
+                        </div>
+                    </div>
+
+
+
+                    <div class="details-group">
+                        <div class="details-name">最小内存：</div>
+                        <div class="details-value">
+                            {{marketImageDetail.item.minRam == 'null' ? '':marketImageDetail.item.minRam}}GB
+                        </div>
+                    </div>
+
+                    <div class="details-group">
+                        <div class="details-name">最小硬盘：</div>
+                        <div class="details-value">
+                            {{'null' == marketImageDetail.item.minDisk?'':marketImageDetail.item.minDisk}}GB
+                        </div>
+                    </div>
+
+                    <div class="details-group">
+                        <div class="details-name">系统盘大小：</div>
+                        <div class="details-value">
+                            {{'null'==marketImageDetail.item.sysdiskSize?'':marketImageDetail.item.sysdiskSize}}GB
+                        </div>
+                    </div>
+
+                    <div class="details-group">
+                        <div class="details-name">最大CPU：</div>
+                        <div class="details-value">
+                            {{'null'==marketImageDetail.item.maxCpu?'':marketImageDetail.item.maxCpu}}核
+                        </div>
+                    </div>
+
+                    <div class="details-group">
+                        <div class="details-name">最大内存：</div>
+                        <div class="details-value">
+                            {{marketImageDetail.item.maxRam == 'null' ? '':marketImageDetail.item.maxRam}}GB
+                        </div>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="panel panel-default clearfix">
+    <div class="panel-body">
+        <h4>镜像描述</h4>
+        <form class="form-inline">
+            <button class="btn  btn-default btn-sm"
+                    data-ng-click="marketImageDetail.updateMarketImageDesc(marketImageDetail.item)">
+                <div class="glyphicon glyphicon-pencil"></div>
+                修&nbsp;改
+            </button>
+        </form>
+
+        <div class="details">
+            <div>
+                <div ng-bind-html="marketImageDetail.item.marketimageDepict"></div>
+            </div>
+        </div>
+
+    </div>
+</div>
+

@@ -1,0 +1,38 @@
+/**自定义样式表 */
+
+.table-search-right {
+    float: right;
+}
+.cancel-padding {
+    padding-left: 0px;
+}
+.label-tip-error{
+    margin-right: 50px;
+    margin-left: 188px;
+}
+.label-tip-error .control-label{
+    text-align: left;
+}
+.deletevm-checkbox{
+    margin-left: 100px;
+    margin-top: -13px;
+}
+.deletevm-checkbox-label {
+    font-weight: normal;
+}
+.delete-snapshot-dialog {
+    text-align: center;
+    margin-bottom: 40px;
+}
+.detail-vm-modifysubnet {
+    line-height: 34px;
+}
+.vm-table-charge {
+    text-align: left !important;
+}
+.vm-table-cloumn-date{
+    width: 160px;
+}
+.vm-table-cloumn-charge{
+    width: 220px;
+}

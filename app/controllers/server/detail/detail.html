@@ -1,0 +1,73 @@
+
+<form class="form-horizontal data-center">
+    <div class="col-lg-6">
+        <div class="details-group">
+            <div class="details-name">所属数据中心：</div>
+            <div class="details-value"><span ng-bind="::detail.model.datacenterName"></span></div>
+        </div>
+        <div class="details-group">
+            <div class="details-name">服务器名称：</div>
+            <div class="details-value"><span data-ng-bind-html="::detail.model.name |ellipsis:18"></span></div>
+        </div>
+        <div class="details-group">
+            <div class="details-name">服务器ID：</div>
+            <div class="details-value"><span data-ng-bind-html="::detail.model.id |ellipsis:18"></span></div>
+        </div>
+        <div class="details-group">
+            <div class="details-name">服务器型号：</div>
+            <div class="details-value"><span ng-bind-html="::detail.model.dcServerModelName |ellipsis:18"></span></div>
+        </div>
+        <div class="details-group">
+            <div class="details-name">内存：(GB)</div>
+            <div class="details-value"><span ng-bind="::detail.model.memory"></span></div>
+        </div>
+        <div class="details-group">
+            <div class="details-name">规格：(U)</div>
+            <div class="details-value"><span ng-bind="::detail.model.spec"></span></div>
+        </div>
+        <div class="details-group">
+            <div class="details-name">服务器用途：</div>
+            <div class="details-value"><span data-ng-bind-html="::detail.model.memo |ellipsis:18"></span></div>
+        </div>
+        <div class="details-group">
+            <div class="details-name">联系电话：</div>
+            <div class="details-value"><span ng-bind="::detail.model.responPersonMobile"></span></div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="details-group">
+            <div class="details-name">所属机柜：</div>
+            <div class="details-value"><span ng-bind="::detail.model.cabinetName"></span></div>
+        </div>
+        <div class="details-group">
+            <div class="details-name">IP地址：</div>
+            <div class="details-value"><span ng-bind="::detail.model.serverInnetIp"></span></div>
+        </div>
+        <div class="details-group">
+            <div class="details-name">CPU：(核)</div>
+            <div class="details-value"><span ng-bind-html="::detail.model.cpu"></span></div>
+
+        </div>
+        <div class="details-group">
+            <div class="details-name">磁盘：(TB)</div>
+            <div class="details-value"><span ng-bind="::detail.model.diskUnit"></span></div>
+        </div>
+        <div class="details-group">
+            <div class="details-name">所属机柜位置：</div>
+            <div class="details-value" data-ng-show="!detail.startState==''"><span ng-bind="::detail.startState"></span>U~<span ng-bind="::detail.endState"></span>U</div>
+        </div>
+        <div class="details-group">
+            <div class="details-name">责任人：</div>
+            <div class="details-value"><span ng-bind="::detail.model.responPerson"></span></div>
+        </div>
+        <div class="details-group">
+            <div class="details-name">是否启用监控：</div>
+            <div class="details-value"><span ng-bind="detail.model.isMonitor=='0'?'否':'是'"></span></div>
+        </div>
+    </div>
+</form>
+<div class="modal-footer gd_footer">
+    <div class="col-md-12 text-center">
+        <button class="btn button-orange" type="button" ng-click="cancel()">关闭</button>
+    </div>
+</div>

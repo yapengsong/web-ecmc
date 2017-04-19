@@ -1,0 +1,92 @@
+<!-- 当前位置下拉列表 -->
+<div class="title-inline">
+    <div class="form-group">
+        <label class="control-label">当前位置：
+            <a class="pointer" ui-sref="app.net.tabs.external">外部网络</a>
+            <span> > 外部网络详情</span>
+        </label>
+    </div>
+</div>
+
+<div class="panel panel-default clearfix">
+    <div class="panel-body">
+        <h4>网络详情</h4>
+
+        <div class="details">
+            <form class="row">
+                <div class="col-lg-4">
+                    <div class="details-group">
+                        <div class="details-name">名称：</div>
+                        <div class="details-value"><span ng-bind="::detail.outModel.netName"></span></div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="details-group">
+                        <div class="details-name">所属数据中心：</div>
+                        <div class="details-value"><span ng-bind="::detail.outModel.dcName"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="details-group">
+                        <div class="details-name">共享的</div>
+                        <div class="details-value"><span ng-bind="::detail.outModel.isShared"></span></div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="details-group">
+                        <div class="details-name">状态：</div>
+                        <div class="details-value">
+                            <span class="state-block" ng-class="detail.outModel.netStatus | statusClass"></span>
+                            <span ng-bind="::detail.outModel.netStatus | statusCn"></span>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="panel panel-default clearfix">
+    <div class="panel-body">
+        <h4>外部网络子网列表</h4>
+
+        <!-- Form表单 -->
+        <form class="form-inline">
+            <div class="form-group">
+                <button class="btn btn-primary"  ng-if="hasPermission('outsubnet_add')" data-ng-click="detail.add()">
+                    <span class="glyphicon glyphicon-plus"></span> 创建子网
+                </button>
+            </div>
+        </form>
+
+        <eayun-table data-api="detail.table.api" data-ajax-source="detail.table.source"
+                     data-param="detail.table.getParams"
+                     data-result="detail.table.result">
+            <table class="table table-eayun">
+                <thead>
+                <tr>
+                    <th>名称</th>
+                    <th>网络地址</th>
+                    <th>IP版本</th>
+                    <th>网关IP</th>
+                    <!--<th>已有标签</th>-->
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr data-ng-repeat="list in detail.table.result.data">
+                    <td ng-bind="::list.subnetName"></td>
+                    <td ng-bind="::list.cidr"></td>
+                    <td ng-bind="::'IPv'+list.ipVersion"></td>
+                    <td ng-bind="::list.gatewayIp"></td>
+                    <td>
+                        <button class="btn btn-tablemng btn-first" ng-if="hasPermission('outsubnet_edit')" data-ng-click="detail.edit(list)">编辑子网</button>
+                        <button class="btn btn-tabledel" data-ng-click="detail.delete(list)" ng-if="hasPermission('outsubnet_delete')">删除子网</button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </eayun-table>
+    </div>
+</div>

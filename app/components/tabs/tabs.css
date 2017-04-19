@@ -1,0 +1,86 @@
+/* 导航样式--下划线 */
+.nav-tabs-underline {
+    background-color: #FFFFFF;
+    height: 35px;
+    margin-bottom: 15px;
+}
+
+.nav-tabs-underline > li {
+    float: left;
+    cursor: pointer;
+    margin-bottom: -5px;
+}
+
+.nav-tabs-underline > li > a {
+    margin-right: 2px;
+    border-bottom: 2px solid transparent;
+    color: #555555;
+    padding: 10px 20px;
+    font-size: 16px;
+    line-height: 14px;
+    height: 35px;
+}
+
+.nav-tabs-underline > li > a:hover {
+    color: #0077cc;
+}
+
+.nav-tabs-underline li.active a,
+.nav-tabs-underline li.active a:hover,
+.nav-tabs-underline li.active a:focus {
+    color: #0077cc;
+    border-color: #0077cc;
+}
+
+.nav-tabs-underline .triangle {
+    width: 0;
+    height: 0;
+    margin-left: auto;
+    margin-right: auto;
+    border-width: 5px 6px 0 6px;
+    border-style: solid;
+    border-color: transparent;
+}
+
+.nav-tabs-underline .active .triangle {
+    border-top-color: #0077cc;
+}
+
+/* 导航样式--上划线 */
+.nav-tabs-online {
+    background-color: #FFFFFF;
+    margin-top: 0;
+    border-bottom: 1px solid #dcdcdc;
+    margin-bottom: 20px;
+}
+
+.nav-tabs-online > li {
+    float: left;
+    cursor: pointer;
+}
+
+.nav-tabs-online > li > a {
+    margin-right: 0;
+    border-width: 2px 1px 0 1px;
+    border-style: solid;
+    border-color: transparent;
+    color: #555555;
+    background-color: #FFFFFF;
+    padding: 12px 20px 13px;
+    font-size: 12px;
+    line-height: 12px;
+}
+
+.nav-tabs-online > li > a:hover {
+    font-weight: bold;
+    background-color: #dcdcdc;
+}
+
+.nav-tabs-online li.active a,
+.nav-tabs-online li.active a:hover,
+.nav-tabs-online li.active a:focus {
+    border-color: #dcdcdc;
+    font-weight: bold;
+    border-bottom: 1px solid transparent;
+    margin-bottom: -1px;
+}

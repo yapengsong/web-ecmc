@@ -1,0 +1,72 @@
+<h4>API</h4>
+<form class="form-inline">
+    <eayun-search ng-model="apiservice.search" options="apiservice.options" style="margin-left: 0px;"></eayun-search>
+
+    <div style="float:right">
+        <eayun-select class="form-control form-select" data-ng-model="apiservice.dataType" ng-change="apiservice.queryTableTwoType()" show-length="5" style="float:right;">
+
+
+            <eayun-option value="'real-time'" text="实时数据" selected></eayun-option>
+            <eayun-option value="queryInterval.nameEN" text="{{queryInterval.name}}" ng-repeat="queryInterval in apiservice.queryInterval"></eayun-option>
+
+
+        </eayun-select>
+
+        <date-time-picker class="form-group" ng-model="apiservice.endDate" style="margin-right:15px;float:right;"
+                          data-format="yyyy-MM-dd HH:mm:ss" show-time="true" max-date="apiservice.endDate"
+                          data-ng-change="apiservice.queryTableFromDate()"
+                          ng-if="apiservice.dataType != 'real-time' && apiservice.dataType <= 1440"></date-time-picker>
+        <date-time-picker class="form-group" ng-model="apiservice.endDate" style="margin-right:15px;float:right;"
+                          data-format="yyyy-MM-dd" show-time="false" max-date="apiservice.endDate"
+                          data-ng-change="apiservice.queryTableFromDate()"
+                          ng-if="apiservice.dataType != 'real-time' && apiservice.dataType > 1440"></date-time-picker>
+
+        <label class="control-label" style="margin-top:7px" ng-if="apiservice.dataType != 'real-time'">历史数据截止时间：</label>
+    </div>
+
+</form>
+
+
+<eayun-table data-api="apiservice.apiserviceTable.api"
+             data-ajax-source="apiservice.apiserviceTable.source"
+             data-param="apiservice.apiserviceTable.getParams"
+             data-result="apiservice.apiserviceTable.result">
+
+
+    <table class="table table-eayun">
+        <thead>
+        <tr>
+            <th>客户名称</th>
+            <th>IP</th>
+            <th>
+                <eayun-select type="btn" class="btn-group btn-group-xs" data-ng-model="apiservice.queryParams.region"
+                              data-ng-change="apiservice.queryTable()">
+                    <eayun-option value="''" text="数据中心（全部）" selected></eayun-option>
+                    <eayun-option value="dcResource.id" text="{{dcResource.apiDcCode}}" ng-repeat="dcResource in apiservice.dcResourceList"></eayun-option>
+                </eayun-select>
+            </th>
+            <th style="cursor: pointer;" data-ng-click="apiservice.changeResSort('Keyong')">可用率(%)
+                <span class="{{apiservice.sortKeyongClass}}"></span></th>
+            <th style="cursor: pointer;" data-ng-click="apiservice.changeResSort('Right')">正确率(%)
+                <span class="{{apiservice.sortRightClass}}"></span></th>
+            <th style="cursor: pointer;"data-ng-click="apiservice.changeResSort('RequestNumber')">请求次数(次)
+                <span class="{{apiservice.sortRequestNumberClass}}"></span></th>
+            <th  style="cursor: pointer;"data-ng-click="apiservice.changeResSort('DealTime')">处理时间(ms)
+                <span class="{{apiservice.sortDealTimeClass}}"></span></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="rs in apiservice.apiserviceTable.result">
+            <td ng-bind="rs.cusName"></td>
+            <td ng-bind="rs.ip"></td>
+            <td ng-bind="rs.regionName"></td>
+            <td data-ng-class="rs.availabilityChange | discolor"   ng-bind="(rs.availability| number:1) + '&nbsp;&nbsp;' + (rs.availabilityChange | arrowApiData)"></td>
+            <td data-ng-class="rs.correctChange | discolor"        ng-bind="(rs.correct| number:1)+ '&nbsp;&nbsp;' + (rs.correctChange | arrowApiData)"></td>
+            <td data-ng-class="rs.requestsNumberChange | discolor" ng-bind="(rs.requestsNumber| number:0)+ '&nbsp;&nbsp;' + (rs.requestsNumberChange | arrowApiData)"></td>
+            <!--根据产品需求文档最新约束，时间保留小数点后两位四舍五入-->
+            <td data-ng-class="rs.avgdealTimeChange | discolor"    ng-bind="(rs.avgdealTime| number:2)+ '&nbsp;&nbsp;' + (rs.avgdealTimeChange | arrowApiData)"></td>
+        </tr>
+        </tbody>
+    </table>
+    <eayun-table-page></eayun-table-page>
+</eayun-table>

@@ -1,0 +1,21 @@
+<!-- 当前位置下拉列表 -->
+<div class="title-inline">
+    <div class="form-group">
+        <label class="control-label">当前位置：</label>
+        <div class="btn-group" role="group" style="font-size:14px;">资源监控
+        </div>
+    </div>
+</div>
+<!-- 导航页签 -->
+<tabs class="nav-tabs-underline">
+    <tab-underline ui-sref-active="active" data-ui-sref="app.monitor.tab.cloudhost"  ng-if="hasPermission('mon_resource_cloudhost')">云主机</tab-underline>
+    <tab-underline ui-sref-active="active" data-ui-sref="app.monitor.tab.server" ng-if="hasPermission('mon_server')">物理服务器</tab-underline>
+    <tab-underline ui-sref-active="active" data-ui-sref="app.monitor.tab.apiservice" ng-if="hasPermission('mon_api_service')">API</tab-underline>
+</tabs>
+
+<!-- 子页面展示区 -->
+<div class="panel panel-default clearfix">
+    <div class="panel-body">
+        <div ui-view=""></div>
+    </div>
+</div>

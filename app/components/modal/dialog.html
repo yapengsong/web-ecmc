@@ -1,0 +1,18 @@
+<div>
+    <!-- 澶撮儴鏍囬鍖哄煙 -->
+    <div class="modal-header">
+    <span class="modal-title">
+      {{title}}
+    </span>
+        <img ng-click="cancel()" src="images/close.png">
+    </div>
+    <!-- 琛ㄥ崟鍖哄煙 -->
+    <div class="modal-body">
+        <div class="eayun-modal-dialog" ng-style="{'width': width }"></div>
+    </div>
+    <!-- 鎸夐挳鍖哄煙 -->
+    <div class="modal-footer" ng-show="showBtn">
+        <button class="btn btn-primary btn-modal" ng-click="commit()" ng-disabled="!dialogForm.$valid">确 定</button>
+        <button class="btn btn-default btn-modal" ng-click="cancel()" style="margin-left:15px;">取 消</button>
+    </div>
+</div>

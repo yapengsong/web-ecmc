@@ -1,0 +1,65 @@
+<div class="form-inline">
+    <button type="button" class="btn btn-primary" data-ng-click="global.create()" style="margin-right: 15px;" ng-if="hasPermission('publicimage_add')">
+        <span class="glyphicon glyphicon-plus"></span> 创建镜像
+    </button>
+    <eayun-search ng-model="global.search" options="global.options"></eayun-search>
+</div>
+
+<eayun-auto-refresh interval="5000" refresh="global.refresh"></eayun-auto-refresh>
+<eayun-table data-api="global.table.api" data-ajax-source="global.table.source" data-param="global.table.getParams"
+             data-result="global.table.result" >
+    <table class="table table-eayun">
+        <thead>
+        <tr>
+            <th>镜像名称</th>
+            <th>
+                <eayun-select type="btn" class="btn-group btn-group-xs" data-ng-model="global.isUse" data-ng-change="global.query()">
+                    <eayun-option value="" text="状态（全部）" selected></eayun-option>
+                    <eayun-option value="0" text="未启用" ></eayun-option>
+                    <eayun-option value="1" text="正常" ></eayun-option>
+                    <eayun-option value="2" text="已停用" ></eayun-option>
+                </eayun-select>
+            </th>
+
+           <!-- <th>状态</th>-->
+            <th>
+                <eayun-select type="btn" class="btn-group btn-group-xs" data-ng-model="global.sysType" data-ng-change="global.query()">
+                    <eayun-option value="" text="系统类型（全部）" selected></eayun-option>
+                    <eayun-option value="dc.nodeId" text="{{dc.nodeName}}" data-ng-repeat="dc in global.osList"></eayun-option>
+                </eayun-select>
+            </th>
+            <th>最低配置</th>
+            <th>镜像格式</th>
+            <th>
+                <eayun-select type="btn" class="btn-group btn-group-xs" data-ng-model="global.dcId" data-ng-change="global.query()">
+                    <eayun-option value="" text="数据中心（全部）" selected></eayun-option>
+                    <eayun-option value="dc.id" text="{{dc.name}}" data-ng-repeat="dc in global.dcList"></eayun-option>
+                </eayun-select>
+            </th>
+            <th>创建云主机数</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr data-ng-repeat="image in global.table.result">
+            <td class="click-link" data-ng-bind="image.imageName.length>20?image.imageName.substring(0,19)+'...':image.imageName"  title="{{image.imageName}}" data-ng-click="global.detail(image.imageId)"></td>
+            <td><span class="state-block" data-ng-class="global.imageStatusClass[$index] != '' ? global.imageStatusClass[$index] : ''"
+                      ng-init="global.imageStatusClass[$index] = global.checkImageStatus(image,$index)"></span>
+                {{image.statusForDis}}
+            </td>
+            <td data-ng-bind="(null==image.sysTypeName||'null'==image.sysTypeName||'其他'==image.sysTypeName)?'':image.sysTypeName"></td>
+            <td>{{image.minCpu}}核/{{image.minRam}}GB/{{image.minDisk}}GB</td>
+            <td data-ng-bind="::image.diskFormat"></td>
+            <td data-ng-bind="::image.dcName"></td>
+            <td data-ng-bind="::image.vmNum"></td>
+            <td>
+                <button class="btn btn-tablemng btn-first" data-ng-click="global.edit(image)" ng-if="hasPermission('publicimage_edit')"   data-ng-disabled="image.imageStatus == 'SAVING'|| image.imageStatus == 'DELETING'||image.imageStatus=='QUEUED'">编辑</button>
+                <button class="btn btn-tablemng" data-ng-click="global.openImage(image)" ng-if="hasPermission('publicimage_open')&&('0'==image.isUse||'2'==image.isUse)" data-ng-disabled="image.imageStatus == 'SAVING'|| image.imageStatus == 'DELETING'||image.imageStatus=='QUEUED'">启用</button>
+                <button class="btn btn-tablemng" data-ng-click="global.closeImage(image)" ng-if="hasPermission('publicimage_close')&&'1'==image.isUse" data-ng-disabled="image.imageStatus == 'SAVING'|| image.imageStatus == 'DELETING'||image.imageStatus=='QUEUED'">停用</button>
+                <button class="btn btn-tabledel" data-ng-click="global.delete(image)"  ng-if="hasPermission('publicimage_delete')" data-ng-disabled="image.imageStatus == 'SAVING'|| image.imageStatus == 'DELETING'||image.imageStatus=='QUEUED'">删除</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <eayun-table-page></eayun-table-page>
+</eayun-table>

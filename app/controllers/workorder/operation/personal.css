@@ -1,0 +1,89 @@
+/* 运维之星列表样式 start */
+table.table-eayun-personal thead tr th:first-child,
+table.table-eayun-personal td:first-child {
+    background-color: #f8f8f8;
+}
+
+table.table-eayun-personal tbody tr td,
+table.table-eayun-personal > thead:first-child > tr:first-child > th {
+    font-size: 14px;
+    height: 45px;
+    border: 1px solid #dbdbdb;
+    text-align: left;
+    vertical-align: middle;
+    padding: 4px 20px;
+}
+table.table-eayun-personal tbody tr td {
+   font-size:12px;
+}
+
+table.table-eayun-personal td > .progress {
+    margin: 10px;
+}
+
+/* 运维之星列表样式 end */
+table.table-eayun-personal td > .progress > .not-progress {
+    background-color: #f6bf6e;
+}
+
+table.table-eayun-personal td > .done-num {
+    color: #0077CC;
+}
+
+table.table-eayun-personal > tbody > tr > td > .not-done-num {
+    color: #f6bf6e;
+}
+
+.personal-p {
+    font-weight: bold;
+}
+
+.btn-personal {
+    background-color: #ebebeb;
+    color: #000;
+    vertical-align: middle;
+    height: 25px;
+    line-height: 1;
+    width: 52px;
+}
+
+.btn-personal.active {
+    background-color: #757575;
+    color: #fff;
+}
+.font-size-12{
+    font-size: 12px;
+}
+.file-group {
+    display: inline-block;
+    margin-right: 20px;
+    width: 34px;
+}
+/** 附件样式**/
+.file-icon {
+    text-align: center;
+    padding: 3px;
+    margin-bottom: 5px;
+    background-color: #FFFFFF;
+    border-radius: 2px;
+    font-size: 1.5em;
+    color: #0077cc;
+}
+.workorder-register{
+    padding: 15px;
+}
+.workorder-register > .register-left{
+    width: 33.33%;
+    display: inline-block;
+    margin-right: 15px;
+    padding-right: 15px;
+}
+
+.workorder-register > .register-left > .form-inline{
+    margin-bottom: 0;
+}
+
+.workorder-register > .register-right{
+    display: inline-block;
+    vertical-align: bottom;
+}

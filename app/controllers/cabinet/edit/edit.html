@@ -1,0 +1,44 @@
+
+<form class="form-horizontal" name="add" novalidate>
+    <div class="form-group has-feedback" >
+        <label class="col-sm-3 control-label"> <span class="color-require">*</span>所属数据中心</label>
+
+        <div class="col-sm-8" data-ng-class="(add.dcName.$dirty && (add.dcName.$invalid||model.emptyCapa<=0)) ? 'has-error' : ''">
+            <eayun-select placeholder="--请选择数据中心--" class="form-control form-select"   ng-model="model.model.dataCenterId" name="dcName" ng-change="model.changeDc(model.model.dataCenterId)" required>
+                <eayun-option value="dc.id" text="{{dc.name}}"
+                              ng-repeat="dc in model.dcList"></eayun-option>
+            </eayun-select>
+
+            <label class="control-label" ng-show="!add.dcName.$error.required&&model.emptyCapa<=0">该数据中心下面没有可用位置</label>
+            <!--<label class="control-label" ng-show="!add.dcName.$error.required&&model.emptyCapa.data==-1">该机柜本就存在该数据中心下</label>-->
+        </div>
+    </div>
+    <div class="form-group has-feedback" >
+        <label class="col-sm-3 control-label"><span class="color-require">*</span>机柜名称</label>
+
+        <div class="col-sm-8" data-ng-class="( (!add.name.$error.required&&!model.validName)||(!add.cabinetName.$error.required&&!model.nameFlag)||(add.cabinetName.$dirty && !model.validName&&!add.cabinetName.$error.required)||(add.cabinetName.$dirty && add.cabinetName.$error.required)) ? 'has-error' : ''">
+            <input type="text" class="form-control" placeholder="请输入机柜名称" name="cabinetName" data-ajax-valid="model.checkName(value)" maxlength="20" data-ng-model="model.model.name" required/>
+            <label class="control-label" ng-show="add.cabinetName.$dirty && add.cabinetName.$error.required">机柜名称不能为空</label>
+            <label class="control-label" ng-show="!add.cabinetName.$error.required&&!model.validName&&model.nameFlag">存在相同的机柜名称</label>
+            <label class="control-label" ng-if="!add.cabinetName.$error.required&&!model.nameFlag">请输入1-20位字符,支持数字、中英文、下划线、空格</label>
+        </div>
+    </div>
+    <div class="form-group has-feedback" >
+        <label class="col-sm-3 control-label"><span class="color-require">*</span>机柜规格</label>
+
+        <div class="col-sm-7" data-ng-class="(add.totalCapacity.$dirty && (add.totalCapacity.$invalid||!model.capacityResult)) ? 'has-error' : ''">
+            <input type="text" class="form-control" placeholder="请输入50以内的正整数" name="totalCapacity" data-ng-model="model.model.totalCapacity" data-ajax-valid="model.checkCapacity(value)"maxlength="3" required/>
+            <label class="control-label" ng-show="add.totalCapacity.$dirty && add.totalCapacity.$error.required">请输入机柜的U数,例如:10</label>
+            <label class="control-label" ng-if="!add.totalCapacity.$error.required && !model.capacityResult">{{model.capacityMsg}}</label>
+
+            <label class="control-label" ng-if="!add.totalCapacity.$error.required&&!model.capacityFlag">请输入50以内的正整数</label>
+
+
+        </div>
+        <label class="control-label">U</label>
+    </div>
+</form>
+<div class="modal-footer">
+    <button class="btn btn-primary btn-modal" ng-click="ok(model.model)" ng-disabled="add.$invalid||!model.validName||!model.capacityResult||model.emptyCapa<=0" type = "button">确  定</button>
+    <button class="btn btn-default btn-modal" ng-click="cancel()" style = "margin-left:15px;" type = "button">取  消</button>
+</div>

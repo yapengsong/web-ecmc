@@ -1,0 +1,50 @@
+<h4>项目情况</h4>
+<form class="form-inline">
+    <eayun-search ng-model="project.search" options="project.options"></eayun-search>
+</form>
+<eayun-table data-api="project.table.api" data-ajax-source="project.table.source" data-param="project.table.getParams"
+             data-result="project.table.result">
+    <table class="table table-eayun">
+        <thead>
+        <tr>
+            <th>客户</th>
+            <th>项目</th>
+            <th>云主机</th>
+            <th>CPU（核）</th>
+            <th>内存（GB）</th>
+            <th>云硬盘个数</th>
+            <th>快照个数</th>
+            <th>云硬盘大小（GB）</th>
+            <th>带宽（Mbps）</th>
+            <th>报警短信</th>
+            <th>网络</th>
+            <th>子网</th>
+            <th>负载均衡</th>
+            <th>公网IP</th>
+            <th>安全组</th>
+            <th>创建时间</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="pr in project.table.result">
+            <td ng-bind="::pr.cusOrg"></td>
+            <td ng-bind="::pr.prjName"></td>
+            <td><span overview-percent molecule="pr.usedVmCount" denominator="pr.hostCount"></span></td>
+            <td><span overview-percent molecule="pr.usedCpuCount" denominator="pr.cpuCount"></span></td>
+            <td><span overview-percent molecule="pr.usedMemory" denominator="pr.memory"></span></td>
+            <td><span overview-percent molecule="pr.diskCountUse" denominator="pr.diskCount"></span></td>
+            <td><span overview-percent molecule="pr.diskSnapshotUse" denominator="pr.diskSnapshot"></span></td>
+            <td><span overview-percent molecule="pr.usedDataCapacity" denominator="pr.diskCapacity"></span></td>
+            <td><span overview-percent molecule="pr.countBandUse" denominator="pr.countBand"></span></td>
+            <td><span overview-percent molecule="pr.usedSmsCount" denominator="pr.smsCount"></span></td>
+            <td><span overview-percent molecule="pr.netWorkUse" denominator="pr.netWork"></span></td>
+            <td><span overview-percent molecule="pr.subnetCountUse" denominator="pr.subnetCount"></span></td>
+            <td><span overview-percent molecule="pr.usedPool" denominator="pr.quotaPool"></span></td>
+            <td><span overview-percent molecule="pr.outerIPUse" denominator="pr.outerIP"></span></td>
+            <td><span overview-percent molecule="pr.safeGroupUse" denominator="pr.safeGroup"></span></td>
+            <td><span ng-bind="::pr.createTime | date:'yyyy-MM-dd HH:mm:ss'"></span></td>
+        </tr>
+        </tbody>
+    </table>
+    <eayun-table-page></eayun-table-page>
+</eayun-table>

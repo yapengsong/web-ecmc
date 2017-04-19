@@ -1,0 +1,61 @@
+<form class="form-horizontal" name="addEdit">
+    <div class="form-group">
+        <label class="col-sm-3 control-label"><!--<a style="color:red ;">*</a>-->名称：</label>
+
+        <div class="col-sm-8"
+             data-ng-class="(addEdit.name.$dirty && addEdit.name.$error.required || addEdit.name.$error.maxlength) ? 'has-error' : ''">
+            <input type="text" class="form-control" data-ng-model="edit.auth.name" name="name" ng-maxlength="20" required/>
+            <label class="control-label hide"
+                   data-ng-class="addEdit.name.$dirty && addEdit.name.$error.required ? 'show' : 'hide'"
+                   style="text-align: left;">名称不能为空</label>
+            <label class="control-label hide"
+                   data-ng-class="addEdit.name.$dirty && addEdit.name.$error.maxlength ? 'show' : 'hide'"
+                   style="text-align: left;">不能超过20位字符</label>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">描述：</label>
+
+        <div class="col-sm-8"
+             data-ng-class="(addEdit.description.$dirty && addEdit.description.$error.maxlength) ? 'has-error' : ''">
+            <textarea type="text" class="form-control" data-ng-model="edit.auth.description" ng-maxlength="200" name="description"></textarea>
+            <label class="control-label hide"
+                   data-ng-class="addEdit.description.$dirty && addEdit.description.$error.maxlength ? 'show' : 'hide'"
+                   style="text-align: left;">不能超过200位字符</label>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">许可：</label>
+
+        <div class="col-sm-8"
+             data-ng-class="(addEdit.permission.$dirty && addEdit.permission.$error.required || addEdit.permission.$error.maxlength) ? 'has-error' : ''">
+            <textarea type="text" class="form-control" data-ng-model="edit.auth.permission" ng-maxlength="2000" name="permission" required/>
+            <label class="control-label hide"
+                   data-ng-class="addEdit.permission.$dirty && addEdit.permission.$error.required ? 'show' : 'hide'"
+                   style="text-align: left;">许可不能为空</label>
+            <label class="control-label hide"
+                   data-ng-class="addEdit.permission.$dirty && addEdit.permission.$error.maxlength ? 'show' : 'hide'"
+                   style="text-align: left;">不能超过2000位字符</label>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">菜单：</label>
+
+        <div class="col-sm-8"
+             data-ng-class="(addEdit.menuId.$dirty && addEdit.menuId.$error.required) ? 'has-error' : ''">
+            <eayun-select-tree options-data="edit.menuTree" value-field="id" text-field="name" class="form-control form-select" ng-model="edit.auth.menuId"
+                          name="menuId" required/>
+            <label class="control-label hide"
+                   data-ng-class="addEdit.menuId.$dirty && addEdit.menuId.$error.required ? 'show' : 'hide'"
+                   style="text-align: left;">菜单不能为空</label>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">是否启用：</label>
+
+        <div class="col-sm-2">
+            <input type="checkbox" style="margin-top: 10px;" data-ng-model="edit.auth.enableFlag" name="isUser"/>
+            <span> 启用</span>
+        </div>
+    </div>
+</form>

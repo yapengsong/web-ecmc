@@ -1,0 +1,100 @@
+<div class="details" style="font-size: 12px;">
+    <form class="row" name="myForm">
+        <div class="col-lg-12">
+
+            <div class="details-group">
+                <div class="details-name">所属数据中心：</div>
+                <div class="details-value">
+                    {{snapshotdetail.snapModel.dcName}}
+                </div>
+            </div>
+
+            <div class="details-group">
+                <div class="details-name">所属项目：</div>
+                <div class="details-value">
+                    {{snapshotdetail.snapModel.prjName}}
+                </div>
+            </div>
+
+            <div class="details-group">
+                <div class="details-name">所属客户：</div>
+                <div class="details-value">
+                    {{snapshotdetail.snapModel.cusOrg}}
+                </div>
+            </div>
+
+            <div class="details-group">
+                <div class="details-name">云硬盘快照ID：</div>
+                <div class="details-value">
+                    <span >{{snapshotdetail.snapModel.snapId}}</span>
+                </div>
+            </div>
+
+            <div class="details-group">
+                <div class="details-name">云硬盘快照名称：</div>
+                <div class="details-value">
+                    {{snapshotdetail.snapModel.snapName}}
+                </div>
+            </div>
+
+            <div class="details-group">
+                <div class="details-name">状态：</div>
+                <div class="details-value">
+                    <span class="state-block" data-ng-class="snapshotdetail.snapStatusClass != '' ? snapshotdetail.snapStatusClass : ''"></span>
+                    {{(snapshotdetail.snapModel.snapStatus == 'DELETING' && '2' == snapshotdetail.snapModel.isDeleted) ? '删除中' : '已删除'}}
+                </div>
+            </div>
+
+            <div class="details-group">
+                <div class="details-name">快照大小：</div>
+                <div class="details-value">
+                    <span >{{snapshotdetail.snapModel.snapSize}}GB</span>
+                </div>
+            </div>
+
+            <div class="details-group">
+                <div class="details-name">分类：</div>
+                <div class="details-value">
+                    <span>数据盘快照</span>
+                </div>
+            </div>
+
+            <div class="details-group">
+                <div class="details-name">源硬盘ID：</div>
+                <div class="details-value">
+                    {{snapshotdetail.snapModel.volId == 'null'
+                    ||  snapshotdetail.snapModel.volId == null
+                    || snapshotdetail.snapModel.volId == '' ? '--':snapshotdetail.snapModel.volId}}
+                </div>
+            </div>
+
+            <div class="details-group">
+                <div class="details-name">源硬盘名称：</div>
+                <div class="details-value" data-ng-if="snapshotdetail.snapModel.volName != 'null'" title="{{snapshotdetail.snapModel.volName}}">
+                    <span >{{snapshotdetail.snapModel.volName.length > 20 ? snapshotdetail.snapModel.volName.substring(0, 19) + '...' : snapshotdetail.snapModel.volName}}
+                </div>
+                <div class="details-value" data-ng-if="snapshotdetail.snapModel.volName == 'null'">
+                    <span>--</span>
+                </div>
+            </div>
+
+            <div class="details-group">
+                <div class="details-name">创建时间：</div>
+                <div class="details-value">
+                    {{snapshotdetail.snapModel.createTime|date:'yyyy-MM-dd HH:mm:ss'}}
+                </div>
+            </div>
+
+            <div class="details-group">
+                <div class="details-name">删除时间：</div>
+                <div class="details-value">
+                    {{snapshotdetail.snapModel.deleteTime|date:'yyyy-MM-dd HH:mm:ss'}}
+                </div>
+            </div>
+
+        </div>
+    </form>
+</div>
+<div class="modal-footer" >
+    <button class="btn btn-default btn-modal" ng-click="cancel()">关闭</button>
+</div>

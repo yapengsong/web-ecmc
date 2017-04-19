@@ -1,0 +1,60 @@
+<form class="form-horizontal" name="editSafeGroup" novalidate>
+    <div class="form-group">
+
+        <label class="col-sm-3 control-label">所属数据中心：</label>
+
+        <div class="col-sm-8" data-ng-class="(editSafeGroup.dcName.$dirty && editSafeGroup.dcName.$invalid) ? 'has-error' : ''">
+            <eayun-select name="dcName" class="form-control"  data-ng-model="editGroup.safeGroup.dcId" placeholder="请选择数据中心"
+                          ng-change="editGroup.getProjectListByDcId(editGroup.safeGroup.dcId)" ng-disabled="true" required>
+                <eayun-option value="dc.id" text="{{dc.name}}" data-ng-repeat="dc in editGroup.dcList"></eayun-option>
+            </eayun-select>
+
+            <label class="control-label hide"
+                   data-ng-class="editSafeGroup.dcName.$dirty && editSafeGroup.dcName.$error.required ? 'show' : 'hide'"
+                   style="text-align: left;">数据中心不能为空</label>
+        </div>
+    </div>
+
+    <div class="form-group" data-ng-show="editGroup.safeGroup.dcId!=null">
+
+        <label class="col-sm-3 control-label">所属项目：</label>
+
+        <div class="col-sm-8" data-ng-class="(editSafeGroup.prjName.$dirty && editSafeGroup.prjName.$invalid) ? 'has-error' : ''">
+            <eayun-select name="prjName" class="form-control"  data-ng-model="editGroup.safeGroup.prjId" ng-disabled="true"  data-ng-change="editGroup.checkGroupName(editGroup.safeGroup.prjId,editGroup.safeGroup.sgName)" required>
+                <eayun-option value="prj.projectId" text="{{prj.prjName}}" data-ng-repeat="prj in editGroup.prjList"></eayun-option>
+            </eayun-select>
+
+            <label class="control-label hide"
+                   data-ng-class="editSafeGroup.prjName.$dirty && editSafeGroup.prjName.$error.required ? 'show' : 'hide'"
+                   style="text-align: left;">项目不能为空</label>
+        </div>
+    </div>
+
+    <div class="form-group has-feedback" >
+        <label class="col-sm-3 control-label">安全组名称：</label>
+
+        <div class="col-sm-8" data-ng-class="(editSafeGroup.name.$dirty && (editSafeGroup.name.$invalid ||editGroup.checkName)) ? 'has-error' : ''">
+            <input type="text" class="form-control" name="name" maxlength="20" data-ng-model="editGroup.safeGroup.sgName" placeholder="请输入名称"
+                   ng-change="editGroup.checkSecurityGroupName()" ng-pattern='/^[\u4e00-\u9fa5a-zA-Z0-9]([\u4e00-\u9fa5_a-zA-Z0-9\s]{0,18}[\u4e00-\u9fa5a-zA-Z0-9]){0,1}$/' required>
+            <label class="control-label" ng-show="editSafeGroup.name.$dirty && editSafeGroup.name.$valid && editGroup.checkName">安全组名称已存在</label>
+            <label class="control-label" ng-if="editSafeGroup.name.$dirty && editSafeGroup.name.$invalid">请输入1-20位字符,支持数字、中英文、下划线、空格</label>
+
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-3 control-label">描述：</label>
+
+        <div class="col-sm-8">
+            <textarea class="form-control" rows="3" maxlength="200" placeholder="请输入描述" data-ng-model="editGroup.safeGroup.sgDescription"></textarea>
+        </div>
+    </div>
+
+</form>
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-primary btn-modal" data-ng-click="commit()" style="margin-left: 15px;"
+            data-ng-disabled="addPool.$invalid ||editGroup.checkName ||editSafeGroup.name.$invalid">提 交
+    </button>
+    <button type="button" class="btn btn-default btn-modal" data-ng-click="cancel()" style="margin-left: 15px;">取 消</button>
+</div>

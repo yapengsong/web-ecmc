@@ -1,0 +1,493 @@
+@font-face {
+    font-family: "eayunFont";
+    src: url('fonts/eayunFont.eot');
+    src: url('fonts/eayunFont.eot?#iefix') format('eot'),
+    url('fonts/eayunFont.woff') format('woff'),
+    url('fonts/eayunFont.ttf') format('truetype'),
+    url('fonts/eayunFont.svg#eayunFont') format('svg');
+}
+
+.eayunfont {
+    font-family: "eayunFont";
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-style: normal;
+    font-variant: normal;
+    font-weight: normal;
+    /* speak: none; only necessary if not using the private unicode range (firstGlyph option) */
+    text-decoration: none;
+    text-transform: none;
+}
+
+
+.ef-CentOS:before {
+   content: "\E001";
+}
+
+.ef-CoreOS:before {
+   content: "\E002";
+}
+
+.ef-Debian:before {
+   content: "\E003";
+}
+
+.ef-FreeBSD:before {
+   content: "\E004";
+}
+
+.ef-Gentoo:before {
+   content: "\E005";
+}
+
+.ef-IP-big:before {
+   content: "\E006";
+}
+
+.ef-IP-disable:before {
+   content: "\E007";
+}
+
+.ef-IP:before {
+   content: "\E008";
+}
+
+.ef-OpenSUSE:before {
+   content: "\E009";
+}
+
+.ef-SUSE:before {
+   content: "\E00A";
+}
+
+.ef-Ubuntu:before {
+   content: "\E00B";
+}
+
+.ef-Windows:before {
+   content: "\E00C";
+}
+
+.ef-add-r:before {
+   content: "\E00D";
+}
+
+.ef-add:before {
+   content: "\E00E";
+}
+
+.ef-alipay:before {
+   content: "\E00F";
+}
+
+.ef-api:before {
+   content: "\E010";
+}
+
+.ef-balance:before {
+   content: "\E011";
+}
+
+.ef-bullhorn:before {
+   content: "\E012";
+}
+
+.ef-cabinet:before {
+   content: "\E013";
+}
+
+.ef-calendar:before {
+   content: "\E014";
+}
+
+.ef-cancel-r:before {
+   content: "\E015";
+}
+
+.ef-cancel:before {
+   content: "\E016";
+}
+
+.ef-center:before {
+   content: "\E017";
+}
+
+.ef-chain:before {
+   content: "\E018";
+}
+
+.ef-chart:before {
+   content: "\E019";
+}
+
+.ef-circular:before {
+   content: "\E01A";
+}
+
+.ef-clock:before {
+   content: "\E01B";
+}
+
+.ef-close:before {
+   content: "\E01C";
+}
+
+.ef-cloudhost:before {
+   content: "\E01D";
+}
+
+.ef-config:before {
+   content: "\E01E";
+}
+
+.ef-console:before {
+   content: "\E01F";
+}
+
+.ef-contacts:before {
+   content: "\E020";
+}
+
+.ef-cost:before {
+   content: "\E021";
+}
+
+.ef-create:before {
+   content: "\E022";
+}
+
+.ef-data:before {
+   content: "\E023";
+}
+
+.ef-delete:before {
+   content: "\E024";
+}
+
+.ef-dollar:before {
+   content: "\E025";
+}
+
+.ef-email:before {
+   content: "\E026";
+}
+
+.ef-fast-backward:before {
+   content: "\E027";
+}
+
+.ef-fast-forward:before {
+   content: "\E028";
+}
+
+.ef-firewall:before {
+   content: "\E029";
+}
+
+.ef-folder-open:before {
+   content: "\E02A";
+}
+
+.ef-forbid:before {
+   content: "\E02B";
+}
+
+.ef-gogngaoguanli:before {
+   content: "\E02C";
+}
+
+.ef-icp:before {
+   content: "\E02D";
+}
+
+.ef-important:before {
+   content: "\E02E";
+}
+
+.ef-key:before {
+   content: "\E02F";
+}
+
+.ef-keysmng:before {
+   content: "\E030";
+}
+
+.ef-lehuguanli:before {
+   content: "\E031";
+}
+
+.ef-list:before {
+   content: "\E032";
+}
+
+.ef-loading:before {
+   content: "\E033";
+}
+
+.ef-lock:before {
+   content: "\E034";
+}
+
+.ef-log:before {
+   content: "\E035";
+}
+
+.ef-look:before {
+   content: "\E036";
+}
+
+.ef-mail-open:before {
+   content: "\E037";
+}
+
+.ef-mail-r:before {
+   content: "\E038";
+}
+
+.ef-mail:before {
+   content: "\E039";
+}
+
+.ef-menu-down:before {
+   content: "\E03A";
+}
+
+.ef-menu-up:before {
+   content: "\E03B";
+}
+
+.ef-menu:before {
+   content: "\E03C";
+}
+
+.ef-menumng:before {
+   content: "\E03D";
+}
+
+.ef-mirro:before {
+   content: "\E03E";
+}
+
+.ef-model:before {
+   content: "\E03F";
+}
+
+.ef-monitor-a:before {
+   content: "\E040";
+}
+
+.ef-monitor:before {
+   content: "\E041";
+}
+
+.ef-more:before {
+   content: "\E042";
+}
+
+.ef-net:before {
+   content: "\E043";
+}
+
+.ef-nobalance:before {
+   content: "\E044";
+}
+
+.ef-obs:before {
+   content: "\E045";
+}
+
+.ef-order:before {
+   content: "\E046";
+}
+
+.ef-organization:before {
+   content: "\E047";
+}
+
+.ef-overview-u:before {
+   content: "\E048";
+}
+
+.ef-overview:before {
+   content: "\E049";
+}
+
+.ef-paperclip:before {
+   content: "\E04A";
+}
+
+.ef-param:before {
+   content: "\E04B";
+}
+
+.ef-password:before {
+   content: "\E04C";
+}
+
+.ef-pencil:before {
+   content: "\E04D";
+}
+
+.ef-people:before {
+   content: "\E04E";
+}
+
+.ef-phone:before {
+   content: "\E04F";
+}
+
+.ef-play:before {
+   content: "\E050";
+}
+
+.ef-plus:before {
+   content: "\E051";
+}
+
+.ef-poweroff:before {
+   content: "\E052";
+}
+
+.ef-prohibit:before {
+   content: "\E053";
+}
+
+.ef-quanxian:before {
+   content: "\E054";
+}
+
+.ef-quota:before {
+   content: "\E055";
+}
+
+.ef-recovery:before {
+   content: "\E056";
+}
+
+.ef-refresh:before {
+   content: "\E057";
+}
+
+.ef-res-count:before {
+   content: "\E058";
+}
+
+.ef-restart:before {
+   content: "\E059";
+}
+
+.ef-right:before {
+   content: "\E05A";
+}
+
+.ef-ring:before {
+   content: "\E05B";
+}
+
+.ef-rizhi:before {
+   content: "\E05C";
+}
+
+.ef-role:before {
+   content: "\E05D";
+}
+
+.ef-safe-a:before {
+   content: "\E05E";
+}
+
+.ef-safe:before {
+   content: "\E05F";
+}
+
+.ef-scale:before {
+   content: "\E060";
+}
+
+.ef-search:before {
+   content: "\E061";
+}
+
+.ef-server:before {
+   content: "\E062";
+}
+
+.ef-shujuguanli:before {
+   content: "\E063";
+}
+
+.ef-square:before {
+   content: "\E064";
+}
+
+.ef-star:before {
+   content: "\E065";
+}
+
+.ef-step-backward:before {
+   content: "\E066";
+}
+
+.ef-step-forward:before {
+   content: "\E067";
+}
+
+.ef-storage:before {
+   content: "\E068";
+}
+
+.ef-switch:before {
+   content: "\E069";
+}
+
+.ef-tag:before {
+   content: "\E06A";
+}
+
+.ef-tags:before {
+   content: "\E06B";
+}
+
+.ef-task:before {
+   content: "\E06C";
+}
+
+.ef-taskmng:before {
+   content: "\E06D";
+}
+
+.ef-triangle:before {
+   content: "\E06E";
+}
+
+.ef-unlock:before {
+   content: "\E06F";
+}
+
+.ef-user:before {
+   content: "\E070";
+}
+
+.ef-usermng:before {
+   content: "\E071";
+}
+
+.ef-wallet:before {
+   content: "\E072";
+}
+
+.ef-warning:before {
+   content: "\E073";
+}
+
+.ef-workorder:before {
+   content: "\E074";
+}
+
+.ef-xinghaoweihu:before {
+   content: "\E075";
+}
+
+.ef-yes:before {
+   content: "\E076";
+}

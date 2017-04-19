@@ -1,0 +1,55 @@
+<div class="title-inline">
+    <div class="form-group">
+        <label class="control-label">当前位置：</label>
+        <div class="btn-group" role="group" style="font-size:14px;">在线统计
+        </div>
+    </div>
+</div>
+<div class="panel panel-default clearfix">
+    <div class="panel-body">
+        <h4>在线统计</h4>
+        <form class="form-inline">
+            <label class = "control-label">截止到</label>
+            <label class = "control-label" style = "color:#FF7272;font-size:16px;font-weight:bold;">{{cusonline.nowtime|date:'yyyy-MM-dd HH:mm:ss'}}</label>
+            <label class = "control-label">，当前在线总人数：您有</label>
+            <label class = "control-label" style = "color:#FF7272;font-size:16px;font-weight:bold;">{{cusonline.cusCount.total}}</label>
+            <label class = "control-label">位用户在线，独立访客IP数为</label>
+            <label class = "control-label" style = "color:#FF7272;font-size:16px;font-weight:bold;">{{cusonline.cusCount.independent}}</label>
+            <button class="btn btn-primary" style="margin: 0px 15px;float:right;" data-ng-click="cusonline.exportCusExcel()">
+                <span class="glyphicon glyphicon-new-window"></span> 导出记录<!--paste-->
+            </button>
+            <button class="btn btn-primary" data-ng-click="cusonline.refreshData()" style="float:right;">
+                <span class="glyphicon glyphicon-refresh"></span> 刷新统计
+            </button>
+        </form>
+        <div style="display: none;">
+            <iframe id="file-export-iframe" frameborder="0"></iframe>
+        </div>
+        <eayun-table data-api="cusonline.cusonlineTable.api" data-ajax-source="cusonline.cusonlineTable.source" data-param="cusonline.cusonlineTable.getParams"
+                     data-result="cusonline.cusonlineTable.result">
+            <table class="table table-eayun">
+                <thead>
+                <tr>
+                    <th class="col-sm-2">客户名称</th>
+                    <th class="col-sm-2">用户名</th>
+                    <th class="col-sm-2">IP</th>
+                    <th class="col-sm-2">登录地址</th>
+                    <th class="col-sm-2">登录时间</th>
+                    <th class="col-sm-2">最后操作时间</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr data-ng-repeat="cusOL in cusonline.cusonlineTable.result">
+                    <td ng-bind="::cusOL.cusName"></td>
+                    <td ng-bind="::cusOL.cusAccount"></td>
+                    <td ng-bind="::cusOL.ip"></td>
+                    <td ng-bind="::cusOL.loginAddr"></td>
+                    <td ng-bind="::cusOL.loginTime|date:'yyyy-MM-dd HH:mm:ss'"></td>
+                    <td ng-bind="::cusOL.lastOpTime|date:'yyyy-MM-dd HH:mm:ss'"></td>
+                </tr>
+                </tbody>
+            </table>
+            <eayun-table-page></eayun-table-page>
+        </eayun-table>
+    </div>
+</div>

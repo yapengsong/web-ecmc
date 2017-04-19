@@ -1,0 +1,19 @@
+<form class="form-horizontal" name="myForm" novalidate>
+
+  <div class="form-group has-feedback">
+    <label class="col-sm-3 control-label">云主机名称：</label>
+    <div class="col-sm-8" data-ng-class="(myForm.name.$dirty && myForm.name.$invalid) ? 'has-error' : ''">
+       <eayun-select name="name" class="form-control" data-ng-model="bind.host"  placeholder="请选择云主机" required>
+        <!-- <eayun-option value=" " text="请选择云主机" selected></eayun-option> -->
+        <eayun-option value="vm" text="{{vm.vmName}}" data-ng-repeat="vm in bind.vmList" ></eayun-option>
+      </eayun-select>
+      <label class="control-label" ng-show="myForm.name.$dirty && myForm.name.$error.required">云主机不能为空</label>
+    </div>
+  </div>
+ 
+ <!-- 按钮区域 -->
+  <!-- <div class="modal-footer" >
+    <button type="button" class="btn btn-primary btn-modal" ng-click="commit()"  ng-disabled="!myForm.$valid">确  定</button>
+    <button type="button" class="btn btn-default btn-modal btn-left" ng-click="cancel()">取  消</button>
+  </div> -->
+</form>

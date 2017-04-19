@@ -1,0 +1,63 @@
+<form class="form-inline">
+    <div class="form-group">
+        <button type="button" class="btn btn-primary btn-sm" data-ng-click="pool.createPool()" >
+            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 创建负载均衡器
+        </button>
+    </div>
+    <div class="form-group">
+        <eayun-search ng-model="pool.search" options="pool.options"></eayun-search>
+    </div>
+</form>
+
+<eayun-table data-api="pool.table.api" data-ajax-source="pool.table.source" data-param="pool.table.getParams"
+              data-result="pool.table.result">
+    <table class="table table-eayun">
+        <thead>
+        <tr>
+            <th style="width: 15%">名称</th>
+            <th style="width: 6%">状态</th>
+            <th style="width: 11%">IP地址</th>
+            <th style="width: 8%">协议</th>
+            <th style="width: 5%">成员数量</th>
+            <th style="width: 6%">健康检查</th>
+            <th class="col-sm-1">客户</th>
+            <th class="col-sm-1">所属项目</th>
+            <th class="col-sm-1">
+                <eayun-select type="btn" class="btn-group btn-group-xs" data-ng-model="pool.dcId"
+                              data-ng-change="pool.refreshTable()">
+                    <eayun-option value="''" text="数据中心（全部）" selected></eayun-option>
+                    <eayun-option value="dcResource.id" text="{{dcResource.name}}"
+                                  ng-repeat="dcResource in pool.dcResourceList"></eayun-option>
+                </eayun-select>
+            </th>
+            <th class="col-sm-5">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr data-ng-repeat="p in pool.table.result">
+            <td ng-bind="::p.poolName"  ng-click="pool.detail(p)" class="color-info pointer"></td>
+            <td><span class="state-block"
+                      data-ng-class="pool.poolStatusClass[$index] != '' ? pool.poolStatusClass[$index] : ''"
+                      ng-init="pool.poolStatusClass[$index] = pool.getPoolStatus(p,$index)"></span>{{p.poolStatus}}</td>
+            <td><div style="text-align: left;" ng-show="item.subnetIp"><span>内网：</span><span>{{item.subnetIp}}</span></div>
+                <div style="text-align: left;" ng-show="item.floatIp"><span>外网：</span><span>{{item.floatIp}}</span></div></td>
+            <td ng-bind="::p.poolProtocol"></td>
+            <td >成员数量0</td>
+            <td ng-bind="::p.vipName=='null' ? '': p.vipName"></td>
+            <td ng-bind="::p.cusOrg=='null'?'':p.cusOrg"></td>
+            <td ng-bind="::p.projectName== 'null' ? '':p.projectName"></td>
+            <td ng-bind="::p.dcName=='null'?'':p.dcName"></td>
+            <td>
+
+                <button class="btn btn-tablemng btn-first" data-ng-click="pool.editPool(p)" >编辑</button>
+                <button class="btn btn-tablemng" data-ng-show="p.countNum < 10 " data-ng-click="pool.bindLbMonitor(p)">绑定健康检查</button>
+                <button class="btn btn-tablemng" data-ng-show="p.countNum !=0" data-ng-click="pool.detechLbMonitor(p)">解除健康检查</button>
+                <button class="btn btn-tablemng" data-ng-show="p.vipId != '' && p.floatId == ''"  data-ng-click="pool.bindFloatIp(p)" >绑定公网IP</button>
+                <button class="btn btn-tablemng" data-ng-show="p.vipId != '' && p.floatId != ''" data-ng-click="pool.detachFloatIp(p)">解除公网IP</button>
+                <button class="btn btn-tabledel" data-ng-click="pool.deletePool(p)">删除</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <eayun-table-page></eayun-table-page>
+</eayun-table>

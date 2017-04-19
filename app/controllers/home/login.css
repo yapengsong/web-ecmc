@@ -1,0 +1,101 @@
+.login {
+    background: url(../../images/loadBg.jpg) center center;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    overflow: auto;
+}
+
+.login-box {
+    /*width:435px;*/
+    /*height: 520px;*/
+    width: 400px;
+    height: 480px;
+    border-radius:8px;
+    background-color: #fff;
+    box-shadow: 0 0 5px rgba(0,8,48,0.09);
+    margin:100px auto 96px auto;
+    text-align: center;
+    position: relative;
+}
+
+.login-box .logo{
+    padding:60px 0;
+}
+
+.login-box .form-group {
+    width: 320px;
+    margin:0 auto;
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.login-box .form-group > input{
+    height: 46px;
+    border:1px solid #e4e4e4;
+}
+
+.login-box .form-group.captcha input{
+    width: 164px;
+    height: 46px;
+    margin-right:20px;
+}
+
+.login-box .form-group .btn-group{
+    width: 320px;
+    margin:0 auto;
+}
+
+.login-box .form-group .btn-group .btn{
+    width: 320px;
+    height: 42px;
+}
+
+.login-box .form-control-feedback{
+    margin-top:8px;
+}
+
+.login-box .form-error {
+    position: absolute;
+    left:40px;
+    color: red;
+    top: 156px;
+}
+
+.login-box .has-feedback .show{
+    display: block;
+}
+
+.login-box .has-feedback .hide{
+    display: none;
+}
+/*.box-right > form .captcha {*/
+/*padding-left: 2px;*/
+/*padding-right: 0px;*/
+/*}*/
+
+/*.box-right > form .captcha > img{*/
+/*height: 34px;*/
+/*}*/
+
+.captcha {
+    /*display: inline-block;*/
+}
+
+.captcha > input {
+    display: inline-block;
+    width: 133px;
+}
+
+.captcha > img {
+    display: inline-block;
+    width: 92px;
+    height: 34px;
+}
+
+.captcha > p {
+    display: inline-block;
+    padding-left: 10px;
+}

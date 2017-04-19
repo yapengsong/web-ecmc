@@ -1,0 +1,248 @@
+/* 按钮 */
+.btn-lg {
+  padding: 8px 20px;
+  border-radius: 4px;
+  font-size: 16px;
+  min-width: 125px;
+  min-height: 40px;
+}
+
+.btn-md {
+  padding: 4px 15px;
+  border-radius: 4px;
+  font-size: 14px;
+  min-width: 100px;
+  min-height: 34px;
+}
+
+.btn-sm {
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  min-width: 85px;
+  min-height: 34px;
+}
+
+.btn-xs {
+  border-radius: 2px;
+  font-size: 12px;
+  min-width: 50px;
+  min-height: 22px;
+}
+
+.btn-tablemng {
+  border-radius: 4px;
+  font-size: 12px;
+  background-color: #ffffff;
+  border-color: #dcdcdc;
+  color: #555555;
+  min-width: 65px;
+  min-height: 30px;
+  margin-left: 15px;
+}
+
+.btn-tablemng.btn-first {
+  margin-left: 0px;
+}
+
+.btn-tablemng:hover {
+  background-color: #ffffff;
+  border-color: #dbdbdb;
+  color: #999999
+}
+
+.btn-tablemng:active {
+  background-color: #f0f0f0;
+  border-color: #dcdcdc;
+  color: #555555
+}
+
+.btn-tablemng:disabled {
+  background-color: #f8f8f8;
+  border-color: #eeeeee;
+  color: #dbdbdb
+}
+
+.btn-default {
+  background-color: #e3e3e3;
+  border-color: #d0d0d0;
+  color: #555555;
+}
+
+.btn-default:hover {
+  background-color: #eeeeee;
+  border-color: #dcdcdc;
+  color: #555555;
+}
+
+.btn-default:focus {
+  background-color: #e3e3e3;
+  border-color: #d0d0d0;
+  color: #555555;
+}
+
+.btn-default:active {
+  background-color: #d3d3d3;
+  border-color: #d0d0d0;
+  color: #555555;
+}
+
+.btn-default[disabled] {
+  background-color: #dcdcdc !important;
+  border-color: transparent !important;
+  color: #ffffff !important;
+}
+
+.btn-primary {
+  background-color: #0077CC !important;
+  border-color: #0071b2 !important;
+  color: #FFFFFF !important
+}
+
+.btn-primary:hover {
+  border-color: #0071b2 !important;
+  background-color: #068fde !important;
+  color: #FFFFFF !important
+}
+
+.btn-primary:active {
+  border-color: #0071b2 !important;
+  background-color: #077bbd !important;
+  color: #f3f3f3 !important
+}
+
+.btn-primary[disabled] {
+  border-color: transparent !important;
+  background-color: #dcdcdc !important;
+  color: #ffffff !important
+}
+
+.btn-primary {
+  background-color: #0077CC !important;
+  border-color: #0071b2 !important;
+  color: #FFFFFF !important
+}
+
+.btn-primary:hover {
+  border-color: #0071b2 !important;
+  background-color: #068fde !important;
+  color: #FFFFFF !important
+}
+
+.btn-primary:active {
+  border-color: #0071b2 !important;
+  background-color: #077bbd !important;
+  color: #f3f3f3 !important
+}
+
+.btn-primary[disabled] {
+  border-color: transparent !important;
+  background-color: #dcdcdc !important;
+  color: #ffffff !important
+}
+/* 列表中的按钮 */
+.btn-tablepage {
+  padding: 0px;
+  border: 1px solid #dcdcdc;
+  margin-left: 3px;
+  width: 35px;
+  height: 35px;
+  font-size: 12px;
+  text-align: center;
+  border-radius: 1px;
+  background-color: #ffffff;
+  border-color: #dcdcdc;
+  color: #555555
+}
+
+.btn-tablepage:active {
+  background-color: #0077cc;
+  border-color: #0077cc;
+  color: #ffffff
+}
+
+.btn-tablepage.down {
+  background-color: #0077cc;
+  border-color: #0077cc;
+  color: #ffffff
+}
+
+.btn-tablepage.disabled {
+  background-color: #f8f8f8 !important;
+  border-color: #eeeeee !important;
+  color: #e3e3e3 !important
+}
+
+.btn-delete {
+  background-color: #EA3200;
+  border-color: #c82600;
+  color: #ffffff
+}
+
+.btn-delete:focus {
+  background-color: #EA3200;
+  border-color: #c82600;
+  color: #ffffff
+}
+
+.btn-delete:hover {
+  background-color: #f13e0e;
+  border-color: #c82600;
+  color: #ffffff
+}
+
+.btn-delete:active {
+  background-color: #de2f00;
+  border-color: #c82600;
+  color: #f3f3f3
+}
+
+.btn-delete[disabled] {
+  background-color: #dcdcdc;
+  border-color: transparent;
+  color: #ffffff
+}
+
+.btn-tabledel {
+  font-size: 12px;
+  border-radius: 4px;
+  min-width: 65px;
+  min-height: 30px;
+  background-color: #ffffff;
+  border-color: #EA3200;
+  color: #EA3200;
+  margin-left: 15px;
+}
+
+.btn-tabledel.btn-first {
+  margin-left: 0px;
+}
+
+.btn-tabledel:focus {
+  background-color: #ffffff;
+  border-color: #EA3200;
+  color: #EA3200
+}
+
+
+.btn-tabledel:active {
+  background-color: #ffdcd3 !important;
+  border-color: #de2f00 !important;
+  color: #de2f00 !important
+}
+
+.btn-tabledel:hover {
+  background-color: #ffffff;
+  border-color: #f13e0e;
+  color: #f13e0e
+}
+
+.btn-tabledel[disabled] {
+  background-color: #f8f8f8 !important;
+  border-color: #eeeeee !important;
+  color: #dbdbdb !important
+}
+
+.btn-left {
+  margin-left: 15px;
+}

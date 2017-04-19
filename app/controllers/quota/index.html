@@ -1,0 +1,52 @@
+<div class="title-inline">
+    <div class="form-group">
+        <label class="control-label">当前位置：</label>
+        <div class="btn-group" role="group" style="font-size:14px;">配额模板
+        </div>
+    </div>
+</div>
+<div class="panel panel-default clearfix">
+    <div class="panel-body">
+        <h4>配额模板</h4>
+        <form class="form-inline" >
+            <button class="btn btn-primary" data-ng-click="quota.createTemplate()" style="margin-right: 15px;" data-ng-if="hasPermission('template_add')">
+                <span class="glyphicon glyphicon-plus"></span> 创建配额模板
+            </button>
+            <eayun-search ng-model="quota.templateName" options="quota.options" style="float:right;" data-ng-if="hasPermission('template_info')"></eayun-search>
+        </form>
+
+        <eayun-table data-api="quota.table.api" data-ajax-source="quota.table.source"
+                     data-param="quota.table.getParams"
+                     data-result="quota.table.result" data-ng-if="hasPermission('template_info')">
+            <table class="table table-eayun">
+                <thead>
+                <tr>
+                    <th class="col-sm-2">模板名称</th>
+                    <th class="col-sm-2">描述</th>
+                    <th class="col-sm-2">操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr data-ng-repeat="item in quota.table.result">
+                    <td ng-bind="::item.qtName" class="click-link" ng-click="hasPermission('template_info')?quota.detail(item):''"></td>
+                    <td ng-bind-html="::item.qtDesc | ellipsis:20"></td>
+
+                    <td>
+                        <button type="button" class="btn btn-tablemng btn-first"
+                                data-ng-click="quota.edit(item)"
+                                data-ng-disabled="!hasPermission('template_modify')">
+                            编辑
+                        </button>
+                        <button type="button" class="btn btn-tablemng btn-tabledel"
+                                data-ng-click="quota.del(item.qtId,item.qtName)"
+                                data-ng-disabled="!hasPermission('template_del')">
+                            删除
+                        </button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <eayun-table-page></eayun-table-page>
+        </eayun-table>
+    </div>
+</div>

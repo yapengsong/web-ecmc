@@ -1,0 +1,62 @@
+<form class="form-horizontal" name="myForm" novalidate>
+    <div class="form-group row">
+        <label class="col-sm-5 control-label" style="font-weight: bold">
+            当前云主机规格为：
+            <span data-ng-bind="upgrade.vmOrigin.cpus"></span>核，
+            <span data-ng-bind="upgrade.vmOrigin.rams * 1 / 1024"></span>GB
+        </label>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <label class="col-sm-5 control-label" style="font-weight: bold">CPU核数：</label>
+
+            <div class="col-sm-7"
+                 data-ng-class="(myForm.cpus.$dirty && myForm.cpus.$valid && (1 * upgrade.vmModel.cpus > (upgrade.vmOrigin.cpus + upgrade.project.cpuCount - upgrade.project.usedCpuCount))) ? 'has-error' : ''">
+                <div class="form-group col-sm-5">
+                    <eayun-select class="form-control" name="cpus" data-ng-model="upgrade.cpus"
+                                  data-ng-change="upgrade.changeCpu()" required>
+                        <eayun-option data-ng-repeat="cpu in upgrade.cpuList" value="cpu"
+                                      data-ng-if="cpu.nodeName.substr(0, cpu.nodeName.length - 1) >= upgrade.vmOrigin.cpus && cpu.nodeName.indexOf('MB') == -1"
+                                      text="{{cpu.nodeName}}"></eayun-option>
+                    </eayun-select>
+                </div>
+                <div class="col-sm-7">
+                    <label class="control-label hide" data-ng-class="(myForm.cpus.$dirty && myForm.cpus.$valid &&
+				    (1 * upgrade.vmModel.cpus > (upgrade.vmOrigin.cpus + upgrade.project.cpuCount - upgrade.project.usedCpuCount))) ? 'show' : 'hide'">
+                        CPU超过项目上限</label>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <label class="col-sm-5 control-label" style="font-weight: bold">内存：</label>
+
+            <div class="col-sm-7" style="height: 34px;" data-ng-class="(myForm.rams.$dirty && myForm.rams.$valid &&
+			    (1 * upgrade.vmModel.rams * 1024 > (upgrade.vmOrigin.rams + upgrade.project.memory - upgrade.project.usedRam))) ? 'has-error' : ''">
+                <div class="form-group col-sm-5">
+                    <eayun-select class="form-control" name="rams" data-ng-model="upgrade.rams"
+                                  data-ng-change="upgrade.changeRam()" required>
+                        <eayun-option data-ng-repeat="ram in upgrade.ramList"
+                                      value="ram" text="{{ram.nodeName}}"
+                                      data-ng-if="1 * (ram.nodeName.substr(0,ram.nodeName.length - 2) * 1024) >= upgrade.vmOrigin.rams">
+                        </eayun-option>
+                    </eayun-select>
+                </div>
+                <div class="col-sm-7">
+                    <label class="control-label hide" data-ng-class="(myForm.rams.$dirty && myForm.rams.$valid &&
+			    ((1 * upgrade.vmModel.rams * 1024) > (upgrade.vmOrigin.rams + upgrade.project.memory - upgrade.project.usedRam))) ? 'show' : 'hide'">内存超过项目上限</label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 按钮区域 -->
+    <div class="modal-footer">
+        <button type="button" class="btn btn-primary btn-modal" data-ng-click="upgrade.commit()"
+                data-ng-disabled="!myForm.$valid
+                               || ((upgrade.vmModel.cpus * 1) > (upgrade.vmOrigin.cpus + upgrade.project.cpuCount - upgrade.project.usedCpuCount))
+                               || (upgrade.vmModel.rams * 1024 > (upgrade.vmOrigin.rams + upgrade.project.memory - upgrade.project.usedRam))">
+            确 定
+        </button>
+        <button type="button" class="btn btn-default btn-modal" data-ng-click="cancel()">取 消</button>
+    </div>
+</form>

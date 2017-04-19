@@ -1,0 +1,64 @@
+
+<form class="form-horizontal data-center" >
+    <div class="col-lg-6">
+        <div class="details-group">
+            <div class="details-name">所属数据中心：</div>
+            <div class="details-value"><span ng-bind="::detail.model.dataCenterName"></span></div>
+        </div>
+        <div class="details-group">
+            <div class="details-name">规格：</div>
+            <div class="details-value"><span ng-bind="::detail.model.spec"></span>U</div>
+        </div>
+        <div class="details-group">
+            <div class="details-name">防火墙名称：</div>
+            <div class="details-value"><span ng-bind-html="::detail.model.name |ellipsis:18"></span></div>
+        </div>
+        <div class="details-group">
+            <div class="details-name">防火墙ID：</div>
+            <div class="details-value"><span ng-bind-html="::detail.model.id |ellipsis:35"></span></div>
+        </div>
+        <div class="details-group">
+            <div class="details-name">型号：</div>
+            <div class="details-value"><span ng-bind-html="::detail.model.firewallModel |ellipsis:18"></span></div>
+        </div>
+        <div class="details-group">
+            <div class="details-name">网络吞吐量（Mbps）：</div>
+            <div class="details-value"><span ng-bind="::detail.model.netThroughput"></span></div>
+        </div>
+        <div class="details-group">
+            <div class="details-name">联系电话：</div>
+            <div class="details-value"><span ng-bind="::detail.model.responPersonMobile"></span></div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="details-group">
+            <div class="details-name">所属机柜：</div>
+            <div class="details-value"><span ng-bind="::detail.model.cabinetName"></span></div>
+        </div>
+        <div class="details-group">
+            <div class="details-name">所属机柜位置：</div>
+            <div class="details-value"><span ng-bind="::detail.startState"></span>U~<span ng-bind="::detail.endState"></span>U</div>
+        </div>
+        <div class="details-group">
+            <div class="details-name">IP地址：</div>
+            <div class="details-value"><span ng-bind="::detail.model.ipAddress"></span></div>
+        </div>
+        <div class="details-group">
+            <div class="details-name">并发连接数：</div>
+            <div class="details-value"><span ng-bind-html="::detail.model.concurrentConn |ellipsis:18"></span></div>
+        </div>
+        <div class="details-group">
+            <div class="details-name">责任人：</div>
+            <div class="details-value"><span ng-bind="::detail.model.responPerson"></span></div>
+        </div>
+        <div class="details-group">
+            <div class="details-name">描述：</div>
+            <div class="details-value"><span data-ng-bind-html="::detail.model.memo |ellipsis:18"></span></div>
+        </div>
+    </div>
+</form>
+<div class="modal-footer gd_footer">
+    <div class="col-md-12 text-center">
+        <button class="btn button-orange" type="button" ng-click="cancel()">关闭</button>
+    </div>
+</div>

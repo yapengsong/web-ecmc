@@ -1,0 +1,27 @@
+/* 继承重写details详情页样式 start */
+.workorder.details {
+    background-color: white;
+    line-height: 25px;
+    padding-bottom: 15px;
+}
+.workorder-response {
+    padding: 5px 10px;
+}
+.workorder-dialog-flag {
+    float: right;
+    color: #999999;
+}
+.workorder-dialog-date {
+    float: right;
+    color: #999999;
+}
+/* 继承重写details详情页样式 end */
+
+.workorder-msg {
+    padding: 5px 10px;
+    margin: 5px 10px;
+    background-color: #FFF9F0;
+    border: 1px solid #FFD79C;
+    color: #EA3200;
+    font-weight: bold;
+}

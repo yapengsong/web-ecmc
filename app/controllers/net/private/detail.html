@@ -1,0 +1,133 @@
+<!-- 当前位置下拉列表 -->
+<div class="title-inline">
+    <div class="form-group">
+        <label class="control-label">当前位置：
+            <a class="pointer" ui-sref="app.net.tabs.private">私有网络</a>
+            <span> > 私有网络详情</span>
+        </label>
+    </div>
+</div>
+
+<div class="panel panel-default clearfix">
+    <div class="panel-body">
+        <h4>网络详情</h4>
+
+        <div class="details">
+            <form class="row">
+                <div class="col-lg-4">
+                    <div class="details-group">
+                        <div class="details-name"
+                             hint="controllers/net/private/editnetname.html"
+                             hint-show="detail.hintNameShow"
+                             tooltip-class="tooltip-edit"
+                             tooltip-placement="right">网络名称：</div>
+                        <div class="details-value"><span ng-bind="detail.net.netName" data-ng-class="detail.netNameEditable ? 'hide' : 'show'"></span></div>
+                        <div class="details-value pull-right hand-style" data-ng-click="detail.editName()" data-ng-class="detail.netNameEditable || detail.net.chargeState != '0' ? 'hide' : 'show'">
+                            <a>
+                                <span class="glyphicon glyphicon-pencil"></span>
+                            </a>
+                        </div>
+                        <!--<div class="details-value"><span ng-bind="::detail.net.netName"></span></div>-->
+                    </div>
+                    <div class="details-group">
+                        <div class="details-name">所属数据中心：</div>
+                        <div class="details-value"><span ng-bind="::detail.net.dcName"></span></div>
+                    </div>
+                    <div class="details-group">
+                        <div class="details-name">所属项目：</div>
+                        <div class="details-value"><span ng-bind="::detail.net.prjName"></span></div>
+                    </div>
+                    <div class="details-group">
+                        <div class="details-name">到期时间：</div>
+                        <div class="details-value" data-ng-if="detail.net.payType == '1'">{{detail.net.endTime|date:'yyyy-MM-dd HH:mm:ss'}}</div>
+                        <div class="details-value" data-ng-if="detail.net.payType == '2'">--</div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="details-group">
+                        <div class="details-name">网络ID：</div>
+                        <div class="details-value"><span ng-bind="::detail.net.netId"></span></div>
+                    </div>
+                    <div class="details-group">
+                        <div class="details-name">带宽：</div>
+                        <div class="details-value"><span ng-bind="detail.net.rate+'Mbps'"></span></div>
+                    </div>
+                    <div class="details-group">
+                        <div class="details-name">计费状态：</div>
+                        <div class="details-value"><span ng-bind="detail.net.payTypeStr"></span></div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="details-group">
+                        <div class="details-name">状态：</div>
+                        <div class="details-value">
+                            <span class="state-block" data-ng-class="detail.vmStatusClass != '' ? detail.vmStatusClass:''"></span>
+                            <span ng-bind="::detail.net.netStatusName"></span>
+                            <!--<span class="state-block" ng-class="detail.net.netStatus | statusClass"></span>
+                            <span ng-bind="::detail.net.netStatus | statusCn"></span>-->
+                        </div>
+
+                    </div>
+                    <div class="details-group">
+                        <div class="details-name">外部网络：</div>
+                        <div class="details-value"><span ng-bind="::detail.net.extNetName"></span></div>
+                    </div>
+                    <div class="details-group">
+                        <div class="details-name">创建时间：</div>
+                        <div class="details-value"><span ng-bind="::detail.net.createTime|date:'yyyy-MM-dd HH:mm:ss'"></span></div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="panel panel-default clearfix">
+    <div class="panel-body">
+        <h4>子网列表</h4>
+
+        <!-- Form表单 -->
+        <div class="form-inline">
+            <div class="form-group" ng-if="hasPermission('vir_network_createSubnet')">
+                <button class="btn btn-primary"
+                        ng-click="detail.add()"
+                        data-ng-disabled="detail.net.chargeState != '0'">
+                    <span class="glyphicon glyphicon-plus"></span> 创建子网
+                </button>
+            </div>
+        </div>
+
+        <table class="table table-eayun">
+            <thead>
+            <tr>
+                <th>名称</th>
+                <th>网络地址</th>
+                <th>IP版本</th>
+                <th>网关IP</th>
+                <th>类型</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="subnet in detail.subList">
+                <td ng-bind="::subnet.subnetName"></td>
+                <td ng-bind="::subnet.cidr"></td>
+                <td ng-bind="::'IPv'+subnet.ipVersion"></td>
+                <td ng-bind="::subnet.subnetType == '0' ? '--' : subnet.gatewayIp"></td>
+                <td ng-bind="::subnet.subnetType == '0' ?  '自管子网' : '受管子网'"></td>
+                <td>
+                    <button class="btn btn-tablemng btn-first"
+                            ng-click="detail.edit(subnet)"
+                            ng-if="hasPermission('vir_network_modifySubnet')"
+                            data-ng-disabled="detail.net.chargeState != '0'">编辑
+                    </button>
+                    <button class="btn btn-tabledel" ng-click="detail.delete(subnet)"
+                            ng-if="hasPermission('vir_network_deleteSubnet')">删除
+                    </button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+

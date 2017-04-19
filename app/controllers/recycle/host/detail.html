@@ -1,0 +1,123 @@
+<div class="details" style="font-size: 12px;">
+    <form class="row" name="myForm">
+        <div class="col-lg-12">
+
+            <div class="details-group">
+                <div class="details-name">所属数据中心：</div>
+                <div class="details-value">
+                    {{hostdetail.vmModel.dcName}}
+                </div>
+            </div>
+
+            <div class="details-group">
+                <div class="details-name">所属项目：</div>
+                <div class="details-value">
+                    {{hostdetail.vmModel.prjName}}
+                </div>
+            </div>
+
+            <div class="details-group">
+                <div class="details-name">所属客户：</div>
+                <div class="details-value">
+                    {{hostdetail.vmModel.cusOrg}}
+                </div>
+            </div>
+
+            <div class="details-group">
+                <div class="details-name">云主机名称：</div>
+                <div class="details-value">
+                    {{hostdetail.vmModel.vmName}}
+                </div>
+            </div>
+
+            <div class="details-group">
+                <div class="details-name">云主机ID：</div>
+                <div class="details-value">
+                    <span >{{hostdetail.vmModel.vmId}}</span>
+                </div>
+            </div>
+
+            <div class="details-group">
+                <div class="details-name">系统：</div>
+                <div class="details-value">
+                    <span >{{hostdetail.vmModel.sysType}}</span>
+                </div>
+            </div>
+
+
+            <div class="details-group">
+                <div class="details-name">状态：</div>
+                <div class="details-value">
+                     <span class="state-block" data-ng-class="hostdetail.vmStatusClass != '' ? hostdetail.vmStatusClass : ''"></span>
+                     {{hostdetail.vmModel.vmStatusStr}}
+                </div>
+            </div>
+
+
+            <div class="details-group">
+                <div class="details-name">CPU：</div>
+                <div class="details-value">
+                    {{hostdetail.vmModel.cpus}}核
+                </div>
+            </div>
+
+
+            <div class="details-group">
+                <div class="details-name">内存：</div>
+                <div class="details-value" >
+                    {{hostdetail.vmModel.rams/1024}}GB
+                </div>
+            </div>
+
+            <div class="details-group">
+                <div class="details-name">系统盘：</div>
+                <div class="details-value" >
+                    {{hostdetail.vmModel.disks}}GB
+                </div>
+            </div>
+
+            <div class="details-group">
+                <div class="details-name">私有网络：</div>
+                <div class="details-value" >
+                    {{hostdetail.vmModel.netName}}
+                </div>
+            </div>
+
+            <div class="details-group">
+                <div class="details-name">所在子网：</div>
+                <div class="details-value" >
+                    <span >{{'受管子网：'+(hostdetail.vmModel.subnetName ? (hostdetail.vmModel.subnetName.length>8?(hostdetail.vmModel.subnetName.substr(0,8)+'...'):hostdetail.vmModel.subnetName) : '未加入')}}，</span> &nbsp;&nbsp;
+                    <span >{{'自管子网：'+(hostdetail.vmModel.selfSubnetName ? (hostdetail.vmModel.selfSubnetName.length>8?(hostdetail.vmModel.selfSubnetName.substr(0,8)+'...'):hostdetail.vmModel.selfSubnetName) : '未加入')}}</span>
+                </div>
+            </div>
+
+            <div class="details-group">
+                <div class="details-name">内网IP：</div>
+                <div class="details-value" >
+                    <span >{{'受管子网：'+(hostdetail.vmModel.vmIp != 'null' ? hostdetail.vmModel.vmIp : '未加入')}}，</span>&nbsp;&nbsp;
+                    <span >{{'自管子网：'+(hostdetail.vmModel.selfIp != 'null' ? hostdetail.vmModel.selfIp : '未加入')}}</span>
+                </div>
+            </div>
+
+
+            <div class="details-group">
+                <div class="details-name">创建时间：</div>
+                <div class="details-value">
+                    {{hostdetail.vmModel.createTime|date:'yyyy-MM-dd HH:mm:ss'}}
+                </div>
+            </div>
+
+            <div class="details-group">
+                <div class="details-name">删除时间：</div>
+                <div class="details-value">
+                    {{hostdetail.vmModel.deleteTime|date:'yyyy-MM-dd HH:mm:ss'}}
+                </div>
+            </div>
+
+
+        </div>
+    </form>
+</div>
+<div class="modal-footer" >
+    <button class="btn btn-default btn-modal" ng-click="cancel()">关闭</button>
+</div>

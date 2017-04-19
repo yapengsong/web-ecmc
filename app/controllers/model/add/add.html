@@ -1,0 +1,66 @@
+
+    <form class="form-horizontal" name="add" novalidate>
+        <div class="form-group has-feedback" >
+            <label class="col-sm-3 control-label"><span class="color-require">*</span>服务器型号:</label>
+
+            <div class="col-sm-8" data-ng-class="((!model.validName||add.name.$invalid|| !model.validNamelength)&&add.name.$dirty) ? 'has-error' : ''">
+                <input type="text" class="form-control" name="name" data-ng-model="model.model.name" maxlength="51" required data-ajax-valid="model.checkName(value)"/>
+                <label class="control-label" ng-show="add.name.$dirty && !model.validName&&!add.name.$error.required">服务器型号名称已存在</label>
+                <label class="control-label" ng-show="!add.name.$error.required && !model.validNamelength">服务器型号名称只能在50字内</label>
+
+                <label class="control-label" ng-show="add.name.$dirty && add.name.$error.required">服务器型号名称必填</label>
+            </div>
+        </div>
+        <div class="form-group has-feedback" >
+            <label class="col-sm-3 control-label"><span class="color-require">*</span>内存:</label>
+
+            <div class="col-sm-7" data-ng-class="((add.memory.$invalid||model.model.memory>=1000)&&add.memory.$dirty) ? 'has-error' : ''">
+                <input type="text" class="form-control" name="memory" data-ng-model="model.model.memory" data-ajax-valid="model.checkMemory(value)"maxlength="4" required/>
+                <label class="control-label" ng-show="add.memory.$dirty && add.memory.$error.required">内存必填</label>
+                <label class="control-label" ng-if="!add.memory.$error.required&&(!model.memoryFlag||model.model.memory>=1000)">只能输入1000以内的正整数</label>
+            </div>
+            <label class="control-label">GB</label>
+        </div>
+        <div class="form-group has-feedback" >
+            <label class="col-sm-3 control-label"><span class="color-require">*</span>CPU:</label>
+
+            <div class="col-sm-7" data-ng-class="((add.cpu.$invalid||model.model.cpu>=1000)&&add.cpu.$dirty) ? 'has-error' : ''">
+                <input type="text" class="form-control" name="cpu" data-ng-model="model.model.cpu" data-ajax-valid="model.checkCpu(value)"maxlength="4" required/>
+                <label class="control-label" ng-show="add.cpu.$dirty && add.cpu.$error.required">CPU必填</label>
+                <label class="control-label" ng-if="!add.cpu.$error.required&&(!model.cpuFlag||model.model.cpu>=1000)">只能输入1000以内的正整数</label>
+            </div>
+            <label class="control-label">核</label>
+        </div>
+        <div class="form-group has-feedback" >
+            <label class="col-sm-3 control-label"><span class="color-require">*</span>硬盘:</label>
+
+            <div class="col-sm-7" data-ng-class="((add.disk.$invalid||model.model.disk>=10000)&&add.disk.$dirty) ? 'has-error' : ''">
+                <input type="text" class="form-control" name="disk" data-ng-model="model.model.disk" data-ajax-valid="model.checkDisk(value)"maxlength="5" required/>
+                <label class="control-label" ng-show="add.disk.$dirty && add.disk.$error.required">硬盘容量必填</label>
+                <label class="control-label" ng-if="!add.disk.$error.required&&(!model.diskFlag||model.model.disk>=10000)">只能输入10000以内的数</label>
+            </div>
+            <label class="control-label">TB</label>
+        </div>
+        <div class="form-group has-feedback" >
+            <label class="col-sm-3 control-label"><span class="color-require">*</span>规格:</label>
+
+            <div class="col-sm-7" data-ng-class="((add.spec.$invalid||model.model.spec>50)&&add.spec.$dirty) ? 'has-error' : ''">
+                <input type="text" class="form-control" name="spec" data-ng-model="model.model.spec" data-ajax-valid="model.checkSpec(value)"maxlength="2" required/>
+                <label class="control-label" ng-show="add.spec.$dirty && add.spec.$error.required">规格必填</label>
+                <label class="control-label" ng-if="!add.spec.$error.required&&(!model.specFlag||model.model.spec>50)">只能输入50以内的正整数</label>
+            </div>
+            <label class="control-label">U</label>
+        </div>
+        <div class="form-group has-feedback" >
+            <label class="col-sm-3 control-label"><span class="color-require">*</span>处理器:</label>
+
+            <div class="col-sm-8" data-ng-class="(add.processor.$invalid&&add.processor.$dirty) ? 'has-error' : ''">
+                <input type="text" class="form-control" name="processor" data-ng-model="model.model.processor" maxlength="30"  required/>
+                <label class="control-label" ng-show="add.processor.$dirty && add.processor.$error.required">处理器必填</label>
+            </div>
+        </div>
+    </form>
+    <div class="modal-footer">
+        <button class="btn btn-primary btn-modal" ng-click="ok(model.model)" ng-disabled="add.$invalid||!model.validName||model.model.memory>=1000||model.model.cpu>=1000||model.model.disk>=10000||model.model.spec>50" type = "button">确  定</button>
+        <button class="btn btn-default btn-modal" ng-click="cancel()" style = "margin-left:15px;" type = "button">取  消</button>
+    </div>

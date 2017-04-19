@@ -1,0 +1,82 @@
+<div>
+    <div class="pull-left">
+        <label>待选云主机</label>
+
+        <div class="list-group-eayun" style="width: 450px">
+
+            <table class="table table-eayun">
+                <thead>
+                <tr>
+                    <th width="10%">云主机名称</th>
+                    <th >IP</th>
+                    <th width="5%">操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr data-ng-repeat="rule in manage.ruleListToSelect">
+                    <td data-ng-bind="::rule.vmname .length>8?rule.vmname.substring(0,5)+'...':rule.vmname"title="{{rule.vmname}}"></td>
+                    <td>
+                        <span data-ng-bind="'受管子网：'+(rule.vmip==''?'--':rule.vmip)"></span><br>
+                        <span data-ng-bind="'公网：'+(rule.floip==''?'--':rule.floip)"></span><br>
+                        <span data-ng-bind="'自管子网：'+(rule.selfip==''?'--':rule.selfip)"></span>
+                    </td>
+                    <td>
+
+                        <span class="glyphicon glyphicon-plus color-blue pointer" data-ng-click="manage.addRuleToList(rule)"></span>
+                    </td>
+
+                    </tr>
+                </tbody>
+
+
+
+                </table>
+        </div>
+    </div>
+
+    <div class="pull-right">
+        <label>已选云主机({{manage.ruleListIsSelected.length==''?'0':manage.ruleListIsSelected.length}})</label>
+        <div class="list-group-eayun" style="width: 450px">
+            <table class="table table-eayun">
+            <thead>
+            <tr>
+                <th  width="10%">云主机名称</th>
+                <th>IP</th>
+                <th width="5%">操作</th>
+            </tr>
+                </thead>
+
+                <tbody>
+                <tr data-ng-repeat="rule in manage.ruleListIsSelected">
+                    <td data-ng-bind="::rule.vmname .length>8?rule.vmname.substring(0,5)+'...':rule.vmname"title="{{rule.vmname}}"></td>
+                    <td>
+                        <span data-ng-bind="'受管子网：'+(rule.vmip==''?'--':rule.vmip)"></span><br>
+                        <span data-ng-bind="'公网：'+(rule.floip==''?'--':rule.floip)"></span><br>
+                        <span data-ng-bind="'自管子网：'+(rule.selfip)"></span>
+                    </td>
+                    <td>
+
+                        <span class="glyphicon glyphicon-remove color-require pointer" data-ng-click="manage.removeRuleFromList(rule)"></span>
+                    </td>
+
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+    <div class="select-list-md">
+        <span class="glyphicon glyphicon-menu-right" style="font-size: 2em"></span>
+    </div>
+
+    <div class="col-sm-12" style="margin:15px;5px;20px;">
+
+    </div>
+
+    <!-- 按钮区域 -->
+    <div class="modal-footer" >
+        <button type="button" class="btn btn-primary btn-modal" data-ng-disabled="manage.checkFag" data-ng-click="commit()">确  定</button>
+        <button type="button" class="btn btn-default btn-modal btn-left" data-ng-click="cancel()">取  消</button>
+    </div>
+</div>
+

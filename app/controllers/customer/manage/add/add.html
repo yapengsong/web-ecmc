@@ -1,0 +1,591 @@
+<style>
+    <!--
+    .text-left {
+        text-align: left;
+        color: #07C;
+    }
+
+    tr {
+        max-height: 50px;
+    }
+
+    .quota-table {
+        max-height: 360px;
+        overflow: auto;
+        margin: 15px 20px;
+        border-radius: 4px;
+        border: 1px solid #CCC;
+    }
+
+    .quota-table-error {
+        max-height: 360px;
+        overflow: auto;
+        margin: 15px 20px;
+        border-radius: 4px;
+        border: 1px solid #A94442;
+    }
+
+    .quota-table > table > tbody > tr {
+        height: 50px;
+    }
+
+    -->
+</style>
+
+<div data-ng-class="step == 'customer' ? 'show' : 'hidden'">
+    <form class="form-horizontal" name="addCustomer" novalidate>
+        <div class="form-group">
+            <label class="col-sm-4 control-label"><span class="color-require">*</span>客户名称：</label>
+            <div class="col-sm-4"
+                 data-ng-class="(addCustomer.cusOrg.$dirty && addCustomer.cusOrg.$invalid) || add.checkCusOrgFlag ? 'has-error' : ''">
+                <eayun-input-filter ng-model="add.customer.cusOrg" filter-data="add.cusOrgList"
+                                    name = "cusOrg"
+                                    text-field="cusOrg"
+                                    maxlength="9"
+                                    placeholder="请输入客户名称"
+                                    data-ng-change="add.changeCusOrg(add.customer.cusOrg)"
+                                    data-ng-pattern="/^[0-9a-zA-Z_\u4e00-\u9fa5\s]{1,9}$/" required>
+                </eayun-input-filter>
+                <label class="control-label"
+                       data-ng-class="addCustomer.cusOrg.$dirty && addCustomer.cusOrg.$valid && add.checkCusOrgFlag ? 'show' : 'hide'"
+                       style="text-align: left;">所属客户已存在</label>
+                <label class="control-label"
+                       data-ng-class="addCustomer.cusOrg.$dirty && addCustomer.cusOrg.$invalid ? 'show' : 'hide'"
+                       style="text-align: left;">请输入1-9位字符，支持数字、中英文、下划线、空格</label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-4 control-label"><span class="color-require">*</span>客户管理员账号：</label>
+
+            <div class="col-sm-4"
+                 data-ng-class="(addCustomer.cusNumber.$dirty && addCustomer.cusNumber.$invalid || add.checkCusNumberFlag) ? 'has-error' : ''">
+                <div class="input-group">
+                    <input type="text" class="form-control" data-ng-model="add.customer.cusNumber"
+                           data-ng-disabled="add.isDisabled" data-ng-change="add.checkCusNumber(add.customer.cusNumber);add.check()"
+                           name="cusNumber" maxlength="15" data-ng-pattern="/^[_0-9a-zA-Z\s]{1,15}$/"
+                           placeholder="请输入超级管理员账号"
+                           required/>
+                    <span class="input-group-addon">Admin</span>
+
+                </div>
+
+                <label class="control-label"
+                       data-ng-class="addCustomer.cusNumber.$dirty && addCustomer.cusNumber.$error.required ? 'show' : 'hide'"
+                       style="text-align: left;">客户管理员账号不能为空</label>
+                <label class="control-label "
+                       data-ng-class="addCustomer.cusNumber.$dirty && addCustomer.cusNumber.$error.pattern ? 'show' : 'hide'"
+                       style="text-align: left;">请输入1-15位字符，支持数字、英文、下划线、空格</label>
+                <label class="control-label"
+                       data-ng-class="addCustomer.cusNumber.$dirty && addCustomer.cusNumber.$valid && add.checkCusNumberFlag ? 'show' : 'hide'"
+                       style="text-align: left;">客户管理员账号已经注册</label>
+            </div>
+
+        </div>
+        <div  class="form-group">
+            <label class="col-sm-4 control-label"><span class="color-require">*</span>客户类型：</label>
+            <div class="col-sm-4">
+                <eayun-select placeholder="--请选择客户类型--" name="custype" class="form-control" data-ng-model="add.customer.cus_type"  required>
+                    <eayun-option value="0" text="正式客户"></eayun-option>
+                    <eayun-option value="1" text="合作客户"></eayun-option>
+                    <eayun-option value="2" text="测试用户"></eayun-option>
+                    <eayun-option value="3" text="公司自用客户"></eayun-option>
+                    <eayun-option value="4" text="其他"></eayun-option>
+                </eayun-select>
+            </div>
+        </div>
+
+        <div data-ng-show="showDis">
+            <div class="form-group has-feedback">
+                <label class="col-sm-4 control-label">联系人姓名：</label>
+
+                <div class="col-sm-5 control-label" style="text-align: left;">{{add.customer.cusName}}</div>
+            </div>
+            <div class="form-group has-feedback">
+                <label class="col-sm-4 control-label">电子邮箱：</label>
+
+                <div class="col-sm-5 control-label" style="text-align: left;word-wrap: break-word;">{{add.customer.cusEmail}}</div>
+            </div>
+            <div class="form-group has-feedback">
+                <label class="col-sm-4 control-label">联系电话：</label>
+
+                <div class="col-sm-5 control-label" style="text-align: left;">{{add.customer.cusPhone}}</div>
+            </div>
+
+            <div class="form-group has-feedback">
+                <label class="col-sm-4 control-label">公司中文名：</label>
+
+                <div class="col-sm-5 control-label" style="text-align: left;word-wrap: break-word;">{{add.customer.cusCpname}}</div>
+            </div>
+            <div class="form-group has-feedback">
+                <label class="col-sm-4 control-label">公司英文名：</label>
+
+                <div class="col-sm-5 control-label" style="text-align: left; word-wrap: break-word">{{add.customer.cusCpename}}</div>
+            </div>
+            <div class="form-group has-feedback">
+                <label class="col-sm-4 control-label">所属部门：</label>
+
+                <div class="col-sm-5 control-label" style="text-align: left;">{{add.customer.cusDept}}</div>
+            </div>
+            <div class="form-group has-feedback">
+                <label class="col-sm-4 control-label">所属职位：</label>
+
+                <div class="col-sm-5 control-label" style="text-align: left;">{{add.customer.cusPesition}}</div>
+            </div>
+            <div class="form-group has-feedback">
+                <label class="col-sm-4 control-label">公司简介：</label>
+
+                <div class="col-sm-5 control-label" style="text-align: left;height: 100px;overflow-y: auto;word-wrap: break-word">{{add.customer.cusSynopsis}}</div>
+            </div>
+            <div class="form-group has-feedback">
+                <label class="col-sm-4 control-label">注册原因：</label>
+
+                <div class="col-sm-5 control-label" style="text-align: left;height: 100px;overflow-y: auto;word-wrap: break-word">{{add.customer.cusDesc}}</div>
+            </div>
+        </div>
+        <div data-ng-show="!showDis">
+            <div class="form-group">
+                <label class="col-sm-4 control-label"><span class="color-require">*</span>联系人姓名：</label>
+
+                <div class="col-sm-4"
+                     data-ng-class="(addCustomer.cusName.$dirty && addCustomer.cusName.$invalid) ? 'has-error' : ''">
+                    <input type="text" class="form-control" data-ng-model="add.customer.cusName"
+                           maxlength="20"
+                           data-ng-pattern="/^([\u4e00-\u9fa5_a-zA-Z0-9\s]{1,20})$/"
+                           name="cusName"
+                           placeholder="请输入联系人姓名"
+                           required/>
+                    <label class="control-label"
+                           data-ng-class="addCustomer.cusName.$dirty && addCustomer.cusName.$error.required ? 'show' : 'hide'"
+                           style="text-align: left;">联系人姓名不能为空</label>
+                    <label class="control-label"
+                           data-ng-class="addCustomer.cusName.$dirty && addCustomer.cusName.$error.pattern ? 'show' : 'hide'"
+                           style="text-align: left;">请输入1-20位字符，支持数字、中英文、下划线、空格</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-4 control-label"><span class="color-require">*</span>电子邮箱：</label>
+
+                <div class="col-sm-4"
+                     data-ng-class="(addCustomer.cusEmail.$dirty && addCustomer.cusEmail.$invalid || add.checkCusEmailFlag) ? 'has-error' : ''">
+                    <input type="text" class="form-control"
+                           maxlength="50"
+                           data-ng-pattern="/^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/"
+                           data-ng-model="add.customer.cusEmail" data-ng-change="add.checkCusEmail(add.customer.cusEmail)"
+                           name="cusEmail" placeholder="请输入电子邮箱" required/>
+                    <label class="control-label"
+                           data-ng-class="addCustomer.cusEmail.$dirty && addCustomer.cusEmail.$error.required ? 'show' : 'hide'"
+                           style="text-align: left;">电子邮箱不能为空</label>
+                    <label class="control-label"
+                           data-ng-class="addCustomer.cusEmail.$dirty && addCustomer.cusEmail.$error.pattern ? 'show' : 'hide'"
+                           style="text-align: left;">请输入正确的邮箱地址</label>
+                    <label class="control-label"
+                           data-ng-class="addCustomer.cusEmail.$valid && add.checkCusEmailFlag ? 'show' : 'hide'"
+                           style="text-align: left;">邮箱地址已注册</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-4 control-label"><span class="color-require">*</span>联系电话：</label>
+
+                <div class="col-sm-4"
+                     data-ng-class="(addCustomer.cusPhone.$dirty && addCustomer.cusPhone.$invalid || add.checkCusPhoneFlag) ? 'has-error' : ''">
+                    <input type="text" class="form-control" data-ng-model="add.customer.cusPhone" name="cusPhone"
+                           data-ng-pattern="/^1[3|5|8|7][0-9]\d{8}$/" maxlength="11" placeholder="请输入联系电话"
+                           data-ng-change="add.checkCusPhone(add.customer.cusPhone, add.customer.cusId)"
+                           required/>
+                    <label class="control-label"
+                           data-ng-class="addCustomer.cusPhone.$dirty && addCustomer.cusPhone.$error.required ? 'show' : 'hide'"
+                           style="text-align: left;">联系电话不能为空</label>
+                    <label class="control-label"
+                           data-ng-class="addCustomer.cusPhone.$dirty && addCustomer.cusPhone.$error.pattern ? 'show' : 'hide'"
+                           style="text-align: left;">请输入正确的联系电话</label>
+                    <label class="control-label"
+                           data-ng-class="addCustomer.cusPhone.$valid && add.checkCusPhoneFlag ? 'show' : 'hide'"
+                           style="text-align: left;">联系电话已注册</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-4 control-label"><span class="color-require">*</span>公司中文名：</label>
+
+                <div class="col-sm-4"
+                     data-ng-class="(addCustomer.cusCpname.$dirty && addCustomer.cusCpname.$invalid || add.checkCusCpnameFlag) ? 'has-error' : ''">
+                    <input type="text" class="form-control" data-ng-model="add.customer.cusCpname" name="cusCpname"
+                           placeholder="请输入公司中文名" data-ng-change="add.checkCusCpname(add.customer.cusCpname)"
+                           maxlength="100" required/>
+                    <label class="control-label"
+                           data-ng-class="addCustomer.cusCpname.$dirty && addCustomer.cusCpname.$error.required ? 'show' : 'hide'"
+                           style="text-align: left;">请输入1-100位字符</label>
+                    <label class="control-label"
+                           data-ng-class="addCustomer.cusCpname.$valid && add.checkCusCpnameFlag ? 'show' : 'hide'"
+                           style="text-align: left;">公司中文名已注册</label>
+
+
+                    <!--<label class="control-label"-->
+                    <!--data-ng-class="addCustomer.cusCpname.$dirty && addCustomer.cusCpname.$error.pattern ? 'show' : 'hide'"-->
+                    <!--style="text-align: left;">请输入1-100位字符</label>-->
+                </div>
+
+
+
+            </div>
+
+            <!--<div  class="form-group">-->
+                <!--<label class="col-sm-4 control-label"><span class="color-require">*</span>客户类型：</label>-->
+                 <!--<div class="col-sm-4">-->
+                <!--<eayun-select placeholder="&#45;&#45;请选择客户类型&#45;&#45;" name="custype" class="form-control" data-ng-model="add.customer.cus_type" required>-->
+                    <!--<eayun-option value="0" text="正式客户"></eayun-option>-->
+                    <!--<eayun-option value="1" text="合作客户"></eayun-option>-->
+                    <!--<eayun-option value="2" text="测试用户"></eayun-option>-->
+                    <!--<eayun-option value="3" text="公司自用客户"></eayun-option>-->
+                    <!--<eayun-option value="4" text="其他"></eayun-option>-->
+                <!--</eayun-select>-->
+                    <!--</div>-->
+            <!--</div>-->
+
+
+            <div class="form-group">
+                <label class="col-sm-4 control-label">公司英文名：</label>
+
+                <div class="col-sm-4"
+                     data-ng-class="(addCustomer.cusCpename.$dirty && addCustomer.cusCpename.$error.required) ? 'has-error' : ''">
+                    <input type="text" class="form-control" maxlength="100" data-ng-model="add.customer.cusCpename"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-4 control-label">所属部门：</label>
+
+                <div class="col-sm-4"
+                     data-ng-class="(addCustomer.cusDept.$dirty && addCustomer.cusDept.$error.required) ? 'has-error' : ''">
+                    <input type="text" class="form-control" maxlength="20" data-ng-model="add.customer.cusDept"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-4 control-label">所属职位：</label>
+
+                <div class="col-sm-4"
+                     data-ng-class="(addCustomer.cusPesition.$dirty && addCustomer.cusPesition.$error.required) ? 'has-error' : ''">
+                    <input type="text" class="form-control" maxlength="20" data-ng-model="add.customer.cusPesition"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-4 control-label">公司简介：</label>
+
+                <div class="col-sm-6"
+                     data-ng-class="(addCustomer.cusSynopsis.$dirty && addCustomer.cusSynopsis.$error.required) ? 'has-error' : ''">
+                    <textarea type="text" class="form-control" maxlength="2000" data-ng-model="add.customer.cusSynopsis"></textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-4 control-label">注册原因：</label>
+
+                <div class="col-sm-6"
+                     data-ng-class="(addCustomer.cusDesc.$dirty && addCustomer.cusDesc.$error.required) ? 'has-error' : ''">
+                    <textarea type="text" class="form-control" maxlength="2000" data-ng-model="add.customer.cusDesc"></textarea>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div data-ng-class="step == 'project' ? 'show' : 'hidden'">
+    <form class="form-horizontal" name="addprj" novalidate>
+        <div class="form-group has-feedback">
+            <label class="col-sm-2 control-label" style="padding-right: 0px;"><span class="color-require">*</span>所属数据中心：</label>
+
+            <div class="col-sm-3" style="text-align: left;">
+                <eayun-select name="" class="form-control " data-ng-model="add.customer.dcId"
+                              ng-change="add.checkPrjInDc(add.customer.dcId, add.customer.cusId)"
+                              placeholder="请选择数据中心" required>
+                    <eayun-option value="dataDc.id" data-ng-repeat="dataDc in add.dcList"
+                                  text="{{dataDc.name}}"></eayun-option>
+                </eayun-select>
+            </div>
+            <div class="col-sm-4" data-ng-class="add.dcCanBeUsed ? '':'has-error'">
+                <label class="control-label" data-ng-show="add.customer.dcId && !add.dcCanBeUsed">该客户在该数据中心下存在项目</label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label" style="padding-right: 0px;">项目名：</label>
+
+            <div class="col-sm-3 control-label" style="text-align: left;">{{add.customer.prjName}}</div>
+        </div>
+        <div class="form-group" style="margin-bottom: 10px">
+            <label class="col-sm-2 control-label" style="text-align: left;margin-left: 10px;">配额：</label>
+        </div>
+
+        <div class="form-group has-feedback" style="margin-bottom: 10px">
+            <div class="col-sm-2" style="text-align : right;padding-right: 0px;">
+                <input type="checkbox" data-ng-click="add.refreshTemplate();" class="control-label" data-ng-model="add.showTemSelector">
+                <label class="control-label">调用模板：</label>
+            </div>
+            <div class="col-sm-3" style="text-align: left;" data-ng-if="add.showTemSelector" >
+                <eayun-select class="form-control form-select" class="form-control "
+                              ng-change="add.selectQtTemplate()"
+                              data-ng-model="add.qtTemplateId"
+                              data-ng-disabled="add.disableQtSelector"
+                              placeholder= "{{add.disableQtSelector ? '当前暂无模板' : '请选择配额模板'}}" required>
+                    <eayun-option value="template.qtId" data-ng-repeat="template in add.qtTemplateList"
+                                  text="{{template.qtName}}"></eayun-option>
+                </eayun-select>
+            </div>
+        </div>
+        <div class="form-group">
+
+            <ng-form name="prjQuota">
+                <div class="control-label quota-table" style="display:block;width:700px;">
+                    <!--data-ng-class="add.prjQuotaError = (prjQuota.cpuCount.$dirty && prjQuota.cpuCount.$invalid) || (prjQuota.memory.$dirty && prjQuota.memory.$invalid)||(prjQuota.hostCount.$dirty && prjQuota.hostCount.$invalid)||
+                    (prjQuota.diskCount.$dirty && prjQuota.diskCount.$invalid) ||(prjQuota.diskSnapshot.$dirty && prjQuota.diskSnapshot.$invalid) ||(prjQuota.diskSnapshot.$dirty && prjQuota.diskSnapshot.$invalid)||
+                    (prjQuota.diskCapacity.$dirty && prjQuota.diskCapacity.$invalid)|| (prjQuota.countBand.$dirty && prjQuota.countBand.$invalid) ||(prjQuota.netWork.$dirty && prjQuota.netWork.$invalid) ||
+                    (prjQuota.subnetCount.$dirty && prjQuota.subnetCount.$invalid)|| (prjQuota.outerIP.$dirty && prjQuota.outerIP.$invalid)||(prjQuota.safeGroup.$dirty && prjQuota.safeGroup.$invalid)||
+                    (prjQuota.quotaPool.$dirty &&prjQuota.quotaPool.$invalid) ||(prjQuota.smsCount.$dirty && prjQuota.smsCount.$invalid)? 'quota-table-error' : ''"-->
+
+                    <table class="table-striped col-sm-12">
+                        <tbody>
+                        <tr>
+                            <td class="col-sm-4 text-left" style="text-align: left;"><span class="color-require">*</span>CPU核数：</td>
+                            <td class="col-sm-8"
+                                data-ng-class="prjQuota.cpuCount.$dirty && prjQuota.cpuCount.$invalid ? 'has-error':''">
+                                <input type="text" name="cpuCount" data-ng-model="add.customer.cpuCount"
+                                       placeholder="请输入CPU核数"
+                                       data-ng-pattern="/^\+?(0|[1-9][0-9]*)$/" class="form-control" maxlength="9"
+                                       required/>
+                            </td>
+                            <td style="text-align: left">核</td>
+                        </tr>
+                        <tr>
+                            <td class="col-sm-4 text-left" style="text-align: left;"><span class="color-require">*</span>内存大小：</td>
+                            <td class="col-sm-8"
+                                data-ng-class="prjQuota.memory.$dirty && prjQuota.memory.$invalid  ? 'has-error':''">
+                                <input type="text" name="memory" data-ng-model="add.customer.memory"
+                                       placeholder="请输入内存大小"
+                                       data-ng-pattern="/^\+?(0|[1-9][0-9]*)$/" class="form-control" maxlength="6"
+                                       required/>
+                            </td>
+                            <td style="text-align: left">GB</td>
+                        </tr>
+                        <tr>
+                            <td class="col-sm-4 text-left" style="text-align: left;"><span class="color-require">*</span>云主机数量：</td>
+                            <td class="col-sm-8"
+                                data-ng-class="prjQuota.hostCount.$dirty && prjQuota.hostCount.$invalid  ? 'has-error':''">
+                                <input type="text" name="hostCount" data-ng-model="add.customer.hostCount"
+                                       placeholder="请输入云主机数量"
+                                       data-ng-pattern="/^\+?(0|[1-9][0-9]*)$/" class="form-control" maxlength="9"
+                                       required/>
+                            </td>
+                            <td style="text-align: left">台</td>
+                        </tr>
+                        <tr>
+                            <td class="col-sm-4 text-left" style="text-align: left;"><span class="color-require">*</span>云硬盘数量：</td>
+                            <td class="col-sm-8"
+                                data-ng-class="prjQuota.diskCount.$dirty && prjQuota.diskCount.$invalid  ? 'has-error':''">
+                                <input type="text" name="diskCount" data-ng-model="add.customer.diskCount"
+                                       placeholder="请输入云硬盘数量"
+                                       data-ng-pattern="/^\+?(0|[1-9][0-9]*)$/" class="form-control" maxlength="9"
+                                       required/>
+                            </td>
+                            <td style="text-align: left">块</td>
+                        </tr>
+                        <tr>
+                            <td class="col-sm-4 text-left" style="text-align: left;"><span class="color-require">*</span>云硬盘快照数量：</td>
+                            <td class="col-sm-8"
+                                data-ng-class="prjQuota.diskSnapshot.$dirty && prjQuota.diskSnapshot.$invalid  ? 'has-error':''">
+                                <input type="text" name="diskSnapshot" data-ng-model="add.customer.diskSnapshot"
+                                       placeholder="请输入云硬盘快照数量"
+                                       data-ng-pattern="/^\+?(0|[1-9][0-9]*)$/" class="form-control" maxlength="9"
+                                       required/>
+                            </td>
+                            <td style="text-align: left">块</td>
+                        </tr>
+                        <!--<tr>
+                            <td class="col-sm-4 text-left" style="text-align: left;"><span class="color-require">*</span>云硬盘和快照大小：</td>
+                            <td class="col-sm-8"
+                                data-ng-class="prjQuota.diskCapacity.$dirty && prjQuota.diskCapacity.$invalid  ? 'has-error':''">
+                                <input type="text" name="diskCapacity" data-ng-model="add.customer.diskCapacity"
+                                       placeholder="请输入云硬盘和快照大小"
+                                       data-ng-pattern="/^\+?(0|[1-9]+([0-9]*))$/" class="form-control" maxlength="9"
+                                       required/>
+                            </td>
+                            <td style="text-align: left">GB</td>
+                        </tr>-->
+                        <tr>
+                            <td class="col-sm-4 text-left" style="text-align: left;"><span class="color-require">*</span>云硬盘容量：</td>
+                            <td class="col-sm-8"
+                                data-ng-class="prjQuota.diskCapacity.$dirty && prjQuota.diskCapacity.$invalid  ? 'has-error':''">
+                                <input type="text" name="diskCapacity" data-ng-model="add.customer.diskCapacity"
+                                       placeholder="请输入云硬盘容量"
+                                       data-ng-pattern="/^\+?(0|[1-9]+([0-9]*))$/" class="form-control" maxlength="9"
+                                       required/>
+                            </td>
+                            <td style="text-align: left">GB</td>
+                        </tr>
+                        <tr>
+                            <td class="col-sm-4 text-left" style="text-align: left;"><span class="color-require">*</span>云硬盘快照容量：</td>
+                            <td class="col-sm-8"
+                                data-ng-class="prjQuota.snapshotSize.$dirty && prjQuota.snapshotSize.$invalid  ? 'has-error':''">
+                                <input type="text" name="snapshotSize" data-ng-model="add.customer.snapshotSize"
+                                       placeholder="请输入云硬盘快照容量"
+                                       data-ng-pattern="/^\+?(0|[1-9]+([0-9]*))$/" class="form-control" maxlength="9"
+                                       required/>
+                            </td>
+                            <td style="text-align: left">GB</td>
+                        </tr>
+                        <tr>
+                            <td class="col-sm-4 text-left" style="text-align: left;"><span class="color-require">*</span>带宽大小：</td>
+                            <td class="col-sm-8"
+                                data-ng-class="prjQuota.countBand.$dirty && prjQuota.countBand.$invalid  ? 'has-error':''">
+                                <input type="text" name="countBand" data-ng-model="add.customer.countBand"
+                                       placeholder="请输入带宽大小（0-999）"
+                                       data-ng-pattern="/^(0|([1-9]\d{0,2}))$/" class="form-control" maxlength="3"
+                                       required/>
+                            </td>
+                            <td style="text-align: left">Mbps</td>
+                        </tr>
+                        <tr>
+                            <td class="col-sm-4 text-left" style="text-align: left;"><span class="color-require">*</span>网络数量：</td>
+                            <td class="col-sm-8"
+                                data-ng-class="prjQuota.netWork.$dirty && prjQuota.netWork.$invalid  ? 'has-error':''">
+                                <input type="text" name="netWork" data-ng-model="add.customer.netWork"
+                                       data-ng-change="add.changeNetCount();" placeholder="请输入网络数量"
+                                       data-ng-pattern="/^\+?(0|[1-9][0-9]*)$/" class="form-control" maxlength="9"
+                                       required/>
+                            </td>
+                            <td style="text-align: left">个</td>
+                        </tr>
+                        <tr>
+                            <td class="col-sm-4 text-left" style="text-align: left;"><span class="color-require">*</span>子网数量：</td>
+                            <td class="col-sm-8"
+                                data-ng-class="prjQuota.subnetCount.$dirty && prjQuota.subnetCount.$invalid  ? 'has-error':''">
+                                <input type="text" name="subnetCount" data-ng-model="add.customer.subnetCount"
+                                       placeholder="请输入子网数量"
+                                       data-ng-pattern="/^\+?(0|[1-9][0-9]*)$/" class="form-control" maxlength="9"
+                                       required/>
+                            </td>
+                            <td style="text-align: left">个</td>
+                        </tr>
+                        <tr>
+                            <td class="col-sm-4 text-left" style="text-align: left;"><span class="color-require">*</span>公网IP数量：</td>
+                            <td class="col-sm-8"
+                                data-ng-class="prjQuota.outerIP.$dirty && prjQuota.outerIP.$invalid  ? 'has-error':''">
+                                <input type="text" name="outerIP" data-ng-model="add.customer.outerIP"
+                                       placeholder="请输入公网IP数量"
+                                       data-ng-pattern="/^\+?(0|[1-9][0-9]*)$/" class="form-control" maxlength="9"
+                                       required/>
+                            </td>
+                            <td style="text-align: left">个</td>
+                        </tr>
+                        <tr>
+                            <td class="col-sm-4 text-left" style="text-align: left;"><span class="color-require">*</span>安全组数量：</td>
+                            <td class="col-sm-8"
+                                data-ng-class="prjQuota.safeGroup.$dirty && prjQuota.safeGroup.$invalid  ? 'has-error':''">
+                                <input type="text" name="safeGroup" data-ng-model="add.customer.safeGroup"
+                                       placeholder="请输入安全组数量" data-ng-blur="add.checkSGNum()"
+                                       data-ng-pattern="/^\+?(0|[1-9][0-9]*)$/" maxlength="9" class="form-control"
+                                       required/>
+                            </td>
+                            <td style="text-align: left">个</td>
+                        </tr>
+                        <tr>
+                            <td class="col-sm-4 text-left" style="text-align: left;"><span class="color-require">*</span>负载均衡数量：</td>
+                            <td class="col-sm-8"
+                                data-ng-class="prjQuota.quotaPool.$dirty && prjQuota.quotaPool.$invalid  ? 'has-error':''">
+                                <input type="text" name="quotaPool" data-ng-model="add.customer.quotaPool"
+                                       placeholder="请输入负载均衡数量"
+                                       data-ng-pattern="/^\+?(0|[1-9][0-9]*)$/" class="form-control" maxlength="9"
+                                       required/>
+                            </td>
+                            <td style="text-align: left">个</td>
+                        </tr>
+                        <tr>
+                            <td class="col-sm-4 text-left" style="text-align: left;"><span class="color-require">*</span>报警短信数量：</td>
+                            <td class="col-sm-8"
+                                data-ng-class="prjQuota.smsCount.$dirty && prjQuota.smsCount.$invalid  ? 'has-error':''">
+                                <input type="text" name="smsCount" data-ng-model="add.customer.smsCount"
+                                       placeholder="请输入报警短信数量"
+                                       data-ng-pattern="/^\+?(0|[1-9][0-9]*)$/" class="form-control" maxlength="9"
+                                       required/>
+                            </td>
+                            <td style="text-align: left">条</td>
+                        </tr>
+                        <tr>
+                            <td class="col-sm-4 text-left" style="text-align: left;"><span class="color-require">*</span>VPN数量：</td>
+                            <td class="col-sm-8"
+                                data-ng-class="prjQuota.countVpn.$dirty && prjQuota.countVpn.$invalid  ? 'has-error':''">
+                                <input type="text" name="countVpn" data-ng-model="add.customer.countVpn"
+                                       placeholder="请输入VPN数量"
+                                       data-ng-pattern="/^\+?(0|[1-9][0-9]*)$/" class="form-control" maxlength="9"
+                                       required/>
+                            </td>
+                            <td style="text-align: left">个</td>
+                        </tr>
+                        <tr>
+                            <td class="col-sm-4 text-left" style="text-align: left;"><span class="color-require">*</span>端口映射数量：</td>
+                            <td class="col-sm-8"
+                                data-ng-class="prjQuota.portMappingCount.$dirty && prjQuota.portMappingCount.$invalid  ? 'has-error':''">
+                                <input type="text" name="portMappingCount" data-ng-model="add.customer.portMappingCount"
+                                       placeholder="请输入端口映射数量"
+                                       data-ng-pattern="/^\+?(0|[1-9][0-9]*)$/" class="form-control" maxlength="9"
+                                       required/>
+                            </td>
+                            <td style="text-align: left">个</td>
+                        </tr>
+                        <tr>
+                            <td class="col-sm-4 text-left" style="text-align: left;"><span class="color-require">*</span>自定义镜像数量：</td>
+                            <td class="col-sm-8"
+                                data-ng-class="prjQuota.imageCount.$dirty && prjQuota.imageCount.$invalid  ? 'has-error':''">
+                                <input type="text" name="imageCount" data-ng-model="add.customer.imageCount"
+                                       placeholder="请输入自定义镜像数量"
+                                       data-ng-pattern="/^\+?(0|[1-9][0-9]*)$/" class="form-control" maxlength="9"
+                                       required/>
+                            </td>
+                            <td style="text-align: left">个</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-sm-6" data-ng-class="add.prjQuotaErr =
+                    (prjQuota.cpuCount.$dirty && prjQuota.cpuCount.$invalid)
+                     || (prjQuota.memory.$dirty && prjQuota.memory.$invalid)
+                     || (prjQuota.hostCount.$dirty && prjQuota.hostCount.$invalid)
+                     || (prjQuota.diskCount.$dirty && prjQuota.diskCount.$invalid)
+                     || (prjQuota.diskSnapshot.$dirty && prjQuota.diskSnapshot.$invalid)
+                     || (prjQuota.snapshotSize.$dirty && prjQuota.snapshotSize.$invalid)
+                     || (prjQuota.diskCapacity.$dirty && prjQuota.diskCapacity.$invalid)
+                     || (prjQuota.countBand.$dirty && prjQuota.countBand.$invalid)
+                     || (prjQuota.netWork.$dirty && prjQuota.netWork.$invalid)
+                     || (prjQuota.subnetCount.$dirty && prjQuota.subnetCount.$invalid)
+                     || (prjQuota.outerIP.$dirty && prjQuota.outerIP.$invalid)
+                     || (prjQuota.safeGroup.$dirty && prjQuota.safeGroup.$invalid)
+                     || (prjQuota.quotaPool.$dirty &&prjQuota.quotaPool.$invalid)
+                     || (prjQuota.smsCount.$dirty && prjQuota.smsCount.$invalid)
+                     || (prjQuota.countVpn.$dirty && prjQuota.countVpn.$invalid)
+                     || (prjQuota.portMappingCount.$dirty && prjQuota.portMappingCount.$invalid)
+                     || (prjQuota.imageCount.$dirty && prjQuota.imageCount.$invalid)
+                     ? 'has-error':''">
+                    <label class="control-label" data-ng-show="add.prjQuotaErr">请输入不小于0的整数</label>
+                </div>
+            </ng-form>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label" style="text-align: left;margin-left: 10px;">项目描述{{add.prjQuotaError}}：</label>
+
+            <div class="col-sm-7 has-feedback">
+                <textarea class="form-control" data-ng-model="add.customer.projectDesc" name="projectDesc"
+                          placeholder="请输入项目描述" maxlength="200"></textarea>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-primary btn-modal"
+            data-ng-click="next()" data-ng-show="step == 'customer'"
+            data-ng-disabled="(showDis && (addCustomer.cusOrg.$invalid || add.checkCusOrgFlag || addCustomer.cusNumber.$invalid || add.checkCusNumberFlag||add.customer.cus_type==undefined))
+            || (!showDis && (addCustomer.$invalid || add.checkCusEmailFlag || add.checkCusOrgFlag || add.checkCusNumberFlag || add.checkCusPhoneFlag || add.checkCusCpnameFlag||add.customer.cus_type==undefined))">
+        下一步
+    </button>
+    <button type="button" class="btn btn-primary btn-modal" data-ng-click="back()" data-ng-show="step == 'project'">
+        上一步
+    </button>
+    <button type="button" class="btn btn-primary btn-modal" data-ng-click="commit()" style="margin-left: 15px;"
+            data-ng-disabled="prjQuota.$invalid || !add.dcCanBeUsed" data-ng-show="step == 'project'">提 交
+    </button>
+    <button type="button" class="btn btn-default btn-modal" data-ng-click="cancel()" style="margin-left: 15px;">取 消
+    </button>
+</div>

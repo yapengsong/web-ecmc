@@ -1,0 +1,256 @@
+<!-- 当前位置下拉列表 -->
+
+<div class="title-inline">
+    <div class="form-group">
+        <label class="control-label">当前位置：</label>
+        <div class="btn-group" role="group" style="font-size:14px;">备案管理
+        </div>
+    </div>
+</div>
+<div class="panel panel-default clearfix">
+    <div class="panel-body">
+        <!--<h4>客户总览</h4>-->
+        <div>
+            <h4 style="float: left; margin-bottom: 0px;">待办事宜</h4>
+                 </div>
+
+
+
+        <div style="clear: both; margin-top: 20px" >
+
+
+
+                <table width="95%" class="record" data-ng-repeat="rule in unitlist.recorCount">
+                    <tr >
+                        <th>首次备案</th>
+                        <td data-ng-class="rule.shoucidengdaichushen>0 ?'click-link':''" ng-click="unitlist.querystatus(1,1,rule.shoucidengdaichushen)">等待初审
+                            <span data-ng-show="rule.shoucidengdaichushen>0" >( {{rule.shoucidengdaichushen}} )</span>
+                            <span data-ng-show="rule.shoucidengdaichushen==0">( {{rule.shoucidengdaichushen}} )</span>
+                        </td>
+                        <td data-ng-class="rule.shoucichushenweitongguo>0 ?'click-link':''"ng-click="unitlist.querystatus(1,3,rule.shoucichushenweitongguo)">初审未通过
+                            <span data-ng-show="rule.shoucichushenweitongguo>0" >( {{rule.shoucichushenweitongguo}} )</span>
+                            <span data-ng-show="rule.shoucichushenweitongguo==0">( {{rule.shoucichushenweitongguo}} )</span>
+                        </td>
+                        <td data-ng-class="rule.shoucidengdaifushen>0 ?'click-link':''"ng-click="unitlist.querystatus(1,2,rule.shoucidengdaifushen)">等待复审
+                            <span data-ng-show="rule.shoucidengdaifushen>0" >( {{rule.shoucidengdaifushen}} )</span>
+                            <span data-ng-show="rule.shoucidengdaifushen==0">( {{rule.shoucidengdaifushen}} )</span>
+                        </td>
+                        <td data-ng-class="rule.shoucifushenweitongguo>0 ?'click-link':''"ng-click="unitlist.querystatus(1,5,rule.shoucifushenweitongguo)">复审未通过
+                            <span data-ng-show="rule.shoucifushenweitongguo>0" >( {{rule.shoucifushenweitongguo}} )</span>
+                            <span data-ng-show="rule.shoucifushenweitongguo==0">( {{rule.shoucifushenweitongguo}} )</span>
+                        </td>
+                        <td data-ng-class="rule.shoucidaishangbaoguanju>0 ?'click-link':''"ng-click="unitlist.querystatus(1,4,rule.shoucidaishangbaoguanju)">待上报管局
+                            <span data-ng-show="rule.shoucidaishangbaoguanju>0">( {{rule.shoucidaishangbaoguanju}} )</span>
+                            <span data-ng-show="rule.shoucidaishangbaoguanju==0">( {{rule.shoucidaishangbaoguanju}} )</span>
+                        </td>
+                        <td data-ng-class="rule.shouciguanjutuihui>0 ?'click-link':''"ng-click="unitlist.querystatus(1,7,rule.shouciguanjutuihui)">管局退回
+                            <span data-ng-show="rule.shouciguanjutuihui>0" >( {{rule.shouciguanjutuihui}} )</span>
+                            <span data-ng-show="rule.shouciguanjutuihui==0">( {{rule.shouciguanjutuihui}} )</span>
+                        </td>
+                        <td data-ng-class="rule.shoucibeianchenggong>0 ?'click-link':''" ng-click="unitlist.querystatus(1,8,rule.shoucibeianchenggong)">备案成功
+                            <span data-ng-show="rule.shoucibeianchenggong>0">( {{rule.shoucibeianchenggong}} )</span>
+                            <span data-ng-show="rule.shoucibeianchenggong==0">( {{rule.shoucibeianchenggong}} )</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>新增网站</th>
+                        <td data-ng-class="rule.newwebdengdaichushen>0 ?'click-link':''"ng-click="unitlist.querystatus(2,1,rule.newwebdengdaichushen)">等待初审
+                            <span data-ng-show="rule.newwebdengdaichushen>0">( {{rule.newwebdengdaichushen}} )</span>
+                            <span data-ng-show="rule.newwebdengdaichushen==0">( {{rule.newwebdengdaichushen}} )</span>
+                        </td>
+                        <td data-ng-class="rule.newwebchushenweitongguo>0 ?'click-link':''"ng-click="unitlist.querystatus(2,3,rule.newwebchushenweitongguo)">初审未通过
+                            <span data-ng-show="rule.newwebchushenweitongguo>0">( {{rule.newwebchushenweitongguo}} )</span>
+                            <span data-ng-show="rule.newwebchushenweitongguo==0">( {{rule.newwebchushenweitongguo}} )</span>
+                        </td>
+                        <td data-ng-class="rule.newwebdengdaifushen>0 ?'click-link':''" ng-click="unitlist.querystatus(2,2,rule.newwebdengdaifushen)">等待复审
+                            <span data-ng-show="rule.newwebdengdaifushen>0">( {{rule.newwebdengdaifushen}} )</span>
+                            <span data-ng-show="rule.newwebdengdaifushen==0">( {{rule.newwebdengdaifushen}} )</span>
+                        </td>
+                        <td data-ng-class="rule.newwebfushenweitongguo>0 ?'click-link':''"ng-click="unitlist.querystatus(2,5,rule.newwebfushenweitongguo)">复审未通过
+                            <span data-ng-show="rule.newwebfushenweitongguo>0">( {{rule.newwebfushenweitongguo}} )</span>
+                            <span data-ng-show="rule.newwebfushenweitongguo==0">( {{rule.newwebfushenweitongguo}} )</span>
+                        </td>
+                        <td data-ng-class="rule.newwebdaishangbaoguanju>0 ?'click-link':''"ng-click="unitlist.querystatus(2,4,rule.newwebdaishangbaoguanju)">待上报管局
+                            <span data-ng-show="rule.newwebdaishangbaoguanju>0">( {{rule.newwebdaishangbaoguanju}} )</span>
+                            <span data-ng-show="rule.newwebdaishangbaoguanju==0">( {{rule.newwebdaishangbaoguanju}} )</span>
+                        </td>
+                        <td data-ng-class="rule.newwebguanjutuihui>0 ?'click-link':''"ng-click="unitlist.querystatus(2,7,rule.newwebguanjutuihui)">管局退回
+                            <span data-ng-show="rule.newwebguanjutuihui>0">( {{rule.newwebguanjutuihui}} )</span>
+                            <span data-ng-show="rule.newwebguanjutuihui==0">( {{rule.newwebguanjutuihui}} )</span>
+                        </td>
+                        <td data-ng-class="rule.newwebbeianchenggong>0 ?'click-link':''"ng-click="unitlist.querystatus(2,8,rule.newwebbeianchenggong)">备案成功
+                            <span data-ng-show="rule.newwebbeianchenggong>0">( {{rule.newwebbeianchenggong}} )</span>
+                            <span data-ng-show="rule.newwebbeianchenggong==0">( {{rule.newwebbeianchenggong}} )</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>新增接入</th>
+                        <td data-ng-class="rule.impldengdaichushen>0 ?'click-link':''"ng-click="unitlist.querystatus(3,1,rule.impldengdaichushen)">等待初审
+                            <span data-ng-show="rule.impldengdaichushen>0">( {{rule.impldengdaichushen}} )</span>
+                            <span data-ng-show="rule.impldengdaichushen==0">( {{rule.impldengdaichushen}} )</span>
+                        </td>
+                        <td data-ng-class="rule.implchushenweitongguo>0 ?'click-link':''"ng-click="unitlist.querystatus(3,3,rule.implchushenweitongguo)">初审未通过
+                            <span data-ng-show="rule.implchushenweitongguo>0">( {{rule.implchushenweitongguo}} )</span>
+                            <span data-ng-show="rule.implchushenweitongguo==0">( {{rule.implchushenweitongguo}} )</span>
+                        </td>
+                        <td data-ng-class="rule.impldengdaifushen>0 ?'click-link':''"ng-click="unitlist.querystatus(3,2,rule.impldengdaifushen)">等待复审
+                            <span data-ng-show="rule.impldengdaifushen>0">( {{rule.impldengdaifushen}} )</span>
+                            <span data-ng-show="rule.impldengdaifushen==0">( {{rule.impldengdaifushen}} )</span>
+                        </td>
+                        <td data-ng-class="rule.implfushenweitongguo>0 ?'click-link':''"ng-click="unitlist.querystatus(3,5,rule.implfushenweitongguo)">复审未通过
+                            <span data-ng-show="rule.implfushenweitongguo>0">( {{rule.implfushenweitongguo}} )</span>
+                            <span data-ng-show="rule.implfushenweitongguo==0">( {{rule.implfushenweitongguo}} )</span>
+                        </td>
+                        <td data-ng-class="rule.impldaishangbaoguanju>0 ?'click-link':''"ng-click="unitlist.querystatus(3,4,rule.impldaishangbaoguanju)">待上报管局
+                            <span data-ng-show="rule.impldaishangbaoguanju>0">( {{rule.impldaishangbaoguanju}} )</span>
+                            <span data-ng-show="rule.impldaishangbaoguanju==0">( {{rule.impldaishangbaoguanju}} )</span>
+                        </td>
+                        <td data-ng-class="rule.implguanjutuihui>0 ?'click-link':''"ng-click="unitlist.querystatus(3,7,rule.implguanjutuihui)">管局退回
+                            <span data-ng-show="rule.implguanjutuihui>0">( {{rule.implguanjutuihui}} )</span>
+                            <span data-ng-show="rule.implguanjutuihui==0">( {{rule.implguanjutuihui}} )</span>
+                        </td>
+                        <td data-ng-class="rule.implbeianchenggong>0 ?'click-link':''"ng-click="unitlist.querystatus(3,8,rule.implbeianchenggong)">备案成功
+                            <span data-ng-show="rule.implbeianchenggong>0">( {{rule.implbeianchenggong}} )</span>
+                            <span data-ng-show="rule.implbeianchenggong==0">( {{rule.implbeianchenggong}} )</span>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th>备案变更</th>
+                        <td data-ng-class="rule.biangendengdaichushen>0 ?'click-link':''"ng-click="unitlist.querystatus(4,1,rule.biangendengdaichushen)">等待初审
+                            <span data-ng-show="rule.biangendengdaichushen>0">( {{rule.biangendengdaichushen}} )</span>
+                            <span data-ng-show="rule.biangendengdaichushen==0">( {{rule.biangendengdaichushen}} )</span>
+                        </td>
+                        <td data-ng-class="rule.biangenchushenweitongguo>0 ?'click-link':''"ng-click="unitlist.querystatus(4,3,rule.biangenchushenweitongguo)">初审未通过
+                            <span data-ng-show="rule.biangenchushenweitongguo>0">( {{rule.biangenchushenweitongguo}} )</span>
+                            <span data-ng-show="rule.biangenchushenweitongguo==0">( {{rule.biangenchushenweitongguo}} )</span>
+                        </td>
+                        <td data-ng-class="rule.biangendengdaifushen>0 ?'click-link':''"ng-click="unitlist.querystatus(4,2,rule.biangendengdaifushen)">等待复审
+                            <span data-ng-show="rule.biangendengdaifushen>0">( {{rule.biangendengdaifushen}} )</span>
+                            <span data-ng-show="rule.biangendengdaifushen==0">( {{rule.biangendengdaifushen}} )</span>
+                        </td>
+                        <td data-ng-class="rule.biangenfushenweitongguo>0 ?'click-link':''"ng-click="unitlist.querystatus(4,5,rule.biangenfushenweitongguo)">复审未通过
+                            <span data-ng-show="rule.biangenfushenweitongguo>0">( {{rule.biangenfushenweitongguo}} )</span>
+                            <span data-ng-show="rule.biangenfushenweitongguo==0">( {{rule.biangenfushenweitongguo}} )</span>
+                        </td>
+                        <td data-ng-class="rule.biangendaishangbaoguanju>0 ?'click-link':''"ng-click="unitlist.querystatus(4,4,rule.biangendaishangbaoguanju)">待上报管局
+                            <span data-ng-show="rule.biangendaishangbaoguanju>0">( {{rule.biangendaishangbaoguanju}} )</span>
+                            <span data-ng-show="rule.biangendaishangbaoguanju==0">( {{rule.biangendaishangbaoguanju}} )</span>
+                        </td>
+                        <td data-ng-class="rule.biangenguanjutuihui>0 ?'click-link':''"ng-click="unitlist.querystatus(4,7,rule.biangenguanjutuihui)">管局退回
+                            <span data-ng-show="rule.biangenguanjutuihui>0">( {{rule.biangenguanjutuihui}} )</span>
+                            <span data-ng-show="rule.biangenguanjutuihui==0">( {{rule.biangenguanjutuihui}} )</span>
+                        </td>
+                        <td data-ng-class="rule.biangenbeianchenggong>0 ?'click-link':''"ng-click="unitlist.querystatus(4,8,rule.biangenbeianchenggong)">备案成功
+                            <span data-ng-show="rule.biangenbeianchenggong>0">( {{rule.biangenbeianchenggong}} )</span>
+                            <span data-ng-show="rule.biangenbeianchenggong==0">( {{rule.biangenbeianchenggong}} )</span>
+                        </td>
+                    </tr>
+                </table>
+
+
+
+
+    </div>
+
+
+</div>
+
+</div>
+
+
+<div class="panel panel-default clearfix">
+    <div class="panel-body">
+
+
+        <form class="form-inline" ng-submit="unitlist.doSearch()">
+            <h4>备案列表</h4>
+       <div class="form-inline">
+
+           <div class="input-group has-feedback search-group" >
+
+               <input type="text" class="form-control" data-ng-model="unitlist.queryName" placeholder="请输入客户名称或主办单位名称搜索">
+               <span class="form-control-feedback pointer search" ng-click="unitlist.doSearch()"></span>
+           </div>
+
+
+       </div>
+
+</form>
+
+        <form class="form-inline form-count">
+
+            <eayun-table data-api="unitlist.myTable.api" data-ajax-source="unitlist.myTable.source" data-param="unitlist.myTable.getParams"
+                         data-result="unitlist.myTable.result" >
+                <table class="table table-eayun" >
+                    <thead>
+                    <tr>
+                        <th width="8%">客户名称</th>
+                        <th width="12%">主办单位名称</th>
+                        <th width="10%">网站备案号</th>
+                        <th width="10%">主体负责人</th>
+                        <th width="8%">
+
+                        <eayun-select type="btn" class="btn-group btn-group-xs" data-ng-model="unitlist.recordType"  data-ng-change="unitlist.doSearch()">
+                            <eayun-option value="" text="备案类型(全部)" selected></eayun-option>
+                            <eayun-option value="1" text="首次备案"></eayun-option>
+                            <eayun-option value="2" text="新增网站"></eayun-option>
+                            <eayun-option value="3" text="新增接入"></eayun-option>
+                            <eayun-option value="4" text="变更备案"></eayun-option>
+                        </eayun-select>
+                        </th>
+                        <th width="8%"><eayun-select type="btn" class="btn-group btn-group-xs" data-ng-model="unitlist.state"  data-ng-change="unitlist.doSearch()">
+                            <eayun-option value="" text="状态(全部)" selected></eayun-option>
+                            <eayun-option value="1" text="等待初审"></eayun-option>
+                            <eayun-option value="2" text="初审通过"></eayun-option>
+                            <eayun-option value="3" text="初审未通过"></eayun-option>
+                            <eayun-option value="4" text="复审通过"></eayun-option>
+                            <eayun-option value="5" text="复审未通过"></eayun-option>
+                            <eayun-option value="6" text="管局审核"></eayun-option>
+                            <eayun-option value="7" text="管局未通过"></eayun-option>
+                            <eayun-option value="8" text="备案成功"></eayun-option>
+
+
+                        </eayun-select></th>
+
+
+                        <th width="10%">创建时间</th>
+
+                        <th width="30%">操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="unit in unitlist.myTable.result" data-ng-hide="unit.$$active">
+                        <!--<tr>-->
+                        <td class="click-link" ng-click="unitlist.detail(unit.id,unit.unitid)" ng-bind-html="::unit.cusOrg |ellipsis:10" ></td>
+                        <td ng-bind-html="::unit.unitName |ellipsis:10" ></td>
+                        <td ng-bind-html="::unit.webRecordNo" ></td>
+                        <td ng-bind-html="::unit.dutyName |ellipsis:6" ></td>
+                        <td ng-bind="::unit.unitType" ></td>
+                        <td  ng-bind="::unit.status" ></td>
+
+                        <td  ng-bind="::unit.time |date : 'yyyy-MM-dd HH:mm:ss'" ></td>
+
+
+
+                        <td>
+                            <button class="btn btn-tablemng" data-ng-click="unitlist.chushen(unit.id)" data-ng-disabled="!(unit.statustype=='1' ||unit.statustype=='7')||unit.unitid==''"data-ng-if="hasPermission('updateunit')">初审</button>
+                            <button class="btn btn-tablemng"  data-ng-click="unitlist.fushen(unit.id)"data-ng-disabled="!(unit.statustype=='2'||unit.statustype=='5')||unit.unitid==''"data-ng-if="hasPermission('updateunit')" >复审</button>
+                            <button class="btn btn-tablemng" data-ng-click="unitlist.upguanju(unit.id)"data-ng-disabled="!(unit.statustype=='4')||unit.unitid==''"data-ng-if="hasPermission('updateunit')">上报管局</button>
+                            <button class="btn btn-tabledel" data-ng-click="unitlist.delete(unit.id,unit)"data-ng-if="hasPermission('delatedunit')">删除</button>
+                            <button class="btn btn-tablemng" data-ng-click="unitlist.guanjujieguo(unit.id)" data-ng-disabled="!(unit.statustype=='6')||unit.unitid==''"data-ng-if="hasPermission('updateunit')">管局结果</button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <eayun-table-page></eayun-table-page>
+            </eayun-table>
+        </form>
+
+    </div>
+</div>
+
+
+
+
+

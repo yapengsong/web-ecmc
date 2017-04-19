@@ -1,0 +1,110 @@
+<div class="details" style="font-size: 12px;">
+  <form class="row" name="myForm">
+    <div class="col-lg-12">
+    
+    <div class="details-group">
+        <div class="details-name">所属数据中心：</div>
+        <div class="details-value">
+          {{'null'!=snapdetail.snapModel.dcName?snapdetail.snapModel.dcName:''}}
+        </div>
+      </div>
+      
+      <div class="details-group">
+        <div class="details-name">所属项目：</div>
+        <div class="details-value">
+          {{'null'!=snapdetail.snapModel.prjName?snapdetail.snapModel.prjName:''}}
+        </div>
+      </div>
+
+        <div class="details-group">
+            <div class="details-name">所属客户：</div>
+            <div class="details-value">
+                {{'null'!=snapdetail.snapModel.cusOrg?snapdetail.snapModel.cusOrg:''}}
+            </div>
+        </div>
+    
+    <div class="details-group">
+        <div class="details-name">快照ID：</div>
+        <div class="details-value">
+          {{snapdetail.snapModel.snapId}}
+        </div>
+      </div>
+    
+    <div class="details-group">
+        <div class="details-name">快照名称：</div>
+        <div class="details-value">
+          <span >{{snapdetail.snapModel.snapName}}</span>
+        </div>
+      </div>
+    
+      
+      <div class="details-group">
+        <div class="details-name">状态：</div>
+        <div class="details-value">
+            <span class="state-block" data-ng-class="snapdetail.snapStatusClass != '' ? snapdetail.snapStatusClass : ''">
+            </span>{{snapdetail.snapModel.statusForDis}}
+        </div>
+      </div>
+
+        <div class="details-group">
+            <div class="details-name">计费状态：</div>
+            <div class="details-value" data-ng-bind="'1' == snapdetail.payType?'包年包月':'按需付费'">
+            </div>
+        </div>
+
+        <div class="details-group">
+            <div class="details-name">快照大小：</div>
+            <div class="details-value">
+                {{snapdetail.snapModel.snapSize}}GB
+            </div>
+        </div>
+
+        <div class="details-group">
+            <div class="details-name">分类：</div>
+            <div class="details-value" data-ng-bind="'1' == snapdetail.snapType?'系统盘快照':'数据盘快照'">
+            </div>
+        </div>
+
+      <div class="details-group">
+        <div class="details-name">源硬盘名称：</div>
+        <div class="details-value" >
+         <span  data-ng-bind-html="(snapdetail.snapModel.volName == 'null' || snapdetail.snapModel.volName == null)?'':snapdetail.snapModel.volName | ellipsis:20"></span>
+        </div>
+      </div>
+
+        <div class="details-group">
+            <div class="details-name">系统：</div>
+            <div class="details-value" data-ng-bind="">
+            </div>
+        </div>
+
+        <div class="details-group">
+            <div class="details-name">最低配置：</div>
+            <div class="details-value" data-ng-bind="">
+            </div>
+        </div>
+      
+
+      <div class="details-group">
+        <div class="details-name">创建时间：</div>
+        <div class="details-value">
+         {{snapdetail.snapModel.createTimeForDis}}
+        </div>
+      </div>
+
+
+      <div class="details-group">
+        <div class="details-name">描述：</div>
+        <div class="details-value">
+         <span data-ng-bind-html="snapdetail.snapModel.snapDescription | ellipsis:30"></span>
+        </div>
+      </div>
+      
+
+      
+   </div>
+  </form>
+</div>
+  <div class="modal-footer" >
+    <button class="btn btn-default btn-modal" ng-click="cancel()">关闭</button>
+  </div>

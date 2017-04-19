@@ -1,0 +1,11 @@
+<div class="input-group ng-cloak" ng-cloak>
+    <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="value" is-open="status.opened"
+           min-date="minDate" max-date="maxDate" datepicker-options="dateOptions" data-min-mode="minMode"
+           date-disabled="dateDisabled(date, mode)" ng-click="open()" data-datepicker-mode="datepickerMode"
+           show-time="showTime" readonly="true"/>
+    <span class="input-group-btn">
+        <button type="button" class="btn btn-default" ng-click="open()">
+            <span class="glyphicon glyphicon-calendar"></span>
+        </button>
+    </span>
+</div>

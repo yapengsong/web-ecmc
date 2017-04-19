@@ -1,0 +1,42 @@
+<div class="form-inline">
+    <eayun-search ng-model="unclassified.search" options="unclassified.options"></eayun-search>
+</div>
+
+<eayun-auto-refresh interval="5000" refresh="unclassified.refresh"></eayun-auto-refresh>
+<eayun-table data-api="unclassified.table.api" data-ajax-source="unclassified.table.source" data-param="unclassified.table.getParams"
+             data-result="unclassified.table.result" >
+    <table class="table table-eayun">
+        <thead>
+        <tr>
+            <th>镜像名称</th>
+            <th>状态</th>
+            <th>最低配置</th>
+            <th>
+                <eayun-select type="btn" class="btn-group btn-group-xs" data-ng-model="unclassified.dcId" data-ng-change="unclassified.query()">
+                    <eayun-option value="" text="数据中心（全部）" selected></eayun-option>
+                    <eayun-option value="dc.id" text="{{dc.name}}" data-ng-repeat="dc in unclassified.dcList"></eayun-option>
+                </eayun-select>
+            </th>
+            <th>创建时间</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr data-ng-repeat="image in unclassified.table.result">
+            <td  data-ng-bind="image.imageName.length>20?image.imageName.substring(0,19)+'...':image.imageName"  title="{{image.imageName}}"></td>
+            <td><span class="state-block" data-ng-class="unclassified.imageStatusClass[$index] != '' ? unclassified.imageStatusClass[$index] : ''"
+                      ng-init="unclassified.imageStatusClass[$index] = unclassified.checkImageStatus(image,$index)"></span>
+                {{image.statusForDis}}
+            </td>
+            <td>{{image.minCpu}}核/{{image.minRam}}GB/{{image.minDisk}}GB</td>
+            <td data-ng-bind="::image.dcName"></td>
+            <td data-ng-bind="::image.createdTime|date:'yyyy-MM-dd HH:mm:ss'"></td>
+            <td>
+                <button class="btn btn-tablemng btn-first" data-ng-click="unclassified.edit(image)" ng-if="hasPermission('unclassifiedimage_edit')"   data-ng-disabled="image.imageStatus == 'SAVING'|| image.imageStatus == 'DELETING'||image.imageStatus=='QUEUED'">编辑</button>
+                <button class="btn btn-tabledel" data-ng-click="unclassified.delete(image)"  ng-if="hasPermission('unclassifiedimage_delete')" data-ng-disabled="image.imageStatus == 'SAVING'|| image.imageStatus == 'DELETING'||image.imageStatus=='QUEUED'">删除</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <eayun-table-page></eayun-table-page>
+</eayun-table>

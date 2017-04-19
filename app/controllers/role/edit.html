@@ -1,0 +1,46 @@
+<form class="form-horizontal" name="editRole">
+    <div class="form-group" ng-if="edit.role.id">
+        <label class="col-sm-3 control-label">ID：</label>
+
+        <div class="col-sm-8">
+            <label class="control-label" ng-bind="::edit.role.id"></label>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label"><span class="color-require">*</span>名称：</label>
+
+        <div class="col-sm-8"
+             data-ng-class="(editRole.name.$dirty && editRole.name.$invalid) ? 'has-error' : ''">
+            <input type="text" class="form-control" data-ng-model="edit.role.name" name="name" required
+                   data-ajax-valid="edit.checkName(value)" data-ng-pattern="/^[\u4e00-\u9fa5a-zA-Z0-9_]{1,20}$/"/>
+            <label class="control-label hide"
+                   data-ng-class="editRole.name.$dirty && editRole.name.$error.pattern ? 'show' : 'hide'"
+                   style="text-align: left;">请输入1-20位字符,支持数字、中英文、下划线</label>
+            <label class="control-label hide"
+                   data-ng-class="editRole.name.$dirty && editRole.name.$error.required ? 'show' : 'hide'"
+                   style="text-align: left;">名称不能为空</label>
+            <label class="control-label hide"
+                   data-ng-class="(editRole.name.$dirty && editRole.name.$error.ajaxValid) ? 'show' : 'hide'"
+                   style="text-align: left;">角色名称已存在</label>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">描述：</label>
+
+        <div class="col-sm-8"
+             data-ng-class="(editRole.description.$dirty && editRole.description.$error.maxlength) ? 'has-error' : ''">
+            <input type="text" class="form-control" data-ng-model="edit.role.description" ng-maxlength="200" name="description"/>
+            <label class="control-label hide"
+                   data-ng-class="editRole.description.$dirty && editRole.description.$error.maxlength ? 'show' : 'hide'"
+                   style="text-align: left;">请输入0-200位字符</label>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">是否启用：</label>
+
+        <div class="col-sm-2">
+            <input type="checkbox" style="margin-top: 10px;" data-ng-model="edit.role.enableFlag" name="enableFlag"/>
+            <span> 启用</span>
+        </div>
+    </div>
+</form>

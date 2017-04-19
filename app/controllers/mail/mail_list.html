@@ -1,0 +1,48 @@
+<h4>邮件管理</h4>
+<form class="form-inline">
+    <label class="control-label" style="margin-left: 5px;">生成时间：</label>
+    <date-time-picker class="form-group" style="margin-left:5px;" data-format="yyyy-MM-dd HH:mm:ss" show-time="true"
+                      data-ng-model="mails.beginTime" max-date="mails.endTime"></date-time-picker>
+    <span style="margin-left: 5px;">—</span>
+    <date-time-picker class="form-group" style="margin-left:5px;" data-format="yyyy-MM-dd HH:mm:ss" show-time="true"
+                      data-ng-model="mails.endTime" min-date="mails.beginTime"></date-time-picker>
+    <label class="control-label" style="margin-left: 15px;">邮件标题：</label>
+    <input class="form-control" type="text" ng-model="mails.mailTitle" style="margin: 0px 10px;" />
+    <button class="btn btn-default" ng-click="mails.mailTable.api.draw()" style="margin-left: 15px;">
+        <span></span> 查 询
+    </button>
+</form>
+<eayun-auto-refresh interval="5000" refresh="mails.refresh"></eayun-auto-refresh>
+<eayun-table data-api="mails.mailTable.api" data-ajax-source="mails.mailTable.source" data-param="mails.mailTable.getParams"
+             data-result="mails.mailTable.result">
+    <table class="table table-striped striped-text-middle">
+        <thead>
+        <th>邮件标题</th>
+        <th>生成时间</th>
+        <th>发送时间</th>
+        <th>邮件接收者（人）</th>
+        <th>
+            <eayun-select type="btn" class="btn-group btn-group-xs" ng-change="mails.mailTable.api.draw()"
+                          data-ng-model="mails.status">
+                <eayun-option value="" text="邮件状态（全部）" selected></eayun-option>
+                <eayun-option value="status.nodeId" text="{{status.nodeName}}"
+                              ng-repeat="status in mails.statusList"></eayun-option>
+            </eayun-select>
+        </th>
+        <th>操作</th>
+        </thead>
+        <tbody>
+        <tr data-ng-repeat="mail in mails.mailTable.result">
+            <td ng-bind="::mail.title"></td>
+            <td ng-bind="::mail.insertTime|date:'yyyy-MM-dd HH:mm:ss'"></td>
+            <td ng-bind="::mail.updateTime|date:'yyyy-MM-dd HH:mm:ss'"></td>
+            <th class="click-link" ng-bind="::mail.userMailList.length" data-ng-click="mails.seeUserMail(mail)"></th>
+            <td ng-bind="::mail.statusName"></td>
+            <td>
+                <span class="click-link" data-ng-click="mails.sendMailByUser(mail)">重新发送</span>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <eayun-table-page></eayun-table-page>
+</eayun-table>

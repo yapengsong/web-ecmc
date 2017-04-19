@@ -1,0 +1,49 @@
+<form class="form-horizontal" name="myForm">
+    <div class="form-group">
+        <div class="col-sm-12" data-ng-if="mount.unBindDiskList.length != 0 && mount.diskCount <= mount.maxDiskCount">
+            <div class="col-sm-12" style="max-height: 300px;overflow-y:auto;">
+                <table class="table table-striped">
+                    <thead>
+                    <th style="width: 15px;">
+                        <input type="checkbox" data-ng-model="mount.isAllChecked" data-ng-click="mount.checkAll()"/>
+                    </th>
+                    <th style="text-align: left;">名称</th>
+                    <th style="text-align: left;width: 120px;">大小</th>
+                    </thead>
+                    <tbody>
+                    <tr class="control-label" style="height: 30px" data-ng-repeat="disk in mount.unBindDiskList">
+                        <td>
+                            <!--data-ng-disabled="mount.diskCountToBind <= 0 && !disk.isChecked"--><!--width: 16px;height: 16px;-->
+                            <input type="checkbox" style="margin-right:2px;"
+                                   data-ng-click="mount.updateSelection($event,disk.volId)"
+                                   data-ng-model="disk.isChecked" data-ng-checked="disk.isChecked">
+                        </td>
+                        <td style="text-align: left"
+                            title="{{disk.volName}}"
+                            data-ng-bind="disk.volName.length>20?disk.volName.substr(0,20)+'...':disk.volName"></td>
+                        <td style="text-align: left;" data-ng-bind="::disk.volSize + 'GB'"></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <!--<div data-ng-class="mount.diskCountToBind <= 0 ? 'has-error' : ''">
+                    <label class="help-block hide" data-ng-class="mount.diskCountToBind > 0 ? 'show' : 'hide'">
+                        您还可挂载<span data-ng-bind="mount.diskCountToBind"></span>块数据盘
+                    </label>
+                    <label class="help-block hide" data-ng-class="mount.diskCountToBind <= 0 ? 'show' : 'hide'">
+                        可挂载的硬盘数量已满，不可选择
+                    </label>
+                </div>-->
+            </div>
+        </div>
+    </div>
+    <!-- 按钮区域 -->
+    <div class="modal-footer"><!--mount.diskCountToBind < 0 ||  mount.diskCountToBindOrigin == mount.diskCountToBind-->
+        <button class="btn btn-primary btn-modal" ng-click="mount.commit()" >
+            确 定
+        </button>
+        <button class="btn btn-default btn-modal" style="margin-left:15px;"
+                data-ng-click="cancel()">
+            取 消
+        </button>
+    </div>
+</form>

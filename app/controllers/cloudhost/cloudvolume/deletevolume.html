@@ -1,0 +1,33 @@
+<div style="min-width: 420px;max-width: 720px;">
+    <div class="modal-header">
+    <span class="modal-title">
+    </span>
+        <img ng-click="cancel()" src="images/close.png">
+    </div>
+
+    <div class="modal-body">
+        <div class="modal-confirm" style="word-break:break-all;">删除资源
+            <span class="delete-name-color">{{model.volName}}</span>有可能造成客户线上环境和财务损失，请确认与客户进行过沟通。
+        </div>
+       <!-- <div class="vm-delete-checkbox">
+            <input id="check1" type="checkbox" data-ng-model="isDeSnaps"
+                   ng-disabled="item.isChange">
+            <label for="check1"
+                   class="control-label">删除云硬盘，同时删除其云硬盘快照</label>
+        </div>-->
+
+        <div class="vm-delete-checkbox1">
+            <input id="check2" type="checkbox"
+                   data-ng-model="isDeleted"
+                   data-ng-disabled="isShow">
+            <label for="check2"
+                   class="control-label">彻底删除，不放入回收站</label>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <button class="btn btn-primary btn-modal" ng-click="ok()">确 定</button>
+        <button class="btn btn-default btn-modal" ng-click="cancel()" style="margin-left:15px;">取 消</button>
+
+    </div>
+</div>

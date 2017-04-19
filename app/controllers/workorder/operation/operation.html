@@ -1,0 +1,61 @@
+<form class="form-inline">
+    <label class="control-label">工单类别：</label>
+
+    <eayun-select class="form-control form-select" show-length="5" data-ng-model="operation.workType" ng-change="operation.change(operation.workType);">
+        <eayun-option value="" text="全部" selected></eayun-option>
+        <eayun-option value="workorderType.nodeId" text="{{workorderType.nodeName}}"
+                      ng-repeat="workorderType in operation.queryWorkorderList.workTypeList"></eayun-option>
+    </eayun-select>
+
+    <div class="btn-group" data-toggle="buttons" style="float: right;" >
+        <label class="btn btn-personal active"  data-ng-click="operation.period('week')">
+            <input type="radio" name="options" id="option1" autocomplete="off">1周
+        </label>
+        <label class="btn btn-personal" data-ng-click="operation.period('month')">
+            <input type="radio" name="options" id="option2" autocomplete="off">1月
+        </label>
+        <label class="btn btn-personal" data-ng-click="operation.period('year')">
+            <input type="radio" name="options" id="option3" autocomplete="off">1年
+        </label>
+    </div>
+</form>
+
+<table class="table table-eayun-personal">
+    <thead>
+        <tr>
+            <th class="col-lg-2">运维工程师</th>
+            <th class="col-lg-10 column" colspan="2">解决事件数量</th>
+        </tr>
+    </thead>
+    <tbody>
+    <tr style="vertical-align: middle;" data-ng-repeat="ope in operation.workorderDoneList" >
+        <td class="col-lg-2 click-link" data-ng-click="operation.countUserAcceptWorkorder(ope.workHeadUser)">{{ope.workHeadUserName}}</td>
+        <td class="col-lg-1">{{ope.num}}件</td>
+        <td class="col-lg-9">
+            <div class="progress" data-ng-style="{'width':(ope.num*10)+'px'}">
+                <div class="progress-bar" data-role="progress-bar"
+                     data-aria-valuenow="40"
+                     data-aria-valuemin="10"
+                     data-aria-valuemax="100"
+                     style="width: 100%;">
+                </div>
+            </div>
+        </td>
+    </tr>
+    <!--<tr>
+        <td class="col-lg-2">晓晨呆萌</td>
+        <td class="col-lg-1">55000件</td>
+        <td class="col-lg-9">
+            <div class="progress">
+                <div class="progress-bar" data-role="progress-bar"
+                     data-aria-valuenow="40"
+                     data-aria-valuemin="10"
+                     data-aria-valuemax="100"
+                     style="width: 30%;"
+                     data-ng-class="prj.usedRam/1024/prj.memory>=0.8?'error-pro':'info-pro'">
+                </div>
+            </div>
+        </td>
+    </tr>-->
+    </tbody>
+</table>

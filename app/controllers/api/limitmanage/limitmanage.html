@@ -1,0 +1,153 @@
+<div class="title-inline">
+    <div class="form-group">
+        <label class="control-label">当前位置：
+            <span>限制管理</span>
+        </label>
+    </div>
+</div>
+
+<div class="panel panel-default clearfix"  ng-show="hasPermission('api_switch')">
+    <div class="panel-body">
+        <h4>API开关</h4>
+        <form class="form-inline">
+            <div class="form-group" style="margin-left:15px;float: left;">
+                <eayun-select class="form-control form-select" ng-model="limit.dcModel" ng-change="limit.changeDcModel()">
+                    <eayun-option value="dc" text="{{dc.name}}"
+                                  ng-repeat="dc in limit.dcList"></eayun-option>
+                </eayun-select>
+            </div>
+            <div class="switch-vertical-line"></div>
+            <label class="control-label"><span class="state-block" data-ng-class="limit.isOpen?'green':'gray'"></span>{{limit.isOpen?'已开启':'已关闭'}}</label>
+
+            <button class="btn btn-default" style="margin-left:50px" data-ng-click="limit.operation('0')" data-ng-if="limit.isOpen">
+                关  闭
+            </button>
+            <button class="btn btn-default" style="margin-left:50px" data-ng-click="limit.operation('1')" data-ng-if="!limit.isOpen">
+                开  启
+            </button>
+        </form>
+    </div>
+</div>
+
+
+<!-- 子页面展示区 -->
+<div class="panel panel-default clearfix"  ng-show="hasPermission('api_black')">
+
+    <div class="panel-body">
+        <h4>API黑名单</h4>
+        <form class="form-inline">
+
+            <div class="form-group">
+                <button class="btn btn-primary" ng-click="limit.addBlack()">
+                    <span class="glyphicon glyphicon-plus"></span>
+                    添加
+                </button>
+            </div>
+        </form>
+        <!-- 导航页签 -->
+        <tabs class="nav-tabs-online">
+            <tab ng-class="limit.select == 'user'?'active':''" ng-click="limit.clickTabs('user')">客户名单</tab>
+            <tab ng-class="limit.select == 'ip'?'active':''" ng-click="limit.clickTabs('ip')">IP名单</tab>
+        </tabs>
+        <!--展示黑名单客户-->
+        <div ng-show="limit.select == 'user'">
+
+            <eayun-table data-api="limit.table.api" data-ajax-source="limit.table.source" data-param="limit.table.getParams"
+                         data-result="limit.table.result">
+                <table class="table table-eayun">
+                    <thead>
+                    <tr>
+                        <th class="col-sm-2">创建时间</th>
+                        <th class="col-sm-2">客户名称</th>
+                        <th class="col-sm-2">操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    <tr data-ng-repeat="cus in limit.table.result">
+                        <td ng-bind="::cus.createTime |date : 'yyyy-MM-dd HH:mm:ss'"></td>
+                        <td ng-bind="::cus.cusOrg"></td>
+                        <td>
+                            <button class="btn btn-tabledel" data-ng-click="limit.deleteBlackCus(cus)" >移除</button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <eayun-table-page></eayun-table-page>
+            </eayun-table>
+
+        </div>
+        <!--展示黑名单IP-->
+        <div ng-show="limit.select == 'ip'">
+            <eayun-table data-api="limit.blackIpTable.api" data-ajax-source="limit.blackIpTable.source" data-param="limit.blackIpTable.getParams"
+                         data-result="limit.blackIpTable.result">
+                <table class="table table-eayun">
+                    <thead>
+                    <tr>
+                        <th class="col-sm-2">创建时间</th>
+                        <th class="col-sm-2">IP地址</th>
+                        <th class="col-sm-2">操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    <tr data-ng-repeat="black in limit.blackIpTable.result">
+                        <td ng-bind="::black.createTime |date : 'yyyy-MM-dd HH:mm:ss'"></td>
+                        <td ng-bind="::black.apiValue"></td>
+                        <td>
+                            <button class="btn btn-tabledel" data-ng-click="limit.deleteBlackIp(black)" >移除</button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <eayun-table-page></eayun-table-page>
+            </eayun-table>
+        </div>
+    </div>
+</div>
+
+
+<div class="panel panel-default clearfix"  ng-if="hasPermission('api_restrict_default')">
+    <div class="panel-body">
+        <h4>默认访问次数</h4>
+        <form class="form-inline">
+            <div class="form-group">
+                <eayun-select class="form-control form-select" ng-model="limit.apiType" ng-change="limit.changeApiType()">
+                    <eayun-option value="api" text="{{api.version}}/{{api.apiTypeName}}"
+                                  ng-repeat="api in limit.apiTypeList"></eayun-option>
+                </eayun-select>
+            </div>
+
+        </form>
+        <div class="form-group" style="margin-top:-10px;margin-bottom: 10px;">
+            <button class="btn btn-primary" ng-click="limit.updateCount(limit.apiType)">
+                编辑
+            </button>
+
+        </div>
+        <eayun-table data-api="limit.apiDefaultTable.api" data-ajax-source="limit.apiDefaultTable.source" data-param="limit.apiDefaultTable.getParams"
+                     data-result="limit.apiDefaultTable.result">
+            <table class="table table-eayun">
+                <thead>
+                <tr>
+                    <th class="col-sm-2">API类型</th>
+                    <th class="col-sm-2">API名称</th>
+                    <th class="col-sm-2">英文名称</th>
+                    <th class="col-sm-2">限制次数</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                <tr data-ng-repeat="table in limit.apiDefaultTable.result">
+                    <td>{{table.version}}/{{table.apiTypeName}}</td>
+
+                    <td ng-bind="::table.actionName"></td>
+                    <td ng-bind="::table.action"></td>
+                    <td ng-bind="::table.count"></td>
+                </tr>
+                </tbody>
+            </table>
+            <eayun-table-page></eayun-table-page>
+        </eayun-table>
+    </div>
+</div>

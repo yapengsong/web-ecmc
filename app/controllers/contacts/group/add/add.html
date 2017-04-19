@@ -1,0 +1,20 @@
+<form class="form-horizontal" name="addGroup" novalidate>
+    <div class="form-group has-feedback">
+        <label class="col-sm-3 control-label">联系组名称：</label>
+
+        <div class="col-sm-8" data-ng-class="(addGroup.name.$dirty && addGroup.name.$invalid ) ? 'has-error' : ''">
+            <input type="text" class="form-control" placeholder="请输入联系组名称" name="name" data-ng-pattern="/^[\u4e00-\u9fa5a-zA-Z0-9]([\u4e00-\u9fa5_a-zA-Z0-9\s]{0,18}[\u4e00-\u9fa5a-zA-Z0-9]){0,1}$/"
+                   data-ng-model="group.name" required
+                   data-ajax-valid="checkGroupName(value)" maxlength=15/>
+            <label class="control-label hide"
+                   data-ng-class="addGroup.name.$dirty && addGroup.name.$error.required? 'show' : 'hide'"
+                   style="text-align: left;">联系组名称不能为空</label>
+            <label class="control-label hide"
+                   data-ng-class="addGroup.name.$dirty && addGroup.name.$error.ajaxValid ? 'show' : 'hide'"
+                   style="text-align: left;">联系组名称已存在</label>
+            <label class="control-label hide"
+                   data-ng-class="addGroup.name.$dirty && addGroup.name.$error.pattern ? 'show' : 'hide'"
+                   style="text-align: left;">请输入正确的联系组名称</label>
+        </div>
+    </div>
+</form>

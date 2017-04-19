@@ -1,0 +1,193 @@
+<div class="title-inline">
+    <div class="form-group">
+        <label class="control-label">当前位置：</label>
+
+        <div class="btn-group" role="group" style="font-size:14px;">组织机构
+        </div>
+    </div>
+</div>
+<div class="panel panel-default clearfix" ng-if="hasPermission('sys_depart_query')">
+    <div class="panel-body">
+        <h4>组织机构</h4>
+        <div class="data-tree">
+            <div class="data-left">
+                <form class="form-inline">
+                    <div>
+                        <tree-view tree-data="department.menuTree" text-field="name" item-clicked="department.itemClicked($item)"
+                                   can-checked="false" expend-level="-1"></tree-view>
+                    </div>
+                </form>
+            </div>
+
+            <div class="data-right" style="padding-top:-5px">
+                <form class="form-inline">
+                    <button class="btn btn-primary" data-ng-click="department.add()" ng-if="hasPermission('sys_depart_create')" style="margin-right:15px;">
+                        <span class="glyphicon glyphicon-plus"></span> 创建机构
+                    </button>
+                    <button class="btn btn-default" data-ng-click="department.edit($event,department.department)" ng-if="hasPermission('sys_depart_modify')" style="margin: 0px 15px;">
+                        <span class="glyphicon glyphicon-pencil"></span> 编辑
+                    </button>
+                    <button class="btn btn-default" data-ng-click="department.delete($event,department.department)" ng-if="hasPermission('sys_depart_delete')" style="margin: 0px 15px;">
+                        删除
+                    </button>
+                </form>
+                <div class="details">
+                    <form class="row">
+                      <div>
+                          <div class=" details-group">
+                              <div class="details-name">编号：</div>
+                              <div class="details-value">
+                                  <span ng-bind="department.department.code"></span>
+                              </div>
+                          </div>
+                            <div class="details-group">
+
+                                <div class="details-name">名称：</div>
+                                <div class="details-value multi">
+                                    <span ng-bind="department.department.name"></span>
+                                </div>
+                            </div>
+                            <div class=" details-group">
+                                <div class="details-name">电话：</div>
+                                <div class="details-value">
+                                    <span ng-bind="department.department.tel"></span>
+                                </div>
+                            </div>
+
+                          <div class=" details-group">
+                              <div class="details-name">地址：</div>
+                              <div class="details-value">
+                                  <span ng-bind="department.department.address"></span>
+                              </div>
+                          </div>
+                          <div class=" details-group">
+                              <div class="details-name">描述：</div>
+                              <div class="details-value multi">
+                                  <span ng-bind="department.department.description"></span>
+                              </div>
+                          </div>
+                          <div class=" details-group">
+                              <div class="details-name">联系人：</div>
+                              <div class="details-value">
+                                  <span ng-bind="department.department.linkMan"></span>
+                              </div>
+                          </div>
+                          <div class=" details-group">
+                              <div class="details-name">传真：</div>
+                              <div class="details-value">
+                                  <span ng-bind="department.department.fax"></span>
+                              </div>
+                          </div>
+                          <div class=" details-group">
+                              <div class="details-name">是否启用：</div>
+                              <div class="details-value">
+                                  <span ng-bind="department.department.enableFlag?'已启用':'未启用'"></span>
+                              </div>
+                          </div>
+                      </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<!--<form class="form-inline">-->
+    <!--<button class="btn btn-primary" data-ng-click="list.add()">-->
+        <!--<span class="glyphicon glyphicon-plus"></span> 创建机构-->
+    <!--</button>-->
+    <!--<button class="btn btn-default" data-ng-click="list.edit($event,list.department)">-->
+        <!--<span class="glyphicon glyphicon-pencil"></span> 编辑-->
+    <!--</button>-->
+    <!--<button class="btn btn-default" data-ng-click="list.delete($event,list.department.id)">-->
+        <!--删除-->
+    <!--</button>-->
+<!--</form>-->
+<!--<form class="row">-->
+
+    <!--<div class="col-lg-12">-->
+        <!--<div class="col-lg-4 details-group">-->
+            <!--<div class="details-name">名称：</div>-->
+            <!--<div class="details-value">-->
+                <!--<span ng-bind="list.department.name"></span>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="col-lg-4 details-group">-->
+            <!--<div class="details-name">描述：</div>-->
+            <!--<div class="details-value">-->
+                <!--<span ng-bind="list.department.description"></span>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="col-lg-3 details-group">-->
+            <!--<div class="details-name">地址：</div>-->
+            <!--<div class="details-value">-->
+                <!--<span ng-bind="list.department.address"></span>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="col-lg-4 details-group">-->
+            <!--<div class="details-name">电话：</div>-->
+            <!--<div class="details-value">-->
+                <!--<span ng-bind="list.department.tel"></span>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="col-lg-4 details-group">-->
+            <!--<div class="details-name">联系人：</div>-->
+            <!--<div class="details-value">-->
+                <!--<span ng-bind="list.department.linkMan"></span>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="col-lg-3 details-group">-->
+            <!--<div class="details-name">是否启用：</div>-->
+            <!--<div class="details-value">-->
+                <!--<span ng-bind="list.department.enableFlag?'已启用':'未启用'"></span>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="col-lg-4 details-group">-->
+            <!--<div class="details-name">编号：</div>-->
+            <!--<div class="details-value">-->
+                <!--<span ng-bind="list.department.code"></span>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="col-lg-4 details-group">-->
+            <!--<div class="details-name">传真：</div>-->
+            <!--<div class="details-value">-->
+                <!--<span ng-bind="list.department.fax"></span>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+<!--</form>-->
+<!--<div class="second-menu-page">-->
+    <!--<div class="second-menu" ng-controller="DepartmentIndexCtrl as tree" style="white-space: nowrap;overflow: auto;">-->
+        <!--<tree-view tree-data="tree.menuTree" text-field="name" item-clicked="tree.itemClicked($item)"-->
+                   <!--can-checked="false"></tree-view>-->
+    <!--</div>-->
+    <!--<div class="second-menu-right">-->
+        <!--<div class="panel panel-default clearfix">-->
+            <!--<div class="panel-body">-->
+                <!--<div ui-view></div>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+<!--</div>-->
+        <!--<h4>组织机构</h4>-->
+
+        <!--<form class="form-inline">-->
+            <!--<button class="btn btn-primary" data-ng-click="list.add()">-->
+                <!--<span class="glyphicon glyphicon-plus"></span> 创建机构-->
+            <!--</button>-->
+            <!--<button class="btn btn-default" data-ng-click="list.edit($event,list.department)">-->
+                <!--<span class="glyphicon glyphicon-pencil"></span> 编辑-->
+            <!--</button>-->
+            <!--<button class="btn btn-default" data-ng-click="list.delete($event,list.department.id)">-->
+                <!--删除-->
+            <!--</button>-->
+        <!--</form>-->
+        <!--<div class="second-menu-page">-->
+            <!--<div class="second-menu"  style="white-space: nowrap;overflow: auto;">-->
+                <!--<tree-view tree-data="tree.menuTree" text-field="name" item-clicked="tree.itemClicked($item)"-->
+                           <!--can-checked="false"></tree-view>-->
+            <!--</div>-->
+
+
+        <!--</div>-->
+

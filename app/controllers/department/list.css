@@ -1,0 +1,14 @@
+.table-eayun .title {
+    background-color: #ffffff;
+    text-align: left;
+    font-weight: bold;
+}
+
+.table-eayun .parent>td {
+    background-color: #f8f8f8;
+    font-weight: bold;
+}
+
+.table-eayun .child>td {
+    background-color: #ffffff;
+}

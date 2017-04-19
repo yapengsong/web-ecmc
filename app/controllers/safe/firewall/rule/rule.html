@@ -1,0 +1,148 @@
+<!-- 当前位置下拉列表 -->
+<div class="title-inline">
+    <div class="form-group">
+        <label class="control-label">当前位置：
+            <a style="cursor: pointer;" data-ui-sref="app.safe.tabs.firewall">安全</a> > 
+            <a style="cursor: pointer;" data-ui-sref="app.safe.tabs.firewall">防火墙</a>
+            > 防火墙详情
+        </label>
+    </div>
+</div>
+<!-- 防火墙详情 -->
+<div class="panel panel-default clearfix">
+    <div class="panel-body">
+        <h4>防火墙详情</h4>
+
+        <div class="details">
+            <form class="row">
+                <div class="col-lg-6">
+                    <div class="details-group">
+                        <div class="details-name" 
+                   			 hint="controllers/safe/firewall/rule/editfwname.html"
+                             hint-show="rule.hintNameShow"
+                             tooltip-class="tooltip-edit"
+                             tooltip-placement="right">防火墙名称：</div>
+                        <div class="details-value"><span ng-bind="rule.outModel.fwName" data-ng-class="rule.vmNameEditable ? 'hide' : 'show'" ></span></div>
+                        <div class="badge show" ng-show="hasPermission('firewall_modify')" data-ng-click="rule.editNameOrDesc('fwName')" data-ng-class="rule.vmNameEditable ? 'hide' : 'show'"><span class="glyphicon glyphicon-pencil"></span></div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="details-group">
+                        <div class="details-name"
+                        	 hint="controllers/safe/firewall/rule/editfwdesc.html"
+                             hint-show="rule.hintDescShow"
+                             tooltip-class="tooltip-edit"
+                             tooltip-placement="right">防火墙描述：</div>
+                        <div class="details-value"><span title="{{rule.outModel.description}}" ng-bind="rule.outModel.description.length>40?rule.outModel.description.substring(0,40)+'...':rule.outModel.description" data-ng-class="rule.vmDescEditable ? 'hide' : 'show'" ></span></div>
+                        <div class="badge show" ng-show="hasPermission('firewall_modify')" data-ng-click="rule.editNameOrDesc('fwDesc')" data-ng-class="rule.vmDescEditable ? 'hide' : 'show'"><span class="glyphicon glyphicon-pencil"></span></div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="details-group">
+                        <div class="details-name">防火墙ID：</div>
+                        <div class="details-value"><span ng-bind="::rule.outModel.fwId"></span></div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="details-group">
+                        <div class="details-name">所属数据中心：</div>
+                        <div class="details-value"><span ng-bind="::rule.outModel.dcName"></span></div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="details-group">
+                        <div class="details-name">所属客户：</div>
+                        <div class="details-value"><span ng-bind="::rule.outModel.cusOrg"></span></div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="details-group">
+                        <div class="details-name">所属项目：</div>
+                        <div class="details-value"><span ng-bind="::rule.outModel.prjName"></span></div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="details-group">
+                        <div class="details-name">创建时间：</div>
+                        <div class="details-value">
+                            <span ng-bind="::rule.outModel.createTime|date : 'yyyy-MM-dd HH:mm:ss'">
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- Form表单 -->
+<form class="form-inline">
+    <div class="form-group">
+        <button class="btn btn-primary" data-ng-click="rule.add()" style="margin-right: 15px;" ng-show="hasPermission('rule_create')">
+            <span class="glyphicon glyphicon-plus"></span> 添加规则
+        </button>
+    </div>
+    <!-- <div class="form-group">
+        <eayun-search ng-model="rule.search" options="rule.options"></eayun-search>
+    </div> -->
+</form>
+
+<eayun-table data-api="rule.table.api" data-ajax-source="rule.table.source" data-param="rule.table.getParams"
+             data-result="rule.table.result">
+    <table class="table table-eayun">
+        <thead>
+        <tr>
+        	<th style="width: 5%;">优先级</th>
+            <th style="width: 10%;">规则名称</th>
+            <th style="width: 5%;">协议</th>
+            <th style="width: 10%;">源IP</th>
+            <th style="width: 5%;">源端口</th>
+            <th style="width: 10%;">目的IP</th>
+            <th style="width: 5%;">目的端口</th>
+            <th style="width: 5%;">动作</th>
+            <!-- <th style="width: 5%;">所属策略</th>
+            <th style="width: 8%;">项目</th>
+            <th style="width: 5%;">客户</th>
+            <th style="width: 10%;">
+                <eayun-select type="btn" class="btn-group btn-group-xs" data-ng-model="rule.dcId"
+                              ng-change="rule.queryTable()">
+                    <eayun-option value="''" text="数据中心(全部)" selected></eayun-option>
+                    <eayun-option value="dcResource.id" text="{{dcResource.name}}"
+                                  ng-repeat="dcResource in rule.dcResourceList"></eayun-option>
+                </eayun-select>
+            </th> -->
+            <th style="width: 25%;">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr data-ng-repeat="ruleModel in rule.table.result" data-ng-class="ruleModel.fwrEnabled == 0 ? 'font-color-gay' : ''">
+        	<td ng-bind="::ruleModel.priority"></td>
+            <td data-ng-class="ruleModel.fwrEnabled == 0 ? 'font-color-gay' : 'click-link'" data-ng-click="rule.detail(ruleModel)" ng-bind="::ruleModel.fwrName"></td>
+            <td style="text-transform: uppercase;">{{(ruleModel.protocol=='any'||ruleModel.protocol=='') ? '所有' : ruleModel.protocol}}</td>
+            <td ng-bind="::(ruleModel.sourceIpaddress =='' || ruleModel.sourceIpaddress =='0.0.0.0/0')?'所有':ruleModel.sourceIpaddress"></td>
+            <td ng-bind="::ruleModel.protocol=='any'||ruleModel.protocol=='icmp'? '--' : ruleModel.sourcePort ==''?'所有':ruleModel.sourcePort"></td>
+            <td ng-bind="::(ruleModel.destinationIpaddress =='' || ruleModel.destinationIpaddress == '0.0.0.0/0')?'所有':ruleModel.destinationIpaddress"></td>
+            <td ng-bind="::ruleModel.protocol=='any'||ruleModel.protocol=='icmp'? '--' : ruleModel.destinationPort ==''?'所有': ruleModel.destinationPort"></td>
+            <td ng-bind="::ruleModel.fwrAction == 'allow' ? '允许' : '拒绝'"></td>
+            <!-- <td ng-bind="::ruleModel.fwpName != 'null' ? ruleModel.fwpName : '无'"></td>
+            <td ng-bind="::ruleModel.prjName"></td>
+            <td ng-bind="::ruleModel.cusOrg"></td>
+            <td ng-bind="::ruleModel.dcName"></td> -->
+            <td>
+            <div ng-if="ruleModel.fwrEnabled==1">
+            	<button class="btn btn-tablemng btn-first" data-ng-click="rule.isEnabled(ruleModel,0)" ng-show="hasPermission('rule_isEnabled')">禁用</button>
+            	<!-- <button class="btn btn-tablemng btn-first" data-ng-click="rule.edit(ruleModel)" ng-show="hasPermission('firewall_modify')">编辑</button> -->
+                <button class="btn btn-tabledel" data-ng-click="rule.delete(ruleModel)" ng-show="hasPermission('rule_delete')">删除</button>
+            	<button class="btn btn-tablemng btn-first" data-ng-click="rule.rulesequence(ruleModel)" data-ng-disabled="$last && $index==0" ng-show="hasPermission('rule_sequence')">调整优先级</button>
+            </div>
+            <div ng-if="ruleModel.fwrEnabled==0">
+            	<button class="btn btn-tablemng btn-first" data-ng-click="rule.isEnabled(ruleModel,1)" ng-show="hasPermission('rule_isEnabled')">启用</button>
+            	<!-- <button class="btn btn-tablemng btn-first" data-ng-click="rule.edit(ruleModel)" ng-show="hasPermission('firewall_modify')">编辑</button> -->
+                <button class="btn btn-tabledel" data-ng-click="rule.delete(ruleModel)" ng-show="hasPermission('rule_delete')">删除</button>
+            	<button class="btn btn-tablemng btn-first" data-ng-click="rule.rulesequence(ruleModel)" data-ng-disabled="$last && $index==0" ng-show="hasPermission('rule_sequence')">调整优先级</button>
+            </div>	
+                
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <eayun-table-page></eayun-table-page>
+</eayun-table>

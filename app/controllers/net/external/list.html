@@ -1,0 +1,43 @@
+
+<!-- Form表单 -->
+<form class="form-inline">
+    <div class="form-group">
+        <eayun-search data-ng-model="external.search" options="external.options"></eayun-search>
+    </div>
+</form>
+
+<eayun-table data-api="external.table.api" data-ajax-source="external.table.source" data-param="external.table.getParams"
+             data-result="external.table.result">
+    <table class="table table-eayun">
+        <thead>
+        <tr>
+            <th>名称</th>
+            <th>子网连接数量</th>
+            <th>状态</th>
+            <th class="col-sm-1">
+                <eayun-select type="btn" ng-model="external.dcId" ng-change="external.table.api.draw()">
+                    <eayun-option value="" text="数据中心（全部）" selected></eayun-option>
+                    <eayun-option value="dc.id" text="{{::dc.name}}" ng-repeat="dc in external.dcList"></eayun-option>
+                </eayun-select>
+            </th>
+            <th class="col-sm-3">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr data-ng-repeat="list in external.table.result">
+            <td ng-bind="::list.netName" class="click-link" data-ng-click="external.detail(list.netId)"></td>
+            <td ng-bind="::list.subnetnum"></td>
+            <td>
+                <span class="state-block" ng-class="list.netStatus | statusClass"></span>
+                <span ng-bind="::list.netStatus | statusCn"></span>
+            </td>
+            <td ng-bind="::list.dcName">数据中心</td>
+            <td>
+                <button class="btn btn-tablemng" ng-if="hasPermission('outsubnet_add')" data-ng-click="external.add(list)">增加子网</button>
+                <button class="btn btn-tablemng" ng-if="hasPermission('outnetwork_edit')" data-ng-click="external.editOutNet(list)">编辑网络</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <eayun-table-page></eayun-table-page>
+</eayun-table>

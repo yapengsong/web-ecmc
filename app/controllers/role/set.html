@@ -1,0 +1,53 @@
+<style>
+    .text-left {
+        text-align: left;
+    }
+    .repeat-auth-div{
+        float: left;
+        width: 50%;
+        text-align: left;
+    }
+    .word-break{
+        width: 70%;WORD-BREAK: break-all; WORD-WRAP: break-word
+    }
+</style>
+<form class="form-horizontal" name="editRole">
+    <div class="panel panel-default clearfix">
+        <div class="panel-body">
+            <table class="table table-eayun">
+                <thead>
+                <tr>
+                    <th>菜单</th>
+                    <th>权限</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat-start="menu in set.menuTree" ng-if="menu.lock =='0'">
+                    <td style="text-align: left;font-weight: bold;width: 30%" class="word-break">
+                        <input type="checkbox" ng-model="menu.$$isChecked" class="check-box" ng-change="set.itemCheckedChanged(menu)">
+                        {{::menu.name}}
+                    </td>
+                    <td class="word-break">
+                        <div ng-repeat="auth in set.authList | filter:menu.id"  ng-if="auth.lock == '0'"  class="repeat-auth-div">
+                            <input type="checkbox" ng-model="auth.$$isChecked" ng-click="set.click(auth)">
+                            <span ng-bind="::auth.name"></span>
+                        </div>
+                    </td>
+                </tr>
+                <tr ng-repeat-end ng-repeat="child in menu.children"  ng-if="child.lock =='0'">
+                    <td style="text-align: left;width: 30%;" class="word-break">
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <input type="checkbox" ng-model="child.$$isChecked" class="check-box" ng-change="set.itemCheckedChanged(child)">
+                        {{::child.name}}</td>
+                    <td style="width: 70%;" class="word-break">
+                        <div ng-repeat="auth in set.authList | filter:child.id" ng-if="auth.lock == '0'" class="repeat-auth-div">
+                            <input type="checkbox" ng-model="auth.$$isChecked" ng-click="set.click(auth)">
+                            <span ng-bind="::auth.name"></span>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</form>

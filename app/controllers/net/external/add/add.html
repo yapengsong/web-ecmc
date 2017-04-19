@@ -1,0 +1,75 @@
+<form class="form-horizontal" name="myForm" novalidate>
+
+    <div class="form-group has-feedback">
+        <label class="col-sm-3 control-label">子网名称：</label>
+
+        <div class="col-sm-8"
+             data-ng-class="(myForm.subnetName.$dirty && (myForm.subnetName.$invalid || subnetAdd.checkSubNetNameFlag)) ? 'has-error' : ''">
+            <input type="text" class="form-control" name="subnetName" data-ng-model="subnetAdd.subnetModel.subnetName"
+                   data-ng-pattern="/^[\u4e00-\u9fa5a-zA-Z0-9]([\u4e00-\u9fa5_a-zA-Z0-9\s]{0,18}[\u4e00-\u9fa5a-zA-Z0-9]){0,1}$/"
+                   placeholder="请输入子网名称" data-ng-change="subnetAdd.checkSubName()"
+                   maxlength="20" required >
+            <label class="control-label hide"
+                   data-ng-class="(myForm.subnetName.$dirty && myForm.subnetName.$error.required) ? 'show' : 'hide'"
+                   style="text-align: left;">子网名称不能为空</label>
+            <label class="control-label hide"
+                   data-ng-class="(myForm.subnetName.$dirty && myForm.subnetName.$valid &&  subnetAdd.checkSubNetNameFlag) ? 'show' : 'hide'"
+                   style="text-align: left;">子网名称已存在</label>
+            <label class="control-label hide"
+                   data-ng-class="(myForm.subnetName.$dirty && myForm.subnetName.$error.pattern) ? 'show' : 'hide'"
+                   style="text-align: left;">请输入1-20位字符,支持数字、中英文、下划线、空格</label>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-3 control-label">网络地址：</label>
+
+        <div class="col-sm-8" data-ng-class="(myForm.cidr.$dirty && myForm.cidr.$invalid) ? 'has-error' : ''">
+            <input type="text" class="form-control" name="cidr" data-ng-model="subnetAdd.subnetModel.cidr"
+                   data-ng-pattern="/^0*([1-9]?\d|1\d\d|2[0-4]\d|25[0-5])\.0*([1-9]?\d|1\d\d|2[0-4]\d|25[0-5])\.0*([1-9]?\d|1\d\d|2[0-4]\d|25[0-5])\.0*([1-9]?\d|1\d\d|2[0-4]\d|25[0-5])(\/[1-9]|\/[1-2][0-9]|\/3[0-2]){1}$/"
+                   placeholder="请输入IPv4网络地址"
+                   maxlength="31" required >
+            <label class="control-label hide"
+                   data-ng-class="(myForm.cidr.$dirty && myForm.cidr.$error.required) ? 'show' : 'hide'"
+                   style="text-align: left;">网络地址不能为空</label>
+            <label class="control-label hide"
+                   data-ng-class="(myForm.cidr.$dirty && myForm.cidr.$error.pattern) ? 'show' : 'hide'"
+                   style="text-align: left;">请输入IPv4的CIDR网络地址</label>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">网络地址池：</label>
+
+        <div class="col-sm-8" data-ng-class="(myForm.pooldata.$dirty && myForm.pooldata.$invalid) ? 'has-error' : ''">
+            <input type="text" class="form-control" name="pooldata" data-ng-model="subnetAdd.subnetModel.pooldata"
+                   placeholder="请输入IPv4网络地址池"
+                   data-ng-pattern="/^(0*([1-9]?\d|1\d\d|2[0-4]\d|25[0-5])\.0*([1-9]?\d|1\d\d|2[0-4]\d|25[0-5])\.0*([1-9]?\d|1\d\d|2[0-4]\d|25[0-5])\.0*([1-9]?\d|1\d\d|2[0-4]\d|25[0-5])\,0*([1-9]?\d|1\d\d|2[0-4]\d|25[0-5])\.0*([1-9]?\d|1\d\d|2[0-4]\d|25[0-5])\.0*([1-9]?\d|1\d\d|2[0-4]\d|25[0-5])\.0*([1-9]?\d|1\d\d|2[0-4]\d|25[0-5]))|((([\da-fA-F]{1,4}:){7}[\da-fA-F]{1,4}|:((:[\da-fA-F]{1,4}){1,6}|:)|[\da-fA-F]{1,4}:((:[\da-fA-F]{1,4}){1,5}|:)|([\da-fA-F]{1,4}:){2}((:[\da-fA-F]{1,4}){1,4}|:)|([\da-fA-F]{1,4}:){3}((:[\da-fA-F]{1,4}){1,3}|:)|([\da-fA-F]{1,4}:){4}((:[\da-fA-F]{1,4}){1,2}|:)|([\da-fA-F]{1,4}:){5}:([\da-fA-F]{1,4})?|([\da-fA-F]{1,4}:){6}:),(([\da-fA-F]{1,4}:){7}[\da-fA-F]{1,4}|:((:[\da-fA-F]{1,4}){1,6}|:)|[\da-fA-F]{1,4}:((:[\da-fA-F]{1,4}){1,5}|:)|([\da-fA-F]{1,4}:){2}((:[\da-fA-F]{1,4}){1,4}|:)|([\da-fA-F]{1,4}:){3}((:[\da-fA-F]{1,4}){1,3}|:)|([\da-fA-F]{1,4}:){4}((:[\da-fA-F]{1,4}){1,2}|:)|([\da-fA-F]{1,4}:){5}:([\da-fA-F]{1,4})?|([\da-fA-F]{1,4}:){6}:))$/"
+                   maxlength="31">
+            <label class="control-label hide"
+                   data-ng-class="(myForm.pooldata.$dirty && myForm.pooldata.$error.pattern) ? 'show' : 'hide'"
+                   style="text-align: left;">请输入正确的IPv4网络地址池</label>
+        </div>
+    </div>
+    <div class="form-group has-feedback" >
+        <label class="col-sm-3 control-label">网关IP：</label>
+
+        <div class="col-sm-8"
+             data-ng-class="(myForm.gatewayIp.$dirty && myForm.gatewayIp.$invalid) ? 'has-error' : ''">
+            <input type="text" class="form-control" name="gatewayIp"
+                   data-ng-model="subnetAdd.subnetModel.gatewayIp"
+                   placeholder="请输入网关IP"
+                   data-ng-pattern="/^0*([1-9]?\d|1\d\d|2[0-4]\d|25[0-5])\.0*([1-9]?\d|1\d\d|2[0-4]\d|25[0-5])\.0*([1-9]?\d|1\d\d|2[0-4]\d|25[0-5])\.0*([1-9]?\d|1\d\d|2[0-4]\d|25[0-5])$/">
+            <label class="control-label hide"
+                   data-ng-class="(myForm.gatewayIp.$dirty && myForm.gatewayIp.$error.required) ? 'show' : 'hide'"
+                   style="text-align: left;">请输入网关IP</label>
+            <label class="control-label hide" data-ng-class="myForm.gatewayIp.$dirty && myForm.gatewayIp.$error.pattern ? 'show' : 'hide'"
+                   style="text-align: left;">请输入正确的IPv4地址格式</label>
+        </div>
+    </div>
+
+    <!-- 按钮区域 -->
+     <div class="modal-footer" >
+      <button type="button" class="btn btn-primary btn-modal" ng-click="commit()"  ng-disabled="!myForm.$valid">确  定</button>
+      <button type="button" class="btn btn-default btn-modal" ng-click="cancel()">取  消</button>
+    </div>
+</form>

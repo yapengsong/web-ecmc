@@ -1,0 +1,34 @@
+<form class="form-horizontal" name="myForm" novalidate>
+    <!-- 主机名 -->
+    <div class="form-group has-feedback">
+        <label class="col-sm-3 control-label">主机名：</label>
+
+        <div class="col-sm-8">
+            <label class="col-sm-12 control-label" style="text-align: left;">{{editMember.member.vmName}}</label>
+        </div>
+    </div>
+
+    <!-- 协议端口 -->
+    <div class="form-group has-feedback">
+        <label class="col-sm-3 control-label">监听端口：</label>
+
+        <div class="col-sm-8" data-ng-class="(myForm.protocol_port.$dirty && (myForm.protocol_port.$invalid)) ? 'has-error' : ''">
+            <input type="text" class="form-control"
+                   name="protocol_port" data-ng-model="editMember.member.protocolPort" placeholder="请输入监听端口"  disabled>
+            <label class="control-label" ng-show="myForm.protocol_port.$dirty && myForm.protocol_port.$invalid">请输入1至65535的整数</label>
+            <label class="control-label" ng-show="myForm.protocol_port.$dirty && myForm.protocol_port.$valid && !editMember.checkExist">协议端口名称已存在</label>
+        </div>
+    </div>
+
+    <!-- 权重 -->
+    <div class="form-group has-feedback">
+        <label class="col-sm-3 control-label">权重：</label>
+
+        <div class="col-sm-8" data-ng-class="(myForm.weight.$dirty && myForm.weight.$invalid) ? 'has-error' : ''">
+            <input type="text" class="form-control" name="weight"
+                   ng-pattern="/(^[1-9][0-9]$)|(^[1-9]$)|100$/" data-ng-model="editMember.member.memberWeight"
+                   placeholder="请输入权重" required>
+            <label class="control-label" ng-show="myForm.weight.$dirty && myForm.weight.$invalid">请输入1到100的整数</label>
+        </div>
+    </div>
+</form>

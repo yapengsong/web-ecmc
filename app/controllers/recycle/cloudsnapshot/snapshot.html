@@ -1,0 +1,68 @@
+<div class="form-inline">
+    <eayun-search data-ng-model="recycleSnapshot.search" options="recycleSnapshot.options"></eayun-search>
+</div>
+<eayun-auto-refresh interval="5000" refresh="recycleSnapshot.refresh"></eayun-auto-refresh>
+<eayun-table data-api="recycleSnapshot.table.api" data-ajax-source="recycleSnapshot.table.source"
+             data-param="recycleSnapshot.table.getParams"
+             data-result="recycleSnapshot.table.result">
+    <table class="table table-eayun">
+        <thead>
+        <tr>
+            <th>快照名称</th>
+            <th>状态</th>
+            <th>快照大小</th>
+            <th>分类</th>
+            <th>源硬盘名称</th>
+            <th>
+                <eayun-select type="btn" class="btn-group btn-group-xs" data-ng-model="recycleSnapshot.dcId"
+                              data-ng-change="recycleSnapshot.queryTable()">
+                    <eayun-option value="" text="数据中心（全部）" selected></eayun-option>
+                    <eayun-option value="dc.id" text="{{dc.name}}"
+                                  data-ng-repeat="dc in recycleSnapshot.dcList"></eayun-option>
+                </eayun-select>
+            </th>
+            <th>客户</th>
+            <th>项目</th>
+            <th>时间</th>
+            <th style="min-width: 100px;">操作</th>
+        </tr>
+        </thead>
+        <tbody><tr data-ng-repeat="snap in recycleSnapshot.table.result">
+            <td class="click-link" data-ng-click="recycleSnapshot.detail(snap)">{{snap.snapName}}</td>
+            <td>
+                <span class="state-block"
+                      data-ng-class="recycleSnapshot.vmStatusClass[$index] != '' ? recycleSnapshot.vmStatusClass[$index] : ''"
+                      ng-init="recycleSnapshot.vmStatusClass[$index] = recycleSnapshot.checkVmStatus(snap,$index)">
+                </span>
+                <span>{{(snap.snapStatus == 'DELETING' && '2' == snap.isDeleted) ? '删除中' : '已删除'}}</span>
+            </td>
+            <td data-ng-bind="snap.snapSize + 'GB'"></td>
+            <td>数据盘快照</td>
+            <td data-ng-if="snap.volName != 'null'"
+                class="click-link"
+                data-ng-click="recycleSnapshot.detailVolume(snap)"
+                title="{{snap.volName}}">
+                {{snap.volName.length > 20 ? snap.volName.substring(0, 19) + '...' : snap.volName}}
+            </td>
+            <td data-ng-if="snap.volName == 'null'">
+                --
+            </td>
+            <td data-ng-bind="snap.dcName"></td>
+            <td data-ng-bind="snap.cusOrg"></td>
+            <td data-ng-bind="snap.prjName"></td>
+            <td>
+                <span>{{'创建时间：'+(snap.createTime|date:'yyyy-MM-dd HH:mm:ss')}}<br></span>
+                <span>{{'删除时间：'+(snap.deleteTime|date:'yyyy-MM-dd HH:mm:ss')}}</span>
+            </td>
+            <td>
+                <button class="btn btn-tabledel btn-first"
+                        data-ng-if="hasPermission('recycle_snapshot_delete')"
+                        data-ng-disabled="snap.snapStatus == 'DELETING' && '2' == snap.isDeleted"
+                        data-ng-click="recycleSnapshot.deleteSnap(snap)">删除
+                </button>
+                <span data-ng-if="!hasPermission('recycle_snapshot_delete')">----</span>
+            </td>
+        </tr></tbody>
+    </table>
+    <eayun-table-page></eayun-table-page>
+</eayun-table>

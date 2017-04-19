@@ -1,0 +1,12 @@
+<!-- 导航页签 -->
+<tabs class="nav-tabs-underline">
+    <tab-underline ui-sref-active="active" data-ui-sref="app.safe.tabs.firewall" ng-show="hasPermission('firewall_query')">防火墙</tab-underline>
+    <tab-underline ui-sref-active="active" data-ui-sref="app.safe.tabs.group" ng-show="hasPermission('securitygroup_qurey')">安全组</tab-underline>
+</tabs>
+
+<!-- 子页面展示区 -->
+<div class="panel panel-default clearfix">
+    <div class="panel-body">
+        <div ui-view=""></div>
+    </div>
+</div>

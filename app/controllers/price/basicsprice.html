@@ -1,0 +1,43 @@
+    <form class="form-inline">
+        <label class="control-label" style="border-left: 0px solid #CCCCCC;margin-left: 10px;padding-left: 10px;">数据中心：</label>
+        <eayun-select class="form-control form-select" show-length="10" data-ng-model="price.dcId" ng-change="price.change()">
+            <eayun-option value="''" text="全部" selected></eayun-option>
+            <eayun-option value="dc.id" text="{{dc.name}}" ng-repeat="dc in price.dcList"></eayun-option>
+        </eayun-select>
+        <label class="control-label" style="border-left: 0px solid #CCCCCC;margin-left: 10px;padding-left: 10px;">资源类型：</label>
+        <eayun-select class="form-control form-select" show-length="10" data-ng-model="price.resourcesType" ng-change="price.change()">
+            <eayun-option value="''" text="全部" selected></eayun-option>
+            <eayun-option value="type.nodeId" text="{{type.name}}" ng-repeat="type in price.typeList"></eayun-option>
+        </eayun-select>
+        <eayun-search ng-model="price.search" options="price.options" style="float:right;" ></eayun-search>
+    </form>
+
+    <eayun-table data-api="price.factorTable.api" data-ajax-source="price.factorTable.source" data-param="price.factorTable.getParams"
+                 data-result="price.factorTable.result">
+        <table class="table table-eayun">
+            <thead>
+            <tr>
+                <th class="col-sm-2">资源类型</th>
+                <th class="col-sm-2">计费因子</th>
+                <th class="col-sm-2">计费单位</th>
+                <th class="col-sm-2">数据中心</th>
+                <th class="col-sm-4">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr data-ng-repeat="factor in price.factorTable.result">
+                <td ng-bind="::factor.typeName"></td>
+                <td ng-bind="::factor.factorName"></td>
+                <td>{{factor.unitName}}（{{factor.meterName}}）</td>
+                <td ng-bind="::factor.dcName"></td>
+                <td>
+                    <button type="button" class="btn btn-tablemng btn-first" data-ng-click="price.configPrice(factor,'1')" ng-if="hasPermission('price_pay_before')">配置预付费价格
+                    </button>
+                    <button type="button" class="btn btn-tablemng" data-ng-click="price.configPrice(factor,'2')" ng-if="hasPermission('price_pay_after')">配置后付费价格
+                    </button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <eayun-table-page></eayun-table-page>
+    </eayun-table>

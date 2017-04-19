@@ -1,0 +1,26 @@
+<div>
+    <!-- 澶撮儴鏍囬鍖哄煙 -->
+    <div class="modal-header">
+    <span class="modal-title">
+    </span>
+        <img ng-click="cancel()" src="images/close.png">
+    </div>
+    <!-- 琛ㄥ崟鍖哄煙 -->
+    <div class="modal-body">
+        <div class="modal-confirm">
+      <span>
+        <span class="glyphicon glyphicon-ok alert-success"
+              ng-show="type == 'success'"></span>
+        <span class="glyphicon glyphicon-exclamation-sign alert-warning"
+              ng-show="type == 'warning'"></span>
+        <span class="glyphicon glyphicon-remove alert-error"
+              ng-show="type == 'error'"></span>
+      </span>
+            {{msg}}
+        </div>
+    </div>
+    <!-- 鎸夐挳鍖哄煙 -->
+    <div class="modal-footer">
+        <button class="btn btn-primary btn-modal" ng-click="ok()">确 定</button>
+    </div>
+</div>

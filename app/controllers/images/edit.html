@@ -1,0 +1,91 @@
+<form class="form-horizontal" name="createImage" novalidate>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">所属数据中心：</label>
+
+        <div class="col-sm-8">
+            <eayun-select disabled="{{}}" class="form-control" ng-model="create.net.dcId"
+                          ng-change="create.dcChange()" required>
+                <eayun-option value="" text="请选择数据中心" selected></eayun-option>
+                <eayun-option value="dc.id" text="{{::dc.name}}" ng-repeat="dc in create.dcList"></eayun-option>
+            </eayun-select>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">镜像名称：</label>
+        <div class="col-md-9"
+             data-ng-class="(createImage.imName.$dirty && (createImage.imName.$invalid||!create.checkimNameFlag))?'has-error' : ''">
+            <div class="has-feedback">
+                <input type="text" class="form-control" placeholder="请输入镜像名称"
+                       maxlength="{{vmMaxlength}}"
+                       data-ng-model="create.net.imageName" name="imName" required
+                       data-ng-change="create.checkImName()"
+                       data-ng-pattern='/^[\u4e00-\u9fa5a-zA-Z0-9]([\u4e00-\u9fa5_a-zA-Z0-9\s]{0,18}[\u4e00-\u9fa5a-zA-Z0-9]){0,1}$/'>
+
+                <label class="control-label hide"
+                       data-ng-class="createImage.imName.$dirty && createImage.imName.$invalid ? 'show' : 'hide'"
+                       style="text-align: left;">请输入1-{{vmMaxlength}}位字符,支持数字、中英文、下划线、空格</label>
+                <label class="control-label hide"
+                       data-ng-class="createImage.imName.$dirty &&createImage.imName.$valid && !create.checkimNameFlag ? 'show' : 'hide'"
+                       style="text-align: left;">镜像名称已存在</label>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">操作系统：</label>
+
+        <div class="col-sm-8">
+            <eayun-select disabled="{{}}" class="form-control" ng-model="create.net.osType"
+                          ng-change="create.dcChange()" required>
+                <eayun-option value="" text="请选择操作系统" selected></eayun-option>
+                <eayun-option value="dc.nodeId" text="{{::dc.nodeName}}" ng-repeat="dc in create.osList"></eayun-option>
+            </eayun-select>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">系统类型：</label>
+
+        <div class="col-sm-8">
+            <eayun-select class="form-control" ng-model="create.net.diskFormat"
+                          ng-change="create.dcChange()" required>
+                <eayun-option value="" text="请选择系统类型" selected></eayun-option>
+                <eayun-option value="dc.nodeId" text="{{::dc.nodeName}}" ng-repeat="dc in create.imList"></eayun-option>
+            </eayun-select>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">最小CPU（核）：</label>
+        <div class="col-md-9"
+             data-ng-class="(createImage.imCpu.$dirty && createImage.imCpu.$invalid)?'has-error' : ''">
+            <div class="has-feedback">
+                <input type="text" class="form-control" placeholder="最小CPU（核）"
+                       data-ng-model="create.net.minCpu" name="imCpu" required
+                       data-ng-pattern='/^[\u4e00-\u9fa5a-zA-Z0-9]([\u4e00-\u9fa5_a-zA-Z0-9\s]{0,18}[\u4e00-\u9fa5a-zA-Z0-9]){0,1}$/'>
+                <label class="control-label hide"
+                       data-ng-class="createImage.imCpu.$dirty && createImage.imCpu.$invalid ? 'show' : 'hide'"
+                       style="text-align: left;">请输入数字</label>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">最小内存（MB）：</label>
+        <div class="col-md-9"
+             data-ng-class="(createImage.imRam.$dirty && createImage.imRam.$invalid)?'has-error' : ''">
+            <div class="has-feedback">
+                <input type="text" class="form-control" placeholder="最小内存（MB）"
+                       data-ng-model="create.net.minRam" name="imRam" required
+                       data-ng-pattern='/^[\u4e00-\u9fa5a-zA-Z0-9]([\u4e00-\u9fa5_a-zA-Z0-9\s]{0,18}[\u4e00-\u9fa5a-zA-Z0-9]){0,1}$/'>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">最小硬盘（GB）：</label>
+        <div class="col-md-9"
+             data-ng-class="(createImage.imDisk.$dirty && createImage.imDisk.$invalid)?'has-error' : ''">
+            <div class="has-feedback">
+                <input type="text" class="form-control" placeholder="最小硬盘（GB）"
+                       data-ng-model="create.net.minDisk" name="imDisk" required
+                       data-ng-pattern='/^[\u4e00-\u9fa5a-zA-Z0-9]([\u4e00-\u9fa5_a-zA-Z0-9\s]{0,18}[\u4e00-\u9fa5a-zA-Z0-9]){0,1}$/'>
+            </div>
+        </div>
+    </div>
+</form>

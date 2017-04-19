@@ -1,0 +1,117 @@
+<form class="form-horizontal" name="editDepartment">
+    <div class="form-group" ng-if="edit.department.id">
+        <label class="col-sm-3 control-label"><a style="color:red ;">*</a>ID：</label>
+
+        <div class="col-sm-8">
+            <label class="control-label" ng-bind="::edit.department.id"></label>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">编号：</label>
+
+        <div class="col-sm-8"
+             data-ng-class="(editDepartment.code.$dirty && editDepartment.code.$invalid) ? 'has-error' : ''">
+            <input type="text" class="form-control" data-ng-model="edit.department.code" name="code" required
+                   data-ajax-valid="edit.checkDepartCode(value)"
+                   data-ng-pattern="/^([a-zA-Z0-9_]){0,50}$/"/>
+            <label class="control-label" ng-show="editDepartment.code.$dirty && editDepartment.code.$error.required">编号不能为空</label>
+            <label class="control-label" ng-show="editDepartment.code.$dirty && editDepartment.code.$error.ajaxValid">编号已存在</label>
+            <label class="control-label hide"
+                   data-ng-class="editDepartment.code.$dirty && editDepartment.code.$error.pattern ? 'show' : 'hide'"
+                   style="text-align: left;">请输入1-50位字符,支持数字、英文、下划线</label>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">名称：</label>
+
+        <div class="col-sm-8"
+             data-ng-class="(editDepartment.name.$dirty && editDepartment.name.$invalid) ? 'has-error' : ''">
+            <input type="text" class="form-control" data-ng-model="edit.department.name" name="name" required
+                   data-ng-pattern="/^[\u4e00-\u9fa5a-zA-Z0-9_ ]{1,20}$/"/>
+            <label class="control-label hide"
+                   data-ng-class="editDepartment.name.$dirty && editDepartment.name.$error.required ? 'show' : 'hide'"
+                   style="text-align: left;">名称不能为空</label>
+            <label class="control-label hide"
+                   data-ng-class="editDepartment.name.$dirty && editDepartment.name.$error.pattern ? 'show' : 'hide'"
+                   style="text-align: left;">请输入1-20位字符,支持数字、中英文、下划线</label>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">描述：</label>
+
+        <div class="col-sm-8"
+             data-ng-class="(editDepartment.description.$dirty && editDepartment.description.$error.maxlength) ? 'has-error' : ''">
+            <textarea rows="5" class="form-control" data-ng-model="edit.department.description" name="description"
+                      ng-maxlength="200"/>
+            <label class="control-label hide"
+                   data-ng-class="editDepartment.description.$dirty && editDepartment.description.$error.maxlength ? 'show' : 'hide'"
+                   style="text-align: left;">不能超过200位字符</label>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">父级机构：</label>
+
+        <div class="col-sm-8">
+            <eayun-select-tree options-data="edit.tree"
+                               ng-model="edit.department.parentId" value-field="id" text-field="name"/>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">地址：</label>
+
+        <div class="col-sm-8"
+             data-ng-class="(editDepartment.address.$dirty && editDepartment.address.$error.maxlength) ? 'has-error' : ''">
+            <input type="text" class="form-control" data-ng-model="edit.department.address" name="address"
+                   ng-maxlength="100"/>
+            <!--<label class="control-label hide"-->
+            <!--data-ng-class="editDepartment.address.$dirty && editDepartment.address.$error.required ? 'show' : 'hide'"-->
+            <!--style="text-align: left;">地址不能为空</label>-->
+            <label class="control-label hide"
+                   data-ng-class="editDepartment.address.$dirty && editDepartment.address.$error.maxlength ? 'show' : 'hide'"
+                   style="text-align: left;">不能超过100位字符</label>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">电话：</label>
+
+        <div class="col-sm-8"
+             data-ng-class="(editDepartment.tel.$dirty &&editDepartment.tel.$invalid) ? 'has-error' : ''">
+            <!--data-ng-pattern="/^1\d{10}$|^(0\d{2,3}-?|\(0\d{2,3}\))?[1-9]\d{4,7}(-\d{1,8})?$/"-->
+            <input type="text" class="form-control" data-ng-model="edit.department.tel" name="tel"
+                   data-ng-pattern="/^[0-9\-]{5,15}$/"/>
+            <label class="control-label"
+                   ng-if="editDepartment.tel.$dirty&&editDepartment.tel.$error.pattern">请输入5-15位数字，支持连接符'-'</label>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">联系人：</label>
+
+        <div class="col-sm-8" data-ng-class="(editDepartment.linkMan.$dirty && editDepartment.linkMan.$error.pattern) ? 'has-error' : ''">
+            <input type="text" class="form-control" data-ng-model="edit.department.linkMan" name="linkMan"
+                   data-ng-pattern="/^[\u4e00-\u9fa5a-zA-Z0-9_]{1,20}$/"/>
+            <label class="control-label hide"
+                   data-ng-class="editDepartment.linkMan.$dirty && editDepartment.linkMan.$error.pattern ? 'show' : 'hide'"
+                   style="text-align: left;">请输入1-20位字符,支持数字、中英文、下划线</label>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">传真：</label>
+
+        <div class="col-sm-8"
+             data-ng-class="(editDepartment.fax.$dirty &&editDepartment.fax.$invalid) ? 'has-error' : ''">
+            <input type="text" class="form-control" data-ng-model="edit.department.fax" name="fax"
+                   data-ng-pattern="/^[0-9\-]{5,15}$/"/>
+                   <!--data-ng-pattern="/^1\d{10}$|^(0\d{2,3}-?|\(0\d{2,3}\))?[1-9]\d{4,10}$/"/>-->
+            <label class="control-label"
+                   ng-if="editDepartment.fax.$dirty&&editDepartment.fax.$error.pattern">请输入5-15位数字，支持连接符'-'</label>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">是否启用：</label>
+
+        <div class="col-sm-2">
+            <input type="checkbox" style="margin-top: 10px;" data-ng-model="edit.department.enableFlag"/>
+            <span> 启用</span>
+        </div>
+    </div>
+</form>
